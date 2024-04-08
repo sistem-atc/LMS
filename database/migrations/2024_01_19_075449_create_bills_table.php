@@ -1,0 +1,56 @@
+<?php
+
+use App\Models\Bank;
+use App\Models\Customer;
+use App\Models\Nature;
+use App\Models\ReceivingType;
+use App\Models\Situation;
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('bills', function (Blueprint $table) {
+            $table->id();
+            $table->foreignIdFor(Nature::class);
+            $table->foreignIdFor(Bank::class);
+            $table->foreignIdFor(Customer::class);
+            $table->json('cte_id')->nullable();
+            $table->date('emission_date');
+            $table->date('due_date');
+            $table->float('total_value');
+            $table->float('discount_value')->nullable();
+            $table->float('liquid_value');
+            $table->float('irrf_base');
+            $table->float('irrf_tax');
+            $table->float('irrf_value');
+            $table->float('iss_base');
+            $table->float('iss_tax');
+            $table->float('iss_value');
+            $table->date('writeoff_date')->nullable();
+            $table->foreignIdFor(ReceivingType::class);
+            $table->string('historic')->nullable();
+            $table->foreignIdFor(Situation::class);
+            $table->float('fine');
+            $table->float('interests');
+            $table->string('boleto_number')->nullable();
+            $table->string('barr_code')->nullable();
+            $table->timestamps();
+            $table->softDeletes();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('bills');
+    }
+};

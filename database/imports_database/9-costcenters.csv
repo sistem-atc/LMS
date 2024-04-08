@@ -1,0 +1,21 @@
+"id";"cost_center";"classification";"description";"blocked";"blocked_date";"email_approver";"created_at";"updated_at";"deleted_at"
+1;10001010;Prioritario;Teste;1;;kleber.patti@logisticag2l.com.br;;"2024-01-31 17:10:13";"2024-01-31 17:10:13"
+2;1700140012;Prioritario;BU - Transportes (NN) - SPOT;0;;kleber.patti@logisticag2l.com.br;"2024-01-31 17:05:38";"2024-01-31 17:05:38";
+3;1701140012;Prioritario;BU - Transportes (NN) - YPÊ;0;;kleber.patti@logisticag2l.com.br;"2024-01-31 17:05:59";"2024-01-31 17:05:59";
+4;1702140012;Prioritario;BU - Transportes (NN) - ALCOA;0;;kleber.patti@logisticag2l.com.br;"2024-01-31 17:06:16";"2024-01-31 17:06:16";
+5;1703140012;Prioritario;BU - Transportes (NN) - BRADO;0;;kleber.patti@logisticag2l.com.br;"2024-01-31 17:06:32";"2024-01-31 17:06:32";
+6;1704140012;Prioritario;BU - Transportes (NN) - BRASKEM;0;;kleber.patti@logisticag2l.com.br;"2024-01-31 17:06:46";"2024-01-31 17:06:46";
+7;1705140012;Prioritario;BU - Transportes (NN) - DEXCO;0;;kleber.patti@logisticag2l.com.br;"2024-01-31 17:06:58";"2024-01-31 17:06:58";
+8;1706140012;Prioritario;BU - Transportes (NN) - SUZANO;0;;kleber.patti@logisticag2l.com.br;"2024-01-31 17:07:13";"2024-01-31 17:07:13";
+9;1707140012;Prioritario;BU - Transportes (NN) - CITROSUCO;0;;kleber.patti@logisticag2l.com.br;"2024-01-31 17:07:27";"2024-01-31 17:07:27";
+10;1708140012;Prioritario;BU - Transportes (NN) - CAMIL;0;;kleber.patti@logisticag2l.com.br;"2024-01-31 17:07:48";"2024-01-31 17:07:48";
+11;1709140012;Prioritario;BU - Transportes (NN) - AMBEV;0;;kleber.patti@logisticag2l.com.br;"2024-01-31 17:08:02";"2024-01-31 17:08:02";
+12;1710140012;Prioritario;BU - Transportes (NN) - BARGIARTH;0;;kleber.patti@logisticag2l.com.br;"2024-01-31 17:08:17";"2024-01-31 17:08:17";
+13;1711140012;Prioritario;BU - Transportes (NN) - ITAMBE;0;;kleber.patti@logisticag2l.com.br;"2024-01-31 17:08:29";"2024-01-31 17:08:29";
+14;1712140012;Prioritario;BU - Transportes (NN) - MINALBA;0;;kleber.patti@logisticag2l.com.br;"2024-01-31 17:08:40";"2024-01-31 17:08:40";
+15;1713140012;Prioritario;BU - Transportes (NN) - SPAL;0;;kleber.patti@logisticag2l.com.br;"2024-01-31 17:08:52";"2024-01-31 17:08:52";
+16;1714140012;Prioritario;BU - Transportes (NN) - MOTECH;0;;kleber.patti@logisticag2l.com.br;"2024-01-31 17:09:06";"2024-01-31 17:09:06";
+17;1715140012;Prioritario;BU - Transportes (NN) - MARS;0;;kleber.patti@logisticag2l.com.br;"2024-01-31 17:09:16";"2024-01-31 17:09:16";
+18;1716140012;Prioritario;BU - Transportes (NN) - NEOVIA;0;;kleber.patti@logisticag2l.com.br;"2024-01-31 17:09:29";"2024-01-31 17:09:29";
+19;1717140012;Prioritario;BU - Transportes (NN) - NOVELIS;0;;kleber.patti@logisticag2l.com.br;"2024-01-31 17:09:39";"2024-01-31 17:09:39";
+20;1718140012;Prioritario;BU - Transportes (NN) - MAGNESITA;0;;kleber.patti@logisticag2l.com.br;"2024-01-31 17:09:49";"2024-01-31 17:09:49";

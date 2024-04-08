@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreignIdFor(Branch::class);
             $table->string('name');
             $table->string('cpf')->unique();
+            $table->string('personalmail')->unique();
             $table->string('postal_code');
             $table->string('street');
             $table->string('complement')->nullable();

@@ -68,15 +68,14 @@ class AlterBranch extends Page implements HasForms
 
     protected function getBrancheLoggedComponent(): Component
     {
-
         return
            Select::make('branch_logged_id')
                 ->label('Filial Logada')
                 ->required()
                 ->options(
-                    fn() => Auth::user()->branch['type_branch'] === 'Matriz'
+                    fn() => Auth::user()->employee->branch['type_branch'] === 'Matriz'
                         ? Branch::all()->pluck('abbreviation', 'id')->toArray()
-                        : Branch::where('id','=', Auth::user()->branch['id'])
+                        : Branch::where('id','=', Auth::user()->employee->branch['id'])
                                     ->pluck('abbreviation', 'id')->toArray()
                 );
     }

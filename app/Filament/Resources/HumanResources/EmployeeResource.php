@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources;
+namespace App\Filament\Resources\HumanResources;
 
 use Filament\Forms;
 use Filament\Tables;
@@ -12,12 +12,12 @@ use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Tabs;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
 use Illuminate\Database\Eloquent\Builder;
 use Leandrocfe\FilamentPtbrFormFields\Cep;
-use App\Filament\Resources\EmployeeResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Resources\EmployeeResource\RelationManagers;
+use App\Filament\Resources\HumanResources\EmployeeResource\Pages;
 
 class EmployeeResource extends Resource
 {
@@ -43,6 +43,10 @@ class EmployeeResource extends Resource
                                 TextInput::make('cpf')
                                     ->label('CPF')
                                     ->required(),
+                                TextInput::make('personalmail')
+                                    ->label('Email Pessoal')
+                                    ->required()
+                                    ->email(),
                                 Select::make('branch_id')
                                     ->label('Filial')
                                     ->searchable()
@@ -98,7 +102,14 @@ class EmployeeResource extends Resource
     {
         return $table
             ->columns([
-                //
+                TextColumn::make('name')
+                    ->label('Nome'),
+                TextColumn::make('personalmail')
+                    ->label('Email Pessoal'),
+                TextColumn::make('user.email')
+                    ->label('Email Corporativo'),
+                TextColumn::make('branch.abbreviation')
+                    ->label('Filial'),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),

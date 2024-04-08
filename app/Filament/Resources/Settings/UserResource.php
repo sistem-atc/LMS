@@ -54,7 +54,7 @@ class UserResource extends Resource
             ->columns([
                 TextColumn::make('employee.name'),
                 TextColumn::make('email'),
-                TextColumn::make('branch.abbreviation')->label('Filial'),
+                TextColumn::make('employee.branch.abbreviation')->label('Filial'),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),

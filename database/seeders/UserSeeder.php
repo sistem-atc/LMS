@@ -12,13 +12,18 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('users')->insert([
+        $user = DB::table('users')->insert([
+                    'email' => 'kleber.patti@logisticag2l.com.br',
+                    'branch_logged_id'=> '1',
+                    'password' => bcrypt('123456789'),
+                ]);
+
+        DB::table('employees')->insert([
+            'user_id' => $user,
+            'branch_id'=> '1',
             'name' => 'Kleber',
-            'email' => 'kleber.patti@logisticag2l.com.br',
             'cpf' => '30908105819',
-            'branche_id'=> '1',
-            'branche_logged_id'=> '1',
-            'password' => bcrypt('123456789'),
+            'personalmail' => 'sistem.atc@gmail.com',
             'postal_code' => '06192140',
             'street' => 'Rua Fortunato de Almeida Camargo',
             'complement' => 'Casa',
@@ -30,7 +35,8 @@ class UserSeeder extends Seeder
             'gia' => '4923',
             'ddd' => '11',
             'siafi' => '6789',
-
+            'is_active' => '1',
         ]);
+
     }
 }

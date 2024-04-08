@@ -12,7 +12,7 @@ class Employee extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'user_id', 'branch_id', 'name', 'cpf', 'postal_code', 'street', 'complement',
+        'user_id', 'branch_id', 'name', 'cpf', 'personalmail', 'postal_code', 'street', 'complement',
         'number', 'district', 'city', 'state', 'ibge', 'gia', 'ddd', 'siafi', 'is_active'
     ];
 
@@ -27,6 +27,6 @@ class Employee extends Model
 
     public function branch(): BelongsTo
     {
-        return $this->BelongsTo(Branch::class);
+        return $this->belongsTo(Branch::class);
     }
 }

@@ -17,6 +17,7 @@ class VendorSeeder extends Seeder
             'name' => 'Vendedor Teste',
             'cpf' => '309.081.058-19',
             'email' => 'kleber.patti@logisticag2l.com.br',
+            'branch_id' => '1',
         ]);
     }
 }

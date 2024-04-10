@@ -2,9 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Vendor;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class VendorSeeder extends Seeder
 {
@@ -13,11 +12,6 @@ class VendorSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('vendors')->insert([
-            'name' => 'Vendedor Teste',
-            'cpf' => '309.081.058-19',
-            'email' => 'kleber.patti@logisticag2l.com.br',
-            'branch_id' => '1',
-        ]);
+        Vendor::factory()->count(15)->create();
     }
 }

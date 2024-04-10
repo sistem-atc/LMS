@@ -49,7 +49,7 @@ class AdminPanelProvider extends PanelProvider
                 'info' => Color::Amber,
             ])
             ->renderHook(
-                'panels::global-search.after',
+                'panels::global-search.before',
                 function (): View
                 {
                     session()->has('DateBase')?
@@ -80,14 +80,13 @@ class AdminPanelProvider extends PanelProvider
             ->authMiddleware([
                     Authenticate::class,
                 ]);
-            }
-
+    }
 
     private function useMenuItems(): array
     {
         return [
             MenuItem::make()
-                ->label('Alterar Filial')
+                ->label('Alterar Dados de Acesso')
                 ->icon('carbon-branch')
                 ->url('/lms/alter-branch'),
         ];

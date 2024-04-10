@@ -2,6 +2,7 @@
 
 namespace App\Filament\Pages;
 
+use App\Enums\TypeBranchEnum;
 use App\Models\User;
 use App\Models\Branch;
 use Filament\Forms\Form;
@@ -31,10 +32,13 @@ class AlterBranch extends Page implements HasForms
     protected static bool $shouldRegisterNavigation = false;
     public ?array $data = [];
     protected static string $view = 'filament.pages.alter-branch';
-    protected ?string $heading = 'Alterar Filial e Data Base';
+    protected ?string $heading = 'Alterar Dados de Acesso';
 
     public function mount(): void{
-        $this->form->fill(auth()->user()->branch_logged->attributesToArray());
+        $this->form->fill([
+            'branch_logged_id' => auth()->user()->branch_logged->id,
+            'DateBase' => session()->get('DateBase'),
+        ]);
     }
 
     public function form(Form $form): Form{
@@ -45,15 +49,7 @@ class AlterBranch extends Page implements HasForms
                     Section::make()
                         ->schema([
                             $this->getBrancheLoggedComponent(),
-                            DatePicker::make('DateBase')
-                                ->label('Data Base')
-                                ->format('d/m/Y')
-                                ->afterStateHydrated(
-                                    fn (DatePicker $component, ?string $state) =>
-                                        !$state ?
-                                        $component->state(now()->toDateString()) :
-                                        session()->get('DateBase')
-                                )
+                            $this->getDatebaseComponent(),
                         ])->columns(2),
                 ])->columns(2)
 
@@ -68,16 +64,25 @@ class AlterBranch extends Page implements HasForms
 
     protected function getBrancheLoggedComponent(): Component
     {
+
         return
            Select::make('branch_logged_id')
                 ->label('Filial Logada')
                 ->required()
                 ->options(
-                    fn() => Auth::user()->employee->branch['type_branch'] === 'Matriz'
+                    fn() => Auth::user()->employee->branch['type_branch'] === TypeBranchEnum::MATRIZ
                         ? Branch::all()->pluck('abbreviation', 'id')->toArray()
                         : Branch::where('id','=', Auth::user()->employee->branch['id'])
                                     ->pluck('abbreviation', 'id')->toArray()
                 );
+    }
+
+    protected function getDatebaseComponent(): Component
+    {
+        return
+            DatePicker::make('DateBase')
+                ->label('Data Base')
+                ->format('d/m/Y');
     }
 
     protected function getFormActions(): array{

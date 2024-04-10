@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use Illuminate\Support\Str;
+use App\Enums\TypeBranchEnum;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +19,23 @@ class BranchFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'abbreviation' => fake()->unique()->companySuffix(),
+            'name' => fake()->unique()->company(),
+            'cnpj' => fake()->unique()->numerify('##############'),
+            'type_branch' => TypeBranchEnum::FILIAL,
+            'municipal_registration' => fake()->numberBetween(10000, 99999),
+            'state_registration' => fake()->numberBetween(1000000, 9999999999),
+            'postal_code' => fake()->postcode(),
+            'street' => Str::upper(fake()->streetName()),
+            'complement' => '',
+            'number' => fake()->buildingNumber(),
+            'district' => fake()->lastName(),
+            'city' => fake()->city(),
+            'state' => trim(explode('-', fake()->address())[2]),
+            'ibge' => fake()->numerify('#######'),
+            'gia' => fake()->numerify('####'),
+            'ddd' => fake()->numerify('##'),
+            'siafi' => fake()->numerify('####'),
         ];
     }
 }

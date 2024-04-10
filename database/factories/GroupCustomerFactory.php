@@ -17,7 +17,8 @@ class GroupCustomerFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'name' => fake()->toUpper(fake()->name()),
+            'description' => fake()->toUpper(fake()->text(50)),
         ];
     }
 }

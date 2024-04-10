@@ -17,7 +17,12 @@ class CostcenterFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'cost_center' => fake()->unique()->numerify('##########'),
+            'classification' => 'Prioritario',
+            'description' => fake()->text(30),
+            'blocked' => fake()->boolean(),
+            'blocked_date' => '',
+            'email_approver' => 'kleber.patti@logisticag2l.com.br',
         ];
     }
 }

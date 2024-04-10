@@ -2,9 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Route;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class RouteSeeder extends Seeder
 {
@@ -13,12 +12,6 @@ class RouteSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('routes')->insert([
-            'name' => 'Rota Teste',
-            'active' => true,
-            'origin_branche_id' => '1',
-            'recipient_branche_id' => '1',
-            'municipal_route' => false,
-        ]);
+        Route::factory()->count(20)->create();
     }
 }

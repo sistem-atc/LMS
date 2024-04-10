@@ -2,9 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Situation;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class SituationSeeder extends Seeder
 {
@@ -13,17 +12,6 @@ class SituationSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('situations')->insert([
-            'name' => 'Carteira',
-        ]);
-        DB::table('situations')->insert([
-            'name' => 'Pefin Serasa',
-        ]);
-        DB::table('situations')->insert([
-            'name' => 'Boleto',
-        ]);
-        DB::table('situations')->insert([
-            'name' => 'Protesto',
-        ]);
+        Situation::factory()->count(4)->create();
     }
 }

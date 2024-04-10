@@ -7,16 +7,16 @@ use Filament\Tables;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
+use Filament\Support\Colors\Color;
 use Filament\Forms\Components\Grid;
-use Filament\Forms\Components\Tabs;
-use Filament\Forms\Components\Hidden;
+use Filament\Tables\Actions\Action;
 use Filament\Forms\Components\Select;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
 use Illuminate\Database\Eloquent\Builder;
-use Leandrocfe\FilamentPtbrFormFields\Cep;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\Settings\UserResource\Pages;
+use Filament\Notifications\Notification;
 
 class UserResource extends Resource
 {
@@ -57,20 +57,28 @@ class UserResource extends Resource
                 TextColumn::make('employee.branch.abbreviation')->label('Filial'),
             ])
             ->filters([
-                Tables\Filters\TrashedFilter::make(),
+                //
             ])
             ->actions([
+                Action::make('ResetPassword')
+                    ->label('Reset Password')
+                    ->icon('carbon-password')
+                    ->color(Color::Blue)
+                    ->requiresConfirmation()
+                    ->action(
+                        function(User $record): Notification {
+                            User::find($record->id)->update([
+                                'password' => config('domain.defaultPass'),
+                            ]);
+                            return Notification::make()
+                                ->title('Senha Alterada para o Padrão do sistema.')
+                                ->success()
+                                ->send();
+                        }
+                    ),
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
-                Tables\Actions\ForceDeleteAction::make(),
-                Tables\Actions\RestoreAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                    Tables\Actions\ForceDeleteBulkAction::make(),
-                    Tables\Actions\RestoreBulkAction::make(),
-                ]),
             ]);
     }
 
@@ -87,7 +95,6 @@ class UserResource extends Resource
     {
         return parent::getEloquentQuery()
             ->withoutGlobalScopes([
-                SoftDeletingScope::class,
             ]);
     }
 

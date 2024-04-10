@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +18,7 @@ class NatureFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'name' => Str::upper(fake()->name()),
         ];
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Settings;
 
+use App\Enums\TypeBranchEnum;
 use App\Models\Branch;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
@@ -42,10 +43,7 @@ class BranchResource extends Resource
                         TextInput::make('name')->label('Razão Social')->columnSpan(2),
                         Select::make('type_branch')
                             ->label('Tipo Empresa')
-                            ->options([
-                                'Filial',
-                                'Matriz'
-                            ])
+                            ->options(TypeBranchEnum::class)
                             ->columnSpan(1),
                     ])->columns(3),
                 Section::make('')

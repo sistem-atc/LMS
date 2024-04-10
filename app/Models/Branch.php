@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\TypeBranchEnum;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -17,6 +18,10 @@ class Branch extends Model
     protected $fillable = [
         'abbreviation', 'name', 'cnpj', 'type_branche', 'municipal_registration', 'state_registration',
         'postal_code', 'street', 'complement', 'number', 'district', 'city', 'state', 'ibge', 'gia', 'ddd', 'siafi',
+    ];
+
+    protected $casts = [
+        'type_branch' => TypeBranchEnum::class,
     ];
 
     public function user(): HasMany

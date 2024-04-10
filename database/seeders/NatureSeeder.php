@@ -2,9 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Nature;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class NatureSeeder extends Seeder
 {
@@ -13,8 +12,6 @@ class NatureSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('natures')->insert([
-            'name' => 'Natureza Teste'
-        ]);
+        Nature::factory()->count(10)->create();
     }
 }

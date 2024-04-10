@@ -4,7 +4,6 @@ namespace App\Filament\Resources\Operational\LotResource\Pages;
 
 use Filament\Actions;
 use App\Models\Customer;
-use Illuminate\Support\Facades\DB;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Section;
 use Filament\Notifications\Notification;
@@ -20,10 +19,8 @@ class ListLots extends ListRecords
     {
         return [
             Actions\CreateAction::make()
-                ->label('Criar Lote')
-                ->color('cyan'),
+                ->label('Criar Lote'),
             Actions\Action::make('ImportNotFis')
-                ->color('lime')
                 ->label('Importar NOTFIS')
                 ->form([
                     Section::make('')
@@ -45,7 +42,6 @@ class ListLots extends ListRecords
                 ])
                 ->action(fn (array $data): Notification => SuportFunctions::ImportNotFis($data)),
             Actions\Action::make('ImportXml')
-                ->color('lime')
                 ->label('Importar XML da Notas')
                 ->form([
                     Section::make('')

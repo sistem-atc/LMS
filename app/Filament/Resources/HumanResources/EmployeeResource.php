@@ -2,7 +2,7 @@
 
 namespace App\Filament\Resources\HumanResources;
 
-use Filament\Forms;
+use Closure;
 use Filament\Tables;
 use App\Models\Employee;
 use Filament\Forms\Form;
@@ -12,11 +12,16 @@ use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Tabs;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Toggle;
+use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Tables\Filters\TernaryFilter;
 use Leandrocfe\FilamentPtbrFormFields\Cep;
+use Leandrocfe\FilamentPtbrFormFields\Document;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Forms\Components\DatePicker;
 use App\Filament\Resources\HumanResources\EmployeeResource\Pages;
 
 class EmployeeResource extends Resource
@@ -25,74 +30,33 @@ class EmployeeResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $navigationGroup = 'Recursos Humanos';
     protected static ?string $navigationLabel = 'Funcionários';
+    protected static ?string $recordTitleAttribute = 'name';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Grid::make()
+                Grid::make([
+                    'default' => 1,
+                ])
                 ->schema([
                    Tabs::make('Employee Register')
                    ->tabs([
                         Tabs\Tab::make('Basic')
-                            ->icon('heroicon-m-bell')
+                            ->label('Dados Pessoais')
+                            ->icon('carbon-document-horizontal')
                             ->columns(2)
-                            ->schema([
-                                TextInput::make('name')
-                                    ->required(),
-                                TextInput::make('cpf')
-                                    ->label('CPF')
-                                    ->required(),
-                                TextInput::make('personalmail')
-                                    ->label('Email Pessoal')
-                                    ->required()
-                                    ->email(),
-                                Select::make('branch_id')
-                                    ->label('Filial')
-                                    ->searchable()
-                                    ->preload()
-                                    ->relationship('branch', 'abbreviation')
-                            ]),
+                            ->schema(self::getBasicEmployee()),
                         Tabs\Tab::make('Address')
-                            ->icon('heroicon-m-bell')
+                            ->label('Endereço')
+                            ->icon('carbon-stay-inside')
                             ->columns(2)
-                            ->schema([
-                                Cep::make('postal_code')
-                                    ->label('CEP')
-                                    ->viaCep(
-                                        mode: 'suffix',
-                                        errorMessage: 'CEP inválido.',
-                                        setFields: [
-                                            'postal_code' => 'cep',
-                                            'street' => 'logradouro',
-                                            'number' => 'numero',
-                                            'complement' => 'complemento',
-                                            'district' => 'bairro',
-                                            'city' => 'localidade',
-                                            'state' => 'uf',
-                                            'ibge' => 'ibge',
-                                            'gia' => 'gia',
-                                            'ddd' => 'ddd',
-                                            'siafi' => 'siafi',
-                                        ]
-                                    ),
-                                TextInput::make('street')
-                                    ->label('Rua'),
-                                TextInput::make('number')
-                                    ->label('Número'),
-                                TextInput::make('complement')
-                                    ->label('Complemento'),
-                                TextInput::make('district')
-                                    ->label('Bairro'),
-                                TextInput::make('city')
-                                    ->label('Cidade'),
-                                TextInput::make('state')
-                                    ->label('UF'),
-                                Hidden::make('ibge'),
-                                Hidden::make('gia'),
-                                Hidden::make('ddd'),
-                                Hidden::make('siafi')
-                            ])
+                            ->schema(self::getAddressEmployee()),
+                        /*Tabs\Tab::make('admission')
+                            ->label('Admissão')
+                            ->icon('carbon-calendar-heat-map')
+                            ->columns(2)
+                            ->schema(self::getAdmissionEmployee()),*/
                    ]),
                 ])
             ]);
@@ -110,19 +74,18 @@ class EmployeeResource extends Resource
                     ->label('Email Corporativo'),
                 TextColumn::make('branch.abbreviation')
                     ->label('Filial'),
+                IconColumn::make('is_active')
+                    ->boolean()
+                    ->falseIcon('heroicon-o-x-mark')
+                    ->label('Ativo')
             ])
             ->filters([
-                Tables\Filters\TrashedFilter::make(),
+                TernaryFilter::make('is_active'),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                    Tables\Actions\ForceDeleteBulkAction::make(),
-                    Tables\Actions\RestoreBulkAction::make(),
-                ]),
             ]);
     }
 
@@ -146,7 +109,94 @@ class EmployeeResource extends Resource
     {
         return parent::getEloquentQuery()
             ->withoutGlobalScopes([
-                SoftDeletingScope::class,
             ]);
     }
+
+    protected static function getBasicEmployee(): array
+    {
+        return [
+            TextInput::make('name')
+                ->required()
+                ->rules([
+                    function () {
+                        return function ($property ,$value, Closure $fail) {
+                            if (count(explode(' ', $value)) === 1) {
+                                $fail('Informe o Nome Completo');
+                            }
+                        };
+                    },
+                ]),
+            Document::make('cpf')
+                ->cpf()
+                ->label('CPF')
+                ->required(),
+            TextInput::make('personalmail')
+                ->label('Email Pessoal')
+                ->required()
+                ->email(),
+            Select::make('branch_id')
+                ->label('Filial')
+                ->searchable()
+                ->preload()
+                ->relationship('branch', 'abbreviation'),
+            Toggle::make('is_active')
+                ->label('Ativo')
+                ->default(true)
+                ->inline()
+                ->onColor('success')
+                ->offColor('danger')
+        ];
+    }
+
+    protected static function getAddressEmployee(): array
+    {
+        return [
+            Cep::make('postal_code')
+                ->label('CEP')
+                ->viaCep(
+                    mode: 'suffix',
+                    errorMessage: 'CEP inválido.',
+                    setFields: [
+                        'postal_code' => 'cep',
+                        'street' => 'logradouro',
+                        'number' => 'numero',
+                        'complement' => 'complemento',
+                        'district' => 'bairro',
+                        'city' => 'localidade',
+                        'state' => 'uf',
+                        'ibge' => 'ibge',
+                        'gia' => 'gia',
+                        'ddd' => 'ddd',
+                        'siafi' => 'siafi',
+                    ]
+                ),
+            TextInput::make('street')
+                ->label('Rua'),
+            TextInput::make('number')
+                ->label('Número'),
+            TextInput::make('complement')
+                ->label('Complemento'),
+            TextInput::make('district')
+                ->label('Bairro'),
+            TextInput::make('city')
+                ->label('Cidade'),
+            TextInput::make('state')
+                ->label('UF'),
+            Hidden::make('ibge'),
+            Hidden::make('gia'),
+            Hidden::make('ddd'),
+            Hidden::make('siafi')
+        ];
+    }
+
+    protected static function getAdmissionEmployee(): array
+    {
+        return [
+            DatePicker::make('dateadmission')
+                ->label('Data de Admissão'),
+            DatePicker::make('datedemission')
+                ->label('Data de Demissão'),
+        ];
+    }
+
 }

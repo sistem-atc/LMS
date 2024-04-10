@@ -46,14 +46,14 @@ class LotResource extends Resource
                                 ),
                             TextInput::make('collection_request')
                                 ->label('Solicitação de Coleta')
-                                ->numeric(''),
+                                ->numeric(),
                             TextInput::make('status')
                                 ->label('Estado do Lote')
                                 ->default('Em Digitação')
                                 ->disabled(),
                             TextInput::make('quotation')
                                 ->label('Cotação')
-                                ->numeric(''),
+                                ->numeric(),
                         ])->columns(2),
                     Wizard\Step::make('Inserir Notas Fiscais')
                         ->schema([
@@ -114,7 +114,6 @@ class LotResource extends Resource
                 Action::make('calculate')
                     ->accessSelectedRecords()
                     ->icon('heroicon-m-arrow-path')
-                    ->color('info')
                     ->action(function (Model $record) {
                         LotResource\Pages\SuportFunctions::generate($record);
                     }),

@@ -17,7 +17,10 @@ class VendorFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'name' => fake()->name(),
+            'cpf' => fake()->cpf(),
+            'email' => explode('@', fake()->unique()->email())[0] . '@logisticag2l.com.br',
+            'branch_id' => fake()->numberBetween(1, 14),
         ];
     }
 }

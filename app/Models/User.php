@@ -57,7 +57,7 @@ class User extends Authenticatable implements FilamentUser, HasName
 
     public function canAccessPanel(Panel $panel): bool
     {
-        return str_ends_with($this->email, config('domain.domain'));
+        return str_ends_with($this->email, config('domain.domain')) && $this->employee->is_active;
     }
 
     public function employee(): HasOne

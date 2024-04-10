@@ -17,7 +17,11 @@ class RouteFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'name' => 'Rota ' . fake()->name(),
+            'active' => fake()->boolean(),
+            'origin_branche_id' => fake()->numberBetween(1, 14),
+            'recipient_branche_id' => fake()->numberBetween(1, 14),
+            'municipal_route' => fake()->boolean(),
         ];
     }
 }

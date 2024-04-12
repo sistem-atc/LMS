@@ -45,7 +45,7 @@ class AdminPanelProvider extends PanelProvider
             ->userMenuItems($this->useMenuItems())
             ->plugins($this->usePlugins())
             ->colors([
-                'primary' => '#117865',
+                'primary' => Color::hex('#117865'),
                 'info' => Color::Amber,
             ])
             ->renderHook(
@@ -76,6 +76,7 @@ class AdminPanelProvider extends PanelProvider
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
             ])
+            ->viteTheme('resources/css/filament/lms/theme.css')
             ->middleware($this->useMiddleware())
             ->authMiddleware([
                     Authenticate::class,

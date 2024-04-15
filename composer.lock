@@ -4077,16 +4077,16 @@
         },
         {
             "name": "monolog/monolog",
-            "version": "3.5.0",
+            "version": "3.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "c915e2634718dbc8a4a15c61b0e62e7a44e14448"
+                "reference": "4b18b21a5527a3d5ffdac2fd35d3ab25a9597654"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/c915e2634718dbc8a4a15c61b0e62e7a44e14448",
-                "reference": "c915e2634718dbc8a4a15c61b0e62e7a44e14448",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/4b18b21a5527a3d5ffdac2fd35d3ab25a9597654",
+                "reference": "4b18b21a5527a3d5ffdac2fd35d3ab25a9597654",
                 "shasum": ""
             },
             "require": {
@@ -4109,7 +4109,7 @@
                 "phpstan/phpstan": "^1.9",
                 "phpstan/phpstan-deprecation-rules": "^1.0",
                 "phpstan/phpstan-strict-rules": "^1.4",
-                "phpunit/phpunit": "^10.1",
+                "phpunit/phpunit": "^10.5.17",
                 "predis/predis": "^1.1 || ^2",
                 "ruflin/elastica": "^7",
                 "symfony/mailer": "^5.4 || ^6",
@@ -4162,7 +4162,7 @@
             ],
             "support": {
                 "issues": "https://github.com/Seldaek/monolog/issues",
-                "source": "https://github.com/Seldaek/monolog/tree/3.5.0"
+                "source": "https://github.com/Seldaek/monolog/tree/3.6.0"
             },
             "funding": [
                 {
@@ -4174,7 +4174,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-10-27T15:32:31+00:00"
+            "time": "2024-04-12T21:02:21+00:00"
         },
         {
             "name": "mtdowling/jmespath.php",
@@ -6433,16 +6433,16 @@
         },
         {
             "name": "stancl/tenancy",
-            "version": "v3.8.0",
+            "version": "v3.8.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/archtechx/tenancy.git",
-                "reference": "72b1b48edde3c4cdc5899b565476778bac462955"
+                "reference": "4dab0c1870ef5731230e08cdfb5386bcfa502209"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/archtechx/tenancy/zipball/72b1b48edde3c4cdc5899b565476778bac462955",
-                "reference": "72b1b48edde3c4cdc5899b565476778bac462955",
+                "url": "https://api.github.com/repos/archtechx/tenancy/zipball/4dab0c1870ef5731230e08cdfb5386bcfa502209",
+                "reference": "4dab0c1870ef5731230e08cdfb5386bcfa502209",
                 "shasum": ""
             },
             "require": {
@@ -6500,7 +6500,7 @@
             ],
             "support": {
                 "issues": "https://github.com/archtechx/tenancy/issues",
-                "source": "https://github.com/archtechx/tenancy/tree/v3.8.0"
+                "source": "https://github.com/archtechx/tenancy/tree/v3.8.2"
             },
             "funding": [
                 {
@@ -6512,7 +6512,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-03-12T14:04:54+00:00"
+            "time": "2024-04-14T08:12:18+00:00"
         },
         {
             "name": "stancl/virtualcolumn",

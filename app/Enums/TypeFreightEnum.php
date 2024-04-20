@@ -5,16 +5,16 @@ namespace App\Enums;
 use Filament\Support\Contracts\HasLabel;
 use Filament\Support\Contracts\HasColor;
 
-enum TypeBranchEnum: string implements HasLabel, HasColor
+enum TypeFreightEnum: string implements HasLabel, HasColor
 {
-    case MATRIZ = 'Matriz';
-    case FILIAL = 'Filial';
+    case CIF = 'CIF';
+    case FOB = 'FOB';
 
     public function getLabel(): ?string
     {
         return match ($this) {
-            self::MATRIZ => 'Matriz',
-            self::FILIAL => 'Filial',
+            self::CIF => 'CIF',
+            self::FOB => 'FOB',
         };
     }
 
@@ -22,8 +22,9 @@ enum TypeBranchEnum: string implements HasLabel, HasColor
     public function getColor(): string | array | null
     {
         return match ($this) {
-            self::MATRIZ => 'primary',
-            self::FILIAL => 'secundary',
+            self::CIF => 'primary',
+            self::FOB => 'primary',
         };
     }
+
 }

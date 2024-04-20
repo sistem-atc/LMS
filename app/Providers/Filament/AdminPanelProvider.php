@@ -77,6 +77,7 @@ class AdminPanelProvider extends PanelProvider
             ->widgets([
             ])
             ->viteTheme('resources/css/filament/lms/theme.css')
+            ->font('Nunito')
             ->middleware($this->useMiddleware())
             ->authMiddleware([
                     Authenticate::class,

@@ -6,7 +6,7 @@
     "keywords": ["laravel", "framework"],
     "license": "MIT",
     "require": {
-        "php": "^8.0",
+        "php": "^8.2",
         "bezhansalleh/filament-shield": "^3.2",
         "codeat3/blade-carbon-icons": "^2.22",
         "filament/filament": "^3.2",

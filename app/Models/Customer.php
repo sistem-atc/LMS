@@ -14,37 +14,12 @@ class Customer extends Model
     use HasFactory;
     use SoftDeletes;
     protected $fillable = [
-        'cpf_or_cnpj',
-        'company_name',
-        'type_person',
-        'fantasy_name',
-        'postal_code',
-        'street',
-        'complement',
-        'number',
-        'district',
-        'city',
-        'state',
-        'ibge',
-        'gia',
-        'ddd',
-        'siafi',
-        'region',
-        'branche_id',
-        'nature_id',
-        'phone_number',
-        'cellphone',
-        'vendor_id',
-        'bank_standard_id',
-        'priority',
-        'risc',
-        'municipal_registration',
-        'state_registration',
-        'mail_operational',
-        'mail_financial',
-        'BaseEndpoint',
-        'Token',
-        'group_customer_id'
+        'cpf_or_cnpj', 'company_name', 'type_person', 'fantasy_name', 'postal_code', 'street',
+        'complement', 'number', 'district', 'city', 'state', 'ibge', 'gia', 'ddd', 'siafi',
+        'region', 'branche_id', 'nature_id', 'phone_number', 'cellphone', 'vendor_id',
+        'bank_standard_id', 'priority', 'risc', 'municipal_registration', 'state_registration',
+        'mail_operational', 'mail_financial', 'BaseEndpoint', 'Token', 'group_customer_id',
+
     ];
 
     public function bank_standard(): BelongsTo

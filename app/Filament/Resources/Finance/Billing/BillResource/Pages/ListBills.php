@@ -20,11 +20,9 @@ class ListBills extends ListRecords
     {
         return [
             Actions\CreateAction::make()
-                ->label('Faturamento Manual')
-                ->color('cyan'),
+                ->label('Faturamento Manual'),
             Actions\Action::make('BillingCSV')
                 ->label('Importar Fatura')
-                ->color('lime')
                 ->form([
                     Section::make('')
                         ->schema([
@@ -58,7 +56,6 @@ class ListBills extends ListRecords
                         ->body('The user has been created successfully.'),
                 ),
             Actions\Action::make('BillingSemiAutomatic')
-                ->color('emerald')
                 ->label('Semi-Automatico')
                 ->form([
                     Section::make('')

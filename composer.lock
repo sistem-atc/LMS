@@ -588,16 +588,16 @@
         },
         {
             "name": "codeat3/blade-carbon-icons",
-            "version": "2.22.0",
+            "version": "2.23.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/codeat3/blade-carbon-icons.git",
-                "reference": "52cab6e2528932cdf0c29d75ba15a4a8bc55228b"
+                "reference": "94e57c143be4f82f6d13e395d981e8da64623c1d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/codeat3/blade-carbon-icons/zipball/52cab6e2528932cdf0c29d75ba15a4a8bc55228b",
-                "reference": "52cab6e2528932cdf0c29d75ba15a4a8bc55228b",
+                "url": "https://api.github.com/repos/codeat3/blade-carbon-icons/zipball/94e57c143be4f82f6d13e395d981e8da64623c1d",
+                "reference": "94e57c143be4f82f6d13e395d981e8da64623c1d",
                 "shasum": ""
             },
             "require": {
@@ -648,7 +648,7 @@
             ],
             "support": {
                 "issues": "https://github.com/codeat3/blade-carbon-icons/issues",
-                "source": "https://github.com/codeat3/blade-carbon-icons/tree/2.22.0"
+                "source": "https://github.com/codeat3/blade-carbon-icons/tree/2.23.0"
             },
             "funding": [
                 {
@@ -656,7 +656,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-02-28T13:39:10+00:00"
+            "time": "2024-04-26T13:09:44+00:00"
         },
         {
             "name": "danharrin/date-format-converter",

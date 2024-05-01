@@ -3865,16 +3865,16 @@
         },
         {
             "name": "leandrocfe/filament-ptbr-form-fields",
-            "version": "3.0.6",
+            "version": "3.0.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/leandrocfe/filament-ptbr-form-fields.git",
-                "reference": "295f8a16b13d5218f21df4f77d980bc46c4c7840"
+                "reference": "244ba03aa2c22060ff7aaa2d5ea6053424f45ed4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/leandrocfe/filament-ptbr-form-fields/zipball/295f8a16b13d5218f21df4f77d980bc46c4c7840",
-                "reference": "295f8a16b13d5218f21df4f77d980bc46c4c7840",
+                "url": "https://api.github.com/repos/leandrocfe/filament-ptbr-form-fields/zipball/244ba03aa2c22060ff7aaa2d5ea6053424f45ed4",
+                "reference": "244ba03aa2c22060ff7aaa2d5ea6053424f45ed4",
                 "shasum": ""
             },
             "require": {
@@ -3933,9 +3933,9 @@
             ],
             "support": {
                 "issues": "https://github.com/leandrocfe/filament-ptbr-form-fields/issues",
-                "source": "https://github.com/leandrocfe/filament-ptbr-form-fields/tree/3.0.6"
+                "source": "https://github.com/leandrocfe/filament-ptbr-form-fields/tree/3.0.8"
             },
-            "time": "2024-03-25T12:42:32+00:00"
+            "time": "2024-04-22T20:59:35+00:00"
         },
         {
             "name": "livewire/livewire",

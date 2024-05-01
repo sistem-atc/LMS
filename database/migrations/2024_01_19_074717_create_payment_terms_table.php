@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('payment_terms', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->json('type_freight')->default('CIF');
+            $table->json('type_freight');
             $table->json('weekday')->nullable();
             $table->json('especific_date')->nullable();
-            $table->json('term')->nullable();
+            $table->string('term')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

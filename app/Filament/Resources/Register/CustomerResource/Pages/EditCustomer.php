@@ -27,7 +27,8 @@ class EditCustomer extends EditRecord
 
     protected function handleRecordUpdate(Model $record, array $data): Model
     {
-        $data['cnpj'] = str_replace('/', '', str_replace('-', '', str_replace('.', '', $data['cnpj'])));
+
+        $data['cpf_or_cnpj'] = str_replace('/', '', str_replace('-', '', str_replace('.', '', $data['cpf_or_cnpj'])));
 
         $record->update($data);
 

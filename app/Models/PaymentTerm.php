@@ -6,6 +6,7 @@ use App\Enums\TypeFreightEnum;
 use App\Enums\WeekdayEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class PaymentTerm extends Model
@@ -17,7 +18,13 @@ class PaymentTerm extends Model
     ];
 
     protected $casts = [
-        'weekday' => WeekdayEnum::class,
-        'type_freight' => TypeFreightEnum::class,
+        'weekday' => 'array',
+        'type_freight' => 'array',
+        'especific_date' => 'array',
     ];
+
+    public function Customer(): HasOne
+    {
+        return $this->hasOne(Customer::class);
+    }
 }

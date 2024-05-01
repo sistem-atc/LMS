@@ -139,11 +139,11 @@ class CustomerResource extends Resource
                                             ->searchable()
                                             ->preload()
                                             ->relationship('vendor', 'name'),
-                                        Select::make('bank_standard_id')
-                                                ->label('Banco Padrão')
+                                        Select::make('bank_id')
                                                 ->searchable()
                                                 ->preload()
-                                                ->relationship('bank_standard', 'nome_banco'),
+                                                ->relationship('bank', 'nome_banco')
+                                                ->label('Banco Padrão'),
                                         TextInput::make('priority')
                                             ->label('Prioridade'),
                                         Select::make('risc')
@@ -165,6 +165,11 @@ class CustomerResource extends Resource
                                             ->searchable()
                                             ->preload()
                                             ->relationship('group_customer', 'name'),
+                                        Select::make('payment_term_id')
+                                            ->label('Prazo de Pagamento')
+                                            ->searchable()
+                                            ->preload()
+                                            ->relationship('payment_term', 'name'),
                                     ])->columns(3),
                                 ]),
                             Tabs\Tab::make('MultiEmbarcador')

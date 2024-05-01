@@ -16,13 +16,13 @@ class Customer extends Model
     protected $fillable = [
         'cpf_or_cnpj', 'company_name', 'type_person', 'fantasy_name', 'postal_code', 'street',
         'complement', 'number', 'district', 'city', 'state', 'ibge', 'gia', 'ddd', 'siafi',
-        'region', 'branche_id', 'nature_id', 'phone_number', 'cellphone', 'vendor_id',
+        'region', 'branche_id', 'nature_id', 'phone_number', 'cellphone', 'vendor_id', 'payment_term',
         'bank_standard_id', 'priority', 'risc', 'municipal_registration', 'state_registration',
         'mail_operational', 'mail_financial', 'BaseEndpoint', 'Token', 'group_customer_id',
 
     ];
 
-    public function bank_standard(): BelongsTo
+    public function bank(): BelongsTo
     {
         return $this->BelongsTo(Bank::class);
     }
@@ -44,6 +44,11 @@ class Customer extends Model
     public function group_customer(): BelongsTo
     {
         return $this->BelongsTo(GroupCustomer::class);
+    }
+
+    public function payment_term(): BelongsTo
+    {
+        return $this->BelongsTo(PaymentTerm::class);
     }
 
     public function bill(): HasOne

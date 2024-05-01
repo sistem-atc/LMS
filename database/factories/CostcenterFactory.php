@@ -21,7 +21,6 @@ class CostcenterFactory extends Factory
             'classification' => 'Prioritario',
             'description' => fake()->text(30),
             'blocked' => fake()->boolean(),
-            'blocked_date' => '',
             'email_approver' => 'kleber.patti@logisticag2l.com.br',
         ];
     }

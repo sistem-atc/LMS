@@ -19,8 +19,8 @@ class RouteFactory extends Factory
         return [
             'name' => 'Rota ' . fake()->name(),
             'active' => fake()->boolean(),
-            'origin_branche_id' => fake()->numberBetween(1, 14),
-            'recipient_branche_id' => fake()->numberBetween(1, 14),
+            'origin_branch_id' => fake()->numberBetween(1, 14),
+            'recipient_branch_id' => fake()->numberBetween(1, 14),
             'municipal_route' => fake()->boolean(),
         ];
     }

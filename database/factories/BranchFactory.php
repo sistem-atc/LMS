@@ -19,9 +19,9 @@ class BranchFactory extends Factory
     public function definition(): array
     {
         return [
-            'abbreviation' => fake()->unique()->companySuffix(),
-            'name' => fake()->unique()->company(),
-            'cnpj' => fake()->unique()->numerify('##############'),
+            'abbreviation' => fake()->companySuffix(),
+            'name' => fake()->company(),
+            'cnpj' => fake()->numerify('##############'),
             'type_branch' => TypeBranchEnum::FILIAL,
             'municipal_registration' => fake()->numberBetween(10000, 99999),
             'state_registration' => fake()->numberBetween(1000000, 9999999999),

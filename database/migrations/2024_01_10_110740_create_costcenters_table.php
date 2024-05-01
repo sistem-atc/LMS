@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('costcenters', function (Blueprint $table) {
             $table->id();
-            $table->integer('cost_center');
+            $table->string('cost_center');
             $table->string('classification');
             $table->string('description');
             $table->boolean('blocked');

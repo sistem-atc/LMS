@@ -4,6 +4,7 @@ use App\Models\Bank;
 use App\Models\Branch;
 use App\Models\GroupCustomer;
 use App\Models\Nature;
+use App\Models\PaymentTerm;
 use App\Models\Vendor;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -40,6 +41,7 @@ return new class extends Migration
             $table->string('cellphone')->nullable();
             $table->foreignIdFor(Vendor::class)->nullable();
             $table->foreignIdFor(Bank::class)->nullable();
+            $table->foreignIdFor(PaymentTerm::class);
             $table->string('priority')->nullable();
             $table->string('risc')->nullable();
             $table->string('municipal_registration')->nullable();

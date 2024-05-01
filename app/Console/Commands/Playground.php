@@ -19,6 +19,13 @@ class Playground extends Command
         /*$Itau = new ItauService;
         $return = $Itau->ConsultarBoletos();
         dd($return);*/
+
+        /**
+         * Comandos para rodar apos fresh:seed
+         * php artisan shield:generate --all
+         * php artisan shield:super-admin --user=1
+         */
+
         return Command::SUCCESS;
     }
 }

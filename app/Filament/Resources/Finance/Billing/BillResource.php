@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Finance\Billing;
 use App\Models\Bill;
 use Filament\Tables;
 use Filament\Forms\Get;
+use Filament\Forms\Set;
 use Filament\Forms\Form;
 use App\Models\Situation;
 use Filament\Tables\Table;
@@ -22,6 +23,10 @@ use Filament\Forms\Components\CheckboxList;
 use Leandrocfe\FilamentPtbrFormFields\Money;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\Finance\Billing\BillResource\Pages;
+use App\Filament\Resources\Finance\Billing\BillResource\Pages\SuportFunctions;
+use Closure;
+
+use function PHPUnit\Framework\returnSelf;
 
 class BillResource extends Resource
 {
@@ -49,7 +54,14 @@ class BillResource extends Resource
                                     ->orWhere('company_name', 'like', "%{$search}%")
                                     ->limit(50)->pluck('name', 'id')->toArray()
                                 )
-                            ->live(),
+                            ->reactive()
+                            ->afterStateUpdated(
+                                function($state, Set $set){
+                                    if(blank($state)) return;
+                                    $duoDate = SuportFunctions::CalculateDuoDate($state);
+                                    $set('due_date', $duoDate);
+                                }
+                            ),
                         DatePicker::make('emission_date')
                             ->label('Data de Emissão')
                             ->default(date('d-m-Y H:i:s',strtotime(now()))),
@@ -62,7 +74,7 @@ class BillResource extends Resource
                             ->label('Situação')
                             ->searchable()
                             ->relationship('situation', 'name')
-                            ->options([json_decode(Situation::all()->pluck('name', 'id')->toJson(), true)]),
+                            ->options(json_decode(Situation::all()->pluck('name', 'id')->toJson(), true)),
                         ]),
                     Wizard\Step::make('Ctes a faturar')
                         ->schema([
@@ -151,8 +163,11 @@ class BillResource extends Resource
                             Select::make('receiving_type_id')
                                 ->label('Tipo de Recebimento')
                                 ->searchable()
+                                ->preload()
                                 ->relationship('receiving_type', 'name')
-                                ->options([ReceivingType::all()->pluck('name', 'id')]),
+                                ->options(
+                                    [ReceivingType::all()->pluck('name', 'id')
+                                ]),
                         ]),
                 ])->columnSpanFull(),
             ]);

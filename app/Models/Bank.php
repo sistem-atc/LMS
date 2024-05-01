@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Bank extends Model
 {
@@ -55,5 +56,10 @@ class Bank extends Model
     public function bill(): HasOne
     {
         return $this->hasOne(Bill::class);
+    }
+
+    public function customer(): HasMany
+    {
+        return $this->hasMany(Customer::class);
     }
 }

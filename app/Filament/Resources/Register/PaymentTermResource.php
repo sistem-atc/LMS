@@ -29,14 +29,18 @@ class PaymentTermResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('name'),
+                TextInput::make('name')
+                    ->label('Nome'),
                 Select::make('type_freight')
+                    ->label('Tipo de Frete')
                     ->multiple()
                     ->options(TypeFreightEnum::class),
                 Select::make('weekday')
+                    ->label('Dia da Semana')
                     ->multiple()
                     ->options(WeekdayEnum::class),
                 Select::make('especific_date')
+                    ->label('Dias Especificos')
                     ->multiple()
                     ->options(
                         function(): array{
@@ -48,7 +52,8 @@ class PaymentTermResource extends Resource
                             return $days;
                         }
                     ),
-                TextInput::make('term'),
+                TextInput::make('term')
+                    ->label('Prazo'),
             ]);
     }
 
@@ -56,9 +61,12 @@ class PaymentTermResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('name'),
-                TextColumn::make('type_freight'),
-                TextColumn::make('term'),
+                TextColumn::make('name')
+                    ->label('Nome'),
+                TextColumn::make('type_freight')
+                    ->label('Tipo de Frete'),
+                TextColumn::make('term')
+                    ->label('Prazo'),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),

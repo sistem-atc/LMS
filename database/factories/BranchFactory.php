@@ -18,9 +18,12 @@ class BranchFactory extends Factory
      */
     public function definition(): array
     {
+
+        $company = fake()->company();
+
         return [
-            'abbreviation' => fake()->companySuffix(),
-            'name' => fake()->company(),
+            'abbreviation' => explode(' ', $company)(0),
+            'name' => $company,
             'cnpj' => fake()->numerify('##############'),
             'type_branch' => TypeBranchEnum::FILIAL,
             'municipal_registration' => fake()->numberBetween(10000, 99999),

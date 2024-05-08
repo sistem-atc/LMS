@@ -24,6 +24,7 @@ use Leandrocfe\FilamentPtbrFormFields\Money;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\Finance\Billing\BillResource\Pages;
 use App\Filament\Resources\Finance\Billing\BillResource\Pages\SuportFunctions;
+use App\Models\Customer;
 use Closure;
 
 use function PHPUnit\Framework\returnSelf;
@@ -49,16 +50,17 @@ class BillResource extends Resource
                             ->getSearchResultsUsing(
                                 fn (string $search): array =>
                                     DB::table('customers')
-                                    ->select(DB::raw("concat(cpf_or_cnpj, ' ', company_name) as name, id"))
-                                    ->where('cpf_or_cnpj', 'like', "%{$search}%")
-                                    ->orWhere('company_name', 'like', "%{$search}%")
-                                    ->limit(50)->pluck('name', 'id')->toArray()
+                                        ->select(DB::raw("concat(cpf_or_cnpj, ' ', company_name) as name, id"))
+                                        ->where('cpf_or_cnpj', 'like', "%{$search}%")
+                                        ->orWhere('company_name', 'like', "%{$search}%")
+                                        ->limit(50)->pluck('name', 'id')->toArray()
                                 )
                             ->reactive()
                             ->afterStateUpdated(
-                                function($state, Set $set){
+                                function($state, Set $set, Get $get){
                                     if(blank($state)) return;
-                                    $duoDate = SuportFunctions::CalculateDuoDate($state);
+                                    $set('bank_id', Customer::where($get('customer_id'))->bank()->id);
+                                    $duoDate = SuportFunctions::CalculateDuoDate($state, $get);
                                     $set('due_date', $duoDate);
                                 }
                             ),
@@ -165,9 +167,7 @@ class BillResource extends Resource
                                 ->searchable()
                                 ->preload()
                                 ->relationship('receiving_type', 'name')
-                                ->options(
-                                    [ReceivingType::all()->pluck('name', 'id')
-                                ]),
+                                ->options(ReceivingType::all()->pluck('name', 'id')),
                         ]),
                 ])->columnSpanFull(),
             ]);

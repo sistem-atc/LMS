@@ -1,14 +1,12 @@
 <?php
 
-declare(strict_types=1);
-
-namespace App\Services\Banks\BanksGateway\Connector;
+namespace App\Services\Banks\Itau;
 
 use Illuminate\Support\Facades\Storage;
-use App\Services\Banks\BanksGateway\Contracts\AdapterInterface;
-use App\Services\Banks\BanksGateway\Connector\Itau\Concerns\ItauConfig;
+use App\Services\Banks\BanksGateway\Contracts\BanksInterface;
+use App\Services\Banks\Itau\Concerns\ItauConfig;
 
-class ItauConnector implements AdapterInterface
+class ItauService implements BanksInterface
 {
 
     use ItauConfig;

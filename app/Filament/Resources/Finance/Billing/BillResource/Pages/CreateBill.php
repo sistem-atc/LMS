@@ -2,10 +2,11 @@
 
 namespace App\Filament\Resources\Finance\Billing\BillResource\Pages;
 
+use App\Actions\SendBill;
 use App\Models\Cte;
-use App\Filament\Resources\Finance\Billing\BillResource;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\CreateRecord;
+use App\Filament\Resources\Finance\Billing\BillResource;
 
 class CreateBill extends CreateRecord
 {
@@ -16,27 +17,17 @@ class CreateBill extends CreateRecord
         return $this->getResource()::getUrl('index');
     }
 
-    /*protected function mutateFormDataBeforeCreate(array $data): array
-    {
-
-        Bill::create($data);
-        return $data;
-
-    }*/
-
     protected function afterCreate(): void
     {
         $order = $this->record;
-
         Cte::wherein('debtor_customer_id', $order->cte_id)->update(['bill' => $order->id]);
-
+        SendBill::execute($order);
         Notification::make()
             ->title('Fatura criada com sucesso')
             ->success()
             ->body("Numero da fatura $order->id.")
             ->persistent()
             ->send();
-
 
     }
 

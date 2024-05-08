@@ -2,11 +2,6 @@
 
 namespace App\Services\Banks\Itau\Concerns;
 
-use App\Models\Bank;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Http;
-use App\Services\Banks\Itau\Facades\ItauToken;
-
 trait ItauClient
 {
 

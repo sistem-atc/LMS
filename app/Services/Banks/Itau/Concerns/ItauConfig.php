@@ -1,12 +1,9 @@
 <?php
 
-declare(strict_types=1);
-
-namespace App\Services\Banks\BanksGateway\Connector\Itau\Concerns;
+namespace App\Services\Banks\Itau\Concerns;
 
 use App\Models\Bank;
 use App\Services\Banks\Itau\Endpoints\GetTokenItau;
-use Filament\Forms\Components\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Support\Facades\Http;

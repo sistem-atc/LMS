@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Finance\Billing\BillResource\Pages;
 
 use App\Models\Customer;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Storage;
 
@@ -44,10 +45,13 @@ class SuportFunctions
         dd($data);
     }
 
-    public static function CalculateDuoDate($state): Date
+    public static function CalculateDuoDate($state, $get): string
     {
         $payment = Customer::find($state);
-        dd($payment->payment_term);
+        $currentDate = Carbon::createFromFormat('Y-m-d', $get('emission_date'));
+        $newDate = $currentDate->addDay((int) $payment->payment_term->term);
+
+        //Fazer a regra de calculo da data de vencimento correta
 
         /**
         *"id" => 1
@@ -59,7 +63,36 @@ class SuportFunctions
         *"created_at" => "2024-04-20 13:15:49"
         *"updated_at" => "2024-04-20 13:15:49"
         *"deleted_at" => null
+        *
+        * GET
+         *+data: array:23 [▼
+          *"customer_id" => "1"
+          *"emission_date" => "2024-05-08"
+          *"due_date" => null
+          *"historic" => null
+          *"situation_id" => null
+          *"cte_id" => []
+          *"nature_id" => null
+          *"bank_id" => null
+          *"total_value" => "0,00"
+          *"discount_value" => "0,00"
+          *"liquid_value" => "0,00"
+          *"irrf_base" => "0,00"
+          *"irrf_tax" => null
+          *"irrf_value" => "0,00"
+          *"iss_base" => "0,00"
+          *"iss_tax" => null
+          *"iss_value" => "0,00"
+          *"fine" => "0,00"
+          *"interests" => "0,00"
+          *"boleto_number" => null
+          *"barr_code" => null
+          *"writeoff_date" => null
+          *"receiving_type_id" => null
          */
+
+        return date('d-m-Y', strtotime($newDate));
+
     }
 
 }

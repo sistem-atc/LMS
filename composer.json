@@ -17,6 +17,7 @@
         "laravel/tinker": "^2.9",
         "league/flysystem-aws-s3-v3": "^3.26",
         "leandrocfe/filament-ptbr-form-fields": "^3.0",
+        "mokhosh/filament-kanban": "*",
         "nfephp-org/sped-cte": "^5.0",
         "nfephp-org/sped-nfe": "^5.1",
         "rupadana/filament-api-service": "^3.1",

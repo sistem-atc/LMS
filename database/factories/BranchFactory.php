@@ -22,7 +22,7 @@ class BranchFactory extends Factory
         $company = fake()->company();
 
         return [
-            'abbreviation' => explode(' ', $company)(0),
+            'abbreviation' => 'MTZ',
             'name' => $company,
             'cnpj' => fake()->numerify('##############'),
             'type_branch' => TypeBranchEnum::FILIAL,

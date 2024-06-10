@@ -29,7 +29,6 @@ class AdminPanelProvider extends PanelProvider
     public function panel(Panel $panel): Panel
     {
         return $panel
-            //->topNavigation()
             ->default()
             ->brandName('LMS')
             ->brandLogo(asset('images/W-LogoLMS.png'))

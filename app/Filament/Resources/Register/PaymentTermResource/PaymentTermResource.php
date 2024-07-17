@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources\Register;
+namespace App\Filament\Resources\Register\PaymentTermResource;
 
 use App\Enums\TypeFreightEnum;
 use App\Enums\WeekdayEnum;

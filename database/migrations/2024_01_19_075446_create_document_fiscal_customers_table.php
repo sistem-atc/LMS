@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\CodeUf;
 use App\Models\Customer;
 use App\Models\Lot;
 use Illuminate\Database\Migrations\Migration;
@@ -15,9 +16,7 @@ return new class extends Migration
     {
         Schema::create('document_fiscal_customers', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Lot::class);
-            $table->string('cUF')->nullable();
-            $table->string('cNF')->nullable();
+            $table->foreignIdFor(CodeUf::class, 'cUF_id')->nullable();
             $table->string('mod')->nullable();
             $table->string('serie')->nullable();
             $table->string('nNF')->nullable();

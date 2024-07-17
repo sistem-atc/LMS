@@ -3,6 +3,13 @@
 namespace App\Models;
 
 use App\Models\Bank;
+use App\Models\Bill;
+use App\Models\Branch;
+use App\Models\Nature;
+use App\Models\Vendor;
+use App\Models\PaymentTerm;
+use App\Models\GroupCustomer;
+use App\Models\DocumentFiscalCustomer;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -54,5 +61,10 @@ class Customer extends Model
     public function bill(): HasOne
     {
         return $this->hasOne(Bill::class);
+    }
+
+    public function document_fiscal_customer(): BelongsTo
+    {
+        return $this->BelongsTo(DocumentFiscalCustomer::class);
     }
 }

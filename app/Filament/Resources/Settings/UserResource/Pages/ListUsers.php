@@ -2,7 +2,7 @@
 
 namespace App\Filament\Resources\Settings\UserResource\Pages;
 
-use App\Filament\Resources\Settings\UserResource;
+use App\Filament\Resources\Settings\UserResource\UserResource;
 use Filament\Resources\Pages\ListRecords;
 
 class ListUsers extends ListRecords

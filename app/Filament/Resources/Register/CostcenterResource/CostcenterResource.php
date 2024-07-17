@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources\Register;
+namespace App\Filament\Resources\Register\CostcenterResource;
 
 use Filament\Tables;
 use Filament\Forms\Form;

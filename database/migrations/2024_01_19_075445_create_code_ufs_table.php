@@ -11,14 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('lots', function (Blueprint $table) {
+        Schema::create('code_ufs', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('origin_branche_id');
-            $table->foreign('origin_branche_id')->references('id')->on('branches');
-            $table->integer('collection_request')->nullable();
-            $table->string('status');
-            $table->integer('quotation')->nullable();
-            $table->string('key_doct_fiscal')->nullable();
+            $table->integer('code_uf');
+            $table->string('federation_unit');
+            $table->string('uf');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -29,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('lots');
+        Schema::dropIfExists('code_ufs');
     }
 };

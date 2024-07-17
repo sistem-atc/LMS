@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources\Register;
+namespace App\Filament\Resources\Register\ReceivingTypeResource;
 
 use App\Filament\Resources\Register\ReceivingTypeResource\Pages;
 use App\Models\ReceivingType;

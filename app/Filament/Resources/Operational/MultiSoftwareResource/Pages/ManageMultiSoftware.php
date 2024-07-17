@@ -2,7 +2,7 @@
 
 namespace App\Filament\Resources\Operational\MultiSoftwareResource\Pages;
 
-use App\Filament\Resources\Operational\MultiSoftwareResource;
+use App\Filament\Resources\Operational\MultiSoftwareResource\MultiSoftwareResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ManageRecords;
 

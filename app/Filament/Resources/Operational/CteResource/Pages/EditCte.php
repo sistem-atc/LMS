@@ -2,7 +2,7 @@
 
 namespace App\Filament\Resources\Operational\CteResource\Pages;
 
-use App\Filament\Resources\Operational\CteResource;
+use App\Filament\Resources\Operational\CteResource\CteResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources\Settings;
+namespace App\Filament\Resources\Settings\BranchResource;
 
 use App\Enums\TypeBranchEnum;
 use App\Models\Branch;

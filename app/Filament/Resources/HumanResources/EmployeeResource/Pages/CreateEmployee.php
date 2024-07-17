@@ -2,7 +2,7 @@
 
 namespace App\Filament\Resources\HumanResources\EmployeeResource\Pages;
 
-use App\Filament\Resources\HumanResources\EmployeeResource;
+use App\Filament\Resources\HumanResources\EmployeeResource\EmployeeResource;
 use App\Models\User;
 use Filament\Resources\Pages\CreateRecord;
 

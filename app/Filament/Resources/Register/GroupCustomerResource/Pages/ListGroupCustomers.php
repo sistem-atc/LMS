@@ -2,7 +2,7 @@
 
 namespace App\Filament\Resources\Register\GroupCustomerResource\Pages;
 
-use App\Filament\Resources\Register\GroupCustomerResource;
+use App\Filament\Resources\Register\GroupCustomerResource\GroupCustomerResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 

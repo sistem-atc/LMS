@@ -1,35 +1,40 @@
 <?php
 
-namespace App\Filament\Resources\Register;
+namespace App\Filament\Resources\Register\CodeUfResource;
 
-use App\Filament\Resources\Register\GroupCustomerResource\Pages;
-use App\Models\GroupCustomer;
-use Filament\Forms\Components\Section;
-use Filament\Forms\Components\TextInput;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
+use Filament\Forms;
 use Filament\Tables;
-use Filament\Tables\Columns\TextColumn;
+use App\Models\CodeUf;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use Filament\Resources\Resource;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Forms\Components\TextInput;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\Register\CodeUfResource\Pages;
 
-class GroupCustomerResource extends Resource
+class CodeUfResource extends Resource
 {
-    protected static ?string $model = GroupCustomer::class;
-    protected static ?string $navigationIcon = 'heroicon-o-user-group';
+    protected static ?string $model = CodeUf::class;
+
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $navigationGroup = 'Cadastros';
-    protected static ?string $navigationLabel = 'Grupo Clientes';
+    protected static ?string $navigationLabel = 'Codigo UF';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Section::make('')
-                    ->schema([
-                        TextInput::make('name')->label('Nome'),
-                        TextInput::make('description')->label('Descrição'),
-                    ])->columns(2),
+                TextInput::make('code_uf')
+                    ->label('Código da UF')
+                    ->maxLength(2)
+                    ->numeric(),
+                TextInput::make('federation_unit')
+                    ->label('Unidade Federativa'),
+                TextInput::make('uf')
+                    ->label('UF')
+                    ->maxLength(2),
             ]);
     }
 
@@ -37,8 +42,12 @@ class GroupCustomerResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('name')->label('Nome'),
-                TextColumn::make('description')->label('Descrição'),
+                TextColumn::make('code_uf')
+                    ->label('Código da UF'),
+                TextColumn::make('federation_unit')
+                    ->label('Unidade Federativa'),
+                TextColumn::make('uf')
+                    ->label('UF'),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
@@ -65,9 +74,9 @@ class GroupCustomerResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListGroupCustomers::route('/'),
-            'create' => Pages\CreateGroupCustomer::route('/create'),
-            'edit' => Pages\EditGroupCustomer::route('/{record}/edit'),
+            'index' => Pages\ListCodeUfs::route('/'),
+            'create' => Pages\CreateCodeUf::route('/create'),
+            'edit' => Pages\EditCodeUf::route('/{record}/edit'),
         ];
     }
 

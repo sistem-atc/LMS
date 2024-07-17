@@ -2,7 +2,7 @@
 
 namespace App\Filament\Resources\Settings\BranchResource\Pages;
 
-use App\Filament\Resources\Settings\BranchResource;
+use App\Filament\Resources\Settings\BranchResource\BranchResource;
 use Filament\Resources\Pages\CreateRecord;
 
 class CreateBranch extends CreateRecord

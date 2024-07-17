@@ -2,7 +2,7 @@
 
 namespace App\Filament\Resources\Register\GroupCustomerResource\Pages;
 
-use App\Filament\Resources\Register\GroupCustomerResource;
+use App\Filament\Resources\Register\GroupCustomerResource\GroupCustomerResource;
 use Filament\Resources\Pages\CreateRecord;
 
 class CreateGroupCustomer extends CreateRecord

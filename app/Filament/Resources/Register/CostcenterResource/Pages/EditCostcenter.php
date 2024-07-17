@@ -2,7 +2,7 @@
 
 namespace App\Filament\Resources\Register\CostcenterResource\Pages;
 
-use App\Filament\Resources\Register\CostcenterResource;
+use App\Filament\Resources\Register\CostcenterResource\CostcenterResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 

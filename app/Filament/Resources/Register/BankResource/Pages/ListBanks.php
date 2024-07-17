@@ -2,7 +2,7 @@
 
 namespace App\Filament\Resources\Register\BankResource\Pages;
 
-use App\Filament\Resources\Register\BankResource;
+use App\Filament\Resources\Register\BankResource\BankResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 

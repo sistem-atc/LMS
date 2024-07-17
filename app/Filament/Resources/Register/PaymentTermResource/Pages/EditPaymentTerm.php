@@ -2,7 +2,7 @@
 
 namespace App\Filament\Resources\Register\PaymentTermResource\Pages;
 
-use App\Filament\Resources\Register\PaymentTermResource;
+use App\Filament\Resources\Register\PaymentTermResource\PaymentTermResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 

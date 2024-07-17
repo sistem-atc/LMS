@@ -2,7 +2,7 @@
 
 namespace App\Filament\Resources\Operational\LotResource\Pages;
 
-use App\Filament\Resources\Operational\LotResource;
+use App\Filament\Resources\Operational\LotResource\LotResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 

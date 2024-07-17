@@ -2,7 +2,7 @@
 
 namespace App\Filament\Resources\Register\RouteResource\Pages;
 
-use App\Filament\Resources\Register\RouteResource;
+use App\Filament\Resources\Register\RouteResource\RouteResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 

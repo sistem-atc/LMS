@@ -1,48 +1,52 @@
 <?php
 
-namespace App\Filament\Resources\Register;
+namespace App\Filament\Resources\Operational\MultiSoftwareResource;
 
-use App\Filament\Resources\Register\NatureResource\Pages;
-use App\Models\Nature;
-use Filament\Forms\Components\Section;
-use Filament\Forms\Components\TextInput;
+use App\Filament\Resources\Operational\MultiSoftwareResource\Pages;
+use App\Models\MultiSoftware;
+use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
-use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class NatureResource extends Resource
+class MultiSoftwareResource extends Resource
 {
-    protected static ?string $model = Nature::class;
-    protected static ?string $navigationIcon = 'heroicon-o-presentation-chart-bar';
-    protected static ?string $navigationGroup = 'Cadastros';
-    protected static ?string $navigationLabel = 'Naturezas';
+    protected static ?string $model = MultiSoftware::class;
+
+    protected static ?string $navigationIcon = 'heroicon-o-rss';
+
+    protected static ?string $navigationGroup = 'Operacional';
+    protected static ?string $navigationLabel = 'Multi Cte';
 
     public static function form(Form $form): Form
     {
         return $form
-            ->schema([
-                Section::make('')
-                    ->schema([
-                        TextInput::make('name')->label('Nome'),
-                    ])->columns(2),
-            ]);
+        ->schema([
+            Forms\Components\TextInput::make('Filial Origem')->required(),
+            Forms\Components\TextInput::make('Numero Documento')->required(),
+            Forms\Components\TextInput::make('Serie')->required(),
+        ]);
     }
 
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
-                TextColumn::make('name')->label('Nome'),
+                Tables\Columns\TextColumn::make('Filial Origem'),
+                Tables\Columns\TextColumn::make('Numero Documento'),
+                Tables\Columns\TextColumn::make('Serie'),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\ForceDeleteAction::make(),
+                Tables\Actions\RestoreAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -53,19 +57,10 @@ class NatureResource extends Resource
             ]);
     }
 
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
-    }
-
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListNatures::route('/'),
-            'create' => Pages\CreateNature::route('/create'),
-            'edit' => Pages\EditNature::route('/{record}/edit'),
+            'index' => Pages\ManageMultiSoftware::route('/'),
         ];
     }
 

@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Filament\Resources\Settings\UserResource\Pages;
+namespace App\Filament\Resources\Register\CodeUfResource\Pages;
 
-use App\Filament\Resources\Settings\UserResource\UserResource;
+use App\Filament\Resources\Register\CodeUfResource\CodeUfResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 
-class EditUser extends EditRecord
+class EditCodeUf extends EditRecord
 {
-    protected static string $resource = UserResource::class;
+    protected static string $resource = CodeUfResource::class;
 
     protected function getHeaderActions(): array
     {

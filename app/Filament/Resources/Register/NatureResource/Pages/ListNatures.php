@@ -2,7 +2,7 @@
 
 namespace App\Filament\Resources\Register\NatureResource\Pages;
 
-use App\Filament\Resources\Register\NatureResource;
+use App\Filament\Resources\Register\NatureResource\NatureResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 

@@ -25,6 +25,6 @@ class DatabaseSeeder extends Seeder
         $this->call(SituationSeeder::class);
         $this->call(PaymentTermSeeder::class);
         $this->call(CustomerSeeder::class);
-        //$this->call(CteSeeder::class);
+        $this->call(CodeUfSeeder::class);
     }
 }

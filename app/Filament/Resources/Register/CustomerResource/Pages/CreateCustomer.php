@@ -2,7 +2,7 @@
 
 namespace App\Filament\Resources\Register\CustomerResource\Pages;
 
-use App\Filament\Resources\Register\CustomerResource;
+use App\Filament\Resources\Register\CustomerResource\CustomerResource;
 use Filament\Resources\Pages\CreateRecord;
 
 class CreateCustomer extends CreateRecord

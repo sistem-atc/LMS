@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources\Register;
+namespace App\Filament\Resources\Register\BankResource;
 
 use App\Models\Bank;
 use Filament\Tables;

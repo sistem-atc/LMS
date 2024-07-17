@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources\Register;
+namespace App\Filament\Resources\Register\CustomerResource;
 
 use Filament\Tables;
 use Filament\Forms\Get;

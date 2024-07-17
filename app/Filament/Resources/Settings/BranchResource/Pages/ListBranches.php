@@ -4,7 +4,7 @@ namespace App\Filament\Resources\Settings\BranchResource\Pages;
 
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
-use App\Filament\Resources\Settings\BranchResource;
+use App\Filament\Resources\Settings\BranchResource\BranchResource;
 
 class ListBranches extends ListRecords
 {

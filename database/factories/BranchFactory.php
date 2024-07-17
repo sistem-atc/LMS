@@ -20,9 +20,11 @@ class BranchFactory extends Factory
     {
 
         $company = fake()->company();
+        $siglas = ['MTZ', 'RIO', 'SAO'];
+
 
         return [
-            'abbreviation' => 'MTZ',
+            'abbreviation' => Str::upper($siglas[array_rand($siglas)]),
             'name' => $company,
             'cnpj' => fake()->numerify('##############'),
             'type_branch' => TypeBranchEnum::FILIAL,

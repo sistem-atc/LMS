@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources\Operational;
+namespace App\Filament\Resources\Operational\LotResource;
 
 use App\Models\Lot;
 use Filament\Tables;
@@ -115,7 +115,7 @@ class LotResource extends Resource
                     ->accessSelectedRecords()
                     ->icon('heroicon-m-arrow-path')
                     ->action(function (Model $record) {
-                        LotResource\Pages\SuportFunctions::generate($record);
+                        Pages\SuportFunctions::generate($record);
                     }),
                 Tables\Actions\EditAction::make(),
             ])

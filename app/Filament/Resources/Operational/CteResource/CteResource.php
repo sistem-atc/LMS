@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources\Operational;
+namespace App\Filament\Resources\Operational\CteResource;
 
 use App\Models\Cte;
 use Filament\Tables;

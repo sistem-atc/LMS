@@ -2,7 +2,7 @@
 
 namespace App\Filament\Resources\Settings\SituationResource\Pages;
 
-use App\Filament\Resources\Settings\SituationResource;
+use App\Filament\Resources\Settings\SituationResource\SituationResource;
 use Filament\Actions;
 use Filament\Resources\Pages\CreateRecord;
 

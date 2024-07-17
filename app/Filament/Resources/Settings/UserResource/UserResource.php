@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources\Settings;
+namespace App\Filament\Resources\Settings\UserResource;
 
 use App\Models\User;
 use Filament\Tables;

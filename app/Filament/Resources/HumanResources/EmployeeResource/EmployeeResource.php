@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources\HumanResources;
+namespace App\Filament\Resources\HumanResources\EmployeeResource;
 
 use Closure;
 use Filament\Tables;

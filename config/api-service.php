@@ -10,11 +10,11 @@ return [
     ],
     'models' => [
         'token' => [
-            'enable_policy' => true,
+            'enable_policy' => false,
         ],
     ],
     'route' => [
-        'panel_prefix' => true,
+        'panel_prefix' => false,
         'use_resource_middlewares' => false,
     ],
     'tenancy' => [

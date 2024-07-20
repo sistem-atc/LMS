@@ -37,7 +37,7 @@ class AlterBranch extends Page implements HasForms
     public function mount(): void{
         $this->form->fill([
             'branch_logged_id' => auth()->user()->branch_logged->id,
-            'DateBase' => session()->get('DateBase'),
+            'DateBase' => session(null)->get('DateBase'),
         ]);
     }
 
@@ -99,15 +99,19 @@ class AlterBranch extends Page implements HasForms
         try {
             $data = $this->form->getState();
             User::where('id', Filament::auth()->user()->id)->update(['branch_logged_id' => $data['branch_logged_id'],]);
-            session()->put('DateBase', $data['DateBase']);
+            session(null)->put('DateBase', $data['DateBase']);
 
             Notification::make()
                 ->success()
+                ->color('success')
+                ->duration(3000)
                 ->title('Dados Alterados com sucesso!')
                 ->send();
         } catch (Halt $exception) {
             Notification::make()
                 ->warning()
+                ->color('warning')
+                ->duration(3000)
                 ->title('Erro ao alterar Filial')
                 ->body($exception)
                 ->send();

@@ -15,7 +15,7 @@ class VendorPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('view_any_register::vendor');
+        return $user->can('view_any_register::vendor::vendor');
     }
 
     /**
@@ -23,7 +23,7 @@ class VendorPolicy
      */
     public function view(User $user, Vendor $vendor): bool
     {
-        return $user->can('view_register::vendor');
+        return $user->can('view_register::vendor::vendor');
     }
 
     /**
@@ -31,7 +31,7 @@ class VendorPolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('create_register::vendor');
+        return $user->can('create_register::vendor::vendor');
     }
 
     /**
@@ -39,7 +39,7 @@ class VendorPolicy
      */
     public function update(User $user, Vendor $vendor): bool
     {
-        return $user->can('update_register::vendor');
+        return $user->can('update_register::vendor::vendor');
     }
 
     /**
@@ -47,7 +47,7 @@ class VendorPolicy
      */
     public function delete(User $user, Vendor $vendor): bool
     {
-        return $user->can('delete_register::vendor');
+        return $user->can('delete_register::vendor::vendor');
     }
 
     /**
@@ -55,7 +55,7 @@ class VendorPolicy
      */
     public function deleteAny(User $user): bool
     {
-        return $user->can('delete_any_register::vendor');
+        return $user->can('delete_any_register::vendor::vendor');
     }
 
     /**
@@ -63,7 +63,7 @@ class VendorPolicy
      */
     public function forceDelete(User $user, Vendor $vendor): bool
     {
-        return $user->can('force_delete_register::vendor');
+        return $user->can('force_delete_register::vendor::vendor');
     }
 
     /**
@@ -71,7 +71,7 @@ class VendorPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_register::vendor');
+        return $user->can('force_delete_any_register::vendor::vendor');
     }
 
     /**
@@ -79,7 +79,7 @@ class VendorPolicy
      */
     public function restore(User $user, Vendor $vendor): bool
     {
-        return $user->can('restore_register::vendor');
+        return $user->can('restore_register::vendor::vendor');
     }
 
     /**
@@ -87,7 +87,7 @@ class VendorPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('restore_any_register::vendor');
+        return $user->can('restore_any_register::vendor::vendor');
     }
 
     /**
@@ -95,7 +95,7 @@ class VendorPolicy
      */
     public function replicate(User $user, Vendor $vendor): bool
     {
-        return $user->can('replicate_register::vendor');
+        return $user->can('replicate_register::vendor::vendor');
     }
 
     /**
@@ -103,6 +103,6 @@ class VendorPolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('reorder_register::vendor');
+        return $user->can('reorder_register::vendor::vendor');
     }
 }

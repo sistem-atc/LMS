@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class DocumentFiscalCustomer extends Model
 {
@@ -16,7 +17,7 @@ class DocumentFiscalCustomer extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'cUF', 'mod', 'serie', 'nNF', 'dEmi', 'sender_customer_id', 'recipient_customer_id', 'vBC',
+        'cUF_id', 'mod', 'serie', 'nNF', 'dEmi', 'sender_customer_id', 'recipient_customer_id', 'vBC',
         'vICMS', 'vBCST', 'vST', 'vProd', 'vFrete', 'vSeg', 'vDesc', 'vIPI', 'vPIS', 'vCOFINS',
         'vOutro', 'vNF', 'modFrete', 'qVol', 'pesoL', 'pesoB', 'infAdic', 'chNFe',
     ];
@@ -29,11 +30,6 @@ class DocumentFiscalCustomer extends Model
     public function recipient_customer(): BelongsTo
     {
         return $this->BelongsTo(Customer::class);
-    }
-
-    public function cUF(): BelongsTo
-    {
-        return $this->BelongsTo(CodeUf::class);
     }
 
 }

@@ -16,7 +16,7 @@ return new class extends Migration
     {
         Schema::create('document_fiscal_customers', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(CodeUf::class, 'cUF_id')->nullable();
+            $table->foreignIdFor(CodeUf::class, 'cUF_id');
             $table->string('mod')->nullable();
             $table->string('serie')->nullable();
             $table->string('nNF')->nullable();
@@ -41,7 +41,7 @@ return new class extends Migration
             $table->string('pesoL')->nullable();
             $table->string('pesoB')->nullable();
             $table->longText('infAdic')->nullable();
-            $table->string('chNFe')->nullable();
+            $table->string('chNFe')->unique();
             $table->timestamps();
             $table->softDeletes();
         });

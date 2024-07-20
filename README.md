@@ -1,9 +1,19 @@
-Configuração do MySQL => max_allowed_packet=500M
-
 @TODO
     Employees =>
-        Alterar funcionario está atribuindo a politica incorreta no funcionar (panel user)
-        Validar a criação do e-mail, está usando todos os nomes
+        Refatorar Quando um empregado é desabilitado tem que desativar o usuario
+        quando ele é excluido tem que excluir o usuario
+        
+    Token =>
+        criação de token está quebrando a pagina pois não está conseguindo retornar o array de usuarios
+
+@WIP
+    Notas Fiscais dos clientes =>
+        Incluir o usuario de inclusão quando manual (Criar no Banco de Dados a relação)
+        Terminar de construir a API
+        Incluir o usuario quando importar XML
+        Começar a importação de NOTFIS
+        Abstrair as classes para usar os mesmos metodos para rotina manual e automatica
+
 
 php artisan shield:generate --all
 php artisan shield:super-admin --user=1

@@ -15,7 +15,7 @@ class DocumentFiscalCustomerPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('view_any_operational::document::fiscal::customer');
+        return $user->can('view_any_operational::document::fiscal::customer::document::fiscal::customer');
     }
 
     /**
@@ -23,7 +23,7 @@ class DocumentFiscalCustomerPolicy
      */
     public function view(User $user, DocumentFiscalCustomer $documentFiscalCustomer): bool
     {
-        return $user->can('view_operational::document::fiscal::customer');
+        return $user->can('view_operational::document::fiscal::customer::document::fiscal::customer');
     }
 
     /**
@@ -31,7 +31,7 @@ class DocumentFiscalCustomerPolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('create_operational::document::fiscal::customer');
+        return $user->can('create_operational::document::fiscal::customer::document::fiscal::customer');
     }
 
     /**
@@ -39,7 +39,7 @@ class DocumentFiscalCustomerPolicy
      */
     public function update(User $user, DocumentFiscalCustomer $documentFiscalCustomer): bool
     {
-        return $user->can('update_operational::document::fiscal::customer');
+        return $user->can('update_operational::document::fiscal::customer::document::fiscal::customer');
     }
 
     /**
@@ -47,7 +47,7 @@ class DocumentFiscalCustomerPolicy
      */
     public function delete(User $user, DocumentFiscalCustomer $documentFiscalCustomer): bool
     {
-        return $user->can('delete_operational::document::fiscal::customer');
+        return $user->can('delete_operational::document::fiscal::customer::document::fiscal::customer');
     }
 
     /**
@@ -55,7 +55,7 @@ class DocumentFiscalCustomerPolicy
      */
     public function deleteAny(User $user): bool
     {
-        return $user->can('delete_any_operational::document::fiscal::customer');
+        return $user->can('delete_any_operational::document::fiscal::customer::document::fiscal::customer');
     }
 
     /**
@@ -63,7 +63,7 @@ class DocumentFiscalCustomerPolicy
      */
     public function forceDelete(User $user, DocumentFiscalCustomer $documentFiscalCustomer): bool
     {
-        return $user->can('force_delete_operational::document::fiscal::customer');
+        return $user->can('force_delete_operational::document::fiscal::customer::document::fiscal::customer');
     }
 
     /**
@@ -71,7 +71,7 @@ class DocumentFiscalCustomerPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_operational::document::fiscal::customer');
+        return $user->can('force_delete_any_operational::document::fiscal::customer::document::fiscal::customer');
     }
 
     /**
@@ -79,7 +79,7 @@ class DocumentFiscalCustomerPolicy
      */
     public function restore(User $user, DocumentFiscalCustomer $documentFiscalCustomer): bool
     {
-        return $user->can('restore_operational::document::fiscal::customer');
+        return $user->can('restore_operational::document::fiscal::customer::document::fiscal::customer');
     }
 
     /**
@@ -87,7 +87,7 @@ class DocumentFiscalCustomerPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('restore_any_operational::document::fiscal::customer');
+        return $user->can('restore_any_operational::document::fiscal::customer::document::fiscal::customer');
     }
 
     /**
@@ -95,7 +95,7 @@ class DocumentFiscalCustomerPolicy
      */
     public function replicate(User $user, DocumentFiscalCustomer $documentFiscalCustomer): bool
     {
-        return $user->can('replicate_operational::document::fiscal::customer');
+        return $user->can('replicate_operational::document::fiscal::customer::document::fiscal::customer');
     }
 
     /**
@@ -103,6 +103,6 @@ class DocumentFiscalCustomerPolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('reorder_operational::document::fiscal::customer');
+        return $user->can('reorder_operational::document::fiscal::customer::document::fiscal::customer');
     }
 }

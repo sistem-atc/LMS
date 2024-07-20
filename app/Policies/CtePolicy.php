@@ -15,7 +15,7 @@ class CtePolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('view_any_operational::cte');
+        return $user->can('view_any_operational::cte::cte');
     }
 
     /**
@@ -23,7 +23,7 @@ class CtePolicy
      */
     public function view(User $user, Cte $cte): bool
     {
-        return $user->can('view_operational::cte');
+        return $user->can('view_operational::cte::cte');
     }
 
     /**
@@ -31,7 +31,7 @@ class CtePolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('create_operational::cte');
+        return $user->can('create_operational::cte::cte');
     }
 
     /**
@@ -39,7 +39,7 @@ class CtePolicy
      */
     public function update(User $user, Cte $cte): bool
     {
-        return $user->can('update_operational::cte');
+        return $user->can('update_operational::cte::cte');
     }
 
     /**
@@ -47,7 +47,7 @@ class CtePolicy
      */
     public function delete(User $user, Cte $cte): bool
     {
-        return $user->can('delete_operational::cte');
+        return $user->can('delete_operational::cte::cte');
     }
 
     /**
@@ -55,7 +55,7 @@ class CtePolicy
      */
     public function deleteAny(User $user): bool
     {
-        return $user->can('delete_any_operational::cte');
+        return $user->can('delete_any_operational::cte::cte');
     }
 
     /**
@@ -63,7 +63,7 @@ class CtePolicy
      */
     public function forceDelete(User $user, Cte $cte): bool
     {
-        return $user->can('force_delete_operational::cte');
+        return $user->can('force_delete_operational::cte::cte');
     }
 
     /**
@@ -71,7 +71,7 @@ class CtePolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_operational::cte');
+        return $user->can('force_delete_any_operational::cte::cte');
     }
 
     /**
@@ -79,7 +79,7 @@ class CtePolicy
      */
     public function restore(User $user, Cte $cte): bool
     {
-        return $user->can('restore_operational::cte');
+        return $user->can('restore_operational::cte::cte');
     }
 
     /**
@@ -87,7 +87,7 @@ class CtePolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('restore_any_operational::cte');
+        return $user->can('restore_any_operational::cte::cte');
     }
 
     /**
@@ -95,7 +95,7 @@ class CtePolicy
      */
     public function replicate(User $user, Cte $cte): bool
     {
-        return $user->can('replicate_operational::cte');
+        return $user->can('replicate_operational::cte::cte');
     }
 
     /**
@@ -103,6 +103,6 @@ class CtePolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('reorder_operational::cte');
+        return $user->can('reorder_operational::cte::cte');
     }
 }

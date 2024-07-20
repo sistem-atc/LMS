@@ -15,7 +15,7 @@ class BankPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('view_any_register::bank');
+        return $user->can('view_any_register::bank::bank');
     }
 
     /**
@@ -23,7 +23,7 @@ class BankPolicy
      */
     public function view(User $user, Bank $bank): bool
     {
-        return $user->can('view_register::bank');
+        return $user->can('view_register::bank::bank');
     }
 
     /**
@@ -31,7 +31,7 @@ class BankPolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('create_register::bank');
+        return $user->can('create_register::bank::bank');
     }
 
     /**
@@ -39,7 +39,7 @@ class BankPolicy
      */
     public function update(User $user, Bank $bank): bool
     {
-        return $user->can('update_register::bank');
+        return $user->can('update_register::bank::bank');
     }
 
     /**
@@ -47,7 +47,7 @@ class BankPolicy
      */
     public function delete(User $user, Bank $bank): bool
     {
-        return $user->can('delete_register::bank');
+        return $user->can('delete_register::bank::bank');
     }
 
     /**
@@ -55,7 +55,7 @@ class BankPolicy
      */
     public function deleteAny(User $user): bool
     {
-        return $user->can('delete_any_register::bank');
+        return $user->can('delete_any_register::bank::bank');
     }
 
     /**
@@ -63,7 +63,7 @@ class BankPolicy
      */
     public function forceDelete(User $user, Bank $bank): bool
     {
-        return $user->can('force_delete_register::bank');
+        return $user->can('force_delete_register::bank::bank');
     }
 
     /**
@@ -71,7 +71,7 @@ class BankPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_register::bank');
+        return $user->can('force_delete_any_register::bank::bank');
     }
 
     /**
@@ -79,7 +79,7 @@ class BankPolicy
      */
     public function restore(User $user, Bank $bank): bool
     {
-        return $user->can('restore_register::bank');
+        return $user->can('restore_register::bank::bank');
     }
 
     /**
@@ -87,7 +87,7 @@ class BankPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('restore_any_register::bank');
+        return $user->can('restore_any_register::bank::bank');
     }
 
     /**
@@ -95,7 +95,7 @@ class BankPolicy
      */
     public function replicate(User $user, Bank $bank): bool
     {
-        return $user->can('replicate_register::bank');
+        return $user->can('replicate_register::bank::bank');
     }
 
     /**
@@ -103,6 +103,6 @@ class BankPolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('reorder_register::bank');
+        return $user->can('reorder_register::bank::bank');
     }
 }

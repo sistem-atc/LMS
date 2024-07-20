@@ -21,7 +21,7 @@ use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
-use App\Filament\Resources\Settings\UserResource\Pages\EditProfile;
+use App\Filament\Resources\Settings\User\UserResource\Pages\EditProfile;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -51,8 +51,8 @@ class AdminPanelProvider extends PanelProvider
                 'panels::global-search.before',
                 function (): View
                 {
-                    session()->has('DateBase')?
-                        $DateBase = session()->get('DateBase'):
+                    session(null)->has('DateBase')?
+                        $DateBase = session(null)->get('DateBase'):
                         $DateBase = today()->format('d/m/Y');
 
                     !is_null(Auth::user()->branch_logged)?

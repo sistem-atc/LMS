@@ -15,7 +15,7 @@ class LotPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('view_any_operational::lot');
+        return $user->can('view_any_operational::lot::lot');
     }
 
     /**
@@ -23,7 +23,7 @@ class LotPolicy
      */
     public function view(User $user, Lot $lot): bool
     {
-        return $user->can('view_operational::lot');
+        return $user->can('view_operational::lot::lot');
     }
 
     /**
@@ -31,7 +31,7 @@ class LotPolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('create_operational::lot');
+        return $user->can('create_operational::lot::lot');
     }
 
     /**
@@ -39,7 +39,7 @@ class LotPolicy
      */
     public function update(User $user, Lot $lot): bool
     {
-        return $user->can('update_operational::lot');
+        return $user->can('update_operational::lot::lot');
     }
 
     /**
@@ -47,7 +47,7 @@ class LotPolicy
      */
     public function delete(User $user, Lot $lot): bool
     {
-        return $user->can('delete_operational::lot');
+        return $user->can('delete_operational::lot::lot');
     }
 
     /**
@@ -55,7 +55,7 @@ class LotPolicy
      */
     public function deleteAny(User $user): bool
     {
-        return $user->can('delete_any_operational::lot');
+        return $user->can('delete_any_operational::lot::lot');
     }
 
     /**
@@ -63,7 +63,7 @@ class LotPolicy
      */
     public function forceDelete(User $user, Lot $lot): bool
     {
-        return $user->can('force_delete_operational::lot');
+        return $user->can('force_delete_operational::lot::lot');
     }
 
     /**
@@ -71,7 +71,7 @@ class LotPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_operational::lot');
+        return $user->can('force_delete_any_operational::lot::lot');
     }
 
     /**
@@ -79,7 +79,7 @@ class LotPolicy
      */
     public function restore(User $user, Lot $lot): bool
     {
-        return $user->can('restore_operational::lot');
+        return $user->can('restore_operational::lot::lot');
     }
 
     /**
@@ -87,7 +87,7 @@ class LotPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('restore_any_operational::lot');
+        return $user->can('restore_any_operational::lot::lot');
     }
 
     /**
@@ -95,7 +95,7 @@ class LotPolicy
      */
     public function replicate(User $user, Lot $lot): bool
     {
-        return $user->can('replicate_operational::lot');
+        return $user->can('replicate_operational::lot::lot');
     }
 
     /**
@@ -103,6 +103,6 @@ class LotPolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('reorder_operational::lot');
+        return $user->can('reorder_operational::lot::lot');
     }
 }

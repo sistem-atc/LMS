@@ -15,7 +15,7 @@ class ReceivingTypePolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('view_any_register::receiving::type');
+        return $user->can('view_any_register::receiving::type::receiving::type');
     }
 
     /**
@@ -23,7 +23,7 @@ class ReceivingTypePolicy
      */
     public function view(User $user, ReceivingType $receivingType): bool
     {
-        return $user->can('view_register::receiving::type');
+        return $user->can('view_register::receiving::type::receiving::type');
     }
 
     /**
@@ -31,7 +31,7 @@ class ReceivingTypePolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('create_register::receiving::type');
+        return $user->can('create_register::receiving::type::receiving::type');
     }
 
     /**
@@ -39,7 +39,7 @@ class ReceivingTypePolicy
      */
     public function update(User $user, ReceivingType $receivingType): bool
     {
-        return $user->can('update_register::receiving::type');
+        return $user->can('update_register::receiving::type::receiving::type');
     }
 
     /**
@@ -47,7 +47,7 @@ class ReceivingTypePolicy
      */
     public function delete(User $user, ReceivingType $receivingType): bool
     {
-        return $user->can('delete_register::receiving::type');
+        return $user->can('delete_register::receiving::type::receiving::type');
     }
 
     /**
@@ -55,7 +55,7 @@ class ReceivingTypePolicy
      */
     public function deleteAny(User $user): bool
     {
-        return $user->can('delete_any_register::receiving::type');
+        return $user->can('delete_any_register::receiving::type::receiving::type');
     }
 
     /**
@@ -63,7 +63,7 @@ class ReceivingTypePolicy
      */
     public function forceDelete(User $user, ReceivingType $receivingType): bool
     {
-        return $user->can('force_delete_register::receiving::type');
+        return $user->can('force_delete_register::receiving::type::receiving::type');
     }
 
     /**
@@ -71,7 +71,7 @@ class ReceivingTypePolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_register::receiving::type');
+        return $user->can('force_delete_any_register::receiving::type::receiving::type');
     }
 
     /**
@@ -79,7 +79,7 @@ class ReceivingTypePolicy
      */
     public function restore(User $user, ReceivingType $receivingType): bool
     {
-        return $user->can('restore_register::receiving::type');
+        return $user->can('restore_register::receiving::type::receiving::type');
     }
 
     /**
@@ -87,7 +87,7 @@ class ReceivingTypePolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('restore_any_register::receiving::type');
+        return $user->can('restore_any_register::receiving::type::receiving::type');
     }
 
     /**
@@ -95,7 +95,7 @@ class ReceivingTypePolicy
      */
     public function replicate(User $user, ReceivingType $receivingType): bool
     {
-        return $user->can('replicate_register::receiving::type');
+        return $user->can('replicate_register::receiving::type::receiving::type');
     }
 
     /**
@@ -103,6 +103,6 @@ class ReceivingTypePolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('reorder_register::receiving::type');
+        return $user->can('reorder_register::receiving::type::receiving::type');
     }
 }

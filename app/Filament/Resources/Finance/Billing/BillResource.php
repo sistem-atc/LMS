@@ -32,6 +32,8 @@ use function PHPUnit\Framework\returnSelf;
 class BillResource extends Resource
 {
     protected static ?string $model = Bill::class;
+    protected static ?string $modelLabel = 'Fatura';
+    protected static ?string $pluralModelLabel = 'Faturas';
     protected static ?string $navigationLabel = 'Faturamento';
     protected static ?string $navigationIcon = 'heroicon-o-credit-card';
     protected static ?string $navigationGroup = 'Financeiro';

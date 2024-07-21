@@ -3,6 +3,7 @@
 return [
     'navigation' => [
         'token' => [
+            'cluster' => null,
             'group' => 'Configurações',
             'sort' => -1,
             'icon' => 'heroicon-o-key',
@@ -10,7 +11,7 @@ return [
     ],
     'models' => [
         'token' => [
-            'enable_policy' => false,
+            'enable_policy' => true,
         ],
     ],
     'route' => [

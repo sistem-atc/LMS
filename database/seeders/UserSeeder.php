@@ -13,6 +13,7 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         $user = DB::table('users')->insert([
+                    'name' => 'Kleber Pracidelli Patti',
                     'email' => 'kleber.patti@logisticag2l.com.br',
                     'branch_logged_id'=> '1',
                     'password' => bcrypt('123456789'),
@@ -21,7 +22,7 @@ class UserSeeder extends Seeder
         DB::table('employees')->insert([
             'user_id' => $user,
             'branch_id'=> '1',
-            'name' => 'Kleber',
+            'name' => 'Kleber Pracidelli Patti',
             'cpf' => '30908105819',
             'personalmail' => 'sistem.atc@gmail.com',
             'postal_code' => '06192140',

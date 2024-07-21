@@ -1,12 +1,11 @@
 @TODO
+
     Employees =>
         Refatorar Quando um empregado é desabilitado tem que desativar o usuario
         quando ele é excluido tem que excluir o usuario
-        
-    Token =>
-        criação de token está quebrando a pagina pois não está conseguindo retornar o array de usuarios
 
 @WIP
+
     Notas Fiscais dos clientes =>
         Incluir o usuario de inclusão quando manual (Criar no Banco de Dados a relação)
         Terminar de construir a API

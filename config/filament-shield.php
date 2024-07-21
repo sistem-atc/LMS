@@ -10,7 +10,6 @@ return [
         'is_globally_searchable' => false,
         'show_model_path' => true,
         'is_scoped_to_tenant' => true,
-        'cluster' => null,
     ],
 
     'auth_provider_model' => [
@@ -53,13 +52,12 @@ return [
         'pages' => true,
         'widgets' => true,
         'resources' => true,
-        'custom_permissions' => true,
+        'custom_permissions' => false,
     ],
 
     'generator' => [
         'option' => 'policies_and_permissions',
         'policy_directory' => 'Policies',
-        'policy_namespace' => 'Policies',
     ],
 
     'exclude' => [
@@ -83,7 +81,7 @@ return [
     ],
 
     'register_role_policy' => [
-        'enabled' => true,
+        'enabled' => false,
     ],
 
 ];

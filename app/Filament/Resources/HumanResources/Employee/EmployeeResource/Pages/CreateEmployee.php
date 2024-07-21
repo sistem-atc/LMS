@@ -18,6 +18,7 @@ class CreateEmployee extends CreateRecord
         $contructmail = strtolower(implode('.', [reset($fullname), end($fullname)])) . config('domain.domain');
 
         $newUser = User::create([
+                    'name' => $data['name'],
                     'email' => $contructmail,
                     'branch_logged_id' => $data['branch_id'],
                     'password' => config('domain.defaultPass'),

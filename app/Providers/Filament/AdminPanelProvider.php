@@ -55,9 +55,13 @@ class AdminPanelProvider extends PanelProvider
                         $DateBase = session(null)->get('DateBase'):
                         $DateBase = today()->format('d/m/Y');
 
-                    !is_null(Auth::user()->branch_logged)?
-                        $branchelooged = Auth::user()->branch_logged['abbreviation']:
-                        $branchelooged = Auth::user()->branch['abbreviation'];
+                    if( !is_null(Auth::user()->branch)) {
+                        $branchelooged = 'NULL';
+                    } else {
+                        !is_null(Auth::user()->branch_logged)?
+                            $branchelooged = Auth::user()->branch_logged['abbreviation']:
+                            $branchelooged = Auth::user()->branch['abbreviation'];
+                    }
 
                     return view('filament.resources.pages.branchelogged',
                         [

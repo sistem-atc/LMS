@@ -23,11 +23,11 @@ class SuportFunctions
         $filePath = $data['attachment'];
         $file = fopen(Storage::path($filePath), 'r');
         $header = fgetcsv($file);
-
-        //Recuperar os dados do customer
+        $line = 0;
 
         while ($row = fgetcsv($file)) {
             //$ctes[] = array_combine($header, $row);
+            $line ++;
         }
 
         fclose($file);
@@ -37,7 +37,7 @@ class SuportFunctions
         return Notification::make()
                 ->success()
                 ->title('NOTFIS Importado com Sucesso')
-                ->body('X Notas foram importadas');
+                ->body( $line -2 . ' notas foram importadas');
 
     }
 
@@ -120,6 +120,7 @@ class SuportFunctions
             'pesoB' => Arr::get($data, 'NFe.infNFe.transp.pesoB'),
             'infAdic' => Arr::get($data, 'NFe.infNFe.infAdic.infAdFisco'),
             'chNFe' => Arr::get($data, 'protNFe.infProt.chNFe'),
+            'create_user_id' => auth()->id(),
         ];
 
         DocumentFiscalCustomer::create($storeData);

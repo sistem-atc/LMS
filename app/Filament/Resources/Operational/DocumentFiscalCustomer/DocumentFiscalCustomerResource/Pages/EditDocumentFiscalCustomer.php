@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources\Operational\DocumentFiscalCustomer\DocumentFiscalCustomerResource\Pages;
 
-use App\Filament\Resources\Operational\DocumentFiscalCustomer\DocumentFiscalCustomerResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
+use App\Filament\Resources\Operational\DocumentFiscalCustomer\DocumentFiscalCustomerResource;
 
 class EditDocumentFiscalCustomer extends EditRecord
 {
@@ -22,5 +22,11 @@ class EditDocumentFiscalCustomer extends EditRecord
     protected function getRedirectUrl(): string
     {
         return $this->getResource()::getUrl('index');
+    }
+
+    protected function mutateFormDataBeforeSave(array $data): array
+    {
+        $data['create_user_id'] = auth()->id();
+        return $data;
     }
 }

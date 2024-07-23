@@ -21,12 +21,16 @@ class CreateHandler extends Handlers {
 
     public function handler(Request $request)
     {
+
         $model = new (static::getModel());
 
+        //Incluir Camada de Validação de Dados, quem está enviando é o emissor da nota
+        $request['create_user_id'] = $request->user()->id;
+        $request = new Request([$request]);
         $model->fill($request->all());
 
         $model->save();
 
-        return static::sendSuccessResponse($model, "Successfully Create Resource");
+        return static::sendSuccessResponse($model, "Notas Importadas com sucesso");
     }
 }

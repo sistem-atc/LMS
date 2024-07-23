@@ -8,7 +8,7 @@ use App\Filament\Resources\Operational\DocumentFiscalCustomer\DocumentFiscalCust
 class UpdateHandler extends Handlers {
     public static string | null $uri = '/{id}';
     public static string | null $resource = DocumentFiscalCustomerResource::class;
-
+    public static bool $public = true;
 
     public static function getMethod()
     {

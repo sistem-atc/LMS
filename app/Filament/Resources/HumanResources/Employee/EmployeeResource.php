@@ -85,6 +85,7 @@ class EmployeeResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
             ]);
@@ -137,6 +138,7 @@ class EmployeeResource extends Resource
                 ->email(),
             Select::make('branch_id')
                 ->label('Filial')
+                ->required()
                 ->searchable()
                 ->preload()
                 ->relationship('branch', 'abbreviation'),

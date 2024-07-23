@@ -1,11 +1,12 @@
 <?php
 
+use App\Models\Lot;
+use App\Models\User;
 use App\Models\CodeUf;
 use App\Models\Customer;
-use App\Models\Lot;
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 return new class extends Migration
 {
@@ -42,6 +43,8 @@ return new class extends Migration
             $table->string('pesoB')->nullable();
             $table->longText('infAdic')->nullable();
             $table->string('chNFe')->unique();
+            $table->foreignIdFor(User::class, 'create_user_id');
+            $table->foreignIdFor(User::class, 'update_user_id')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

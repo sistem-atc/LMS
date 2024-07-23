@@ -3,7 +3,6 @@
 namespace App\Filament\Resources\Operational\DocumentFiscalCustomer\DocumentFiscalCustomerResource\Pages;
 
 use App\Filament\Resources\Operational\DocumentFiscalCustomer\DocumentFiscalCustomerResource;
-use Filament\Actions;
 use Filament\Resources\Pages\CreateRecord;
 
 class CreateDocumentFiscalCustomer extends CreateRecord
@@ -14,4 +13,11 @@ class CreateDocumentFiscalCustomer extends CreateRecord
     {
         return $this->getResource()::getUrl('index');
     }
+
+    protected function mutateFormDataBeforeCreate(array $data): array
+    {
+        $data['create_user_id'] = auth()->id();
+        return $data;
+    }
+
 }

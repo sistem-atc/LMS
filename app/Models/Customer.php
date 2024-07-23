@@ -13,9 +13,9 @@ use Laravel\Sanctum\HasApiTokens;
 use App\Models\DocumentFiscalCustomer;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Customer extends Model
 {
@@ -58,13 +58,13 @@ class Customer extends Model
         return $this->BelongsTo(PaymentTerm::class);
     }
 
-    public function bill(): HasOne
+    public function bill(): HasMany
     {
-        return $this->hasOne(Bill::class);
+        return $this->HasMany(Bill::class);
     }
 
-    public function document_fiscal_customer(): BelongsTo
+    public function document_fiscal_customer(): HasMany
     {
-        return $this->BelongsTo(DocumentFiscalCustomer::class);
+        return $this->HasMany(DocumentFiscalCustomer::class);
     }
 }

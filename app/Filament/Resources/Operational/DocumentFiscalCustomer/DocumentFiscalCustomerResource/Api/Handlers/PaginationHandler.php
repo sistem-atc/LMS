@@ -9,7 +9,7 @@ use App\Filament\Resources\Operational\DocumentFiscalCustomer\DocumentFiscalCust
 class PaginationHandler extends Handlers {
     public static string | null $uri = '/';
     public static string | null $resource = DocumentFiscalCustomerResource::class;
-
+    public static bool $public = true;
 
 
     public function handler()

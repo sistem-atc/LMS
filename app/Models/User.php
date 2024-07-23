@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use BezhanSalleh\FilamentShield\Traits\HasPanelShield;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -68,6 +69,11 @@ class User extends Authenticatable implements FilamentUser, HasName
     public function branch_logged(): BelongsTo
     {
         return $this->belongsTo(Branch::class);
+    }
+
+    public function document_fiscal_customer(): HasMany
+    {
+        return $this->hasMany(DocumentFiscalCustomer::class);
     }
 
 }

@@ -31,7 +31,7 @@ class User extends Authenticatable implements FilamentUser, HasName
      * @var array<int, string>
      */
     protected $fillable = [
-        'name','email', 'branche_logged_id', 'password',
+        'name','email', 'branche_logged_id', 'password', 'is_active'
     ];
 
     /**
@@ -52,11 +52,12 @@ class User extends Authenticatable implements FilamentUser, HasName
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
+        'is_active' => 'boolean',
     ];
 
     public function canAccessPanel(Panel $panel): bool
     {
-        return str_ends_with($this->email, config('domain.domain')) && $this->employee->is_active;
+        return str_ends_with($this->email, config('domain.domain')) && $this->is_active;
     }
 
     public function employee(): HasOne

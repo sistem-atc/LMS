@@ -9,6 +9,7 @@ use App\Models\Nature;
 use App\Models\Vendor;
 use App\Models\PaymentTerm;
 use App\Models\GroupCustomer;
+use Laravel\Sanctum\HasApiTokens;
 use App\Models\DocumentFiscalCustomer;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -18,14 +19,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Customer extends Model
 {
-    use HasFactory;
-    use SoftDeletes;
+    use HasFactory, HasApiTokens, SoftDeletes;
     protected $fillable = [
         'cpf_or_cnpj', 'company_name', 'type_person', 'fantasy_name', 'postal_code', 'street',
         'complement', 'number', 'district', 'city', 'state', 'ibge', 'gia', 'ddd', 'siafi',
         'region', 'branche_id', 'nature_id', 'phone_number', 'cellphone', 'vendor_id', 'payment_term',
         'bank_standard_id', 'priority', 'risc', 'municipal_registration', 'state_registration',
-        'mail_operational', 'mail_financial', 'BaseEndpoint', 'Token', 'group_customer_id',
+        'mail_operational', 'mail_financial', 'BaseEndpoint', 'Token', 'group_customer_id', 'tokenText'
 
     ];
 

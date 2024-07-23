@@ -145,7 +145,8 @@ class EmployeeResource extends Resource
                 ->default(true)
                 ->inline()
                 ->onColor('success')
-                ->offColor('danger')
+                ->offColor('danger'),
+            Hidden::make('user_id'),
         ];
     }
 

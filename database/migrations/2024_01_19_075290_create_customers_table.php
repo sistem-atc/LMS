@@ -51,6 +51,7 @@ return new class extends Migration
             $table->string('BaseEndpoint')->nullable();
             $table->string('Token')->nullable();
             $table->foreignIdFor(GroupCustomer::class)->nullable();
+            $table->string('tokenText')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

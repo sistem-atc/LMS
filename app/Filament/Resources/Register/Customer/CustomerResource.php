@@ -21,9 +21,11 @@ use Leandrocfe\FilamentPtbrFormFields\PhoneNumber;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\Register\Customer\CustomerResource\Pages;
 use App\Filament\Resources\Register\Customer\CustomerResource\Pages\SuportFunctions;
+use App\Filament\Resources\Shield\Token\TokenResource;
 
 class CustomerResource extends Resource
 {
+
     protected static ?string $model = Customer::class;
     protected static ?string $modelLabel = 'Cliente';
     protected static ?string $pluralModelLabel = 'Clientes';
@@ -39,149 +41,194 @@ class CustomerResource extends Resource
                 'default' => 1,
             ])->schema([
                     Tabs::make('')->tabs([
-                        Tabs\Tab::make('Principal')
-                            ->schema([
-                                    Section::make('')
-                                        ->schema([
-                                            Select::make('type_person')
-                                            ->label('Tipo de Pessoa')
-                                            ->live()
-                                            ->options([
-                                                'F' => 'Fisica',
-                                                'J' => 'Juridica',
-                                            ]),
-                                            TextInput::make('cpf_or_cnpj')
-                                                ->live()
-                                                //->rules([fn (Get $get) => SuportFunctions::validar_cnpj($get('cpf_or_cnpj'))])
-                                                ->mask(fn(Get $get): string => ($get('type_person') === 'J') ? '99.999.999/9999-99' : '999.999.999-99')
-                                                ->label('CPF ou CNPJ'),
-                                        ])->columns(2),
-                                    Section::make('')
-                                        ->schema([
-                                            TextInput::make('company_name')
-                                                ->label('Nome ou Razão Social'),
-                                            TextInput::make('fantasy_name')
-                                                ->label('Nome Fantasia'),
-                                        ])->columns(2),
-                                ]),
-                            Tabs\Tab::make('Endereço')
-                                ->schema([
-                                    Section::make('')
-                                        ->schema([
-                                            Section::make('')->schema([
-                                                Cep::make('postal_code')
-                                                    ->label('CEP')
-                                                    ->viaCep(
-                                                        mode: 'suffix',
-                                                        errorMessage: 'CEP inválido.',
-                                                        setFields: [
-                                                            'postal_code' => 'cep',
-                                                            'street' => 'logradouro',
-                                                            'number' => 'numero',
-                                                            'complement' => 'complemento',
-                                                            'district' => 'bairro',
-                                                            'city' => 'localidade',
-                                                            'state' => 'uf',
-                                                            'ibge' => 'ibge',
-                                                            'gia' => 'gia',
-                                                            'ddd' => 'ddd',
-                                                            'siafi' => 'siafi',
-                                                        ]
-                                                    ),
-                                                TextInput::make('complement')->label('Complemento'),
-                                            ])->columns(2),
-                                            Grid::make('')
-                                                ->schema([
-                                                    TextInput::make('street')->label('Rua'),
-                                                    TextInput::make('number')->label('Número'),
-                                                ])->columns(2),
-                                            TextInput::make('district')->label('Bairro'),
-                                            TextInput::make('city')->label('Cidade'),
-                                            TextInput::make('state')->label('UF'),
-                                            Hidden::make('ibge'),
-                                            Hidden::make('gia'),
-                                            Hidden::make('ddd'),
-                                            Hidden::make('siafi')
-                                            ])->columns(3),
-                                ]),
-                            Tabs\Tab::make('Outros')
-                                ->schema([
-                                    Section::make('')
-                                    ->schema([
-                                        Grid::make('')
-                                        ->schema([
-                                            TextInput::make('municipal_registration')
-                                                ->label('Incrição Municipal'),
-                                            TextInput::make('state_registration')
-                                                ->label('Incrição Estadual'),
-                                            ])->columns(2),
-                                        Grid::make('')
-                                            ->schema([
-                                                PhoneNumber::make('phone_number')
-                                                    ->label('Numero Telefone')
-                                                    ->format('(99)9999-9999'),
-                                                PhoneNumber::make('cellphone')
-                                                    ->label('Numero Celular')
-                                                    ->format('(99)99999-9999'),
-                                            ])->columns(2),
-                                        TextInput::make('region')
-                                            ->label('Região'),
-                                        Select::make('branch_id')
-                                            ->label('Filial')
-                                            ->searchable()
-                                            ->preload()
-                                            ->relationship('branch', 'abbreviation'),
-                                        Select::make('nature_id')
-                                            ->label('Natureza')
-                                            ->searchable()
-                                            ->preload()
-                                            ->relationship('nature', 'name'),
-                                        Select::make('vendor_id')
-                                            ->label('Vendedor')
-                                            ->searchable()
-                                            ->preload()
-                                            ->relationship('vendor', 'name'),
-                                        Select::make('bank_id')
-                                                ->searchable()
-                                                ->preload()
-                                                ->relationship('bank', 'nome_banco')
-                                                ->label('Banco Padrão'),
-                                        TextInput::make('priority')
-                                            ->label('Prioridade'),
-                                        Select::make('risc')
-                                            ->label('Risco')
-                                            ->options([
-                                                'A' => 'Risco A',
-                                                'B' => 'Risco B',
-                                                'C' => 'Risco C',
-                                                'D' => 'Risco D',
-                                                'E' => 'Risco E',
-                                                'F' => 'Risco F',
-                                            ]),
-                                        TextInput::make('mail_operational')
-                                            ->label('Email Operacional'),
-                                        TextInput::make('mail_financial')
-                                            ->label('Email Financeiro'),
-                                        Select::make('group_customer_id')
-                                            ->label('Grupo Cliente')
-                                            ->searchable()
-                                            ->preload()
-                                            ->relationship('group_customer', 'name'),
-                                        Select::make('payment_term_id')
-                                            ->label('Prazo de Pagamento')
-                                            ->searchable()
-                                            ->preload()
-                                            ->relationship('payment_term', 'name'),
-                                    ])->columns(3),
-                                ]),
-                            Tabs\Tab::make('MultiEmbarcador')
-                                ->schema([
-                                    TextInput::make('BaseEndpoint'),
-                                    TextInput::make('Token')
-                                ])->columns(2),
+                        Tabs\Tab::make('default')
+                            ->schema(self::getTabDefault())
+                            ->label('Principal'),
+                        Tabs\Tab::make('address')
+                            ->schema(self::getTabAddress())
+                            ->label('Endereço'),
+                        Tabs\Tab::make('others')
+                            ->schema(self::getTabOthers())
+                            ->label('Outros'),
+                        Tabs\Tab::make('multisoftware')
+                            ->schema(self::getTabMultiSoftware())
+                            ->columns(2)
+                            ->label('MultiEmbarcador'),
+                        Tabs\Tab::make('tokenapi')
+                            ->schema(self::getTabTokenApi())
+                            ->hidden(fn() => !auth()->user()->can('create_token'))
+                            ->label('Token API'),
                         ]),
                 ])
             ]);
+    }
+
+    private static function getTabDefault() : array
+    {
+        return [
+            Section::make('')
+                ->schema([
+                    Select::make('type_person')
+                        ->label('Tipo de Pessoa')
+                        ->live()
+                        ->options([
+                            'F' => 'Fisica',
+                            'J' => 'Juridica',
+                        ]),
+                    TextInput::make('cpf_or_cnpj')
+                        ->live()
+                        //->rules([fn (Get $get) => SuportFunctions::validar_cnpj($get('cpf_or_cnpj'))])
+                        ->mask(fn(Get $get): string => ($get('type_person') === 'J') ? '99.999.999/9999-99' : '999.999.999-99')
+                        ->label('CPF ou CNPJ'),
+                ])->columns(2),
+            Section::make('')
+                ->schema([
+                    TextInput::make('company_name')
+                        ->label('Nome ou Razão Social'),
+                    TextInput::make('fantasy_name')
+                        ->label('Nome Fantasia'),
+                ])->columns(2),
+        ];
+    }
+
+    private static function getTabAddress() : array
+    {
+        return [
+            Section::make('')
+                ->schema([
+                    Section::make('')->schema([
+                        Cep::make('postal_code')
+                            ->label('CEP')
+                            ->viaCep(
+                                mode: 'suffix',
+                                errorMessage: 'CEP inválido.',
+                                setFields: [
+                                    'postal_code' => 'cep',
+                                    'street' => 'logradouro',
+                                    'number' => 'numero',
+                                    'complement' => 'complemento',
+                                    'district' => 'bairro',
+                                    'city' => 'localidade',
+                                    'state' => 'uf',
+                                    'ibge' => 'ibge',
+                                    'gia' => 'gia',
+                                    'ddd' => 'ddd',
+                                    'siafi' => 'siafi',
+                                ]
+                            ),
+                        TextInput::make('complement')->label('Complemento'),
+                    ])->columns(2),
+                    Grid::make('')
+                        ->schema([
+                            TextInput::make('street')->label('Rua'),
+                            TextInput::make('number')->label('Número'),
+                        ])->columns(2),
+                    TextInput::make('district')->label('Bairro'),
+                    TextInput::make('city')->label('Cidade'),
+                    TextInput::make('state')->label('UF'),
+                    Hidden::make('ibge'),
+                    Hidden::make('gia'),
+                    Hidden::make('ddd'),
+                    Hidden::make('siafi')
+                ])->columns(3),
+        ];
+    }
+
+    private static function getTabOthers() : array
+    {
+        return [
+            Section::make('')
+                ->schema([
+                    Grid::make('')
+                        ->schema([
+                            TextInput::make('municipal_registration')
+                                ->label('Incrição Municipal'),
+                            TextInput::make('state_registration')
+                                ->label('Incrição Estadual'),
+                        ])->columns(2),
+                    Grid::make('')
+                        ->schema([
+                            PhoneNumber::make('phone_number')
+                                ->label('Numero Telefone')
+                                ->format('(99)9999-9999'),
+                            PhoneNumber::make('cellphone')
+                                ->label('Numero Celular')
+                                ->format('(99)99999-9999'),
+                        ])->columns(2),
+                    TextInput::make('region')
+                        ->label('Região'),
+                    Select::make('branch_id')
+                        ->label('Filial')
+                        ->searchable()
+                        ->preload()
+                        ->relationship('branch', 'abbreviation'),
+                    Select::make('nature_id')
+                        ->label('Natureza')
+                        ->searchable()
+                        ->preload()
+                        ->relationship('nature', 'name'),
+                    Select::make('vendor_id')
+                        ->label('Vendedor')
+                        ->searchable()
+                        ->preload()
+                        ->relationship('vendor', 'name'),
+                    Select::make('bank_id')
+                        ->searchable()
+                        ->preload()
+                        ->relationship('bank', 'nome_banco')
+                        ->label('Banco Padrão'),
+                    TextInput::make('priority')
+                        ->label('Prioridade'),
+                    Select::make('risc')
+                        ->label('Risco')
+                        ->options([
+                            'A' => 'Risco A',
+                            'B' => 'Risco B',
+                            'C' => 'Risco C',
+                            'D' => 'Risco D',
+                            'E' => 'Risco E',
+                            'F' => 'Risco F',
+                        ]),
+                    TextInput::make('mail_operational')
+                        ->label('Email Operacional'),
+                    TextInput::make('mail_financial')
+                        ->label('Email Financeiro'),
+                    Select::make('group_customer_id')
+                        ->label('Grupo Cliente')
+                        ->searchable()
+                        ->preload()
+                        ->relationship('group_customer', 'name'),
+                    Select::make('payment_term_id')
+                        ->label('Prazo de Pagamento')
+                        ->searchable()
+                        ->preload()
+                        ->relationship('payment_term', 'name'),
+                ])
+                    ->columns(3),
+        ];
+    }
+
+    private static function getTabMultiSoftware() : array
+    {
+        return [
+            TextInput::make('BaseEndpoint'),
+            TextInput::make('Token')
+        ];
+    }
+
+    private static function getTabTokenApi() : array
+    {
+        return [
+            TextInput::make('generateToken')
+                ->label('Token Gerado')
+                ->password()
+                ->revealable()
+                ->readOnly(),
+            TextInput::make('name'),
+            Section::make('ability')
+                ->description('Select abilities of the token')
+                ->schema(TokenResource::getAbilitiesSchema()),
+        ];
     }
 
     public static function table(Table $table): Table

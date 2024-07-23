@@ -11,11 +11,13 @@ use Filament\Support\Colors\Color;
 use Filament\Forms\Components\Grid;
 use Filament\Tables\Actions\Action;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Toggle;
+use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
+use Filament\Notifications\Notification;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\Settings\User\UserResource\Pages;
-use Filament\Notifications\Notification;
 
 class UserResource extends Resource
 {
@@ -34,8 +36,8 @@ class UserResource extends Resource
                 Grid::make()
                 ->schema([
                     TextInput::make('email')
-                    ->email()
-                    ->required(),
+                        ->email()
+                        ->required(),
                     TextInput::make('password')
                         ->password()
                         ->required()
@@ -45,6 +47,12 @@ class UserResource extends Resource
                         ->searchable()
                         ->preload()
                         ->relationship('roles', 'name'),
+                    Toggle::make('is_active')
+                        ->label('Ativo')
+                        ->default(true)
+                        ->inline()
+                        ->onColor('success')
+                        ->offColor('danger')
                 ]),
             ]);
     }
@@ -56,6 +64,10 @@ class UserResource extends Resource
                 TextColumn::make('employee.name'),
                 TextColumn::make('email'),
                 TextColumn::make('employee.branch.abbreviation')->label('Filial'),
+                IconColumn::make('is_active')
+                    ->boolean()
+                    ->falseIcon('heroicon-o-x-mark')
+                    ->label('Ativo'),
             ])
             ->filters([
                 //

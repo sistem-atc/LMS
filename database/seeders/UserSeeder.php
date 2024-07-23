@@ -17,6 +17,7 @@ class UserSeeder extends Seeder
                     'email' => 'kleber.patti@logisticag2l.com.br',
                     'branch_logged_id'=> '1',
                     'password' => bcrypt('123456789'),
+                    'is_active' => true,
                 ]);
 
         DB::table('employees')->insert([
@@ -36,7 +37,7 @@ class UserSeeder extends Seeder
             'gia' => '4923',
             'ddd' => '11',
             'siafi' => '6789',
-            'is_active' => '1',
+            'is_active' => true,
         ]);
 
     }

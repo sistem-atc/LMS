@@ -22,6 +22,7 @@ class CreateEmployee extends CreateRecord
                     'email' => $contructmail,
                     'branch_logged_id' => $data['branch_id'],
                     'password' => config('domain.defaultPass'),
+                    'is_active' => true,
                 ]);
 
         $data['user_id'] = $newUser->id;

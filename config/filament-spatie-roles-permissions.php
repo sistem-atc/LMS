@@ -8,7 +8,7 @@ return [
 
     'navigation_section_group' => 'Configurações', // Default uses language constant
 
-    'team_model' => \App\Models\Team::class,
+    //'team_model' => \App\Models\Team::class,
 
     /*
      * Set as false to remove from navigation.

@@ -14,5 +14,7 @@
         Abstrair as classes para usar os mesmos metodos para rotina manual e automatica
 
 
-php artisan shield:generate --all
-php artisan shield:super-admin --user=1
+@Before Migrate:fresh
+
+    php artisan shield:generate --all
+    php artisan shield:super-admin --user=1

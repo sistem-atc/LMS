@@ -7,6 +7,7 @@ use Filament\Actions\ActionGroup;
 use Filament\Support\Enums\ActionSize;
 use Filament\Resources\Pages\EditRecord;
 use App\Filament\Resources\HumanResources\Employee\EmployeeResource;
+use App\Models\User;
 
 class EditEmployee extends EditRecord
 {
@@ -31,10 +32,14 @@ class EditEmployee extends EditRecord
 
     protected function mutateFormDataBeforeSave(array $data): array
     {
-
-        if( ! $data['is_active']) {
-            //Incluir Validação de data de demissão.
-            //Desativar o usuario.
+        if( !$data['is_active']) {
+            User::find($data['user_id'])->update([
+                'is_active' => false,
+            ]);
+        } else {
+            User::find($data['user_id'])->update([
+                'is_active' => true,
+            ]);
         }
 
         return $data;

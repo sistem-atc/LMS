@@ -2,17 +2,20 @@
 
 namespace App\Filament\Resources\Settings\Branch;
 
-use App\Enums\TypeBranchEnum;
 use App\Models\Branch;
+use Filament\Forms\Get;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
+use App\Enums\TypeBranchEnum;
 use Filament\Resources\Resource;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Hidden;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Section;
 use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\FileUpload;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Tables\Filters\TrashedFilter;
 use Leandrocfe\FilamentPtbrFormFields\Cep;
@@ -21,8 +24,8 @@ use Filament\Tables\Actions\DeleteBulkAction;
 use Filament\Tables\Actions\RestoreBulkAction;
 use Filament\Tables\Actions\ForceDeleteBulkAction;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use App\Filament\Resources\Settings\Branch\BranchResource\Pages;
-use Filament\Forms\Components\Select;
 
 class BranchResource extends Resource
 {
@@ -37,22 +40,56 @@ class BranchResource extends Resource
     {
         return $form
             ->schema([
-                Section::make('')
+                Section::make()
                     ->schema([
-                        TextInput::make('cnpj')->mask('99.999.999/9999-99')->label('CNPJ')->columns(1),
-                        TextInput::make('abbreviation')->label('Sigla')->columnSpan(1),
-                        TextInput::make('name')->label('Razão Social')->columnSpan(2),
-                        Select::make('type_branch')
-                            ->label('Tipo Empresa')
-                            ->options(TypeBranchEnum::class)
-                            ->columnSpan(1),
+                        Grid::make()
+                            ->schema([
+                                TextInput::make('cnpj')
+                                    ->mask('99.999.999/9999-99')
+                                    ->label('CNPJ')
+                                    ->columns(1),
+                                TextInput::make('abbreviation')
+                                    ->label('Sigla')
+                                    ->columnSpan(1),
+                                Select::make('type_branch')
+                                    ->label('Tipo Empresa')
+                                    ->options(TypeBranchEnum::class)
+                                    ->live(onBlur: true)
+                                    ->columnSpan(1),
+                            ])
+                                ->columns(3),
+                        Grid::make()
+                            ->schema([
+                                TextInput::make('name')
+                                    ->label('Razão Social')
+                                    ->columnSpan(2),
+                                TextInput::make('phantasy_name')
+                                    ->label('Nome Fantasia')
+                                    ->columnSpan(1),
+                            ])->columns(3),
                     ])->columns(3),
-                Section::make('')
+                Section::make()
+                    ->schema([
+                        FileUpload::make('certificatePFX')
+                            ->label('Certificado PFX')
+                            ->disk('local')
+                            ->preserveFilenames()
+                            ->visibility('private')
+                            ->columnSpan(2),
+                        TextInput::make('password_certificate')
+                            ->label('Senha do Certificado')
+                            ->password()
+                            ->revealable(true)
+                            ->columns(1),
+                ])
+                    ->visible(fn (Get $get) :bool => $get('type_branch') == TypeBranchEnum::MATRIZ->getLabel())
+                    ->columns(3),
+                Section::make()
                     ->schema([
                         TextInput::make('municipal_registration')->label('Incrição Municipal'),
                         TextInput::make('state_registration')->label('Incrição Estadual'),
                     ])->columns(2),
-                Section::make('')
+                Section::make()
                     ->schema([
                         Section::make('')->schema([
                             Cep::make('postal_code')
@@ -76,7 +113,7 @@ class BranchResource extends Resource
                                 ),
                             TextInput::make('complement')->label('Complemento'),
                         ])->columns(2),
-                        Grid::make('')
+                        Grid::make()
                             ->schema([
                                 TextInput::make('street')->label('Rua'),
                                 TextInput::make('number')->label('Número'),

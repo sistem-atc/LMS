@@ -1,8 +1,9 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
+use App\Models\Branch;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 return new class extends Migration
 {
@@ -15,8 +16,10 @@ return new class extends Migration
             $table->id();
             $table->string('abbreviation');
             $table->string('name');
+            $table->string('phantasy_name')->nullable();
             $table->string('cnpj');
             $table->string('type_branch');
+            $table->foreignIdFor(Branch::class, 'branch_matriz')->nullable();
             $table->string('municipal_registration')->nullable();
             $table->string('state_registration');
             $table->string('postal_code');
@@ -30,6 +33,8 @@ return new class extends Migration
             $table->string('gia')->nullable();
             $table->string('ddd')->nullable();
             $table->string('siafi')->nullable();
+            $table->string('certificatePFX')->nullable();
+            $table->string('password_certificate')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

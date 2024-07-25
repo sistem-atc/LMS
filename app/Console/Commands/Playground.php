@@ -3,6 +3,9 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use NFePHP\CTe\Tools;
+use NFePHP\Common\Certificate;
+use NFePHP\Common\Soap\SoapCurl;
 
 class Playground extends Command
 {
@@ -13,18 +16,19 @@ class Playground extends Command
     public function handle(): int
     {
 
-        //$Multi = new MultiEmbarcadorService;
-        //$Multi->BuscarCTes(strtotime('31/01/2023'), strtotime('31/01/2023'));
+        $arr = config('speed-cte');
 
-        /*$Itau = new ItauService;
-        $return = $Itau->ConsultarBoletos();
-        dd($return);*/
+        $configJson = json_encode($arr);
+        $content = file_get_contents(storage_path('certificate\G2L_CTe.pfx'));
 
-        /**
-         * Comandos para rodar apos fresh:seed
-         * php artisan shield:generate --all
-         * php artisan shield:super-admin --user=1
-         */
+        $tools = new Tools($configJson, Certificate::readPfx($content, '123456'));
+        $tools->model('57');
+
+        $response = $tools->sefazStatus('SP');
+
+        header('Content-type: text/xml; charset=UTF-8');
+
+        dd($response);
 
         return Command::SUCCESS;
     }

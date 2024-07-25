@@ -16,6 +16,7 @@ class CreateBranch extends CreateRecord
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {
+
         $data['cnpj'] = str_replace('/', '', str_replace('-', '', str_replace('.', '', $data['cnpj'])));
         return $data;
     }

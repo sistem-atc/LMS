@@ -27,6 +27,7 @@ class EditBranch extends EditRecord
 
     protected function handleRecordUpdate(Model $record, array $data): Model
     {
+
         $data['cnpj'] = str_replace('/', '', str_replace('-', '', str_replace('.', '', $data['cnpj'])));
 
         $record->update($data);

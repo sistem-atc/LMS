@@ -20,6 +20,7 @@
         "leandrocfe/filament-ptbr-form-fields": "^3.0",
         "mokhosh/filament-kanban": "*",
         "nfephp-org/sped-cte": "^5.0",
+        "nfephp-org/sped-da": "^1.1",
         "nfephp-org/sped-nfe": "^5.1",
         "rupadana/filament-api-service": "^3.1",
         "spatie/laravel-permission": "^6.4",

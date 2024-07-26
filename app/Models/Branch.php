@@ -16,7 +16,7 @@ class Branch extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'abbreviation', 'name', 'cnpj', 'type_branche', 'municipal_registration', 'state_registration',
+        'abbreviation', 'name', 'cnpj', 'type_branche', 'branch_matriz', 'municipal_registration', 'state_registration',
         'postal_code', 'street', 'complement', 'number', 'district', 'city', 'state', 'ibge', 'gia', 'ddd',
         'siafi', 'certificatePFX', 'password_certificate', 'phantasy_name'
     ];

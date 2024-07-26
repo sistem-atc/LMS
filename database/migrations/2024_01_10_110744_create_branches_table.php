@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('phantasy_name')->nullable();
             $table->string('cnpj');
             $table->string('type_branch');
-            $table->foreignIdFor(Branch::class, 'branch_matriz')->nullable();
+            $table->foreignIdFor(Branch::class, 'branch_matriz')->default(0);
             $table->string('municipal_registration')->nullable();
             $table->string('state_registration');
             $table->string('postal_code');

@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Settings\Branch;
 
+use Closure;
 use App\Models\Branch;
 use Filament\Forms\Get;
 use Filament\Forms\Form;
@@ -9,6 +10,7 @@ use Filament\Tables\Table;
 use App\Enums\TypeBranchEnum;
 use Filament\Resources\Resource;
 use Filament\Forms\Components\Grid;
+use Filament\Forms\Components\Field;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Section;
@@ -73,17 +75,30 @@ class BranchResource extends Resource
                         FileUpload::make('certificatePFX')
                             ->label('Certificado PFX')
                             ->disk('local')
-                            ->preserveFilenames()
+                            ->directory('certificate')
                             ->visibility('private')
                             ->columnSpan(2),
                         TextInput::make('password_certificate')
                             ->label('Senha do Certificado')
                             ->password()
                             ->revealable(true)
-                            ->columns(1),
+                            ->columnSpan(1),
                 ])
                     ->visible(fn (Get $get) :bool => $get('type_branch') == TypeBranchEnum::MATRIZ->getLabel())
                     ->columns(3),
+                Section::make()
+                    ->schema([
+                        Select::make('branch_matriz')
+                            ->label('Empresa Matriz')
+                            ->relationship(
+                                name: 'branch_matriz',
+                                titleAttribute: 'name',
+                                modifyQueryUsing: fn (Builder $query) => $query->where('type_branch', '=', TypeBranchEnum::MATRIZ),
+                            )
+                                ->columnSpan(2),
+                    ])
+                        ->visible(fn (Get $get) :bool => $get('type_branch') == TypeBranchEnum::FILIAL->getLabel())
+                        ->columns(3),
                 Section::make()
                     ->schema([
                         TextInput::make('municipal_registration')->label('Incrição Municipal'),

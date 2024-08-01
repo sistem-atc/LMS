@@ -2,7 +2,9 @@
 
     Validar Cadastro das Filiais =>
         Verificar a exclusão do certificado limpe o arquivo do disco tambem.
-        
+
+    Ajustar as configurações do speed =>
+        Validar a melhor forma de passar os parametros para dentro do config.
 
     Notas Fiscais dos clientes =>
         Terminar de construir a API
@@ -23,9 +25,22 @@
             - Validar como incluir as configurações
             - Implementar no banco de dados as alterações
 
-
 @Before Migrate:fresh
 
     php artisan shield:generate --all
     php artisan db:seed --class=UserSeeder
     php artisan shield:super-admin --user=1
+
+@Adjusts necessary in OpenSSL 3
+
+    /etc/ssl/openssl.cnf
+
+    [provider_sect]
+    default = default_sect
+    legacy = legacy_sect
+
+    [default_sect]
+    activate = 1
+
+    [legacy_sect]
+    activate = 1

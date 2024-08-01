@@ -5,7 +5,6 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use NFePHP\CTe\Tools;
 use NFePHP\Common\Certificate;
-use NFePHP\Common\Soap\SoapCurl;
 
 class Playground extends Command
 {
@@ -19,9 +18,11 @@ class Playground extends Command
         $arr = config('speed-cte');
 
         $configJson = json_encode($arr);
-        $content = file_get_contents(storage_path('certificate\G2L_CTe.pfx'));
+        $content = file_get_contents(storage_path('certificate/G2L_CTe.pfx'));
+
 
         $tools = new Tools($configJson, Certificate::readPfx($content, '123456'));
+
         $tools->model('57');
 
         $response = $tools->sefazStatus('SP');

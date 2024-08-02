@@ -13,16 +13,16 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         $user = DB::table('users')->insert([
-                    'name' => 'Kleber Pracidelli Patti',
-                    'email' => 'kleber.patti@logisticag2l.com.br',
-                    'branch_logged_id'=> '1',
-                    'password' => bcrypt('123456789'),
-                    'is_active' => true,
-                ]);
+            'name' => 'Kleber Pracidelli Patti',
+            'email' => 'kleber.patti' . config('domain.domain'),
+            'branch_logged_id' => '1',
+            'password' => bcrypt('123456789'),
+            'is_active' => true,
+        ]);
 
         DB::table('employees')->insert([
             'user_id' => $user,
-            'branch_id'=> '1',
+            'branch_id' => '1',
             'name' => 'Kleber Pracidelli Patti',
             'cpf' => '30908105819',
             'personalmail' => 'sistem.atc@gmail.com',
@@ -39,6 +39,5 @@ class UserSeeder extends Seeder
             'siafi' => '6789',
             'is_active' => true,
         ]);
-
     }
 }

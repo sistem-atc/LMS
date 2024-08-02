@@ -15,7 +15,13 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('type');
             $table->morphs('notifiable');
-            $table->text('data');
+
+            if (ENV('DB_CONNECTION') === 'pgsql'){
+                $table->json('data');
+            } else {
+                $table->text('data');
+            }
+
             $table->timestamp('read_at')->nullable();
             $table->timestamps();
         });

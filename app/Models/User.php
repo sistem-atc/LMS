@@ -32,7 +32,7 @@ class User extends Authenticatable implements FilamentUser, HasName
      * @var array<int, string>
      */
     protected $fillable = [
-        'name','email', 'branche_logged_id', 'password', 'is_active'
+        'name', 'email', 'branche_logged_id', 'password', 'is_active'
     ];
 
     /**
@@ -75,5 +75,4 @@ class User extends Authenticatable implements FilamentUser, HasName
     {
         return $this->hasMany(DocumentFiscalCustomer::class);
     }
-
 }

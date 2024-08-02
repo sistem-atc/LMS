@@ -36,10 +36,10 @@ class AdminPanelProvider extends PanelProvider
             ->brandLogoHeight('3.5rem')
             ->favicon(asset('images/favicon.ico'))
             ->sidebarFullyCollapsibleOnDesktop()
-            ->databaseNotifications()
             ->id('lms')
             ->path('lms')
             ->login()
+            ->databaseNotifications()
             ->profile(EditProfile::class, false)
             ->userMenuItems($this->useMenuItems())
             ->plugins($this->usePlugins())
@@ -49,21 +49,21 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->renderHook(
                 'panels::global-search.before',
-                function (): View
-                {
-                    session(null)->has('DateBase')?
-                        $DateBase = session(null)->get('DateBase'):
+                function (): View {
+                    session(null)->has('DateBase') ?
+                        $DateBase = session(null)->get('DateBase') :
                         $DateBase = today()->format('d/m/Y');
 
-                    if( is_null(Auth::user()->employee->branch)) {
+                    if (is_null(Auth::user()->employee->branch)) {
                         $branchelooged = 'NULL';
                     } else {
-                        !is_null(Auth::user()->branch_logged)?
-                            $branchelooged = Auth::user()->branch_logged['abbreviation']:
+                        !is_null(Auth::user()->branch_logged) ?
+                            $branchelooged = Auth::user()->branch_logged['abbreviation'] :
                             $branchelooged = Auth::user()->employee->branch['abbreviation'];
                     }
 
-                    return view('filament.resources.pages.branchelogged',
+                    return view(
+                        'filament.resources.pages.branchelogged',
                         [
                             'branchelooged' => $branchelooged,
                             'datebase' => $DateBase,
@@ -77,14 +77,13 @@ class AdminPanelProvider extends PanelProvider
                 Pages\Dashboard::class,
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
-            ->widgets([
-            ])
+            ->widgets([])
             ->viteTheme('resources/css/filament/lms/theme.css')
             ->font('Nunito')
             ->middleware($this->useMiddleware())
             ->authMiddleware([
-                    Authenticate::class,
-                ]);
+                Authenticate::class,
+            ]);
     }
 
     private function useMenuItems(): array
@@ -119,5 +118,4 @@ class AdminPanelProvider extends PanelProvider
             DispatchServingFilamentEvent::class,
         ];
     }
-
 }

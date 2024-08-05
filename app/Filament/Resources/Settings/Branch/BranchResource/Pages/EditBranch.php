@@ -2,10 +2,12 @@
 
 namespace App\Filament\Resources\Settings\Branch\BranchResource\Pages;
 
-use App\Filament\Resources\Settings\Branch\BranchResource;
 use Filament\Actions;
-use Filament\Resources\Pages\EditRecord;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
+
+use Filament\Resources\Pages\EditRecord;
+use App\Filament\Resources\Settings\Branch\BranchResource;
 
 class EditBranch extends EditRecord
 {
@@ -29,6 +31,10 @@ class EditBranch extends EditRecord
     {
 
         $data['cnpj'] = str_replace('/', '', str_replace('-', '', str_replace('.', '', $data['cnpj'])));
+
+        if ($data['certificatePFX'] == null || $data['certificatePFX'] !== $record->getOriginal('certificatePFX')){
+            Storage::disk('local')->delete('certificate\\' . $record->getOriginal('certificatePFX'));
+        };
 
         $record->update($data);
 

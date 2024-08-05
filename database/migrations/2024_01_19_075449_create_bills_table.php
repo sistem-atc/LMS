@@ -1,13 +1,13 @@
 <?php
 
 use App\Models\Bank;
-use App\Models\Customer;
 use App\Models\Nature;
-use App\Models\ReceivingType;
+use App\Models\Customer;
 use App\Models\Situation;
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
+use App\Models\ReceivingType;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 return new class extends Migration
 {
@@ -41,6 +41,7 @@ return new class extends Migration
             $table->float('interests');
             $table->string('boleto_number')->nullable();
             $table->string('barr_code')->nullable();
+            $table->blameable();
             $table->timestamps();
             $table->softDeletes();
         });

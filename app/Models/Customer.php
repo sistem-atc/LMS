@@ -7,19 +7,24 @@ use App\Models\Bill;
 use App\Models\Branch;
 use App\Models\Nature;
 use App\Models\Vendor;
+use App\Traits\Blameable;
 use App\Models\PaymentTerm;
 use App\Models\GroupCustomer;
 use Laravel\Sanctum\HasApiTokens;
 use App\Models\DocumentFiscalCustomer;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Customer extends Model
 {
-    use HasFactory, HasApiTokens, SoftDeletes;
+    use HasFactory;
+    use HasApiTokens;
+    use SoftDeletes;
+    use Blameable;
+
     protected $fillable = [
         'cpf_or_cnpj', 'company_name', 'type_person', 'fantasy_name', 'postal_code', 'street',
         'complement', 'number', 'district', 'city', 'state', 'ibge', 'gia', 'ddd', 'siafi',

@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('Filial Origem');
             $table->string('Numero Documento');
             $table->string('Serie');
+            $table->blameable();
             $table->timestamps();
             $table->softDeletes();
         });

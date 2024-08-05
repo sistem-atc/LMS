@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Branch;
+use App\Traits\Blameable;
 use App\Models\DocumentFiscalCustomer;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -13,6 +14,7 @@ class Lot extends Model
 {
     use HasFactory;
     use SoftDeletes;
+    use Blameable;
 
     protected $fillable = [
         'origin_branche_id',

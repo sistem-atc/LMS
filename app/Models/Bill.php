@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Bank;
+use App\Traits\Blameable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -13,6 +14,7 @@ class Bill extends Model
 {
     use HasFactory;
     use SoftDeletes;
+    use Blameable;
 
     protected $fillable = [
         'nature_id',

@@ -21,6 +21,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->boolean('is_active')->default(true);
             $table->rememberToken();
+            $table->blameable();
             $table->timestamps();
             $table->softDeletes();
         });

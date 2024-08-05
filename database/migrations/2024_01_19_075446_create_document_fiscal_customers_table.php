@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\Lot;
 use App\Models\User;
 use App\Models\CodeUf;
 use App\Models\Customer;
@@ -45,6 +44,7 @@ return new class extends Migration
             $table->string('chNFe')->unique();
             $table->foreignIdFor(User::class, 'create_user_id');
             $table->foreignIdFor(User::class, 'update_user_id')->nullable();
+            $table->blameable();
             $table->timestamps();
             $table->softDeletes();
         });

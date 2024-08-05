@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreignIdFor(Branch::class, 'origin_branch_id');
             $table->foreignIdFor(Branch::class, 'recipient_branch_id');
             $table->boolean('municipal_route');
+            $table->blameable();
             $table->timestamps();
             $table->softDeletes();
         });

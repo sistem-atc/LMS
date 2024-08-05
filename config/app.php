@@ -171,6 +171,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         Spatie\Permission\PermissionServiceProvider::class,
         App\Providers\TenancyServiceProvider::class,
+        App\Providers\BlameableServiceProvider::class,
     ])->toArray(),
 
     /*

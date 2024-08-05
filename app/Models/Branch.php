@@ -2,18 +2,20 @@
 
 namespace App\Models;
 
+use App\Traits\Blameable;
 use App\Enums\TypeBranchEnum;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Branch extends Model
 {
     use HasFactory;
     use HasRoles;
     use SoftDeletes;
+    use Blameable;
 
     protected $fillable = [
         'abbreviation', 'name', 'cnpj', 'type_branche', 'branch_matriz', 'municipal_registration', 'state_registration',

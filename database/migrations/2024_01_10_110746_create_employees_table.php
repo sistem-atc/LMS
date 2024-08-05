@@ -32,6 +32,7 @@ return new class extends Migration
             $table->string('ddd')->nullable();
             $table->string('siafi')->nullable();
             $table->boolean('is_active')->default(true);
+            $table->blameable();
             $table->timestamps();
             $table->softDeletes();
         });

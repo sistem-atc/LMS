@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\Blameable;
 use App\Observers\EmployeeObserver;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -12,7 +13,9 @@ use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 #[ObservedBy([EmployeeObserver::class])]
 class Employee extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory;
+    use SoftDeletes;
+    use Blameable;
 
     protected $fillable = [
         'user_id', 'branch_id', 'name', 'cpf', 'personalmail', 'postal_code', 'street', 'complement',

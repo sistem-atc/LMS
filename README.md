@@ -27,9 +27,11 @@
 
 @Before Migrate:fresh
 
+    sudo php artisan cache:clear
     php artisan shield:generate --all
     php artisan db:seed --class=UserSeeder
     php artisan shield:super-admin --user=1
+    php artisan optimize:clear
 
 @Adjusts necessary in OpenSSL 3
 

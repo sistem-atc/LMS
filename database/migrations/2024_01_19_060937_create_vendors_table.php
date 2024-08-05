@@ -1,9 +1,9 @@
 <?php
 
 use App\Models\Branch;
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 return new class extends Migration
 {
@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('cpf')->unique();
             $table->string('email');
             $table->foreignIdFor(Branch::class);
+            $table->blameable();
             $table->timestamps();
             $table->softDeletes();
         });

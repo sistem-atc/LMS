@@ -2,13 +2,13 @@
 
 use App\Models\Bank;
 use App\Models\Branch;
-use App\Models\GroupCustomer;
 use App\Models\Nature;
-use App\Models\PaymentTerm;
 use App\Models\Vendor;
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
+use App\Models\PaymentTerm;
+use App\Models\GroupCustomer;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 return new class extends Migration
 {
@@ -52,6 +52,7 @@ return new class extends Migration
             $table->string('Token')->nullable();
             $table->foreignIdFor(GroupCustomer::class)->nullable();
             $table->string('tokenText')->nullable();
+            $table->blameable();
             $table->timestamps();
             $table->softDeletes();
         });

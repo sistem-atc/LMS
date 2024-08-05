@@ -2,16 +2,19 @@
 
 namespace App\Models;
 
-use App\Enums\TypeFreightEnum;
+use App\Traits\Blameable;
 use App\Enums\WeekdayEnum;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Enums\TypeFreightEnum;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class PaymentTerm extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory;
+    use SoftDeletes;
+    use Blameable;
 
     protected $fillable = [
         'name', 'type_freight', 'weekday', 'especific_date', 'term',

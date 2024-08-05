@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\Blameable;
 use App\Models\DocumentFiscalCustomer;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -12,6 +13,7 @@ class CodeUf extends Model
 {
     use HasFactory;
     use SoftDeletes;
+    use Blameable;
 
     protected $fillable = [
         'code_uf', 'federation_unit', 'uf',

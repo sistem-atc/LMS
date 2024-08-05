@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 return new class extends Migration
 {
@@ -20,6 +20,7 @@ return new class extends Migration
             $table->integer('quotation')->nullable();
             $table->unsignedBigInteger('document_fiscal_customer_id');
             $table->foreign('document_fiscal_customer_id')->references('id')->on('document_fiscal_customers');
+            $table->blameable();
             $table->timestamps();
             $table->softDeletes();
         });

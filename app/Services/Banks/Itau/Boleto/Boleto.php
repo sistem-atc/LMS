@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Services\Banks\BanksGateway\Connector\Itau;
+namespace App\Services\Banks\Itau\Boleto;
 
 use App\Services\Banks\BanksGateway\Contracts\AdapterInterface;
 use App\Services\Banks\BanksGateway\Contracts\BoletoInterface;

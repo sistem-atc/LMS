@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Services\Banks\Itau;
+namespace App\Services\Banks\Connectors;
 
 use Illuminate\Support\Facades\Storage;
 use App\Services\Banks\BanksGateway\Contracts\BanksInterface;
 use App\Services\Banks\Itau\Concerns\ItauConfig;
 
-class ItauService implements BanksInterface
+class ItauConnector implements BanksInterface
 {
 
     use ItauConfig;
@@ -39,7 +39,7 @@ class ItauService implements BanksInterface
         }
     }
 
-    public function patch(string $url, ?array $params = '')
+    public function patch(string $url, ?array $params)
     {
         try {
             return $this->http

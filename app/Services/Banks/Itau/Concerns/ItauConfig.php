@@ -3,10 +3,10 @@
 namespace App\Services\Banks\Itau\Concerns;
 
 use App\Models\Bank;
-use App\Services\Banks\Itau\Endpoints\GetTokenItau;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Client\PendingRequest;
-use Illuminate\Support\Facades\Http;
+use App\Services\Banks\Itau\Concerns\GetTokenItau;
 
 trait ItauConfig
 {

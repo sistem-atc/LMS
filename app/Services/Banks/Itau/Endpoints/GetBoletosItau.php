@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Services\Banks\Itau\Endpoints;
+
 use App\Services\Banks\Itau\Concerns\ItauClient;
 
 class GetBoletosItau
@@ -220,7 +221,7 @@ class GetBoletosItau
             ],
         ];
 
-        return BaseEndpoint::post('/boletos', $body);
+        return [];//BaseEndpoint::post('/boletos', $body);
 
     }
 
@@ -228,17 +229,17 @@ class GetBoletosItau
     {
 
         $body = [
-            'id_beneficiario' =>
-                BaseEndpoint::$databank->agencia .
-                str_pad(BaseEndpoint::$databank->conta, 7, 0, STR_PAD_LEFT) .
-                BaseEndpoint::$databank->dv_conta,
+            'id_beneficiario' => '',
+                //BaseEndpoint::$databank->agencia .
+                //str_pad(BaseEndpoint::$databank->conta, 7, 0, STR_PAD_LEFT) .
+                //BaseEndpoint::$databank->dv_conta,
             'codigo_carteira' => '109',
             'nosso_numero' => '000000095',
             'data_inclusao' => '2023-12-12',
             'view' => 'specific'
         ];
 
-        return BaseEndpoint::get('/boletos', $body);
+        return []; //BaseEndpoint::get('/boletos', $body);
     }
 
     public function Enviar_Abatimento(int $Id_Boleto): array
@@ -247,11 +248,11 @@ class GetBoletosItau
             'valor_abatimento' => '100.00'
         ];
 
-        return BaseEndpoint::patch('boletos/' . $Id_Boleto . '/abatimento', $body);
+        return []; //BaseEndpoint::patch('boletos/' . $Id_Boleto . '/abatimento', $body);
     }
 
     public function Baixa_Boleto(int $Id_Boleto): array
     {
-        return BaseEndpoint::patch('boletos/' . $Id_Boleto . '/baixa');
+        return []; //BaseEndpoint::patch('boletos/' . $Id_Boleto . '/baixa');
     }
 }

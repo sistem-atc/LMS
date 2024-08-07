@@ -8,6 +8,6 @@ interface BanksInterface
 
     public function post(string $url, array $params);
 
-    public function patch(string $url, ?array $params = '');
+    public function patch(string $url, ?array $params);
 
 }

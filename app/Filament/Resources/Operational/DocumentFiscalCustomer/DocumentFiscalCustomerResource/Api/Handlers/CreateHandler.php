@@ -1,11 +1,13 @@
 <?php
+
 namespace App\Filament\Resources\Operational\DocumentFiscalCustomer\DocumentFiscalCustomerResource\Api\Handlers;
 
 use Illuminate\Http\Request;
 use Rupadana\ApiService\Http\Handlers;
 use App\Filament\Resources\Operational\DocumentFiscalCustomer\DocumentFiscalCustomerResource;
 
-class CreateHandler extends Handlers {
+class CreateHandler extends Handlers
+{
     public static string | null $uri = '/';
     public static string | null $resource = DocumentFiscalCustomerResource::class;
     public static bool $public = true;
@@ -15,7 +17,8 @@ class CreateHandler extends Handlers {
         return Handlers::POST;
     }
 
-    public static function getModel() {
+    public static function getModel()
+    {
         return static::$resource::getModel();
     }
 
@@ -23,9 +26,6 @@ class CreateHandler extends Handlers {
     {
 
         $model = new (static::getModel());
-
-        //Incluir Camada de Validação de Dados, quem está enviando é o emissor da nota
-        $request['create_user_id'] = $request->user()->id;
         $request = new Request([$request]);
         $model->fill($request->all());
 

@@ -42,8 +42,6 @@ return new class extends Migration
             $table->string('pesoB')->nullable();
             $table->longText('infAdic')->nullable();
             $table->string('chNFe')->unique();
-            $table->foreignIdFor(User::class, 'create_user_id');
-            $table->foreignIdFor(User::class, 'update_user_id')->nullable();
             $table->blameable();
             $table->timestamps();
             $table->softDeletes();

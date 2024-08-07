@@ -18,7 +18,8 @@ class SuportFunctions
     public static array $msg = [];
     public static array $datanotes = [];
 
-    public static function ImportNotFis(array $data): Notification {
+    public static function ImportNotFis(array $data): Notification
+    {
 
         $filePath = $data['attachment'];
         $file = fopen(Storage::path($filePath), 'r');
@@ -27,7 +28,7 @@ class SuportFunctions
 
         while ($row = fgetcsv($file)) {
             //$ctes[] = array_combine($header, $row);
-            $line ++;
+            $line++;
         }
 
         fclose($file);
@@ -35,13 +36,13 @@ class SuportFunctions
         unlink(Storage::path($filePath));
 
         return Notification::make()
-                ->success()
-                ->title('NOTFIS Importado com Sucesso')
-                ->body( $line -2 . ' notas foram importadas');
-
+            ->success()
+            ->title('NOTFIS Importado com Sucesso')
+            ->body($line - 2 . ' notas foram importadas');
     }
 
-    public static function ImportXml(array $data): Notification {
+    public static function ImportXml(array $data): Notification
+    {
 
         foreach ($data['attachment'] as $xml) {
 
@@ -80,17 +81,17 @@ class SuportFunctions
         };
 
         $mountnotify = Notification::make()
-                        ->info()
-                        ->title('Resultado da Importação')
-                        ->body(Str::markdown('XMLs importados, verifique os detalhes: <br>' . join('<br>', self::$msg)))
-                        ->persistent()
-                        ->send();
+            ->info()
+            ->title('Resultado da Importação')
+            ->body(Str::markdown('XMLs importados, verifique os detalhes: <br>' . join('<br>', self::$msg)))
+            ->persistent()
+            ->send();
 
         return $mountnotify;
-
     }
 
-    public static function StoreDocumentFiscalCustomer(array $data): void {
+    public static function StoreDocumentFiscalCustomer(array $data): void
+    {
 
         $storeData = [
             'cUF_id' => CodeUf::where('code_uf', '=', Arr::get($data, 'NFe.infNFe.ide.cUF'))->first()->id,
@@ -120,11 +121,8 @@ class SuportFunctions
             'pesoB' => Arr::get($data, 'NFe.infNFe.transp.pesoB'),
             'infAdic' => Arr::get($data, 'NFe.infNFe.infAdic.infAdFisco'),
             'chNFe' => Arr::get($data, 'protNFe.infProt.chNFe'),
-            'create_user_id' => auth()->id(),
         ];
 
         DocumentFiscalCustomer::create($storeData);
-
     }
-
 }

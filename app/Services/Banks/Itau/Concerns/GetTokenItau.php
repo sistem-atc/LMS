@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Banks\Itau\Endpoints;
+namespace App\Services\Banks\Itau\Concerns;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;

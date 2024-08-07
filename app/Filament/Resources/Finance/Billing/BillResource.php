@@ -25,9 +25,6 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\Finance\Billing\BillResource\Pages;
 use App\Filament\Resources\Finance\Billing\BillResource\Pages\SuportFunctions;
 use App\Models\Customer;
-use Closure;
-
-use function PHPUnit\Framework\returnSelf;
 
 class BillResource extends Resource
 {

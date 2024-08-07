@@ -13,11 +13,4 @@ class CreateDocumentFiscalCustomer extends CreateRecord
     {
         return $this->getResource()::getUrl('index');
     }
-
-    protected function mutateFormDataBeforeCreate(array $data): array
-    {
-        $data['create_user_id'] = auth()->id();
-        return $data;
-    }
-
 }

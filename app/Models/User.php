@@ -76,9 +76,4 @@ class User extends Authenticatable implements FilamentUser, HasName
     {
         return $this->belongsTo(Branch::class);
     }
-
-    public function document_fiscal_customer(): HasMany
-    {
-        return $this->hasMany(DocumentFiscalCustomer::class);
-    }
 }

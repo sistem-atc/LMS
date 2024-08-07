@@ -23,10 +23,4 @@ class EditDocumentFiscalCustomer extends EditRecord
     {
         return $this->getResource()::getUrl('index');
     }
-
-    protected function mutateFormDataBeforeSave(array $data): array
-    {
-        $data['create_user_id'] = auth()->id();
-        return $data;
-    }
 }

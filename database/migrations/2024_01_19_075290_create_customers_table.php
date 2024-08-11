@@ -2,6 +2,7 @@
 
 use App\Models\Bank;
 use App\Models\Branch;
+use App\Models\EdiPattern;
 use App\Models\Nature;
 use App\Models\Vendor;
 use App\Models\PaymentTerm;
@@ -51,6 +52,7 @@ return new class extends Migration
             $table->string('BaseEndpoint')->nullable();
             $table->string('Token')->nullable();
             $table->foreignIdFor(GroupCustomer::class)->nullable();
+            $table->foreignIdFor(EdiPattern::class)->nullable();
             $table->string('tokenText')->nullable();
             $table->blameable();
             $table->timestamps();

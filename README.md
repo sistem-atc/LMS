@@ -1,3 +1,9 @@
+@BUG
+
+    Cadastro de Clientes =>
+        Ao alterar um cadastro existente está com problema no token.
+        Validar demais erros e verificar se vinculou corretamente o padrão de EDI.
+
 @WIP
 
     Validar Cadastro das Filiais =>

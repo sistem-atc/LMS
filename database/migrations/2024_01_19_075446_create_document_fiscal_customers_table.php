@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('serie')->nullable();
             $table->string('nNF')->nullable();
             $table->string('dEmi')->nullable();
+            $table->foreignIdFor(Customer::class, 'emit_customer_id');
             $table->foreignIdFor(Customer::class, 'sender_customer_id');
             $table->foreignIdFor(Customer::class, 'recipient_customer_id');
             $table->string('vBC')->nullable();

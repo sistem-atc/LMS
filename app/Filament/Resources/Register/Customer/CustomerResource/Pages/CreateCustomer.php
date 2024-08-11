@@ -41,9 +41,11 @@ class CreateCustomer extends CreateRecord
     protected function beforeCreate(): void
     {
         if (auth()->user()->can('create_token')) {
-            $customer = Customer::find($this->thisRecord);
-            $this->newToken = $customer->createToken($this->createToken['name'], $this->createToken['ability']);
-            $tokenText =  $this->newToken->plainTextToken;
+            if ( $this->createToken['name'] || $this->createToken['ability']) {
+                $customer = Customer::find($this->thisRecord);
+                $this->newToken = $customer->createToken($this->createToken['name'], $this->createToken['ability']);
+                $tokenText =  $this->newToken->plainTextToken;
+            }
         }
     }
 

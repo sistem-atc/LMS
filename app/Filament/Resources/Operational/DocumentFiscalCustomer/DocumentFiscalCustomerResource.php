@@ -20,6 +20,8 @@ use Leandrocfe\FilamentPtbrFormFields\Money;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\Operational\DocumentFiscalCustomer\DocumentFiscalCustomerResource\Pages;
 use App\Models\CodeUf;
+use Filament\Forms\Get;
+use Illuminate\Support\Collection;
 
 class DocumentFiscalCustomerResource extends Resource
 {
@@ -55,13 +57,14 @@ class DocumentFiscalCustomerResource extends Resource
                             ),
                         TextInput::make('cUF_id')
                             ->label('Código da UF')
-                            ->columnSpan(2)
-                            ->disabled(),
+                            ->dehydrateStateUsing(fn (Get $get): string => substr($get('chNFe'), 0, 2))
+                            ->readOnly()
+                            ->columnSpan(2),
                         TextInput::make('mod')
                             ->label('Modelo')
                             ->columnSpan(1)
-                            ->maxLength(3)
-                            ->disabled(),
+                            ->readOnly()
+                            ->maxLength(3),
                         TextInput::make('nNF')
                             ->label('Numero NF')
                             ->columnSpan(2)
@@ -77,8 +80,12 @@ class DocumentFiscalCustomerResource extends Resource
                     ])->columns(6),
                 Section::make('')
                     ->schema([
+                        Select::make('emit_customer_id')
+                            ->label('Cliente Emitente')
+                            ->relationship('emit_customer', 'company_name')
+                            ->required(),
                         Select::make('sender_customer_id')
-                            ->label('Cliente Remetente/Emitente')
+                            ->label('Cliente Remetente')
                             ->relationship('sender_customer', 'company_name')
                             ->required(),
                         Select::make('recipient_customer_id')

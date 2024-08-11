@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Register\Customer;
 
+use App\Enums\CustomerRiscEnum;
 use Filament\Tables;
 use Filament\Forms\Get;
 use App\Models\Customer;
@@ -19,9 +20,11 @@ use Illuminate\Database\Eloquent\Builder;
 use Leandrocfe\FilamentPtbrFormFields\Cep;
 use Leandrocfe\FilamentPtbrFormFields\PhoneNumber;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\Shield\Token\TokenResource;
 use App\Filament\Resources\Register\Customer\CustomerResource\Pages;
 use App\Filament\Resources\Register\Customer\CustomerResource\Pages\SuportFunctions;
-use App\Filament\Resources\Shield\Token\TokenResource;
+use App\Filament\Resources\Register\GroupCustomer\GroupCustomerResource;
+use App\Filament\Resources\Register\PaymentTerm\PaymentTermResource;
 
 class CustomerResource extends Resource
 {
@@ -137,74 +140,77 @@ class CustomerResource extends Resource
     private static function getTabOthers() : array
     {
         return [
-            Section::make('')
-                ->schema([
-                    Grid::make('')
-                        ->schema([
-                            TextInput::make('municipal_registration')
-                                ->label('Incrição Municipal'),
-                            TextInput::make('state_registration')
-                                ->label('Incrição Estadual'),
-                        ])->columns(2),
-                    Grid::make('')
-                        ->schema([
-                            PhoneNumber::make('phone_number')
-                                ->label('Numero Telefone')
-                                ->format('(99)9999-9999'),
-                            PhoneNumber::make('cellphone')
-                                ->label('Numero Celular')
-                                ->format('(99)99999-9999'),
-                        ])->columns(2),
-                    TextInput::make('region')
-                        ->label('Região'),
-                    Select::make('branch_id')
-                        ->label('Filial')
-                        ->searchable()
-                        ->preload()
-                        ->relationship('branch', 'abbreviation'),
-                    Select::make('nature_id')
-                        ->label('Natureza')
-                        ->searchable()
-                        ->preload()
-                        ->relationship('nature', 'name'),
-                    Select::make('vendor_id')
-                        ->label('Vendedor')
-                        ->searchable()
-                        ->preload()
-                        ->relationship('vendor', 'name'),
-                    Select::make('bank_id')
-                        ->searchable()
-                        ->preload()
-                        ->relationship('bank', 'nome_banco')
-                        ->label('Banco Padrão'),
-                    TextInput::make('priority')
-                        ->label('Prioridade'),
-                    Select::make('risc')
-                        ->label('Risco')
-                        ->options([
-                            'A' => 'Risco A',
-                            'B' => 'Risco B',
-                            'C' => 'Risco C',
-                            'D' => 'Risco D',
-                            'E' => 'Risco E',
-                            'F' => 'Risco F',
-                        ]),
-                    TextInput::make('mail_operational')
-                        ->label('Email Operacional'),
-                    TextInput::make('mail_financial')
-                        ->label('Email Financeiro'),
-                    Select::make('group_customer_id')
-                        ->label('Grupo Cliente')
-                        ->searchable()
-                        ->preload()
-                        ->relationship('group_customer', 'name'),
-                    Select::make('payment_term_id')
-                        ->label('Prazo de Pagamento')
-                        ->searchable()
-                        ->preload()
-                        ->relationship('payment_term', 'name'),
-                ])
-                    ->columns(3),
+                Section::make('')
+                    ->schema([
+                        Grid::make('')
+                            ->schema([
+                                TextInput::make('municipal_registration')
+                                    ->label('Incrição Municipal'),
+                                TextInput::make('state_registration')
+                                    ->label('Incrição Estadual'),
+                            ])->columns(2),
+                        Grid::make('')
+                            ->schema([
+                                PhoneNumber::make('phone_number')
+                                    ->label('Numero Telefone')
+                                    ->format('(99)9999-9999'),
+                                PhoneNumber::make('cellphone')
+                                    ->label('Numero Celular')
+                                    ->format('(99)99999-9999'),
+                            ])->columns(2),
+                        TextInput::make('region')
+                            ->label('Região'),
+                        Select::make('branch_id')
+                            ->label('Filial')
+                            ->searchable()
+                            ->preload()
+                            ->relationship('branch', 'abbreviation'),
+                        Select::make('nature_id')
+                            ->label('Natureza')
+                            ->searchable()
+                            ->preload()
+                            ->relationship('nature', 'name'),
+                        Select::make('vendor_id')
+                            ->label('Vendedor')
+                            ->searchable()
+                            ->preload()
+                            ->relationship('vendor', 'name'),
+                        Select::make('bank_id')
+                            ->searchable()
+                            ->preload()
+                            ->relationship('bank', 'nome_banco')
+                            ->label('Banco Padrão'),
+                        TextInput::make('priority')
+                            ->label('Prioridade')
+                            ->default(0),
+                        Select::make('risc')
+                            ->label('Risco')
+                            ->options(CustomerRiscEnum::class)
+                            ->default('A'),
+                        TextInput::make('mail_operational')
+                            ->label('Email Operacional'),
+                        TextInput::make('mail_financial')
+                            ->label('Email Financeiro'),
+                        Select::make('group_customer_id')
+                            ->label('Grupo Cliente')
+                            ->searchable()
+                            ->preload()
+                            ->relationship('group_customer', 'name')
+                            ->createOptionForm(GroupCustomerResource::groupForm()),
+                        Select::make('payment_term_id')
+                            ->label('Prazo de Pagamento')
+                            ->searchable()
+                            ->preload()
+                            ->relationship('payment_term', 'name')
+                            ->createOptionForm(PaymentTermResource::paymentForm()),
+                        Select::make('edi_pattern_id')
+                            ->label('Padrão EDI')
+                            ->searchable()
+                            ->preload()
+                            ->relationship('edi_pattern', 'name'),
+                    ])
+                    ->columns(3)
+
         ];
     }
 

@@ -19,7 +19,8 @@ class DocumentFiscalCustomer extends Model
     use Blameable;
 
     protected $fillable = [
-        'cUF_id', 'mod', 'serie', 'nNF', 'dEmi', 'sender_customer_id', 'recipient_customer_id', 'vBC',
+        'cUF_id', 'mod', 'serie', 'nNF', 'dEmi', 'sender_customer_id', 'recipient_customer_id',
+        'emit_customer_id', 'vBC',
         'vICMS', 'vBCST', 'vST', 'vProd', 'vFrete', 'vSeg', 'vDesc', 'vIPI', 'vPIS', 'vCOFINS',
         'vOutro', 'vNF', 'modFrete', 'qVol', 'pesoL', 'pesoB', 'infAdic', 'chNFe',
     ];
@@ -32,5 +33,15 @@ class DocumentFiscalCustomer extends Model
     public function recipient_customer(): BelongsTo
     {
         return $this->BelongsTo(Customer::class);
+    }
+
+    public function emit_customer(): BelongsTo
+    {
+        return $this->belongsTo(Customer::class);
+    }
+
+    public function codeuf(): BelongsTo
+    {
+        return $this->belongsTo(CodeUf::class);
     }
 }

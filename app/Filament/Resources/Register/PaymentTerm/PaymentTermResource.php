@@ -29,33 +29,38 @@ class PaymentTermResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
-            ->schema([
-                TextInput::make('name')
-                    ->label('Nome'),
-                Select::make('type_freight')
-                    ->label('Tipo de Frete')
-                    ->multiple()
-                    ->options(TypeFreightEnum::class),
-                Select::make('weekday')
-                    ->label('Dia da Semana')
-                    ->multiple()
-                    ->options(WeekdayEnum::class),
-                Select::make('especific_date')
-                    ->label('Dias Especificos')
-                    ->multiple()
-                    ->options(
-                        function(): array{
-                            $days = [];
-                            for ($i = 1; $i <= 31; $i++) {
-                                $days[] = $i;
-                            };
+            ->schema(self::paymentForm());
+    }
 
-                            return $days;
-                        }
-                    ),
-                TextInput::make('term')
-                    ->label('Prazo'),
-            ]);
+    public static function paymentForm(): array{
+
+        return [
+            TextInput::make('name')
+                ->label('Nome'),
+            Select::make('type_freight')
+                ->label('Tipo de Frete')
+                ->multiple()
+                ->options(TypeFreightEnum::class),
+            Select::make('weekday')
+                ->label('Dia da Semana')
+                ->multiple()
+                ->options(WeekdayEnum::class),
+            Select::make('especific_date')
+                ->label('Dias Especificos')
+                ->multiple()
+                ->options(
+                    function(): array{
+                        $days = [];
+                        for ($i = 1; $i <= 31; $i++) {
+                            $days[] = $i;
+                        };
+
+                        return $days;
+                    }
+                ),
+            TextInput::make('term')
+                ->label('Prazo'),
+        ];
     }
 
     public static function table(Table $table): Table

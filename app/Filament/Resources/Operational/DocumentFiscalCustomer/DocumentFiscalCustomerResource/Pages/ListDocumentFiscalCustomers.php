@@ -28,6 +28,7 @@ class ListDocumentFiscalCustomers extends ListRecords
                             ->previewable(false)
                             ->disk('local')
                             ->preserveFilenames()
+                            ->directory('notfis_import')
                             ->acceptedFileTypes(['text/csv', 'text/plain', 'application/vnd.ms-excel'])
                     ]),
                 ])
@@ -43,6 +44,8 @@ class ListDocumentFiscalCustomers extends ListRecords
                             ->previewable(false)
                             ->disk('local')
                             ->preserveFilenames()
+                            ->directory('xml_import')
+                            ->acceptedFileTypes(['application/xml'])
                     ]),
                 ])
                 ->action(fn (array $data): Notification => SuportFunctions::ImportXml($data))

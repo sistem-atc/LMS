@@ -28,11 +28,17 @@ class GroupCustomerResource extends Resource
         return $form
             ->schema([
                 Section::make('')
-                    ->schema([
-                        TextInput::make('name')->label('Nome'),
-                        TextInput::make('description')->label('Descrição'),
-                    ])->columns(2),
+                    ->schema(self::groupForm())
+                    ->columns(2),
             ]);
+    }
+
+    public static function groupForm(): array{
+
+        return [
+            TextInput::make('name')->label('Nome'),
+            TextInput::make('description')->label('Descrição'),
+        ];
     }
 
     public static function table(Table $table): Table

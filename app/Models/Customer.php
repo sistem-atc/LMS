@@ -58,6 +58,11 @@ class Customer extends Model
         return $this->BelongsTo(GroupCustomer::class);
     }
 
+    public function edi_pattern(): BelongsTo
+    {
+        return $this->belongsTo(EdiPattern::class);
+    }
+
     public function payment_term(): BelongsTo
     {
         return $this->BelongsTo(PaymentTerm::class);

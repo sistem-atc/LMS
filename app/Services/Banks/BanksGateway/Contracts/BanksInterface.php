@@ -10,4 +10,6 @@ interface BanksInterface
 
     public function patch(string $url, ?array $params);
 
+    public function delete(string $url, ?array $params);
+
 }

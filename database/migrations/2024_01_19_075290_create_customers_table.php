@@ -50,10 +50,10 @@ return new class extends Migration
             $table->string('mail_operational')->nullable();
             $table->string('mail_financial')->nullable();
             $table->string('BaseEndpoint')->nullable();
-            $table->string('Token')->nullable();
+            $table->string('token_multisoftware')->nullable();
+            $table->string('token_api', 64)->unique()->nullable();
             $table->foreignIdFor(GroupCustomer::class)->nullable();
             $table->foreignIdFor(EdiPattern::class)->nullable();
-            $table->string('tokenText')->nullable();
             $table->blameable();
             $table->timestamps();
             $table->softDeletes();

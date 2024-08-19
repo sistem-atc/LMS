@@ -7,7 +7,6 @@ use Illuminate\Support\Arr;
 use Illuminate\Database\Eloquent\Model;
 use Filament\Resources\Pages\CreateRecord;
 use App\Filament\Resources\Register\Customer\CustomerResource;
-use App\Models\User;
 
 class CreateCustomer extends CreateRecord
 {
@@ -45,6 +44,7 @@ class CreateCustomer extends CreateRecord
                 $customer = Customer::find($this->thisRecord);
                 $this->newToken = $customer->createToken($this->createToken['name'], $this->createToken['ability']);
                 $tokenText =  $this->newToken->plainTextToken;
+                dd($tokenText);
             }
         }
     }

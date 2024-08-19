@@ -19,15 +19,12 @@ class TokenResource extends ResourcesTokenResource
                 Section::make('General')
                     ->schema([
                         TextInput::make('Name')
+                            ->label('Nome')
                             ->required(),
                         Select::make('tokenable_id')
                             ->options(User::all()->pluck('name', 'id'))
                             ->label('User')
-                            ->hidden(function () {
-                                $user = auth()->user();
-
-                                return ! $user->hasRole('super_admin');
-                            })
+                            ->hidden(fn() => !auth()->user()->hasRole('super_admin'))
                             ->required(),
                     ]),
 
@@ -45,4 +42,5 @@ class TokenResource extends ResourcesTokenResource
             'edit' => Pages\EditToken::route('/{record}/edit'),
         ];
     }
+
 }

@@ -45,20 +45,20 @@ class CustomerResource extends Resource
             ])->schema([
                     Tabs::make('')->tabs([
                         Tabs\Tab::make('default')
-                            ->schema(self::getTabDefault())
+                            ->schema(static::getTabDefault())
                             ->label('Principal'),
                         Tabs\Tab::make('address')
-                            ->schema(self::getTabAddress())
+                            ->schema(static::getTabAddress())
                             ->label('Endereço'),
                         Tabs\Tab::make('others')
-                            ->schema(self::getTabOthers())
+                            ->schema(static::getTabOthers())
                             ->label('Outros'),
                         Tabs\Tab::make('multisoftware')
-                            ->schema(self::getTabMultiSoftware())
+                            ->schema(static::getTabMultiSoftware())
                             ->columns(2)
                             ->label('MultiEmbarcador'),
                         Tabs\Tab::make('tokenapi')
-                            ->schema(self::getTabTokenApi())
+                            ->schema(static::getTabTokenApi())
                             ->hidden(fn() => !auth()->user()->can('create_token'))
                             ->label('Token API'),
                         ]),
@@ -217,24 +217,35 @@ class CustomerResource extends Resource
     private static function getTabMultiSoftware() : array
     {
         return [
-            TextInput::make('BaseEndpoint'),
-            TextInput::make('Token')
+            TextInput::make('BaseEndpoint')
+                ->label('Endpoint MultiSoftware'),
+            TextInput::make('token_multisoftware')
+                ->label('Token MultiSoftware'),
         ];
     }
 
-    private static function getTabTokenApi() : array
+    public static function getTabTokenApi($isTokenexists = false) : array
     {
-        return [
-            TextInput::make('generateToken')
-                ->label('Token Gerado')
-                ->password()
-                ->revealable()
-                ->readOnly(),
-            TextInput::make('name'),
-            Section::make('ability')
-                ->description('Select abilities of the token')
-                ->schema(TokenResource::getAbilitiesSchema()),
-        ];
+
+        //Incluir Regra de Validação para aparecer o Token em caso de token já existente em cadastro
+        //Do Contrario para criar o token
+        if($isTokenexists) {
+            return [
+                TextInput::make('token_api')
+                    ->label('Token Gerado')
+                    ->readOnly()
+                    ->password()
+                    ->revealable(),
+            ];
+        } else {
+            return [
+                TextInput::make('name')
+                    ->label('Nome'),
+                Section::make('Habilidades')
+                    ->description('Selecione as habilidades do token')
+                    ->schema(TokenResource::getAbilitiesSchema()),
+            ];
+        };
     }
 
     public static function table(Table $table): Table

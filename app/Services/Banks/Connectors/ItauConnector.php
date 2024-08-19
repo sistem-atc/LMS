@@ -51,4 +51,16 @@ class ItauConnector implements BanksInterface
         }
     }
 
+    public function delete(string $url, ?array $params)
+    {
+        try {
+            return $this->http
+                ->delete($url, $params)
+                ->throw()
+                ->json();
+        } catch (\Exception $exception) {
+            return ['error' => $exception->getMessage()];
+        }
+    }
+
 }

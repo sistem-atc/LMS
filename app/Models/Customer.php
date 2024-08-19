@@ -30,8 +30,8 @@ class Customer extends Model
         'complement', 'number', 'district', 'city', 'state', 'ibge', 'gia', 'ddd', 'siafi',
         'region', 'branche_id', 'nature_id', 'phone_number', 'cellphone', 'vendor_id', 'payment_term',
         'bank_standard_id', 'priority', 'risc', 'municipal_registration', 'state_registration',
-        'mail_operational', 'mail_financial', 'BaseEndpoint', 'Token', 'group_customer_id', 'tokenText'
-
+        'mail_operational', 'mail_financial', 'BaseEndpoint', 'token_multisoftware', 'group_customer_id',
+        'token_api',
     ];
 
     public function bank(): BelongsTo

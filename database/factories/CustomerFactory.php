@@ -20,7 +20,7 @@ class CustomerFactory extends Factory
         return [
             'cpf_or_cnpj' => fake()->unique()->numerify('##############'),
             'company_name' => fake()->unique()->company(),
-            'type_person' => fake()->randomElements(['f', 'j'])[0],
+            'type_person' => fake()->randomElements(['F', 'J'])[0],
             'fantasy_name' => fake()->unique()->company(),
             'postal_code' => fake()->postcode(),
             'street' => Str::upper(fake()->streetName()),
@@ -34,7 +34,7 @@ class CustomerFactory extends Factory
             'ddd' => fake()->numerify('##'),
             'siafi' => fake()->numerify('####'),
             'region' => fake()->lastName(),
-            'branch_id' => fake()->numberBetween(1, 14),
+            'branch_id' => fake()->numberBetween(1, 2),
             'nature_id' => fake()->numberBetween(1, 10),
             'phone_number' => fake()->phoneNumber(),
             'cellphone' => fake()->phoneNumber(),

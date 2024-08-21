@@ -2,22 +2,22 @@
 
 namespace App\Filament\Resources\Operational\DocumentFiscalCustomer\DocumentFiscalCustomerResource\Pages;
 
-use SimpleXMLElement;
 use App\Models\CodeUf;
 use App\Models\Customer;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
 use App\Models\DocumentFiscalCustomer;
-use App\Services\Utils\ViaCep\Entities\ViaCep;
 use App\Services\Utils\ViaCep\ViaCepService;
-use Illuminate\Support\Facades\Storage;
 use Filament\Notifications\Notification;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use SimpleXMLElement;
 
 class SuportFunctions
 {
-
     public static array $notescustomer = [];
+
     public static array $msg = [];
+
     public static array $datanotes = [];
 
     public static function ImportNotFis(array $data): Notification
@@ -40,7 +40,7 @@ class SuportFunctions
         return Notification::make()
             ->success()
             ->title('NOTFIS Importado com Sucesso')
-            ->body($line - 2 . ' notas foram importadas');
+            ->body($line - 2 .' notas foram importadas');
     }
 
     public static function ImportXml(array $data): Notification
@@ -48,8 +48,8 @@ class SuportFunctions
 
         foreach ($data['attachment'] as $xml) {
 
-            if (!file_exists(Storage::path($xml))) {
-                self::$msg[] = 'Erro ao abrir o XML: ' . $xml;
+            if (! file_exists(Storage::path($xml))) {
+                self::$msg[] = 'Erro ao abrir o XML: '.$xml;
                 goto nextfile;
             }
 
@@ -67,23 +67,23 @@ class SuportFunctions
             }
 
             if (DocumentFiscalCustomer::where('chNFe', '=', Arr::get($xmlarray, 'protNFe.infProt.chNFe'))->first() != null) {
-                self::$msg[] = 'XML já consta na base: ' . Arr::get($xmlarray, 'protNFe.infProt.chNFe');
+                self::$msg[] = 'XML já consta na base: '.Arr::get($xmlarray, 'protNFe.infProt.chNFe');
                 goto nextfile;
             }
 
             self::StoreDocumentFiscalCustomer($xmlarray);
 
-            self::$msg[] = 'Importado XML Chave: ' . Arr::get($xmlarray, 'protNFe.infProt.chNFe');
+            self::$msg[] = 'Importado XML Chave: '.Arr::get($xmlarray, 'protNFe.infProt.chNFe');
 
             nextfile:
 
             Storage::delete($xml);
-        };
+        }
 
         $mountnotify = Notification::make()
             ->info()
             ->title('Resultado da Importação')
-            ->body(Str::markdown('XMLs importados, verifique os detalhes: <br>' . join('<br>', self::$msg)))
+            ->body(Str::markdown('XMLs importados, verifique os detalhes: <br>'.implode('<br>', self::$msg)))
             ->persistent()
             ->send();
 
@@ -131,14 +131,11 @@ class SuportFunctions
 
         $uppercase = ucfirst($key);
         $dataCep = ViaCepService::consultaCEP(Arr::get($xmlArray, "NFe.infNFe.{$key}.ender{$uppercase}.CEP"));
-
-        if(Arr::get($xmlArray, "NFe.infNFe.{$key}.xFant")){
-            $fantasyname = Arr::get($xmlArray, "NFe.infNFe.{$key}.xFant");
-        } else {
-            $fantasyname = Arr::get($xmlArray, "NFe.infNFe.{$key}.xNome");
-        }
+        $fantasyname = Arr::get($xmlArray, "NFe.infNFe.{$key}.xFant") ? Arr::get($xmlArray, "NFe.infNFe.{$key}.xFant") : Arr::get($xmlArray, "NFe.infNFe.{$key}.xNome");
+        $typePerson = strlen(Arr::get($xmlArray, "NFe.infNFe.{$key}.CNPJ")) === 14 ? 'J' : 'F';
 
         Customer::create([
+            'type_person' => $typePerson,
             'cpf_or_cnpj' => Arr::get($xmlArray, "NFe.infNFe.{$key}.CNPJ"),
             'company_name' => Arr::get($xmlArray, "NFe.infNFe.{$key}.xNome"),
             'type_person' => Arr::get($xmlArray, "NFe.infNFe.{$key}.CNPJ"),
@@ -156,16 +153,7 @@ class SuportFunctions
             'siafi' => $dataCep['siafi'],
             'phone_number' => Arr::get($xmlArray, "NFe.infNFe.{$key}.ender{$uppercase}.fone"),
             'state_registration' => Arr::get($xmlArray, "NFe.infNFe.{$key}.IE"),
-            //VALIDAR DAQUI PARA BAIXO COMO PREENCHER
-            'region' => 'SUDESTE',
-            'nature_id' => 1,
-            'vendor_id' => 1,
-            'bank_id' => 1,
-            'payment_term_id' => 1,
-            'priority' => 0,
-            'risc' => 'A',
-            'group_customer_id' => 1,
-            'type_person' => 'J',
+            'complete' => false,
         ]);
     }
 }

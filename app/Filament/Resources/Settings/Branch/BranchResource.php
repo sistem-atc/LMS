@@ -2,38 +2,42 @@
 
 namespace App\Filament\Resources\Settings\Branch;
 
-use Closure;
-use App\Models\Branch;
-use Filament\Forms\Get;
-use Filament\Forms\Form;
-use Filament\Tables\Table;
 use App\Enums\TypeBranchEnum;
-use Filament\Resources\Resource;
+use App\Filament\Resources\Settings\Branch\BranchResource\Pages;
+use App\Models\Branch;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Hidden;
-use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Section;
-use Filament\Tables\Actions\EditAction;
-use Filament\Tables\Columns\TextColumn;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\FileUpload;
-use Illuminate\Database\Eloquent\Builder;
-use Filament\Tables\Filters\TrashedFilter;
-use Leandrocfe\FilamentPtbrFormFields\Cep;
+use Filament\Forms\Form;
+use Filament\Forms\Get;
+use Filament\Resources\Resource;
 use Filament\Tables\Actions\BulkActionGroup;
 use Filament\Tables\Actions\DeleteBulkAction;
-use Filament\Tables\Actions\RestoreBulkAction;
+use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Actions\ForceDeleteBulkAction;
+use Filament\Tables\Actions\RestoreBulkAction;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\TrashedFilter;
+use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Resources\Settings\Branch\BranchResource\Pages;
+use Leandrocfe\FilamentPtbrFormFields\Cep;
 
 class BranchResource extends Resource
 {
     protected static ?string $model = Branch::class;
+
     protected static ?string $modelLabel = 'Filial';
+
     protected static ?string $pluralModelLabel = 'Filiais';
+
     protected static ?string $navigationIcon = 'heroicon-o-building-library';
+
     protected static ?string $navigationGroup = 'Configurações';
+
     protected static ?string $navigationLabel = 'Filiais';
 
     public static function form(Form $form): Form
@@ -57,7 +61,7 @@ class BranchResource extends Resource
                                     ->live(onBlur: true)
                                     ->columnSpan(1),
                             ])
-                                ->columns(3),
+                            ->columns(3),
                         Grid::make()
                             ->schema([
                                 TextInput::make('name')
@@ -75,14 +79,17 @@ class BranchResource extends Resource
                             ->disk('local')
                             ->directory('certificate')
                             ->visibility('private')
-                            ->columnSpan(2),
+                            ->columnSpan(2)
+                            ->preserveFilenames()
+                            ->uploadingMessage('Importando certificado...')
+                            ->panelLayout('integrated'),
                         TextInput::make('password_certificate')
                             ->label('Senha do Certificado')
                             ->password()
                             ->revealable(true)
                             ->columnSpan(1),
-                ])
-                    ->visible(fn (Get $get) :bool => $get('type_branch') == TypeBranchEnum::MATRIZ->getLabel())
+                    ])
+                    ->visible(fn (Get $get): bool => $get('type_branch') == TypeBranchEnum::MATRIZ->getLabel())
                     ->columns(3),
                 Section::make()
                     ->schema([
@@ -93,10 +100,10 @@ class BranchResource extends Resource
                                 titleAttribute: 'name',
                                 modifyQueryUsing: fn (Builder $query) => $query->where('type_branch', '=', TypeBranchEnum::MATRIZ),
                             )
-                                ->columnSpan(2),
+                            ->columnSpan(2),
                     ])
-                        ->visible(fn (Get $get) :bool => $get('type_branch') == TypeBranchEnum::FILIAL->getLabel())
-                        ->columns(3),
+                    ->visible(fn (Get $get): bool => $get('type_branch') == TypeBranchEnum::FILIAL->getLabel())
+                    ->columns(3),
                 Section::make()
                     ->schema([
                         TextInput::make('municipal_registration')->label('Incrição Municipal'),
@@ -137,7 +144,7 @@ class BranchResource extends Resource
                         Hidden::make('ibge'),
                         Hidden::make('gia'),
                         Hidden::make('ddd'),
-                        Hidden::make('siafi')
+                        Hidden::make('siafi'),
                     ])->columns(3),
             ]);
     }
@@ -162,7 +169,7 @@ class BranchResource extends Resource
                 EditAction::make(),
             ])
             ->bulkActions([
-                    BulkActionGroup::make([
+                BulkActionGroup::make([
                     DeleteBulkAction::make(),
                     ForceDeleteBulkAction::make(),
                     RestoreBulkAction::make(),

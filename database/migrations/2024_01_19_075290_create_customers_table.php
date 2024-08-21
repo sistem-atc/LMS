@@ -3,13 +3,13 @@
 use App\Models\Bank;
 use App\Models\Branch;
 use App\Models\EdiPattern;
-use App\Models\Nature;
-use App\Models\Vendor;
-use App\Models\PaymentTerm;
 use App\Models\GroupCustomer;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
+use App\Models\Nature;
+use App\Models\PaymentTerm;
+use App\Models\Vendor;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
@@ -35,14 +35,14 @@ return new class extends Migration
             $table->string('gia')->nullable();
             $table->string('ddd')->nullable();
             $table->string('siafi')->nullable();
-            $table->string('region');
+            $table->string('region')->nullable();
             $table->foreignIdFor(Branch::class)->nullable();
-            $table->foreignIdFor(Nature::class);
+            $table->foreignIdFor(Nature::class)->nullable();
             $table->string('phone_number')->nullable();
             $table->string('cellphone')->nullable();
             $table->foreignIdFor(Vendor::class)->nullable();
             $table->foreignIdFor(Bank::class)->nullable();
-            $table->foreignIdFor(PaymentTerm::class);
+            $table->foreignIdFor(PaymentTerm::class)->nullable();
             $table->string('priority')->nullable();
             $table->string('risc')->nullable();
             $table->string('municipal_registration')->nullable();
@@ -54,6 +54,7 @@ return new class extends Migration
             $table->string('token_api', 64)->unique()->nullable();
             $table->foreignIdFor(GroupCustomer::class)->nullable();
             $table->foreignIdFor(EdiPattern::class)->nullable();
+            $table->boolean('complete')->default(false);
             $table->blameable();
             $table->timestamps();
             $table->softDeletes();

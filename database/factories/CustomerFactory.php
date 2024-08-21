@@ -2,8 +2,8 @@
 
 namespace Database\Factories;
 
-use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Customer>
@@ -42,12 +42,13 @@ class CustomerFactory extends Factory
             'bank_id' => '1',
             'payment_term_id' => '1',
             'priority' => '0',
-            'risc' => fake()->randomElements(['A','B','C','D','E'])[0],
+            'risc' => fake()->randomElements(['A', 'B', 'C', 'D', 'E'])[0],
             'municipal_registration' => fake()->numberBetween(10000, 99999),
             'state_registration' => fake()->numberBetween(1000000, 9999999999),
             'mail_operational' => fake()->freeEmail(),
             'mail_financial' => fake()->safeEmail(),
             'group_customer_id' => fake()->numberBetween(1, 50),
+            'complete' => fake()->boolean(),
         ];
     }
 }

@@ -3,46 +3,50 @@
 namespace App\Filament\Resources\Register\Customer;
 
 use App\Enums\CustomerRiscEnum;
-use Filament\Tables;
-use Filament\Forms\Get;
-use App\Models\Customer;
-use Filament\Forms\Form;
-use Filament\Tables\Table;
-use Filament\Resources\Resource;
-use Filament\Forms\Components\Grid;
-use Filament\Forms\Components\Tabs;
-use Filament\Forms\Components\Hidden;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\Section;
-use Filament\Tables\Columns\TextColumn;
-use Filament\Forms\Components\TextInput;
-use Illuminate\Database\Eloquent\Builder;
-use Leandrocfe\FilamentPtbrFormFields\Cep;
-use Leandrocfe\FilamentPtbrFormFields\PhoneNumber;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Resources\Shield\Token\TokenResource;
 use App\Filament\Resources\Register\Customer\CustomerResource\Pages;
 use App\Filament\Resources\Register\Customer\CustomerResource\Pages\SuportFunctions;
 use App\Filament\Resources\Register\GroupCustomer\GroupCustomerResource;
 use App\Filament\Resources\Register\PaymentTerm\PaymentTermResource;
+use App\Filament\Resources\Shield\Token\TokenResource;
+use App\Models\Customer;
+use Filament\Forms\Components\Grid;
+use Filament\Forms\Components\Hidden;
+use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Tabs;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Form;
+use Filament\Forms\Get;
+use Filament\Resources\Resource;
+use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Leandrocfe\FilamentPtbrFormFields\Cep;
+use Leandrocfe\FilamentPtbrFormFields\PhoneNumber;
 
 class CustomerResource extends Resource
 {
-
     protected static ?string $model = Customer::class;
+
     protected static ?string $modelLabel = 'Cliente';
+
     protected static ?string $pluralModelLabel = 'Clientes';
+
     protected static ?string $navigationIcon = 'heroicon-o-user-plus';
+
     protected static ?string $navigationGroup = 'Cadastros';
+
     protected static ?string $navigationLabel = 'Clientes';
 
     public static function form(Form $form): Form
     {
         return $form
-        ->schema([
-            Grid::make([
-                'default' => 1,
-            ])->schema([
+            ->schema([
+                Grid::make([
+                    'default' => 1,
+                ])->schema([
                     Tabs::make('')->tabs([
                         Tabs\Tab::make('default')
                             ->schema(static::getTabDefault())
@@ -58,15 +62,15 @@ class CustomerResource extends Resource
                             ->columns(2)
                             ->label('MultiEmbarcador'),
                         Tabs\Tab::make('tokenapi')
-                            ->schema(static::getTabTokenApi())
-                            ->hidden(fn() => !auth()->user()->can('create_token'))
-                            ->label('Token API'),
-                        ]),
-                ])
+                            ->label('Token API')
+                            ->schema(static::getTabToken())
+                            ->hidden(fn () => ! auth()->user()->can('create_token')),
+                    ]),
+                ]),
             ]);
     }
 
-    private static function getTabDefault() : array
+    private static function getTabDefault(): array
     {
         return [
             Section::make('')
@@ -81,9 +85,15 @@ class CustomerResource extends Resource
                     TextInput::make('cpf_or_cnpj')
                         ->live()
                         //->rules([fn (Get $get) => SuportFunctions::validar_cnpj($get('cpf_or_cnpj'))])
-                        ->mask(fn(Get $get): string => ($get('type_person') === 'J') ? '99.999.999/9999-99' : '999.999.999-99')
+                        ->mask(fn (Get $get): string => ($get('type_person') === 'J') ? '99.999.999/9999-99' : '999.999.999-99')
                         ->label('CPF ou CNPJ'),
-                ])->columns(2),
+                    Toggle::make('complete')
+                        ->label('Completo')
+                        ->inline()
+                        ->onColor('success')
+                        ->offColor('danger')
+                        ->default(true),
+                ])->columns(3),
             Section::make('')
                 ->schema([
                     TextInput::make('company_name')
@@ -94,7 +104,7 @@ class CustomerResource extends Resource
         ];
     }
 
-    private static function getTabAddress() : array
+    private static function getTabAddress(): array
     {
         return [
             Section::make('')
@@ -132,89 +142,89 @@ class CustomerResource extends Resource
                     Hidden::make('ibge'),
                     Hidden::make('gia'),
                     Hidden::make('ddd'),
-                    Hidden::make('siafi')
+                    Hidden::make('siafi'),
                 ])->columns(3),
         ];
     }
 
-    private static function getTabOthers() : array
+    private static function getTabOthers(): array
     {
         return [
-                Section::make('')
-                    ->schema([
-                        Grid::make('')
-                            ->schema([
-                                TextInput::make('municipal_registration')
-                                    ->label('Incrição Municipal'),
-                                TextInput::make('state_registration')
-                                    ->label('Incrição Estadual'),
-                            ])->columns(2),
-                        Grid::make('')
-                            ->schema([
-                                PhoneNumber::make('phone_number')
-                                    ->label('Numero Telefone')
-                                    ->format('(99)9999-9999'),
-                                PhoneNumber::make('cellphone')
-                                    ->label('Numero Celular')
-                                    ->format('(99)99999-9999'),
-                            ])->columns(2),
-                        TextInput::make('region')
-                            ->label('Região'),
-                        Select::make('branch_id')
-                            ->label('Filial')
-                            ->searchable()
-                            ->preload()
-                            ->relationship('branch', 'abbreviation'),
-                        Select::make('nature_id')
-                            ->label('Natureza')
-                            ->searchable()
-                            ->preload()
-                            ->relationship('nature', 'name'),
-                        Select::make('vendor_id')
-                            ->label('Vendedor')
-                            ->searchable()
-                            ->preload()
-                            ->relationship('vendor', 'name'),
-                        Select::make('bank_id')
-                            ->searchable()
-                            ->preload()
-                            ->relationship('bank', 'nome_banco')
-                            ->label('Banco Padrão'),
-                        TextInput::make('priority')
-                            ->label('Prioridade')
-                            ->default(0),
-                        Select::make('risc')
-                            ->label('Risco')
-                            ->options(CustomerRiscEnum::class)
-                            ->default('A'),
-                        TextInput::make('mail_operational')
-                            ->label('Email Operacional'),
-                        TextInput::make('mail_financial')
-                            ->label('Email Financeiro'),
-                        Select::make('group_customer_id')
-                            ->label('Grupo Cliente')
-                            ->searchable()
-                            ->preload()
-                            ->relationship('group_customer', 'name')
-                            ->createOptionForm(GroupCustomerResource::groupForm()),
-                        Select::make('payment_term_id')
-                            ->label('Prazo de Pagamento')
-                            ->searchable()
-                            ->preload()
-                            ->relationship('payment_term', 'name')
-                            ->createOptionForm(PaymentTermResource::paymentForm()),
-                        Select::make('edi_pattern_id')
-                            ->label('Padrão EDI')
-                            ->searchable()
-                            ->preload()
-                            ->relationship('edi_pattern', 'name'),
-                    ])
-                    ->columns(3)
+            Section::make('')
+                ->schema([
+                    Grid::make('')
+                        ->schema([
+                            TextInput::make('municipal_registration')
+                                ->label('Incrição Municipal'),
+                            TextInput::make('state_registration')
+                                ->label('Incrição Estadual'),
+                        ])->columns(2),
+                    Grid::make('')
+                        ->schema([
+                            PhoneNumber::make('phone_number')
+                                ->label('Numero Telefone')
+                                ->format('(99)9999-9999'),
+                            PhoneNumber::make('cellphone')
+                                ->label('Numero Celular')
+                                ->format('(99)99999-9999'),
+                        ])->columns(2),
+                    TextInput::make('region')
+                        ->label('Região'),
+                    Select::make('branch_id')
+                        ->label('Filial')
+                        ->searchable()
+                        ->preload()
+                        ->relationship('branch', 'abbreviation'),
+                    Select::make('nature_id')
+                        ->label('Natureza')
+                        ->searchable()
+                        ->preload()
+                        ->relationship('nature', 'name'),
+                    Select::make('vendor_id')
+                        ->label('Vendedor')
+                        ->searchable()
+                        ->preload()
+                        ->relationship('vendor', 'name'),
+                    Select::make('bank_id')
+                        ->searchable()
+                        ->preload()
+                        ->relationship('bank', 'nome_banco')
+                        ->label('Banco Padrão'),
+                    TextInput::make('priority')
+                        ->label('Prioridade')
+                        ->default(0),
+                    Select::make('risc')
+                        ->label('Risco')
+                        ->options(CustomerRiscEnum::class)
+                        ->default('A'),
+                    TextInput::make('mail_operational')
+                        ->label('Email Operacional'),
+                    TextInput::make('mail_financial')
+                        ->label('Email Financeiro'),
+                    Select::make('group_customer_id')
+                        ->label('Grupo Cliente')
+                        ->searchable()
+                        ->preload()
+                        ->relationship('group_customer', 'name')
+                        ->createOptionForm(GroupCustomerResource::groupForm()),
+                    Select::make('payment_term_id')
+                        ->label('Prazo de Pagamento')
+                        ->searchable()
+                        ->preload()
+                        ->relationship('payment_term', 'name')
+                        ->createOptionForm(PaymentTermResource::paymentForm()),
+                    Select::make('edi_pattern_id')
+                        ->label('Padrão EDI')
+                        ->searchable()
+                        ->preload()
+                        ->relationship('edi_pattern', 'name'),
+                ])
+                ->columns(3),
 
         ];
     }
 
-    private static function getTabMultiSoftware() : array
+    private static function getTabMultiSoftware(): array
     {
         return [
             TextInput::make('BaseEndpoint')
@@ -224,28 +234,28 @@ class CustomerResource extends Resource
         ];
     }
 
-    public static function getTabTokenApi($isTokenexists = false) : array
+    private static function getTabToken(): array
     {
-
-        //Incluir Regra de Validação para aparecer o Token em caso de token já existente em cadastro
-        //Do Contrario para criar o token
-        if($isTokenexists) {
-            return [
-                TextInput::make('token_api')
-                    ->label('Token Gerado')
-                    ->readOnly()
-                    ->password()
-                    ->revealable(),
-            ];
-        } else {
-            return [
-                TextInput::make('name')
-                    ->label('Nome'),
-                Section::make('Habilidades')
-                    ->description('Selecione as habilidades do token')
-                    ->schema(TokenResource::getAbilitiesSchema()),
-            ];
-        };
+        return [
+            Section::make('Token')
+                ->schema([
+                    TextInput::make('token_api')
+                        ->label('Token Gerado')
+                        ->readOnly()
+                        ->password()
+                        ->revealable(),
+                ])
+                ->hidden(fn (Customer $record): bool => is_null($record->token_api)),
+            Section::make('Criar Token')
+                ->schema([
+                    TextInput::make('name')
+                        ->label('Nome'),
+                    Section::make('Habilidades')
+                        ->description('Selecione as habilidades do token')
+                        ->schema(TokenResource::getAbilitiesSchema()),
+                ])
+                ->hidden(fn (Customer $record): bool => ! is_null($record->token_api)),
+        ];
     }
 
     public static function table(Table $table): Table

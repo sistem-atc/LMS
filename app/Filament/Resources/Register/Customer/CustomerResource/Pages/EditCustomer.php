@@ -2,19 +2,17 @@
 
 namespace App\Filament\Resources\Register\Customer\CustomerResource\Pages;
 
-use Filament\Actions;
-use App\Models\Customer;
-use Illuminate\Support\Arr;
-use Illuminate\Database\Eloquent\Model;
-use Filament\Resources\Pages\EditRecord;
 use App\Filament\Resources\Register\Customer\CustomerResource;
-
-use function PHPUnit\Framework\isNull;
+use App\Models\Customer;
+use Filament\Actions;
+use Filament\Resources\Pages\EditRecord;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
 
 class EditCustomer extends EditRecord
 {
-
     protected static string $resource = CustomerResource::class;
+
     protected $newToken;
 
     protected function getHeaderActions(): array
@@ -38,7 +36,7 @@ class EditCustomer extends EditRecord
             if (Arr::get($data, 'name') || Arr::get($data, 'ability')) {
                 $customer = Customer::find($record->id);
                 $this->newToken = $customer->createToken($data['name'], $data['ability']);
-                $tokenText =  $this->newToken->plainTextToken;
+                $tokenText = $this->newToken->plainTextToken;
                 $data['token_api'] = $tokenText;
             }
         }
@@ -57,11 +55,11 @@ class EditCustomer extends EditRecord
     protected function mutateFormDataBeforeFill(array $data): array
     {
 
-        if ($data['token_api'] !== null){
-            CustomerResource::getTabTokenApi(true);
+        if ($data['token_api'] !== null) {
+            $trimToken = explode('|', $data['token_api']);
+            $data['token_api'] = end($trimToken);
         }
 
         return $data;
     }
-
 }

@@ -1,12 +1,4 @@
-@BUG
-
-    Cadastro de Clientes =>
-        Ajustar os campos de retorno em caso de token já existente.
-
 @WIP
-
-    Validar Cadastro das Filiais =>
-        Verificar a exclusão do certificado limpe o arquivo do disco tambem.
 
     Ajustar as configurações do speed =>
         Validar a melhor forma de passar os parametros para dentro do config.

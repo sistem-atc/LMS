@@ -2,28 +2,20 @@
 
 namespace App\Models;
 
-use App\Models\Bank;
-use App\Models\Bill;
-use App\Models\Branch;
-use App\Models\Nature;
-use App\Models\Vendor;
 use App\Traits\Blameable;
-use App\Models\PaymentTerm;
-use App\Models\GroupCustomer;
-use Laravel\Sanctum\HasApiTokens;
-use App\Models\DocumentFiscalCustomer;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Laravel\Sanctum\HasApiTokens;
 
 class Customer extends Model
 {
-    use HasFactory;
-    use HasApiTokens;
-    use SoftDeletes;
     use Blameable;
+    use HasApiTokens;
+    use HasFactory;
+    use SoftDeletes;
 
     protected $fillable = [
         'cpf_or_cnpj', 'company_name', 'type_person', 'fantasy_name', 'postal_code', 'street',
@@ -31,7 +23,11 @@ class Customer extends Model
         'region', 'branche_id', 'nature_id', 'phone_number', 'cellphone', 'vendor_id', 'payment_term',
         'bank_standard_id', 'priority', 'risc', 'municipal_registration', 'state_registration',
         'mail_operational', 'mail_financial', 'BaseEndpoint', 'token_multisoftware', 'group_customer_id',
-        'token_api',
+        'token_api', 'complete',
+    ];
+
+    protected $casts = [
+        'complete' => 'boolean',
     ];
 
     public function bank(): BelongsTo
@@ -43,6 +39,7 @@ class Customer extends Model
     {
         return $this->BelongsTo(Branch::class);
     }
+
     public function nature(): BelongsTo
     {
         return $this->BelongsTo(Nature::class);

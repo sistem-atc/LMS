@@ -17,4 +17,5 @@ class ListLots extends ListRecords
                 ->label('Criar Lote'),
         ];
     }
+
 }

@@ -2,9 +2,7 @@
 
 namespace App\Services\Utils\ViaCep;
 
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Http;
-use App\Services\Utils\ViaCep\Entities\ViaCep;
 
 /**
  * ViaCep Api
@@ -15,16 +13,9 @@ use App\Services\Utils\ViaCep\Entities\ViaCep;
 class ViaCepService
 {
 
-    public static function consultaCEP($cep): Collection
+    public static function consultaCEP($cep): array
     {
-        return self::transform(
-                Http::get('viacep.com.br/ws/'. $cep . '/json/')->json()
-            );
+        return Http::get('viacep.com.br/ws/'. $cep . '/json/')->json();
     }
 
-    private static function transform(mixed $json): Collection
-    {
-        return collect($json)
-                ->map(fn ($ViaCep) => new ViaCep($json));
-    }
 }

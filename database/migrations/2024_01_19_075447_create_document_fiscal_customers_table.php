@@ -43,6 +43,7 @@ return new class extends Migration
             $table->string('pesoB')->nullable();
             $table->longText('infAdic')->nullable();
             $table->string('chNFe')->unique();
+            $table->foreignId('lot_id')->nullable()->constrained()->onDelete('cascade');
             $table->blameable();
             $table->timestamps();
             $table->softDeletes();

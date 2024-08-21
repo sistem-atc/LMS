@@ -13,16 +13,14 @@ class SuportFunctions
     public static function generate(Model $record): Notification
     {
 
+        dd($record, $record->documentFiscalCustomers());
+
         if ($record->status == 'Digitado') {
 
-            $docs = DocumentFiscalCustomer::where('lot_id','=', $record->id)->get();
+            //Criar um numero de CT-e e associar o lote a ele.
 
-            //Loop para agrupar notas
-            //Popular CT-e com os dados necessarios
-
-            $lot = new Lot;
-            $lot->status = 'Calculado';
-            $lot->save();
+            $record->status = 'Calculado';
+            $record->save();
 
             return Notification::make()
                 ->success()

@@ -17,7 +17,6 @@
         Abstrair as classes para usar os mesmos metodos para rotina manual e automatica
 
     Lotes de Notas Fiscais =>
-        Iniciar a rotina de inclusão de lotes consolidando as notas
         Gerar um CT-e para cada lote
         Calcular valores a partir da tabela (Criar model e rotinas)
         Calcular impostos a partir das regras fiscais (Criar Rotinas)

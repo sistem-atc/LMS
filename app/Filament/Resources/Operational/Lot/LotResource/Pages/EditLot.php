@@ -2,9 +2,11 @@
 
 namespace App\Filament\Resources\Operational\Lot\LotResource\Pages;
 
-use App\Filament\Resources\Operational\Lot\LotResource;
 use Filament\Actions;
+use Illuminate\Support\Arr;
+use App\Models\DocumentFiscalCustomer;
 use Filament\Resources\Pages\EditRecord;
+use App\Filament\Resources\Operational\Lot\LotResource;
 
 class EditLot extends EditRecord
 {
@@ -18,4 +20,38 @@ class EditLot extends EditRecord
             Actions\RestoreAction::make(),
         ];
     }
+
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
+
+
+    protected function mutateFormDataBeforeFill(array $data): array
+    {
+        $data['document_fiscal_customer_id'] = DocumentFiscalCustomer::where('lot_id', '=', $this->record->id)->pluck('id')->toArray();
+        return $data;
+    }
+
+    protected function mutateFormDataBeforeSave(array $data): array
+    {
+
+        DocumentFiscalCustomer::where('lot_id', $this->record->id)
+            ->update([
+                'lot_id' => null,
+        ]);
+
+        foreach($data['document_fiscal_customer_id'] as $id)
+        {
+            DocumentFiscalCustomer::where('id', $id)
+                ->update([
+                    'lot_id' => $this->record->id,
+                ]);
+        }
+
+        $data = Arr::except($data, ['document_fiscal_customer_id']);
+
+        return $data;
+    }
+
 }

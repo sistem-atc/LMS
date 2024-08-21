@@ -17,7 +17,7 @@ return new class extends Migration
     {
         Schema::create('ctes', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Branch::class);
+            $table->foreignIdFor(Branch::class)->constrained();
             $table->string('serie');
             $table->dateTime('emission_date');
             $table->float('weight');

@@ -18,9 +18,9 @@ return new class extends Migration
     {
         Schema::create('bills', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Nature::class);
-            $table->foreignIdFor(Bank::class);
-            $table->foreignIdFor(Customer::class);
+            $table->foreignIdFor(Nature::class)->constrained();
+            $table->foreignIdFor(Bank::class)->constrained();
+            $table->foreignIdFor(Customer::class)->constrained();
             $table->json('cte_id')->nullable();
             $table->date('emission_date');
             $table->date('due_date');
@@ -34,9 +34,9 @@ return new class extends Migration
             $table->float('iss_tax');
             $table->float('iss_value');
             $table->date('writeoff_date')->nullable();
-            $table->foreignIdFor(ReceivingType::class);
+            $table->foreignIdFor(ReceivingType::class)->constrained();
             $table->string('historic')->nullable();
-            $table->foreignIdFor(Situation::class);
+            $table->foreignIdFor(Situation::class)->constrained();
             $table->float('fine');
             $table->float('interests');
             $table->string('boleto_number')->nullable();

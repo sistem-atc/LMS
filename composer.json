@@ -12,6 +12,7 @@
         "codeat3/blade-carbon-icons": "^2.22",
         "fakerphp/faker": "^1.23",
         "filament/filament": "^3.2",
+        "filament/tables": "^3.2",
         "guzzlehttp/guzzle": "^7.8",
         "laravel/framework": "^11.0",
         "laravel/sanctum": "^4.0",

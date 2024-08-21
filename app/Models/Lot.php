@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Lot extends Model
 {
@@ -17,30 +18,20 @@ class Lot extends Model
     use Blameable;
 
     protected $fillable = [
-        'origin_branche_id',
+        'branche_id',
         'collection_request',
         'status',
         'quotation',
-        'key_doct_fiscal',
     ];
 
-    protected $casts = [
-        'key_doct_fiscal' => 'array',
-    ];
-
-    public function branch(): BelongsTo
+    public function branche(): BelongsTo
     {
         return $this->BelongsTo(Branch::class);
     }
 
-    public function origin_branch(): BelongsTo
+    public function documentFiscalCustomer(): HasMany
     {
-        return $this->BelongsTo(Branch::class);
-    }
-
-    public function document_fiscal_customer(): BelongsTo
-    {
-        return $this->BelongsTo(DocumentFiscalCustomer::class);
+        return $this->hasMany(DocumentFiscalCustomer::class);
     }
 
 }

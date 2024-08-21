@@ -9,16 +9,24 @@ use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Facades\Filament;
 use Filament\Resources\Resource;
+use Illuminate\Support\Facades\DB;
 use Filament\Tables\Actions\Action;
+use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Wizard;
+use App\Models\DocumentFiscalCustomer;
 use Filament\Forms\Components\Repeater;
 use Filament\Tables\Columns\TextColumn;
 use Illuminate\Database\Eloquent\Model;
 use Filament\Forms\Components\TextInput;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Forms\Components\MultiSelect;
+use Filament\Forms\Components\CheckboxList;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\Operational\Lot\LotResource\Pages;
+use Illuminate\Support\Collection;
+
+use function PHPUnit\Framework\isNull;
 
 class LotResource extends Resource
 {
@@ -36,7 +44,7 @@ class LotResource extends Resource
                 Wizard::make([
                     Wizard\Step::make('Dados do Lote')
                         ->schema([
-                            Select::make('origin_branch_id')
+                            Select::make('branche_id')
                                 ->label('Filial Origem')
                                 ->searchable()
                                 ->preload()
@@ -52,42 +60,38 @@ class LotResource extends Resource
                             TextInput::make('status')
                                 ->label('Estado do Lote')
                                 ->default('Em Digitação')
-                                ->disabled(),
+                                ->readOnly(),
                             TextInput::make('quotation')
                                 ->label('Cotação')
                                 ->numeric(),
                         ])->columns(2),
-                    Wizard\Step::make('Inserir Notas Fiscais')
+                    Wizard\Step::make('Selecionar Notas Fiscais')
                         ->schema([
-                            Repeater::make('members')
-                                ->schema([
-                                    TextInput::make('cNF')->label('Numero Nota'),
-                                    TextInput::make('mod')->label('Modelo'),
-                                    TextInput::make('cUF')->label('UF'),
-                                    TextInput::make('serie')->label('Serie'),
-                                    TextInput::make('nNF')->label('Numero Nota'),
-                                    TextInput::make('dEmi')->label('Data Emissão'),
-                                    TextInput::make('vBC')->label('Base de Calculo'),
-                                    TextInput::make('vICMS')->label('Valor ICMS'),
-                                    TextInput::make('vBCST')->label('Valor Base ST'),
-                                    TextInput::make('vST'),
-                                    TextInput::make('vProd'),
-                                    TextInput::make('vFrete'),
-                                    TextInput::make('vSeg'),
-                                    TextInput::make('vDesc'),
-                                    TextInput::make('vIPI'),
-                                    TextInput::make('vPIS'),
-                                    TextInput::make('vCOFINS'),
-                                    TextInput::make('vOutro'),
-                                    TextInput::make('vNF'),
-                                    TextInput::make('modFrete'),
-                                    TextInput::make('qVol'),
-                                    TextInput::make('pesoL'),
-                                    TextInput::make('pesoB'),
-                                    TextInput::make('infAdic'),
-                                    TextInput::make('chNFe'),
-                                ])->columns(4),
-                            ]),
+                            CheckboxList::make('document_fiscal_customer_id')
+                                ->label('Notas Fiscais')
+                                ->options(function(?Lot $record): Collection{
+                                    if (!is_null($record)){
+                                        if ($record->exists){
+                                            return DocumentFiscalCustomer::where('lot_id', '=', $record->id)
+                                                ->orWhere('lot_id', null)
+                                                ->get()
+                                                ->mapWithKeys(fn ($item): array => [$item->id => $item->nNF . ' ' . $item->emit_customer->company_name]);
+                                        }
+                                    }
+                                        return DocumentFiscalCustomer::whereNull('lot_id')
+                                            ->get()
+                                            ->mapWithKeys(fn ($item): array => [$item->id => $item->nNF . ' ' . $item->emit_customer->company_name]);
+                                    }
+                                )
+                                ->default(function (?Lot $record) {
+                                    if (!is_null($record)){
+                                        if($record->exists){
+                                            return $record->documentFiscalCustomer->pluck('id')->toArray();
+                                        }
+                                    };
+                                })
+                                ->required()
+                        ]),
                 ])->columnSpanFull(),
             ]);
     }
@@ -100,7 +104,7 @@ class LotResource extends Resource
                     ->searchable()
                     ->sortable()
                     ->label('Numero do Lote'),
-                TextColumn::make('origin_branch.abbreviation')
+                TextColumn::make('branche.abbreviation')
                     ->searchable()
                     ->sortable()
                     ->label('Filial Origem'),

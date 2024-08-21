@@ -45,7 +45,6 @@ class ListDocumentFiscalCustomers extends ListRecords
                             ->disk('local')
                             ->preserveFilenames()
                             ->directory('xml_import')
-                            ->acceptedFileTypes(['application/xml'])
                     ]),
                 ])
                 ->action(fn (array $data): Notification => SuportFunctions::ImportXml($data))

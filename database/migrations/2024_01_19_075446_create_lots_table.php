@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Branch;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -13,13 +14,10 @@ return new class extends Migration
     {
         Schema::create('lots', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('origin_branche_id');
-            $table->foreign('origin_branche_id')->references('id')->on('branches');
+            $table->foreignId('branche_id')->nullable()->constrained()->onDelete('cascade');
             $table->integer('collection_request')->nullable();
             $table->string('status');
             $table->integer('quotation')->nullable();
-            $table->unsignedBigInteger('document_fiscal_customer_id');
-            $table->foreign('document_fiscal_customer_id')->references('id')->on('document_fiscal_customers');
             $table->blameable();
             $table->timestamps();
             $table->softDeletes();

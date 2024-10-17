@@ -11,7 +11,6 @@ use Illuminate\Notifications\Notifiable;
 use Filament\Models\Contracts\FilamentUser;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use BezhanSalleh\FilamentShield\Traits\HasPanelShield;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -38,7 +37,10 @@ class User extends Authenticatable implements FilamentUser, HasName
      * @var array<int, string>
      */
     protected $fillable = [
-        'name', 'email', 'branche_logged_id', 'password', 'is_active'
+        'name',
+        'email',
+        'branche_logged_id',
+        'is_active'
     ];
 
     /**

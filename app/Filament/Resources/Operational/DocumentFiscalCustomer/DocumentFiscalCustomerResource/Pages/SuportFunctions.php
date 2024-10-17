@@ -40,7 +40,7 @@ class SuportFunctions
         return Notification::make()
             ->success()
             ->title('NOTFIS Importado com Sucesso')
-            ->body($line - 2 .' notas foram importadas');
+            ->body($line - 2 . ' notas foram importadas');
     }
 
     public static function ImportXml(array $data): Notification
@@ -49,7 +49,7 @@ class SuportFunctions
         foreach ($data['attachment'] as $xml) {
 
             if (! file_exists(Storage::path($xml))) {
-                self::$msg[] = 'Erro ao abrir o XML: '.$xml;
+                self::$msg[] = 'Erro ao abrir o XML: ' . $xml;
                 goto nextfile;
             }
 
@@ -67,13 +67,13 @@ class SuportFunctions
             }
 
             if (DocumentFiscalCustomer::where('chNFe', '=', Arr::get($xmlarray, 'protNFe.infProt.chNFe'))->first() != null) {
-                self::$msg[] = 'XML já consta na base: '.Arr::get($xmlarray, 'protNFe.infProt.chNFe');
+                self::$msg[] = 'XML já consta na base: ' . Arr::get($xmlarray, 'protNFe.infProt.chNFe');
                 goto nextfile;
             }
 
             self::StoreDocumentFiscalCustomer($xmlarray);
 
-            self::$msg[] = 'Importado XML Chave: '.Arr::get($xmlarray, 'protNFe.infProt.chNFe');
+            self::$msg[] = 'Importado XML Chave: ' . Arr::get($xmlarray, 'protNFe.infProt.chNFe');
 
             nextfile:
 
@@ -83,7 +83,7 @@ class SuportFunctions
         $mountnotify = Notification::make()
             ->info()
             ->title('Resultado da Importação')
-            ->body(Str::markdown('XMLs importados, verifique os detalhes: <br>'.implode('<br>', self::$msg)))
+            ->body(Str::markdown('XMLs importados, verifique os detalhes: <br>' . implode('<br>', self::$msg)))
             ->persistent()
             ->send();
 
@@ -151,9 +151,21 @@ class SuportFunctions
             'gia' => $dataCep['gia'],
             'ddd' => $dataCep['ddd'],
             'siafi' => $dataCep['siafi'],
-            'phone_number' => Arr::get($xmlArray, "NFe.infNFe.{$key}.ender{$uppercase}.fone"),
+            'phone_number' => static::formatPhone(Arr::get($xmlArray, "NFe.infNFe.{$key}.ender{$uppercase}.fone")),
             'state_registration' => Arr::get($xmlArray, "NFe.infNFe.{$key}.IE"),
             'complete' => false,
         ]);
+    }
+
+    protected static function formatPhone($phone)
+    {
+        $formatedPhone = preg_replace('/[^0-9]/', '', $phone);
+        $matches = [];
+        preg_match('/^([0-9]{2})([0-9]{4,5})([0-9]{4})$/', $formatedPhone, $matches);
+        if ($matches) {
+            return '(' . $matches[1] . ') ' . $matches[2] . '-' . $matches[3];
+        }
+
+        return $phone;
     }
 }

@@ -42,7 +42,7 @@ class CustomerFactory extends Factory
             'bank_id' => '1',
             'payment_term_id' => '1',
             'priority' => '0',
-            'risc' => fake()->randomElements(['A', 'B', 'C', 'D', 'E'])[0],
+            'risc' => fake()->randomElements(['Risco A', 'Risco B', 'Risco C', 'Risco D', 'Risco E'])[0],
             'municipal_registration' => fake()->numberBetween(10000, 99999),
             'state_registration' => fake()->numberBetween(1000000, 9999999999),
             'mail_operational' => fake()->freeEmail(),

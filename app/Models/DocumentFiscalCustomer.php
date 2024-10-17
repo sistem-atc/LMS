@@ -2,25 +2,60 @@
 
 namespace App\Models;
 
-use App\Models\Lot;
 use App\Models\Customer;
 use App\Traits\Blameable;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Rupadana\ApiService\Contracts\HasAllowedFields;
+use Rupadana\ApiService\Contracts\HasAllowedFilters;
 
-class DocumentFiscalCustomer extends Model
+class DocumentFiscalCustomer extends Model implements HasAllowedFields, HasAllowedFilters
 {
     use HasFactory;
     use SoftDeletes;
     use Blameable;
 
+    public static function getAllowedFields(): array
+    {
+        return [];
+    }
+
+    public static function getAllowedFilters(): array
+    {
+        return [];
+    }
+
     protected $fillable = [
-        'cUF_id', 'mod', 'serie', 'nNF', 'dEmi', 'sender_customer_id', 'recipient_customer_id',
-        'emit_customer_id', 'vBC', 'lot_id',
-        'vICMS', 'vBCST', 'vST', 'vProd', 'vFrete', 'vSeg', 'vDesc', 'vIPI', 'vPIS', 'vCOFINS',
-        'vOutro', 'vNF', 'modFrete', 'qVol', 'pesoL', 'pesoB', 'infAdic', 'chNFe',
+        'cUF_id',
+        'mod',
+        'serie',
+        'nNF',
+        'dEmi',
+        'sender_customer_id',
+        'recipient_customer_id',
+        'emit_customer_id',
+        'vBC',
+        'lot_id',
+        'vICMS',
+        'vBCST',
+        'vST',
+        'vProd',
+        'vFrete',
+        'vSeg',
+        'vDesc',
+        'vIPI',
+        'vPIS',
+        'vCOFINS',
+        'vOutro',
+        'vNF',
+        'modFrete',
+        'qVol',
+        'pesoL',
+        'pesoB',
+        'infAdic',
+        'chNFe',
     ];
 
     public function sender_customer(): BelongsTo
@@ -41,10 +76,5 @@ class DocumentFiscalCustomer extends Model
     public function codeuf(): BelongsTo
     {
         return $this->belongsTo(CodeUf::class);
-    }
-
-    public function lot(): BelongsTo
-    {
-        return $this->belongsTo(Lot::class);
     }
 }

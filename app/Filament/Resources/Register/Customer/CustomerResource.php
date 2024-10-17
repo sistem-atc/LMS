@@ -15,10 +15,12 @@ use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Tabs;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -64,7 +66,7 @@ class CustomerResource extends Resource
                         Tabs\Tab::make('tokenapi')
                             ->label('Token API')
                             ->schema(static::getTabToken())
-                            ->hidden(fn () => ! auth()->user()->can('create_token')),
+                            ->hidden(fn() => !auth()->user()->can('create_token')),
                     ]),
                 ]),
             ]);
@@ -73,6 +75,11 @@ class CustomerResource extends Resource
     private static function getTabDefault(): array
     {
         return [
+            Toggle::make('complete')
+                ->label('Completo')
+                ->onColor('success')
+                ->offColor('danger')
+                ->default(true),
             Section::make('')
                 ->schema([
                     Select::make('type_person')
@@ -85,15 +92,9 @@ class CustomerResource extends Resource
                     TextInput::make('cpf_or_cnpj')
                         ->live()
                         //->rules([fn (Get $get) => SuportFunctions::validar_cnpj($get('cpf_or_cnpj'))])
-                        ->mask(fn (Get $get): string => ($get('type_person') === 'J') ? '99.999.999/9999-99' : '999.999.999-99')
+                        ->mask(fn(Get $get): string => ($get('type_person') === 'J') ? '99.999.999/9999-99' : '999.999.999-99')
                         ->label('CPF ou CNPJ'),
-                    Toggle::make('complete')
-                        ->label('Completo')
-                        ->inline()
-                        ->onColor('success')
-                        ->offColor('danger')
-                        ->default(true),
-                ])->columns(3),
+                ])->columns(2),
             Section::make('')
                 ->schema([
                     TextInput::make('company_name')
@@ -245,7 +246,7 @@ class CustomerResource extends Resource
                         ->password()
                         ->revealable(),
                 ])
-                ->hidden(fn (Customer $record): bool => is_null($record->token_api)),
+                ->hidden(fn(Customer $record): bool => is_null($record->token_api)),
             Section::make('Criar Token')
                 ->schema([
                     TextInput::make('name')
@@ -254,7 +255,7 @@ class CustomerResource extends Resource
                         ->description('Selecione as habilidades do token')
                         ->schema(TokenResource::getAbilitiesSchema()),
                 ])
-                ->hidden(fn (Customer $record): bool => ! is_null($record->token_api)),
+                ->hidden(fn(Customer $record): bool => ! is_null($record->token_api)),
         ];
     }
 
@@ -274,6 +275,12 @@ class CustomerResource extends Resource
                     ->sortable(),
                 TextColumn::make('city')
                     ->label('Cidade'),
+                IconColumn::make('complete')
+                    ->label('Cadastro Completo')
+                    ->boolean()
+                    ->trueIcon('heroicon-o-check')
+                    ->falseIcon('heroicon-o-x-mark')
+                    ->wrap(),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),

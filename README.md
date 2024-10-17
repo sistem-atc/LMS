@@ -9,6 +9,7 @@
         Abstrair as classes para usar os mesmos metodos para rotina manual e automatica
 
     Lotes de Notas Fiscais =>
+        Tela de resumo do Wizard para conferencia antes de gerar o CT-e
         Gerar um CT-e para cada lote
         Calcular valores a partir da tabela (Criar model e rotinas)
         Calcular impostos a partir das regras fiscais (Criar Rotinas)

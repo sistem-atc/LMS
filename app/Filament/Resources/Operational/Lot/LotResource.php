@@ -2,28 +2,32 @@
 
 namespace App\Filament\Resources\Operational\Lot;
 
-use App\Enums\LotEnum;
-use App\Filament\Resources\Operational\Lot\LotResource\Pages;
-use App\Models\Branch;
-use App\Models\DocumentFiscalCustomer;
 use App\Models\Lot;
-use Filament\Facades\Filament;
-use Filament\Forms\Components\CheckboxList;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Wizard;
-use Filament\Forms\Form;
-use Filament\Forms\Get;
-use Filament\Resources\Resource;
 use Filament\Tables;
-use Filament\Tables\Actions\Action;
-use Filament\Tables\Actions\ActionGroup;
-use Filament\Tables\Columns\TextColumn;
+use App\Enums\LotEnum;
+use App\Models\Branch;
+use Filament\Forms\Get;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Facades\Filament;
+use Illuminate\Support\Number;
+use Filament\Resources\Resource;
 use Illuminate\Support\Collection;
+use Filament\Tables\Actions\Action;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Wizard;
+use App\Models\DocumentFiscalCustomer;
+use Filament\Tables\Columns\TextColumn;
+use Illuminate\Database\Eloquent\Model;
+use Filament\Tables\Actions\ActionGroup;
+use Filament\Forms\Components\TextInput;
+use Illuminate\Database\Eloquent\Builder;
+use Filament\Forms\Components\Placeholder;
+use Filament\Forms\Components\CheckboxList;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\Operational\Lot\LotResource\Pages;
+use App\Filament\Resources\Operational\Lot\LotResource\Pages\SuportFunctions;
+use Filament\Forms\Components\Grid;
 
 class LotResource extends Resource
 {
@@ -71,37 +75,24 @@ class LotResource extends Resource
                         ->schema([
                             CheckboxList::make('document_fiscal_customer_id')
                                 ->label('Notas Fiscais')
-                                ->options(
-                                    function (?Lot $record): Collection {
-                                        if (! is_null($record)) {
-                                            if ($record->exists) {
-                                                return DocumentFiscalCustomer::where('lot_id', '=', $record->id)
-                                                    ->orWhere('lot_id', null)
-                                                    ->get()
-                                                    ->mapWithKeys(fn($item): array => [$item->id => $item->nNF . ' ' . $item->emit_customer->company_name]);
-                                            }
-                                        }
-
-                                        return DocumentFiscalCustomer::whereNull('lot_id')
-                                            ->get()
-                                            ->mapWithKeys(fn($item): array => [$item->id => $item->nNF . ' ' . $item->emit_customer->company_name]);
-                                    }
-                                )
-                                ->default(function (?Lot $record) {
-                                    if (! is_null($record)) {
-                                        if ($record->exists) {
-                                            return $record->documentFiscalCustomer->pluck('id')->toArray();
-                                        }
-                                    }
-                                })
+                                ->options(fn(?Lot $record, string $operation) => SuportFunctions::optionsCheckBoxList($record, $operation))
+                                ->default(fn(?Lot $record) => SuportFunctions::defaultOptionsCheckBoxList($record))
                                 ->required(),
                         ]),
                     Wizard\Step::make('Resumo do Lote')
                         ->schema([
-                            TextInput::make('Valor Total da Mercadoria')
-                                ->disabled(),
-                            TextInput::make('Valor do Frete')
-                                ->disabled(),
+                            Grid::make(3)
+                                ->label('')
+                                ->schema([
+                                    Placeholder::make('Valor Total das Mercadorias')
+                                        ->content(fn(Get $get) => Number::currency(SuportFunctions::totalValueNF($get), in: 'BRL')),
+                                    Placeholder::make('Peso Total das Mercadorias')
+                                        ->content(fn(Get $get) => Number::format(SuportFunctions::weightTotal($get), 3)),
+                                    Placeholder::make('Quantidade de Notas')
+                                        ->content(fn(Get $get) => SuportFunctions::qtdNF($get)),
+                                    Placeholder::make('Valor do Frete')
+                                        ->content(fn(Get $get) => Number::currency(SuportFunctions::freightValue($get), in: 'BRL')),
+                                ])
                         ]),
                 ])->columnSpanFull(),
             ]);
@@ -155,7 +146,6 @@ class LotResource extends Resource
                         ->action(function (Model $record) {
                             Pages\SuportFunctions::reverse($record);
                         }),
-                    Tables\Actions\EditAction::make(),
                 ])->iconButton(),
             ])
             ->bulkActions([
@@ -179,6 +169,7 @@ class LotResource extends Resource
         return [
             'index' => Pages\ListLots::route('/'),
             'create' => Pages\CreateLot::route('/create'),
+            'view' => Pages\ViewLot::route('/{record}'),
             'edit' => Pages\EditLot::route('/{record}/edit'),
         ];
     }

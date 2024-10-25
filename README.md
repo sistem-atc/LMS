@@ -1,3 +1,7 @@
+@BUG
+
+    Peso Bruto, Peso Liquido e Volumes não estão populando o banco de dados quando há importação do XML
+
 @WIP
 
     Ajustar as configurações do speed =>

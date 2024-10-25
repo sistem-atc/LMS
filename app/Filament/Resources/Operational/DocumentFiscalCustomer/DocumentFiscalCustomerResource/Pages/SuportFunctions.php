@@ -117,8 +117,8 @@ class SuportFunctions
             'vNF' => Arr::get($data, 'NFe.infNFe.total.ICMSTot.vNF'),
             'modFrete' => Arr::get($data, 'NFe.infNFe.transp.modFrete'),
             'qVol' => Arr::get($data, 'NFe.infNFe.transp.qVol'),
-            'pesoL' => Arr::get($data, 'NFe.infNFe.transp.pesoL'),
-            'pesoB' => Arr::get($data, 'NFe.infNFe.transp.pesoB'),
+            'pesoL' => Arr::get($data, 'NFe.infNFe.transp.vol.pesoL'),
+            'pesoB' => Arr::get($data, 'NFe.infNFe.transp.vol.pesoB'),
             'infAdic' => Arr::get($data, 'NFe.infNFe.infAdic.infAdFisco'),
             'chNFe' => Arr::get($data, 'protNFe.infProt.chNFe'),
         ];

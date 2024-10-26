@@ -13,9 +13,11 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\Register\FreightTable\FreightTableResource\Pages;
 use App\Models\CodeUf;
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Tables\Columns\TextColumn;
 use Leandrocfe\FilamentPtbrFormFields\Money;
 
@@ -37,42 +39,55 @@ class FreightTableResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('name')
-                    ->label('Nome')
-                    ->required(),
-                DatePicker::make('start_date')
-                    ->label('Data Inicio')
-                    ->required(),
-                DatePicker::make('end_date')
-                    ->label('Data Final')
-                    ->required(),
-                Repeater::make('routes')
-                    ->label('Rotas')
-                    ->collapsible()
-                    ->cloneable()
+                Grid::make(4)
                     ->schema([
-                        Select::make('origin_uf')
-                            ->label('Filial Origem')
-                            ->options(CodeUf::all()->pluck('federation_unit', 'id'))
+                        TextInput::make('name')
+                            ->label('Nome')
                             ->required(),
-                        Select::make('destination_uf')
-                            ->label('Filial Destino')
-                            ->options(CodeUf::all()->pluck('federation_unit', 'id'))
+                        DatePicker::make('start_date')
+                            ->label('Data Inicio')
                             ->required(),
-                        TextInput::make('minimum_weight')
-                            ->label('Peso Minimo')
-                            ->numeric()
-                            ->inputMode('decimal'),
-                        TextInput::make('maximum_weight')
-                            ->label('Peso Maximo')
-                            ->numeric()
-                            ->inputMode('decimal'),
-                        Money::make('price')
-                            ->label('Valor'),
-                        TextInput::make('delivery_days')
-                            ->label('Dias Entrega')
-                            ->numeric(),
+                        DatePicker::make('end_date')
+                            ->label('Data Final')
+                            ->required(),
+                        Toggle::make('is_active')
+                            ->onIcon('heroicon-m-bolt')
+                            ->onColor('success')
+                            ->offIcon('heroicon-m-bolt-slash')
+                            ->offColor('danger')
+                            ->inline(false),
                     ]),
+                Grid::make(1)
+                    ->schema([
+                        Repeater::make('routes')
+                            ->label('Rotas')
+                            ->collapsible()
+                            ->cloneable()
+                            ->columns(6)
+                            ->schema([
+                                Select::make('origin_uf')
+                                    ->label('Filial Origem')
+                                    ->options(CodeUf::all()->pluck('federation_unit', 'id'))
+                                    ->required(),
+                                Select::make('destination_uf')
+                                    ->label('Filial Destino')
+                                    ->options(CodeUf::all()->pluck('federation_unit', 'id'))
+                                    ->required(),
+                                TextInput::make('minimum_weight')
+                                    ->label('Peso Minimo')
+                                    ->numeric()
+                                    ->inputMode('decimal'),
+                                TextInput::make('maximum_weight')
+                                    ->label('Peso Maximo')
+                                    ->numeric()
+                                    ->inputMode('decimal'),
+                                Money::make('price')
+                                    ->label('Valor'),
+                                TextInput::make('delivery_days')
+                                    ->label('Dias Entrega')
+                                    ->numeric(),
+                            ]),
+                    ])
             ]);
     }
 

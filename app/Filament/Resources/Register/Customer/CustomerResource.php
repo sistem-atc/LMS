@@ -246,7 +246,15 @@ class CustomerResource extends Resource
                         ->password()
                         ->revealable(),
                 ])
-                ->hidden(fn(Customer $record): bool => is_null($record->token_api)),
+                ->hidden(
+                    function (Customer | null $record): bool {
+                        if (is_null($record)) {
+                            return true;
+                        }
+
+                        return is_null($record->token_api);
+                    }
+                ),
             Section::make('Criar Token')
                 ->schema([
                     TextInput::make('name')
@@ -255,7 +263,15 @@ class CustomerResource extends Resource
                         ->description('Selecione as habilidades do token')
                         ->schema(TokenResource::getAbilitiesSchema()),
                 ])
-                ->hidden(fn(Customer $record): bool => ! is_null($record->token_api)),
+                ->hidden(
+                    function (Customer | null $record): bool {
+                        if (is_null($record)) {
+                            return false;
+                        }
+
+                        return ! is_null($record->token_api);
+                    }
+                ),
         ];
     }
 

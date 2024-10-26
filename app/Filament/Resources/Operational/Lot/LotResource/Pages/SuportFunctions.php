@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Operational\Lot\LotResource\Pages;
 
 use App\Models\Lot;
 use App\Enums\LotEnum;
+use App\Models\Cte;
 use Filament\Forms\Get;
 use App\Models\DocumentFiscalCustomer;
 use Illuminate\Database\Eloquent\Model;
@@ -21,7 +22,42 @@ class SuportFunctions
 
         if ($record->status == LotEnum::DIGITAÇÃO) {
 
-            //Criar um numero de CT-e e associar o lote a ele.
+            $dataCte = static::calculateCTe($allDocuments);
+
+            $cteNumber = Cte::create([
+                'branch_id' => $dataCte['branch_id'],
+                'serie',
+                'emission_date',
+                'weight',
+                'weight_m3',
+                'weight_charged',
+                'm3',
+                'shipping_value',
+                'tax_amount',
+                'total_value',
+                'type_transportation',
+                'lot' => $record->id,
+                'origin_branche_id',
+                'recipient_branche_id',
+                'calculation_branche_id',
+                'debit_branche_id',
+                'shipping_table',
+                'shipping_table_order',
+                'shipping_type',
+                'insurance',
+                'insurance_contract',
+                'delivery_time',
+                'doct_blocked' => false,
+                'sender_customer_id',
+                'recipient_customer_id',
+                'consignee_customer_id',
+                'debtor_customer_id',
+                'customer_calculation_id',
+                'delivery_route_id',
+                'delivery_date',
+                'cte_key',
+                'cost_center_id',
+            ]);
 
             $record->status = LotEnum::CALCULADO;
             $record->save();
@@ -29,7 +65,7 @@ class SuportFunctions
             return Notification::make()
                 ->success()
                 ->title('Lote Calculado com sucesso')
-                ->body('CT-e Criado');
+                ->body('CT-e Criado ' . $cteNumber);
         } else {
             return Notification::make()
                 ->danger()
@@ -138,5 +174,10 @@ class SuportFunctions
         }
 
         return null;
+    }
+
+    private static function calculateCTe(Collection $allDocuments): ?Collection
+    {
+        return $allDocuments;
     }
 }

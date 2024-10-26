@@ -8,4 +8,9 @@ use App\Filament\Resources\Register\FreightTable\FreightTableResource;
 class CreateFreightTable extends CreateRecord
 {
     protected static string $resource = FreightTableResource::class;
+
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
 }

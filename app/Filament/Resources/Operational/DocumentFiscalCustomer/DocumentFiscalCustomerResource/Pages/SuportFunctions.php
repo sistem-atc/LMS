@@ -60,10 +60,18 @@ class SuportFunctions
 
             if (Customer::where('cpf_or_cnpj', '=', Arr::get($xmlarray, 'NFe.infNFe.emit.CNPJ'))->first() == null) {
                 self::includeCustomer($xmlarray, 'emit');
+                if (Customer::where('cpf_or_cnpj', '=', Arr::get($xmlarray, 'NFe.infNFe.emit.CNPJ'))->first() == null) {
+                    self::$msg[] = 'Cliente não Cadastrado: ' . Arr::get($xmlarray, 'NFe.infNFe.emit.CNPJ');
+                    goto nextfile;
+                }
             }
 
             if (Customer::where('cpf_or_cnpj', '=', Arr::get($xmlarray, 'NFe.infNFe.dest.CNPJ'))->first() == null) {
                 self::includeCustomer($xmlarray, 'dest');
+                if (Customer::where('cpf_or_cnpj', '=', Arr::get($xmlarray, 'NFe.infNFe.emit.CNPJ'))->first() == null) {
+                    self::$msg[] = 'Cliente não Cadastrado: ' . Arr::get($xmlarray, 'NFe.infNFe.emit.CNPJ');
+                    goto nextfile;
+                }
             }
 
             if (DocumentFiscalCustomer::where('chNFe', '=', Arr::get($xmlarray, 'protNFe.infProt.chNFe'))->first() != null) {
@@ -131,30 +139,34 @@ class SuportFunctions
 
         $uppercase = ucfirst($key);
         $dataCep = ViaCepService::consultaCEP(Arr::get($xmlArray, "NFe.infNFe.{$key}.ender{$uppercase}.CEP"));
-        $fantasyname = Arr::get($xmlArray, "NFe.infNFe.{$key}.xFant") ? Arr::get($xmlArray, "NFe.infNFe.{$key}.xFant") : Arr::get($xmlArray, "NFe.infNFe.{$key}.xNome");
-        $typePerson = strlen(Arr::get($xmlArray, "NFe.infNFe.{$key}.CNPJ")) === 14 ? 'J' : 'F';
 
-        Customer::create([
-            'type_person' => $typePerson,
-            'cpf_or_cnpj' => Arr::get($xmlArray, "NFe.infNFe.{$key}.CNPJ"),
-            'company_name' => Arr::get($xmlArray, "NFe.infNFe.{$key}.xNome"),
-            'type_person' => Arr::get($xmlArray, "NFe.infNFe.{$key}.CNPJ"),
-            'fantasy_name' => $fantasyname,
-            'postal_code' => Arr::get($xmlArray, "NFe.infNFe.{$key}.ender{$uppercase}.CEP"),
-            'street' => $dataCep['logradouro'],
-            'complement' => $dataCep['complemento'],
-            'number' => Arr::get($xmlArray, "NFe.infNFe.{$key}.ender{$uppercase}.nro"),
-            'district' => $dataCep['bairro'],
-            'city' => $dataCep['localidade'],
-            'state' => $dataCep['uf'],
-            'ibge' => $dataCep['ibge'],
-            'gia' => $dataCep['gia'],
-            'ddd' => $dataCep['ddd'],
-            'siafi' => $dataCep['siafi'],
-            'phone_number' => static::formatPhone(Arr::get($xmlArray, "NFe.infNFe.{$key}.ender{$uppercase}.fone")),
-            'state_registration' => Arr::get($xmlArray, "NFe.infNFe.{$key}.IE"),
-            'complete' => false,
-        ]);
+        if (! Arr::has($dataCep, 'error')) {
+
+            $fantasyname = Arr::get($xmlArray, "NFe.infNFe.{$key}.xFant") ? Arr::get($xmlArray, "NFe.infNFe.{$key}.xFant") : Arr::get($xmlArray, "NFe.infNFe.{$key}.xNome");
+            $typePerson = strlen(Arr::get($xmlArray, "NFe.infNFe.{$key}.CNPJ")) === 14 ? 'J' : 'F';
+
+            Customer::create([
+                'type_person' => $typePerson,
+                'cpf_or_cnpj' => Arr::get($xmlArray, "NFe.infNFe.{$key}.CNPJ"),
+                'company_name' => Arr::get($xmlArray, "NFe.infNFe.{$key}.xNome"),
+                'type_person' => Arr::get($xmlArray, "NFe.infNFe.{$key}.CNPJ"),
+                'fantasy_name' => $fantasyname,
+                'postal_code' => Arr::get($xmlArray, "NFe.infNFe.{$key}.ender{$uppercase}.CEP"),
+                'street' => $dataCep['logradouro'],
+                'complement' => $dataCep['complemento'],
+                'number' => Arr::get($xmlArray, "NFe.infNFe.{$key}.ender{$uppercase}.nro"),
+                'district' => $dataCep['bairro'],
+                'city' => $dataCep['localidade'],
+                'state' => $dataCep['uf'],
+                'ibge' => $dataCep['ibge'],
+                'gia' => $dataCep['gia'],
+                'ddd' => $dataCep['ddd'],
+                'siafi' => $dataCep['siafi'],
+                'phone_number' => static::formatPhone(Arr::get($xmlArray, "NFe.infNFe.{$key}.ender{$uppercase}.fone")),
+                'state_registration' => Arr::get($xmlArray, "NFe.infNFe.{$key}.IE"),
+                'complete' => false,
+            ]);
+        }
     }
 
     protected static function formatPhone($phone)

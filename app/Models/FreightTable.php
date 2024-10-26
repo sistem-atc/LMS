@@ -17,11 +17,13 @@ class FreightTable extends Model
         'start_date',
         'end_date',
         'routes',
+        'is_active',
     ];
 
     protected $casts = [
         'start_date' => 'date',
         'end_date' => 'date',
         'routes' => 'array',
+        'is_active' => 'boolean',
     ];
 }

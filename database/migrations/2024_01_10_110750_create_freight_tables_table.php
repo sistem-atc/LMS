@@ -18,6 +18,7 @@ return new class extends Migration
             $table->date('start_date');
             $table->date('end_date');
             $table->json('routes');
+            $table->boolean('is_active')->default(true);
             $table->blameable();
             $table->timestamps();
             $table->softDeletes();

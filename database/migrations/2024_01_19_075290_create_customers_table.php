@@ -3,6 +3,7 @@
 use App\Models\Bank;
 use App\Models\Branch;
 use App\Models\EdiPattern;
+use App\Models\FreightTable;
 use App\Models\GroupCustomer;
 use App\Models\Nature;
 use App\Models\PaymentTerm;
@@ -54,6 +55,7 @@ return new class extends Migration
             $table->string('token_api', 64)->unique()->nullable();
             $table->foreignIdFor(GroupCustomer::class)->nullable();
             $table->foreignIdFor(EdiPattern::class)->nullable();
+            $table->foreignIdFor(FreightTable::class)->nullable();
             $table->boolean('complete')->default(false);
             $table->blameable();
             $table->timestamps();

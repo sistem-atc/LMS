@@ -16,7 +16,7 @@ class UserSeeder extends Seeder
             'name' => 'Kleber Pracidelli Patti',
             'email' => 'kleber.patti' . config('domain.domain'),
             'branch_logged_id' => '1',
-            'password' => bcrypt('123456789'),
+            'password' => bcrypt(config('domain.defaultPass')),
             'is_active' => true,
         ]);
 

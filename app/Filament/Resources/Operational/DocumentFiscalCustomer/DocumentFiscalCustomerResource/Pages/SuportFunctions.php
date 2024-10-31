@@ -79,7 +79,7 @@ class SuportFunctions
                 goto nextfile;
             }
 
-            self::StoreDocumentFiscalCustomer($xmlarray);
+            self::StoreDocumentFiscalCustomer($xmlarray, $xmlString);
 
             self::$msg[] = 'Importado XML Chave: ' . Arr::get($xmlarray, 'protNFe.infProt.chNFe');
 
@@ -98,7 +98,7 @@ class SuportFunctions
         return $mountnotify;
     }
 
-    public static function StoreDocumentFiscalCustomer(array $data): void
+    public static function StoreDocumentFiscalCustomer(array $data, string $xmlString): void
     {
 
         $storeData = [
@@ -124,11 +124,12 @@ class SuportFunctions
             'vOutro' => Arr::get($data, 'NFe.infNFe.total.ICMSTot.vOutro'),
             'vNF' => Arr::get($data, 'NFe.infNFe.total.ICMSTot.vNF'),
             'modFrete' => Arr::get($data, 'NFe.infNFe.transp.modFrete'),
-            'qVol' => Arr::get($data, 'NFe.infNFe.transp.qVol'),
+            'qVol' => Arr::get($data, 'NFe.infNFe.transp.vol.qVol'),
             'pesoL' => Arr::get($data, 'NFe.infNFe.transp.vol.pesoL'),
             'pesoB' => Arr::get($data, 'NFe.infNFe.transp.vol.pesoB'),
             'infAdic' => Arr::get($data, 'NFe.infNFe.infAdic.infAdFisco'),
             'chNFe' => Arr::get($data, 'protNFe.infProt.chNFe'),
+            'xml' => $xmlString,
         ];
 
         DocumentFiscalCustomer::create($storeData);

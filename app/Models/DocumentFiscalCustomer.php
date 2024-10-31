@@ -56,6 +56,7 @@ class DocumentFiscalCustomer extends Model implements HasAllowedFields, HasAllow
         'pesoB',
         'infAdic',
         'chNFe',
+        'xml',
     ];
 
     public function sender_customer(): BelongsTo

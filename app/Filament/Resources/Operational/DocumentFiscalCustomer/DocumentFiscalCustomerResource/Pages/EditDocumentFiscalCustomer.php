@@ -28,7 +28,8 @@ class EditDocumentFiscalCustomer extends EditRecord
     protected function mutateFormDataBeforeFill(array $data): array
     {
 
-        $data['cUF_id'] = CodeUf::where('code_uf', '=' , substr($data['cUF_id'], 0, 2))->pluck('federation_unit')->first();
+        $data['xml'] = file_get_contents($data['xml']->getRealPath());
+        $data['cUF_id'] = CodeUf::where('code_uf', '=', substr($data['cUF_id'], 0, 2))->pluck('federation_unit')->first();
 
         return $data;
     }

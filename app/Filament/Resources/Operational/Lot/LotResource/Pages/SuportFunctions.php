@@ -7,6 +7,7 @@ use App\Enums\LotEnum;
 use App\Models\Cte;
 use Filament\Forms\Get;
 use App\Models\DocumentFiscalCustomer;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Filament\Notifications\Notification;
 use Illuminate\Support\Collection;
@@ -18,29 +19,29 @@ class SuportFunctions
 
         $allDocuments = DocumentFiscalCustomer::where('lot_id', $record->id)->get();
 
-        dd($record, $allDocuments);
-
         if ($record->status == LotEnum::DIGITAÇÃO) {
 
             $dataCte = static::calculateCTe($allDocuments);
 
+            //Validar como parametrizar todos os campos incluindo os devidos calculos
+
             $cteNumber = Cte::create([
-                'branch_id' => $dataCte['branch_id'],
-                'serie',
-                'emission_date',
-                'weight',
-                'weight_m3',
-                'weight_charged',
-                'm3',
+                'branch_id' => $record['branche_id'],
+                'serie' => 904, //Definir modo para parametrizar a serie por filial ou por modo de emissão
+                'emission_date' => Carbon::now(),
+                'weight' => $allDocuments->sum('pesoB'),
+                'weight_m3' => $allDocuments->sum('pesoB'),
+                'weight_charged' => $allDocuments->sum('pesoB'),
+                'm3' => $allDocuments->sum('pesoB'),
                 'shipping_value',
                 'tax_amount',
                 'total_value',
                 'type_transportation',
                 'lot' => $record->id,
-                'origin_branche_id',
-                'recipient_branche_id',
-                'calculation_branche_id',
-                'debit_branche_id',
+                'origin_branche_id' => $record['branche_id'],
+                'recipient_branche_id' => $record['branche_id'],
+                'calculation_branche_id' => $record['branche_id'],
+                'debit_branche_id' => $record['branche_id'],
                 'shipping_table',
                 'shipping_table_order',
                 'shipping_type',
@@ -48,11 +49,10 @@ class SuportFunctions
                 'insurance_contract',
                 'delivery_time',
                 'doct_blocked' => false,
-                'sender_customer_id',
-                'recipient_customer_id',
-                'consignee_customer_id',
-                'debtor_customer_id',
-                'customer_calculation_id',
+                'sender_customer_id' => $allDocuments->first()['sender_customer_id'],
+                'recipient_customer_id' => $allDocuments->first()['recipient_customer_id'],
+                'debtor_customer_id' => $allDocuments->first()['sender_customer_id'], //Se modFrete = 0 então sender, contratio recipient
+                'customer_calculation_id' => $allDocuments->first()['sender_customer_id'],
                 'delivery_route_id',
                 'delivery_date',
                 'cte_key',

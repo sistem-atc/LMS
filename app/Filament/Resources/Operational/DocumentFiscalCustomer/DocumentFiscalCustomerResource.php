@@ -20,6 +20,7 @@ use Leandrocfe\FilamentPtbrFormFields\Money;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\Operational\DocumentFiscalCustomer\DocumentFiscalCustomerResource\Pages;
 use App\Models\CodeUf;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Get;
 use Illuminate\Support\Collection;
 
@@ -47,8 +48,8 @@ class DocumentFiscalCustomerResource extends Resource
                             ->live(onBlur: true)
                             ->afterStateUpdated(
                                 function (Set $set, $state) {
-                                    if($state){
-                                        $set('cUF_id', CodeUf::where('code_uf', '=' , substr($state, 0, 2))->pluck('federation_unit')->first());
+                                    if ($state) {
+                                        $set('cUF_id', CodeUf::where('code_uf', '=', substr($state, 0, 2))->pluck('federation_unit')->first());
                                         $set('mod', substr($state, 20, 2));
                                         $set('serie', abs(substr($state, 22, 3)));
                                         $set('nNF', abs(substr($state, 25, 9)));
@@ -57,7 +58,7 @@ class DocumentFiscalCustomerResource extends Resource
                             ),
                         TextInput::make('cUF_id')
                             ->label('Código da UF')
-                            ->dehydrateStateUsing(fn (Get $get): string => substr($get('chNFe'), 0, 2))
+                            ->dehydrateStateUsing(fn(Get $get): string => substr($get('chNFe'), 0, 2))
                             ->readOnly()
                             ->columnSpan(2),
                         TextInput::make('mod')
@@ -89,9 +90,9 @@ class DocumentFiscalCustomerResource extends Resource
                             ->relationship('sender_customer', 'company_name')
                             ->required(),
                         Select::make('recipient_customer_id')
-                                ->label('Cliente Destinatario')
-                                ->relationship('recipient_customer', 'company_name')
-                                ->required(),
+                            ->label('Cliente Destinatario')
+                            ->relationship('recipient_customer', 'company_name')
+                            ->required(),
                     ])->columns(2),
                 Section::make('')
                     ->schema([
@@ -146,6 +147,11 @@ class DocumentFiscalCustomerResource extends Resource
                         Textarea::make('infAdic')
                             ->label('Informações Adicionais')
                             ->columnSpanFull(),
+                        FileUpload::make('xml')
+                            ->label('Arquivo XML')
+                            ->storeFiles(false)
+                            ->minFiles(1)
+                            ->maxFiles(1)
                     ]),
             ]);
     }

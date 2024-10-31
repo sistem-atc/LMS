@@ -28,6 +28,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\Operational\Lot\LotResource\Pages;
 use App\Filament\Resources\Operational\Lot\LotResource\Pages\SuportFunctions;
 use Filament\Forms\Components\Grid;
+use Leandrocfe\FilamentPtbrFormFields\Money;
 
 class LotResource extends Resource
 {
@@ -77,7 +78,10 @@ class LotResource extends Resource
                                 ->label('Notas Fiscais')
                                 ->options(fn(?Lot $record, string $operation) => SuportFunctions::optionsCheckBoxList($record, $operation))
                                 ->default(fn(?Lot $record) => SuportFunctions::defaultOptionsCheckBoxList($record))
-                                ->required(),
+                                ->required()
+                                ->searchable()
+                                ->bulkToggleable()
+                                ->columns(2),
                         ]),
                     Wizard\Step::make('Resumo do Lote')
                         ->schema([
@@ -85,13 +89,13 @@ class LotResource extends Resource
                                 ->label('')
                                 ->schema([
                                     Placeholder::make('Valor Total das Mercadorias')
-                                        ->content(fn(Get $get) => Number::currency(SuportFunctions::totalValueNF($get), in: 'BRL')),
+                                        ->content(fn(Get $get) => 'R$ ' . number_format(SuportFunctions::totalValueNF($get), 2, ',', '.')),
                                     Placeholder::make('Peso Total das Mercadorias')
-                                        ->content(fn(Get $get) => Number::format(SuportFunctions::weightTotal($get), 3)),
+                                        ->content(fn(Get $get) => number_format(SuportFunctions::weightTotal($get), 3, ',', '.')),
                                     Placeholder::make('Quantidade de Notas')
                                         ->content(fn(Get $get) => SuportFunctions::qtdNF($get)),
                                     Placeholder::make('Valor do Frete')
-                                        ->content(fn(Get $get) => Number::currency(SuportFunctions::freightValue($get), in: 'BRL')),
+                                        ->content(fn(Get $get) => 'R$ ' . number_format(SuportFunctions::freightValue($get), 2, ',', '.')),
                                 ])
                         ]),
                 ])->columnSpanFull(),

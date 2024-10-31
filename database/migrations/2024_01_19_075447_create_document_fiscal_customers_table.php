@@ -44,6 +44,7 @@ return new class extends Migration
             $table->longText('infAdic')->nullable();
             $table->string('chNFe')->unique();
             $table->foreignId('lot_id')->nullable()->constrained()->onDelete('cascade');
+            $table->text('xml');
             $table->blameable();
             $table->timestamps();
             $table->softDeletes();

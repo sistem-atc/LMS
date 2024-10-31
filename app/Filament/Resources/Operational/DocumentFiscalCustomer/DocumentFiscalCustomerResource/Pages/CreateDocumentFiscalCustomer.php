@@ -13,4 +13,11 @@ class CreateDocumentFiscalCustomer extends CreateRecord
     {
         return $this->getResource()::getUrl('index');
     }
+
+    protected function mutateFormDataBeforeCreate(array $data): array
+    {
+        $data['xml'] = file_get_contents($data['xml']->getRealPath());
+
+        return $data;
+    }
 }

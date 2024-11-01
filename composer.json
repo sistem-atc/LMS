@@ -28,6 +28,7 @@
         "nfephp-org/sped-cte": "^5.0",
         "nfephp-org/sped-da": "^1.1",
         "nfephp-org/sped-nfe": "^5.1",
+        "robrichards/xmlseclibs": "^3.1",
         "rupadana/filament-api-service": "^3.1",
         "ryangjchandler/blade-tabler-icons": "^2.3",
         "spatie/laravel-permission": "^6.4",

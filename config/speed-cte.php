@@ -11,9 +11,9 @@ return [
     "siglaUF" => "RS",
     "schemes" => "PL_CTe_400",
     "versao" => '4.00',
-    //"tokenIBPT" => "AAAAAAA",
-    //"CSC" => "GPB0JBWLUR6HWFTVEAS6RJ69GPCROFPBBB8G",
-    //"CSCid" => "000001",
+    "tokenIBPT" => "AAAAAAA",
+    "CSC" => "GPB0JBWLUR6HWFTVEAS6RJ69GPCROFPBBB8G",
+    "CSCid" => "000001",
     "proxyConf" => [
         "proxyIp" => "",
         "proxyPort" => "",

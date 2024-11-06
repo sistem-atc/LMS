@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:e="http://www.e-nfs.com.br">
+    <soapenv:Header/>
+    <soapenv:Body>
+        <e:[Mount_Mensage].Execute>
+            <e:Nfsecabecmsg></e:Nfsecabecmsg>
+            <e:Nfsedadosmsg></e:Nfsedadosmsg>
+        </e:[Mount_Mensage].Execute>
+    </soapenv:Body>
+</soapenv:Envelope>

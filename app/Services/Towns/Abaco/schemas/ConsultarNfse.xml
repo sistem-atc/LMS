@@ -1,0 +1,10 @@
+<ConsultarNfsEnvio>
+    <Prestador>
+        <Cnpj></Cnpj>
+        <InscricaoMunicipal></InscricaoMunicipal>
+    </Prestador>
+    <PeriodoEmissao>
+        <DataInicial></DataInicial>
+        <DataFinal></DataFinal>
+    </PeriodoEmissao>
+</ConsultarNfsEnvio>

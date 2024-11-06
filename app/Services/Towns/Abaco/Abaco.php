@@ -2,19 +2,19 @@
 
 namespace App\Services\Towns\Abaco;
 
+use SimpleXMLElement;
 use App\Enums\TypeRPS;
-use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 use App\Enums\MotivosCancelamento;
+use Illuminate\Support\Facades\Validator;
 use App\Services\Utils\Towns\Bases\LinkTownBase;
 use App\Services\Utils\Towns\Helpers\LinksTowns;
 
 class Abaco extends LinkTownBase
 {
 
-    protected static $link;
     protected static $verb = 'POST';
-    private static $url;
-    private static $headerVersion;
+    private static SimpleXMLElement $headMsg;
 
     protected static $headers = [
         'Content-Type' => 'text/xml;charset=UTF-8'
@@ -23,194 +23,194 @@ class Abaco extends LinkTownBase
 
     public function __construct(LinksTowns $linksTowns, $codeIbge)
     {
-        parent::__construct($linksTowns);
-        static::$link = $this->getLinkForIbge($codeIbge);
-        self::$url = explode("|", self::$link)[0];
-        self::$headerVersion = explode("|", self::$link)[1] ?? null;
+        parent::__construct($linksTowns, $codeIbge);
+        self::$headMsg = self::composeHeader(parent::getHeaderVersion());
     }
 
-    public static function recepcionarLoteRps(
-        array $data,
-        string $numeroNF,
-        MotivosCancelamento $motivoCancelamento
-    ): string|int {
+    public static function recepcionarLoteRps(array $data): string|int|array
+    {
+        $validator = Validator::make($data, [
+            'numeroNF' => 'required',
+            'motivoCancelamento' => [
+                'required',
+                Rule::in(MotivosCancelamento::cases())
+            ],
+        ]);
+
+        if ($validator->fails()) {
+            return ['errors' => $validator->errors()];
+        };
 
         $endPoint = 'arecepcionarloterps?wsdl';
         $operacao = 'RecepcionarLoteRPS';
-        $headMsg = self::composeHeader(self::$headerVersion);
         $dataMsg = self::composeMessage($operacao);
-        $codigoCancelamento = 'MC0' . $motivoCancelamento;
+        $codigoCancelamento = 'MC0' . $data['motivoCancelamento'];
         $mountMessage = self::assembleMessage();
 
-        $dataMsg = Str::replace('[CAMPO_NUMERO_NF]', $numeroNF, $dataMsg);
-        $dataMsg = self::Sign_XML($dataMsg);
+        $dataMsg->addChild('numeroNF', $data['numeroNF']);
+        $dataMsg = self::Sign_XML($dataMsg->asXML());
 
-        $mountMessage = Str::replace('[Mount_Mensage]', $operacao, $mountMessage);
-        $mountMessage = Str::replace('[CabecMsg]', $headMsg, $mountMessage);
-        $mountMessage = Str::replace('[DadosMsg]', $dataMsg, $mountMessage);
+        $mountMessage = self::mountMensage($operacao, self::$headMsg, $dataMsg);
 
-        return parent::Conection(self::$url . $endPoint, $mountMessage, static::$headers, self::$verb, false);
+        return parent::Conection(parent::$url . $endPoint, $mountMessage, static::$headers, self::$verb, false);
     }
 
-    public static function ConsultarSituacaoLoteRPS(
-        string $cnpj,
-        string $inscricaoMunicipal,
-        string $protocolo
-    ): string|int {
+    public static function ConsultarSituacaoLoteRPS($data): string|int|array
+    {
+
+        $validator = Validator::make($data, [
+            'cnpj' => 'required|max:14',
+            'inscricaoMunicipal' => 'required',
+            'protocolo' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return ['errors' => $validator->errors()];
+        };
 
         $endPoint = 'aconsultarsituacaoloterps?wsdl';
-        $Operacao = 'ConsultarSituacaoLoteRps';
-        $headMsg = self::composeHeader(self::$headerVersion);
-        $dataMsg = self::composeMessage($Operacao);
-        $mountMessage = self::assembleMessage();
+        $operacao = 'ConsultarSituacaoLoteRps';
+        $dataMsg = self::composeMessage($operacao);
 
-        $dataMsg = Str::replace('[CAMPO_CNPJ]', $cnpj, $dataMsg);
-        $dataMsg = Str::replace('[CAMPO_INSCRICAO_MUNICIPAL]', $inscricaoMunicipal, $dataMsg);
-        $dataMsg = Str::replace('[CAMPO_PROTOCOLO]', $protocolo, $dataMsg);
+        $dataMsg->addChild('Cnpj', $data['cnpj']);
+        $dataMsg->addChild('InscricaoMunicipal', $data['inscricaoMunicipal']);
+        $dataMsg->addChild('Protocolo', $data['protocolo']);
 
-        $mountMessage = Str::replace('[Mount_Mensage]', $Operacao, $mountMessage);
-        $mountMessage = Str::replace('[CabecMsg]', $headMsg, $mountMessage);
-        $mountMessage = Str::replace('[DadosMsg]', $dataMsg, $mountMessage);
+        $mountMessage = self::mountMensage($operacao, self::$headMsg, $dataMsg);
 
-        return parent::Conection(self::$url . $endPoint, $mountMessage, static::$headers, self::$verb, false);
+        return parent::Conection(parent::$url . $endPoint, $mountMessage->asXML(), static::$headers, self::$verb, false);
     }
 
-    public static function ConsultarNfsePorRps(
-        string $Numero_RPS,
-        string $Serie_RPS,
-        TypeRPS $Tipo_RPS,
-        string $CNPJ,
-        string $Inscricao_Municipal
-    ): string|int {
+    public static function ConsultarNfsePorRps($data): string|int|array
+    {
+
+        $validator = Validator::make($data, [
+            'cnpj' => 'required|max:14',
+            'inscricaoMunicipal' => 'required',
+            'numero_RPS' => 'required',
+            'serie_RPS' => 'required',
+            'tipo_RPS' => [
+                'required',
+                Rule::in(TypeRPS::cases())
+            ],
+        ]);
+
+        if ($validator->fails()) {
+            return ['errors' => $validator->errors()];
+        };
 
         $endPoint = 'aconsultarnfseporrps?wsdl';
-        $Operacao = 'ConsultarNfsePorRps';
-        $headMsg = self::composeHeader(self::$headerVersion);
-        $dataMsg = self::composeMessage($Operacao);
-        $mountMessage = self::assembleMessage();
+        $operacao = 'ConsultarNfsePorRps';
+        $dataMsg = self::composeMessage($operacao);
 
-        $dataMsg = Str::replace('[CAMPO_NUMERO_RPS]', $Numero_RPS, $dataMsg);
-        $dataMsg = Str::replace('[CAMPO_SERIE_RPS]', $Serie_RPS, $dataMsg);
-        $dataMsg = Str::replace('[CAMPO_TIPO_RPS]', '', $dataMsg);
-        $dataMsg = Str::replace('[CAMPO_CNPJ]', $CNPJ, $dataMsg);
-        $dataMsg = Str::replace('[CAMPO_INSCRICAO_MUNICIPAL]', $Inscricao_Municipal, $dataMsg);
+        $dataMsg->addChild('Numero', $data['numero_RPS']);
+        $dataMsg->addChild('Serie', $data['serie_RPS']);
+        $dataMsg->addChild('Tipo', $data['tipo_RPS']);
+        $dataMsg->addChild('Cnpj', $data['cnpj']);
+        $dataMsg->addChild('InscricaoMunicipal', $data['inscricaoMunicipal']);
 
-        $mountMessage = Str::replace('[Mount_Mensage]', $Operacao, $mountMessage);
-        $mountMessage = Str::replace('[CabecMsg]', $headMsg, $mountMessage);
-        $mountMessage = Str::replace('[DadosMsg]', $dataMsg, $mountMessage);
+        $mountMessage = self::mountMensage($operacao, self::$headMsg, $dataMsg);
 
-        return parent::Conection(self::$url . $endPoint, $mountMessage, static::$headers, self::$verb, false);
+        return parent::Conection(parent::$url . $endPoint, $mountMessage, static::$headers, self::$verb, false);
     }
 
-    public static function ConsultarLoteRps(
-        string $CNPJ,
-        string $Inscricao_Municipal,
-        string $Protocolo,
-    ): string|int {
+    public static function ConsultarLoteRps($data): string|int|array
+    {
+
+        $validator = Validator::make($data, [
+            'cnpj' => 'required|max:14',
+            'inscricaoMunicipal' => 'required',
+            'protocolo' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return ['errors' => $validator->errors()];
+        };
 
         $endPoint = 'aconsultarloterps?wsdl';
-        $Operacao = 'ConsultarLoteRps';
-        $headMsg = self::composeHeader(self::$headerVersion);
-        $dataMsg = self::composeMessage($Operacao);
-        $mountMessage = self::assembleMessage();
+        $operacao = 'ConsultarLoteRps';
+        $dataMsg = self::composeMessage($operacao);
 
-        $dataMsg = Str::replace('[CAMPO_CNPJ]', $CNPJ, $dataMsg);
-        $dataMsg = Str::replace('[CAMPO_INSCRICAO_MUNICIPAL]', $Inscricao_Municipal, $dataMsg);
-        $dataMsg = Str::replace('[CAMPO_PROTOCOLO]', $Protocolo, $dataMsg);
+        $dataMsg->addChild('Cnpj', $data['cnpj']);
+        $dataMsg->addChild('InscricaoMunicipal', $data['inscricaoMunicipal']);
+        $dataMsg->addChild('Protocolo', $data['protocolo']);
 
-        $mountMessage = Str::replace('[Mount_Mensage]', $Operacao, $mountMessage);
-        $mountMessage = Str::replace('[CabecMsg]', $headMsg, $mountMessage);
-        $mountMessage = Str::replace('[DadosMsg]', $dataMsg, $mountMessage);
+        $mountMessage = self::mountMensage($operacao, self::$headMsg, $dataMsg);
 
-        return parent::Conection(self::$url . $endPoint, $mountMessage, static::$headers, self::$verb, false);
+        return parent::Conection(parent::$url . $endPoint, $mountMessage, static::$headers, self::$verb, false);
     }
 
-    public static function ConsultarNfse(
-        string $CNPJ,
-        string $Inscricao_Municipal,
-        string $Data_Inicial,
-        string $Data_Final
-    ): string|int {
+    public static function ConsultarNfse($data): string|int|array
+    {
+
+        $validator = Validator::make($data, [
+            'cnpj' => 'required|max:14',
+            'inscricaoMunicipal' => 'required',
+            'dataInicial' => 'required|date',
+            'dataFnicial' => 'required|date',
+        ]);
+
+        if ($validator->fails()) {
+            return ['errors' => $validator->errors()];
+        };
 
         $endPoint = 'aconsultarnfse?wsdl';
-        $Operacao = 'ConsultarNfse';
-        $headMsg = self::composeHeader(self::$headerVersion);
-        $dataMsg = self::composeMessage($Operacao);
+        $operacao = 'ConsultarNfse';
+        $dataMsg = self::composeMessage($operacao);
+
+        $dataMsg->addChild('Cnpj', $data['cnpj']);
+        $dataMsg->addChild('InscricaoMunicipal', $data['inscricaoMunicipal']);
+        $dataMsg->addChild('DataInicial', $data['dataInicial']);
+        $dataMsg->addChild('DataFinal', $data['dataFnicial']);
+
+        $mountMessage = self::mountMensage($operacao, self::$headMsg, $dataMsg);
+
+        return parent::Conection(parent::$url . $endPoint, $mountMessage, static::$headers, self::$verb, false);
+    }
+
+    private static function mountMensage(string $operation, SimpleXMLElement $headMsg, SimpleXMLElement $dataMsg): SimpleXMLElement
+    {
+
         $mountMessage = self::assembleMessage();
+        $mountMessage->xpath('//e:[Mount_Mensage].Execute')[0]->getName('//e:' . $operation . '.Execute');
+        $mountMessage->xpath('//e:Nfsecabecmsg')[0] = $headMsg;
+        $mountMessage->xpath('//e:Nfsedadosmsg')[0] = $dataMsg;
 
-        $dataMsg = Str::replace('[CAMPO_CNPJ]', $CNPJ, $dataMsg);
-        $dataMsg = Str::replace('[CAMPO_INSCRICAO_MUNICIPAL]', $Inscricao_Municipal, $dataMsg);
-        $dataMsg = Str::replace('[CAMPO_DATA_INICIAL]', date("Ymd", strtotime($Data_Inicial)) . 'T00:00:01', $dataMsg);
-        $dataMsg = Str::replace('[CAMPO_DATA_FINAL]', date("Ymd", strtotime($Data_Final)) . 'T23:59:59', $dataMsg);
-
-        $mountMessage = Str::replace('[Mount_Mensage]', $Operacao, $mountMessage);
-        $mountMessage = Str::replace('[CabecMsg]', $headMsg, $mountMessage);
-        $mountMessage = Str::replace('[DadosMsg]', $dataMsg, $mountMessage);
-
-        return parent::Conection(self::$url . $endPoint, $mountMessage, static::$headers, self::$verb, false);
+        return $mountMessage;
     }
 
-    private static function assembleMessage(): string
+    private static function assembleMessage(): SimpleXMLElement
     {
-
-        $assembleMessage = '<?xml version="1.0" encoding="utf-8"?>';
-        $assembleMessage .= '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:e="http://www.e-nfs.com.br">';
-        $assembleMessage .= '<soapenv:Header/><soapenv:Body><e:[Mount_Mensage].Execute>';
-        $assembleMessage .= '<e:Nfsecabecmsg>[CabecMsg]</e:Nfsecabecmsg><e:Nfsedadosmsg>[DadosMsg]</e:Nfsedadosmsg>';
-        $assembleMessage .= '</e:[Mount_Mensage].Execute></soapenv:Body></soapenv:Envelope>';
-
-        return $assembleMessage;
+        return simplexml_load_file(__DIR__ . 'schemas/AssembleMensage.xml');
     }
 
-    private static function composeMessage(string $type): string
+    private static function composeMessage(string $type): SimpleXMLElement
     {
-
-        $mensageXML = '';
 
         switch ($type) {
             case 'RecepcionarLoteRPS':
-
-                $mensageXML = '';
+                return simplexml_load_file(__DIR__ . 'schemas/RecepcionarLoteRPS.xml');
 
             case 'ConsultarSituacaoLoteRps':
-
-                $mensageXML = '&lt;ConsultarSituacaoLoteRpsEnvio&gt;&lt;Prestador&gt;&lt;Cnpj&gt;[CAMPO_CNPJ]&lt;/Cnpj&gt;';
-                $mensageXML .= '&lt;InscricaoMunicipal&gt;[CAMPO_INSCRICAO_MUNICIPAL]&lt;/InscricaoMunicipal&gt;';
-                $mensageXML .= '&lt;/Prestador&gt;&lt;Protocolo&gt;[CAMPO_PROTOCOLO]&lt;/Protocolo&gt;&lt;/ConsultarSituacaoLoteRpsEnvio&gt;';
+                return simplexml_load_file(__DIR__ . 'schemas/ConsultarSituacaoLoteRps.xml');
 
             case 'ConsultarNfsePorRps':
-
-                $mensageXML = '&lt;ConsultarNfseRpsEnvio&gt;&lt;IdentificacaoRps&gt;&lt;Numero&gt;[CAMPO_NUMERO_RPS]&lt;/Numero&gt;';
-                $mensageXML .= '&lt;Serie&gt;[CAMPO_SERIE_RPS]&lt;/Serie&gt;&lt;Tipo&gt;[CAMPO_TIPO_RPS]&lt;/Tipo&gt;';
-                $mensageXML .= '&lt;/IdentificacaoRps&gt;&lt;Prestador&gt;&lt;Cnpj&gt;[CAMPO_CNPJ]&lt;/Cnpj&gt;';
-                $mensageXML .= '&lt;InscricaoMunicipal&gt;[CAMPO_INSCRICAO_MUNICIPAL]&lt;/InscricaoMunicipal&gt;';
-                $mensageXML .= '&lt;/Prestador&gt;&lt;/ConsultarNfseRpsEnvio&gt;';
+                return simplexml_load_file(__DIR__ . 'schemas/ConsultarNfsePorRps.xml');
 
             case 'ConsultarLoteRps':
-
-                $mensageXML = '&lt;ConsultarLoteRpsEnvio&gt;&lt;Prestador&gt;&lt;Cnpj&gt;[CAMPO_CNPJ]&lt;/Cnpj&gt;';
-                $mensageXML .= '&lt;InscricaoMunicipal&gt;[CAMPO_INSCRICAO_MUNICIPAL]&lt;/InscricaoMunicipal&gt;';
-                $mensageXML .= '&lt;/Prestador&gt;&lt;Protocolo&gt;[CAMPO_PROTOCOLO]&lt;/Protocolo&gt;&lt;/ConsultarLoteRpsEnvio&gt;';
+                return simplexml_load_file(__DIR__ . 'schemas/ConsultarLoteRps.xml');
 
             case 'ConsultarNfse':
-
-                $mensageXML = '&lt;ConsultarNfsEnvio&gt;&lt;Prestador&gt;&lt;Cnpj&gt;[CAMPO_CNPJ]&lt;/Cnpj&gt;';
-                $mensageXML .= '&lt;InscricaoMunicipal&gt;[CAMPO_INSCRICAO_MUNICIPAL]&lt;/InscricaoMunicipal&gt;';
-                $mensageXML .= '&lt;/Prestador&gt;&lt;PeriodoEmissao&gt;';
-                $mensageXML .= '&lt;DataInicial&gt;[CAMPO_DATA_INICIAL]&lt;/DataInicial&gt;';
-                $mensageXML .= '&lt;DataFinal&gt;[CAMPO_DATA_FINAL]&lt;/DataFinal&gt;';
-                $mensageXML .= '&lt;/PeriodoEmissao&gt;&lt;/ConsultarNfsEnvio&gt;';
+                return simplexml_load_file(__DIR__ . 'schemas/ConsultarNfse.xml');
         }
-
-        return $mensageXML;
     }
 
-    private static function composeHeader(string $type): string
+    private static function composeHeader(string $type): SimpleXMLElement
     {
 
         switch ($type) {
             case '2.02':
-                return '&lt;cabecalho xmlns=&quot;http://www.abrasf.org.br/nfse.xsd&quot; versao=&quot;2.02&quot;&gt;&lt;versaoDados&gt;2.02&lt;/versaoDados&gt;&lt;/cabecalho&gt;';
+                return simplexml_load_file(__DIR__ . 'schemas/ComposeHeader.xml');
         }
     }
 }

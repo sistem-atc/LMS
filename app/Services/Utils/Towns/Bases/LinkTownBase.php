@@ -5,25 +5,34 @@ namespace App\Services\Utils\Towns\Bases;
 use App\Services\Utils\Towns\Helpers\Connection;
 use App\Services\Utils\Towns\Helpers\LinksTowns;
 use App\Services\Utils\Towns\Helpers\XmlSigner;
+use SimpleXMLElement;
 
 class LinkTownBase
 {
 
     protected $linkTowns;
+    protected $url;
+    private $codeIbge;
 
-    public function __construct(LinksTowns $linkTowns)
+    public function __construct(LinksTowns $linkTowns, $codeIbge)
     {
+        $this->codeIbge = $codeIbge;
         $this->linkTowns = $linkTowns;
     }
 
-    protected function getLinkForIbge($codeIbge)
+    protected function getUrl(): ?string
     {
-        return $this->linkTowns->getLinkTown($codeIbge);
+        return $this->url = $this->linkTowns->getLinkTown($this->codeIbge)['url'] ?? null;
     }
 
-    protected static function Sign_XML(string $xmlNoSigned): string
+    protected function getHeaderVersion(): ?string
     {
-        return XmlSigner::Sign_XML($xmlNoSigned);
+        return $this->url = $this->linkTowns->getLinkTown($this->codeIbge)['headerVersion'] ?? null;
+    }
+
+    protected static function Sign_XML(string $xmlNoSigned): SimpleXMLElement
+    {
+        return simplexml_load_string(XmlSigner::Sign_XML($xmlNoSigned));
     }
 
     protected static function Conection(

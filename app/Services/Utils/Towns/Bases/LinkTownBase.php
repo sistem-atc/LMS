@@ -2,9 +2,11 @@
 
 namespace App\Services\Utils\Towns\Bases;
 
+use App\Models\Branch;
 use App\Services\Utils\Towns\Helpers\Connection;
 use App\Services\Utils\Towns\Helpers\LinksTowns;
 use App\Services\Utils\Towns\Helpers\XmlSigner;
+use Illuminate\Support\Facades\Auth;
 use SimpleXMLElement;
 
 class LinkTownBase
@@ -32,7 +34,8 @@ class LinkTownBase
 
     protected static function Sign_XML(string $xmlNoSigned): SimpleXMLElement
     {
-        return simplexml_load_string(XmlSigner::Sign_XML($xmlNoSigned));
+        $xmlSigner = new XmlSigner(Branch::where('id', '=', Auth::user()->employee->branch['id']));
+        return simplexml_load_string($xmlSigner::Sign_XML($xmlNoSigned));
     }
 
     protected static function Conection(

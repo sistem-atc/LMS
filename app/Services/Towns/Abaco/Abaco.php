@@ -44,10 +44,11 @@ class Abaco extends LinkTownBase
         $endPoint = 'arecepcionarloterps?wsdl';
         $operacao = 'RecepcionarLoteRPS';
         $dataMsg = self::composeMessage($operacao);
-        $codigoCancelamento = 'MC0' . $data['motivoCancelamento'];
+        $codigoCancelamento = 'MC0' . MotivosCancelamento::from($data['motivoCancelamento']);
         $mountMessage = self::assembleMessage();
 
-        $dataMsg->addChild('numeroNF', $data['numeroNF']);
+        $dataMsg->numeroNF = $data['numeroNF'];
+        $dataMsg->codigoCancelamento = $codigoCancelamento;
         $dataMsg = self::Sign_XML($dataMsg->asXML());
 
         $mountMessage = self::mountMensage($operacao, self::$headMsg, $dataMsg);
@@ -72,9 +73,9 @@ class Abaco extends LinkTownBase
         $operacao = 'ConsultarSituacaoLoteRps';
         $dataMsg = self::composeMessage($operacao);
 
-        $dataMsg->addChild('Cnpj', $data['cnpj']);
-        $dataMsg->addChild('InscricaoMunicipal', $data['inscricaoMunicipal']);
-        $dataMsg->addChild('Protocolo', $data['protocolo']);
+        $dataMsg->Cnpj = $data['cnpj'];
+        $dataMsg->InscricaoMunicipal = $data['inscricaoMunicipal'];
+        $dataMsg->Protocolo = $data['protocolo'];
 
         $mountMessage = self::mountMensage($operacao, self::$headMsg, $dataMsg);
 
@@ -103,11 +104,11 @@ class Abaco extends LinkTownBase
         $operacao = 'ConsultarNfsePorRps';
         $dataMsg = self::composeMessage($operacao);
 
-        $dataMsg->addChild('Numero', $data['numero_RPS']);
-        $dataMsg->addChild('Serie', $data['serie_RPS']);
-        $dataMsg->addChild('Tipo', $data['tipo_RPS']);
-        $dataMsg->addChild('Cnpj', $data['cnpj']);
-        $dataMsg->addChild('InscricaoMunicipal', $data['inscricaoMunicipal']);
+        $dataMsg->Numero = $data['numero_RPS'];
+        $dataMsg->Serie = $data['serie_RPS'];
+        $dataMsg->Tipo = $data['tipo_RPS'];
+        $dataMsg->Cnpj = $data['cnpj'];
+        $dataMsg->InscricaoMunicipal = $data['inscricaoMunicipal'];
 
         $mountMessage = self::mountMensage($operacao, self::$headMsg, $dataMsg);
 
@@ -131,9 +132,9 @@ class Abaco extends LinkTownBase
         $operacao = 'ConsultarLoteRps';
         $dataMsg = self::composeMessage($operacao);
 
-        $dataMsg->addChild('Cnpj', $data['cnpj']);
-        $dataMsg->addChild('InscricaoMunicipal', $data['inscricaoMunicipal']);
-        $dataMsg->addChild('Protocolo', $data['protocolo']);
+        $dataMsg->Cnpj = $data['cnpj'];
+        $dataMsg->InscricaoMunicipal = $data['inscricaoMunicipal'];
+        $dataMsg->Protocolo = $data['protocolo'];
 
         $mountMessage = self::mountMensage($operacao, self::$headMsg, $dataMsg);
 
@@ -147,7 +148,7 @@ class Abaco extends LinkTownBase
             'cnpj' => 'required|max:14',
             'inscricaoMunicipal' => 'required',
             'dataInicial' => 'required|date',
-            'dataFnicial' => 'required|date',
+            'dataFinal' => 'required|date',
         ]);
 
         if ($validator->fails()) {
@@ -158,10 +159,10 @@ class Abaco extends LinkTownBase
         $operacao = 'ConsultarNfse';
         $dataMsg = self::composeMessage($operacao);
 
-        $dataMsg->addChild('Cnpj', $data['cnpj']);
-        $dataMsg->addChild('InscricaoMunicipal', $data['inscricaoMunicipal']);
-        $dataMsg->addChild('DataInicial', $data['dataInicial']);
-        $dataMsg->addChild('DataFinal', $data['dataFnicial']);
+        $dataMsg->Cnpj = $data['cnpj'];
+        $dataMsg->InscricaoMunicipal = $data['inscricaoMunicipal'];
+        $dataMsg->DataInicial = $data['dataInicial'];
+        $dataMsg->DataFinal = $data['dataFinal'];
 
         $mountMessage = self::mountMensage($operacao, self::$headMsg, $dataMsg);
 
@@ -181,7 +182,8 @@ class Abaco extends LinkTownBase
 
     private static function assembleMessage(): SimpleXMLElement
     {
-        return simplexml_load_file(__DIR__ . 'schemas/AssembleMensage.xml');
+        $content = file_get_contents(__DIR__ . 'schemas/AssembleMensage.xml');
+        return new SimpleXMLElement($content);
     }
 
     private static function composeMessage(string $type): SimpleXMLElement
@@ -189,20 +191,22 @@ class Abaco extends LinkTownBase
 
         switch ($type) {
             case 'RecepcionarLoteRPS':
-                return simplexml_load_file(__DIR__ . 'schemas/RecepcionarLoteRPS.xml');
+                $content = file_get_contents(__DIR__ . 'schemas/RecepcionarLoteRPS.xml');
 
             case 'ConsultarSituacaoLoteRps':
-                return simplexml_load_file(__DIR__ . 'schemas/ConsultarSituacaoLoteRps.xml');
+                $content = file_get_contents(__DIR__ . 'schemas/ConsultarSituacaoLoteRps.xml');
 
             case 'ConsultarNfsePorRps':
-                return simplexml_load_file(__DIR__ . 'schemas/ConsultarNfsePorRps.xml');
+                $content = file_get_contents(__DIR__ . 'schemas/ConsultarNfsePorRps.xml');
 
             case 'ConsultarLoteRps':
-                return simplexml_load_file(__DIR__ . 'schemas/ConsultarLoteRps.xml');
+                $content = file_get_contents(__DIR__ . 'schemas/ConsultarLoteRps.xml');
 
             case 'ConsultarNfse':
-                return simplexml_load_file(__DIR__ . 'schemas/ConsultarNfse.xml');
+                $content = file_get_contents(__DIR__ . 'schemas/ConsultarNfse.xml');
         }
+
+        return new SimpleXMLElement($content);
     }
 
     private static function composeHeader(string $type): SimpleXMLElement
@@ -210,7 +214,8 @@ class Abaco extends LinkTownBase
 
         switch ($type) {
             case '2.02':
-                return simplexml_load_file(__DIR__ . 'schemas/ComposeHeader.xml');
+                $content = file_get_contents(__DIR__ . 'schemas/ComposeHeader.xml');
+                return new SimpleXMLElement($content);
         }
     }
 }

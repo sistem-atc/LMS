@@ -15,8 +15,8 @@ class XmlSigner
 
     public function __construct(Branch $branch)
     {
-        self::$passCertificate = file_get_contents(storage_path($branch->certificatePFX));
-        self::$passCertificate = $branch->password_certificate;
+        self::$passCertificate = file_get_contents(storage_path($branch->branch_matriz->certificatePFX));
+        self::$passCertificate = $branch->branch_matriz->password_certificate;
     }
 
     public static function Sign_XML(string $xmlNoSigned): string

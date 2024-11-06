@@ -34,24 +34,26 @@ class AlterBranch extends Page implements HasForms
     protected static string $view = 'filament.pages.alter-branch';
     protected ?string $heading = 'Alterar Dados de Acesso';
 
-    public function mount(): void{
+    public function mount(): void
+    {
         $this->form->fill([
-            'branch_logged_id' => auth()->user()->branch_logged->id,
+            'branch_logged_id' => Auth::user()->branch_logged->id,
             'DateBase' => session(null)->get('DateBase'),
         ]);
     }
 
-    public function form(Form $form): Form{
+    public function form(Form $form): Form
+    {
         return $form
             ->schema([
                 Grid::make()
-                ->schema([
-                    Section::make()
-                        ->schema([
-                            $this->getBrancheLoggedComponent(),
-                            $this->getDatebaseComponent(),
-                        ])->columns(2),
-                ])->columns(2)
+                    ->schema([
+                        Section::make()
+                            ->schema([
+                                $this->getBrancheLoggedComponent(),
+                                $this->getDatebaseComponent(),
+                            ])->columns(2),
+                    ])->columns(2)
 
             ])
             ->statePath('data');
@@ -66,26 +68,27 @@ class AlterBranch extends Page implements HasForms
     {
 
         return
-           Select::make('branch_logged_id')
-                ->label('Filial Logada')
-                ->required()
-                ->options(
-                    fn() => Auth::user()->employee->branch['type_branch'] === TypeBranchEnum::MATRIZ
-                        ? Branch::all()->pluck('abbreviation', 'id')->toArray()
-                        : Branch::where('id','=', Auth::user()->employee->branch['id'])
-                                    ->pluck('abbreviation', 'id')->toArray()
-                );
+            Select::make('branch_logged_id')
+            ->label('Filial Logada')
+            ->required()
+            ->options(
+                fn() => Auth::user()->employee->branch['type_branch'] === TypeBranchEnum::MATRIZ
+                    ? Branch::all()->pluck('abbreviation', 'id')->toArray()
+                    : Branch::where('id', '=', Auth::user()->employee->branch['id'])
+                    ->pluck('abbreviation', 'id')->toArray()
+            );
     }
 
     protected function getDatebaseComponent(): Component
     {
         return
             DatePicker::make('DateBase')
-                ->label('Data Base')
-                ->format('d/m/Y');
+            ->label('Data Base')
+            ->format('d/m/Y');
     }
 
-    protected function getFormActions(): array{
+    protected function getFormActions(): array
+    {
         return [
             Action::make('save')
                 ->color(Color::Blue)
@@ -94,7 +97,8 @@ class AlterBranch extends Page implements HasForms
         ];
     }
 
-    public function save(): void{
+    public function save(): void
+    {
 
         try {
             $data = $this->form->getState();
@@ -118,7 +122,5 @@ class AlterBranch extends Page implements HasForms
         }
 
         self::getRedirectUrl();
-
     }
-
 }

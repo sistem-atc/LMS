@@ -12,66 +12,61 @@ class CteService
 
     public function baixarCte()
     {
-        try{
+        try {
 
             $nsuAtual = $this->getUltNsu(Bank::select('cnpj')->first());
 
-            if (is_array($nsuAtual)){
+            if (is_array($nsuAtual)) {
 
                 return $nsuAtual;
             }
 
             $arrayCte = $this->getCteSefaz($nsuAtual);
 
-            if (!array_key_exists("erro", $arrayCte)){
+            if (!array_key_exists("erro", $arrayCte)) {
 
                 return json_encode($this->inserirCteBaixado($arrayCte));
-
-            }
-            else{
+            } else {
 
                 return $arrayCte;
             }
-        }catch (\Exception $e){
+        } catch (\Exception $e) {
 
-                return array("codigo"=> "001","erro"=> $e->getMessage());
-            }
-    }
-
-    public function getUltNsu(){
-
-        try{
-
-            $nsuAtual = Cte::select("ultimo_nsu")->get()->toArray();
-
-            if (count($nsuAtual) == 0){
-                $insertNsu = Cte::create(["ultimo_nsu" => 0])->get()->toArray();
-
-                if (count($insertNsu) > 0){
-
-                    return $insertNsu[0]['ultimo_nsu'];
-                }
-                else{
-
-                    throw new \Exception("Nao foi possivel inserir numero sequencial unico inicial");
-                }
-
-            }else{
-
-                return $$nsuAtual[0]['ultimo_nsu'];
-
-            }
-
-        }catch (\Exception $e){
-
-            return array('codigo'=> '002','erro'=> $e->getMessage());
-
+            return array("codigo" => "001", "erro" => $e->getMessage());
         }
     }
 
-    public function getCteSefaz($nsuAtual = 0){
+    public function getUltNsu()
+    {
 
-        try{
+        try {
+
+            $nsuAtual = Cte::select("ultimo_nsu")->get()->toArray();
+
+            if (count($nsuAtual) == 0) {
+                $insertNsu = Cte::create(["ultimo_nsu" => 0])->get()->toArray();
+
+                if (count($insertNsu) > 0) {
+
+                    return $insertNsu[0]['ultimo_nsu'];
+                } else {
+
+                    throw new \Exception("Nao foi possivel inserir numero sequencial unico inicial");
+                }
+            } else {
+
+                return $$nsuAtual[0]['ultimo_nsu'];
+            }
+        } catch (\Exception $e) {
+
+            return array('codigo' => '002', 'erro' => $e->getMessage());
+        }
+    }
+
+    public function getCteSefaz($nsuAtual = 0)
+    {
+
+        try {
 
             $content = file_get_contents(Bank::select('path_cert'));
             $this->tools = new Tools(Bank::class, Certificate::readPfx($content, Bank::select('password_cert')));
@@ -93,32 +88,26 @@ class CteService
                 $ultimoNsu = $doc->getAttribute('NSU');
                 $schema = $doc->getAttribute('schema');
                 $content = gzdecode(base64_decode($doc->nodeValue));
-                $array_response[] = array('schema' => $schema, 'aDoc' => $content, 'nsu'=> $ultimoNsu);
-
+                $array_response[] = array('schema' => $schema, 'aDoc' => $content, 'nsu' => $ultimoNsu);
             }
 
             if (count($array_response) > 0) {
 
                 return $array_response;
-
-            }
-            else {
+            } else {
 
                 throw new \Exception($this->getRejeicao($dom));
-
             }
+        } catch (\Exception $e) {
 
-        }
-
-        catch (\Exception $e) {
-
-            return array('codigo' => '004', 'error'=> $e->getMessage());
+            return array('codigo' => '004', 'error' => $e->getMessage());
         }
     }
 
-    public function getRejeicao(\DOMDocument $dom) {
+    public function getRejeicao(\DOMDocument $dom)
+    {
 
-        try{
+        try {
 
             $tagxMotivo = $dom->getElementsByTagName('xMotivo');
             $tagcStat = $dom->getElementsByTagName('cStat');
@@ -129,7 +118,7 @@ class CteService
 
             foreach ($tagxMotivo as $v) {
 
-                if ($i == 0){
+                if ($i == 0) {
                     $xMotivo = $v->nodeValue;
                 }
 
@@ -140,21 +129,17 @@ class CteService
 
             foreach ($tagcStat as $v) {
 
-                if ($a == 0){
+                if ($a == 0) {
                     $cStat = $v->nodeValue;
                 }
 
                 $a++;
             }
 
-            return "(". $cStat .") " . $xMotivo;
-
-        }
-
-        catch (\Exception $e) {
+            return "(" . $cStat . ") " . $xMotivo;
+        } catch (\Exception $e) {
 
             return 'Nao foi possivel identificar rejeição';
         }
     }
-
 }

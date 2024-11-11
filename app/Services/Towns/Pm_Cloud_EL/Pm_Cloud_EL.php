@@ -1,11 +1,11 @@
 <?php
 
-namespace App\CityHall\Pm_Cloud_EL;
+namespace App\Services\Towns\Pm_Cloud_EL;
 
 
 class Pm_Cloud_EL
 {
-    Option Explicit
+    /*    Option Explicit
 Private Type ClassType: Link_Prefeitura As String: Hash As String: Filial_Usada As String: End Type
 Private This As ClassType: Dim Links_Prefeituras As Object
 Public Property Get Hash() As String: Hash = This.Hash: End Property
@@ -14,7 +14,7 @@ Public Property Let Prefeitura_Utilizada(Value As String): This.Filial_Usada = V
 Public Property Get Filial_Usada() As String: Filial_Usada = This.Filial_Usada: End Property
 
 Private Sub Class_Initialize()
-    
+
     Set Links_Prefeituras = CreateObject("Scripting.Dictionary")
     Links_Prefeituras.Add "VIT", "http://es-viana-pm-nfs.cloud.el.com.br:80/RpsService" 'Prefeitura Viana
     Links_Prefeituras.Add "COL", "http://es-colatina-pm-nfs.cloud.el.com.br:80/RpsService" 'Prefeitura Colatina
@@ -22,47 +22,47 @@ Private Sub Class_Initialize()
 End Sub
 
 Public Function autenticarContribuinte(ByVal CNPJ As String, ByVal Password As String, ByVal Used_Companny As String) As Variant
-    
+
     Dim Mount_Mensage As String, Operacao As String, DadosMsg As String, XmlDom As Object, objNodes As IXMLDOMNodeList
-    
+
     Operacao = "autenticarContribuinte": DadosMsg = Compor_MensagemXML(Operacao): Mount_Mensage = Message_Assemble
     DadosMsg = Replace(DadosMsg, "[CAMPO_CNPJ]", CNPJ)
     DadosMsg = Replace(DadosMsg, "[PASSWORD]", Password)
     Mount_Mensage = Replace(Mount_Mensage, "[Mount_Mensage]", Operacao)
     Mount_Mensage = Replace(Mount_Mensage, "[DadosMsg]", DadosMsg)
-    
+
     autenticarContribuinte = Conection(Prefeitura_Utilizada, Mount_Mensage, Used_Companny)
-    
+
     Set XmlDom = CreateObject("MSXML2.DOMDocument")
         XmlDom.Async = False
             If Not XmlDom.LoadXML(autenticarContribuinte) Then
                 Err.Raise XmlDom.parseError.ErrorCode, , XmlDom.parseError.reason
             End If
-    
+
     Set objNodes = XmlDom.SelectNodes("/S:Envelope/S:Body/ns2:autenticarContribuinteResponse/return")
     This.Hash = objNodes(1).text
-    
+
 End Function
 
 Public Function cancelarNfseEnvio(ByVal CNPJ As String, ByVal Numero_Nota As String, ByVal Used_Companny As String) As Variant
-    
+
     Dim Mount_Mensage As String, Operacao As String, DadosMsg As String
-    
+
     Operacao = "CancelarNfseEnvio": DadosMsg = Compor_MensagemXML(Operacao): Mount_Mensage = Message_Assemble
     DadosMsg = Replace(DadosMsg, "[CAMPO_CNPJ]", CNPJ)
     DadosMsg = Replace(DadosMsg, "[CAMPO_NUMERO_NOTA]", Numero_Nota)
     Mount_Mensage = Replace(Mount_Mensage, "[Mount_Mensage]", Operacao)
     Mount_Mensage = Replace(Mount_Mensage, "[DadosMsg]", DadosMsg)
-    
+
     cancelarNfseEnvio = Conection(Prefeitura_Utilizada, Mount_Mensage, Used_Companny)
-    
+
 End Function
 
 Public Function CancelarNfseMotivoEnvio(ByVal CNPJ As String, ByVal Password As String, ByVal Numero_Nota As String, _
                                         ByVal Motivo_Cancelamento As String, ByVal Used_Companny As String) As Variant
-    
+
     Dim Mount_Mensage As String, Operacao As String, DadosMsg As String
-    
+
     Operacao = "CancelarNfseMotivoEnvio": DadosMsg = Compor_MensagemXML(Operacao): Mount_Mensage = Message_Assemble
     DadosMsg = Replace(DadosMsg, "[CAMPO_CNPJ]", CNPJ)
     DadosMsg = Replace(DadosMsg, "[PASSWORD]", Password)
@@ -70,43 +70,43 @@ Public Function CancelarNfseMotivoEnvio(ByVal CNPJ As String, ByVal Password As 
     DadosMsg = Replace(DadosMsg, "[CAMPO_MOTIVO_CANCELAMENTO]", Motivo_Cancelamento)
     Mount_Mensage = Replace(Mount_Mensage, "[Mount_Mensage]", Operacao)
     Mount_Mensage = Replace(Mount_Mensage, "[DadosMsg]", DadosMsg)
-    
+
     CancelarNfseMotivoEnvio = Conection(Prefeitura_Utilizada, Mount_Mensage, Used_Companny)
-    
+
 End Function
 
 Public Function ConsultarCnae(ByVal CNPJ As String, ByVal Used_Companny As String) As Variant
-    
+
     Dim Mount_Mensage As String, Operacao As String, DadosMsg As String
-    
+
     Operacao = "ConsultarCnae": DadosMsg = Compor_MensagemXML(Operacao): Mount_Mensage = Message_Assemble
     DadosMsg = Replace(DadosMsg, "[CAMPO_CNPJ]", CNPJ)
     Mount_Mensage = Replace(Mount_Mensage, "[Mount_Mensage]", Operacao)
     Mount_Mensage = Replace(Mount_Mensage, "[DadosMsg]", DadosMsg)
-    
+
     ConsultarCnae = Conection(Prefeitura_Utilizada, Mount_Mensage, Used_Companny)
-    
+
 End Function
 
 Public Function consultarLoteRpsEnvio(ByVal CNPJ As String, ByVal Protocolo As String, ByVal Used_Companny As String) As Variant
-    
+
     Dim Mount_Mensage As String, Operacao As String, DadosMsg As String
-    
+
     Operacao = "ConsultarLoteRpsEnvio": DadosMsg = Compor_MensagemXML(Operacao): Mount_Mensage = Message_Assemble
     DadosMsg = Replace(DadosMsg, "[CAMPO_CNPJ]", CNPJ)
     DadosMsg = Replace(DadosMsg, "[CAMPO_PROTOCOLO]", Protocolo)
     Mount_Mensage = Replace(Mount_Mensage, "[Mount_Mensage]", Operacao)
     Mount_Mensage = Replace(Mount_Mensage, "[DadosMsg]", DadosMsg)
-    
+
     consultarLoteRpsEnvio = Conection(Prefeitura_Utilizada, Mount_Mensage, Used_Companny)
-    
+
 End Function
 
 Public Function ConsultarNfseEnvio(ByVal CNPJ As String, ByVal Inscricao_Municipal As String, ByVal Data_Inicial As Date, _
                                    ByVal Data_Final As Date, ByVal Used_Companny As String) As Variant
-    
+
     Dim Mount_Mensage As String, Operacao As String, DadosMsg As String
-    
+
     Operacao = "ConsultarNfseEnvio": DadosMsg = Compor_MensagemXML(Operacao): Mount_Mensage = Message_Assemble
     DadosMsg = Replace(DadosMsg, "[CAMPO_CNPJ]", CNPJ)
     DadosMsg = Replace(DadosMsg, "[CAMPO_INSCRICAO_MUNICIPAL]", Inscricao_Municipal)
@@ -114,150 +114,150 @@ Public Function ConsultarNfseEnvio(ByVal CNPJ As String, ByVal Inscricao_Municip
     DadosMsg = Replace(DadosMsg, "[CAMPO_DATA_FINAL]", Format(Data_Final, "YYYY-MM-DD"))
     Mount_Mensage = Replace(Mount_Mensage, "[Mount_Mensage]", Operacao)
     Mount_Mensage = Replace(Mount_Mensage, "[DadosMsg]", DadosMsg)
-    
+
     ConsultarNfseEnvio = Conection(Prefeitura_Utilizada, Mount_Mensage, Used_Companny)
-    
+
 End Function
 
 Public Function consultarNfseRpsEnvio(ByVal CNPJ As String, ByVal Numero_RPS As String, ByVal Used_Companny As String) As Variant
-    
+
     Dim Mount_Mensage As String, Operacao As String, DadosMsg As String
-    
+
     Operacao = "ConsultarNfseRpsEnvio": DadosMsg = Compor_MensagemXML(Operacao): Mount_Mensage = Message_Assemble
     DadosMsg = Replace(DadosMsg, "[CAMPO_CNPJ]", CNPJ)
     DadosMsg = Replace(DadosMsg, "[CAMPO_NUMERO_RPS]", Numero_RPS)
     Mount_Mensage = Replace(Mount_Mensage, "[Mount_Mensage]", Operacao)
     Mount_Mensage = Replace(Mount_Mensage, "[DadosMsg]", DadosMsg)
-    
+
     consultarNfseRpsEnvio = Conection(Prefeitura_Utilizada, Mount_Mensage, Used_Companny)
-    
+
 End Function
 
 Public Function ConsultarSituacaoLoteRpsEnvio(ByVal CNPJ As String, ByVal Protocolo As String, ByVal Used_Companny As String) As Variant
-    
+
     Dim Mount_Mensage As String, Operacao As String, DadosMsg As String
-    
+
     Operacao = "ConsultarSituacaoLoteRpsEnvio": DadosMsg = Compor_MensagemXML(Operacao): Mount_Mensage = Message_Assemble
     DadosMsg = Replace(DadosMsg, "[CAMPO_CNPJ]", CNPJ)
     DadosMsg = Replace(DadosMsg, "[CAMPO_PROTOCOLO]", Protocolo)
     Mount_Mensage = Replace(Mount_Mensage, "[Mount_Mensage]", Operacao)
     Mount_Mensage = Replace(Mount_Mensage, "[DadosMsg]", DadosMsg)
-    
+
     ConsultarSituacaoLoteRpsEnvio = Conection(Prefeitura_Utilizada, Mount_Mensage, Used_Companny)
-    
+
 End Function
 
 Public Function ConsultarUltimaRps(ByVal CNPJ As String, ByVal Used_Companny As String) As Variant
-    
+
     Dim Mount_Mensage As String, Operacao As String, DadosMsg As String
-    
+
     Operacao = "ConsultarUltimaRps": DadosMsg = Compor_MensagemXML(Operacao): Mount_Mensage = Message_Assemble
     DadosMsg = Replace(DadosMsg, "[CAMPO_CNPJ]", CNPJ)
     Mount_Mensage = Replace(Mount_Mensage, "[Mount_Mensage]", Operacao)
     Mount_Mensage = Replace(Mount_Mensage, "[DadosMsg]", DadosMsg)
-    
+
     ConsultarUltimaRps = Conection(Prefeitura_Utilizada, Mount_Mensage, Used_Companny)
-    
+
 End Function
 
 Public Function ConsultarUltimoLote(ByVal CNPJ As String, ByVal Used_Companny As String) As Variant
-    
+
     Dim Mount_Mensage As String, Operacao As String, DadosMsg As String
-        
+
     Operacao = "ConsultarUltimoLote": DadosMsg = Compor_MensagemXML(Operacao): Mount_Mensage = Message_Assemble
     DadosMsg = Replace(DadosMsg, "[CAMPO_CNPJ]", CNPJ)
     Mount_Mensage = Replace(Mount_Mensage, "[Mount_Mensage]", Operacao)
     Mount_Mensage = Replace(Mount_Mensage, "[DadosMsg]", DadosMsg)
-    
+
     ConsultarUltimoLote = Conection(Prefeitura_Utilizada, Mount_Mensage, Used_Companny)
-    
+
 End Function
 
 Public Function enviarLoteRpsEnvio(ByVal CNPJ As String, ByVal Used_Companny As String) As Variant
-    
+
     Dim Mount_Mensage As String, Operacao As String, DadosMsg As String
-    
+
     Operacao = "EnviarLoteRpsEnvio": DadosMsg = Compor_MensagemXML(Operacao): Mount_Mensage = Message_Assemble
     DadosMsg = Replace(DadosMsg, "[CAMPO_CNPJ]", CNPJ)
     DadosMsg = Replace(DadosMsg, "[CAMPO_HASH]", Hash)
     Mount_Mensage = Replace(Mount_Mensage, "[Mount_Mensage]", Operacao)
     Mount_Mensage = Replace(Mount_Mensage, "[DadosMsg]", DadosMsg)
-    
+
     enviarLoteRpsEnvio = Conection(Prefeitura_Utilizada, Mount_Mensage, Used_Companny)
-    
+
 End Function
 
 Public Function fecharConexao(ByVal Used_Companny As String) As Variant
-    
+
     Dim Mount_Mensage As String, Operacao As String, DadosMsg As String
 
     Operacao = "fecharConexao": DadosMsg = Compor_MensagemXML(Operacao): Mount_Mensage = Message_Assemble
     Mount_Mensage = Replace(Mount_Mensage, "[Mount_Mensage]", Operacao)
     Mount_Mensage = Replace(Mount_Mensage, "[DadosMsg]", DadosMsg)
-    
+
     fecharConexao = Conection(Prefeitura_Utilizada, Mount_Mensage, Used_Companny)
-    
+
 End Function
 
 Public Function finalizarSessao(ByVal Used_Companny As String) As Variant
-    
+
     Dim Mount_Mensage As String, Operacao As String, DadosMsg As String
-    
+
     Operacao = "finalizarSessao": DadosMsg = Compor_MensagemXML(Operacao): Mount_Mensage = Message_Assemble
     DadosMsg = Replace(DadosMsg, "[CAMPO_HASH]", Hash)
     Mount_Mensage = Replace(Mount_Mensage, "[Mount_Mensage]", Operacao)
     Mount_Mensage = Replace(Mount_Mensage, "[DadosMsg]", DadosMsg)
-    
+
     finalizarSessao = Conection(Prefeitura_Utilizada, Mount_Mensage, Used_Companny)
-    
+
 End Function
 
 Public Function ListarServicos116Municipal(ByVal CNPJ As String, ByVal Used_Companny As String) As Variant
-    
+
     Dim Mount_Mensage As String, Operacao As String, DadosMsg As String
-    
+
     Operacao = "ListarServicos116Municipal": DadosMsg = Compor_MensagemXML(Operacao): Mount_Mensage = Message_Assemble
     DadosMsg = Replace(DadosMsg, "[CAMPO_CNPJ]", CNPJ)
     Mount_Mensage = Replace(Mount_Mensage, "[Mount_Mensage]", Operacao)
     Mount_Mensage = Replace(Mount_Mensage, "[DadosMsg]", DadosMsg)
-    
+
     ListarServicos116Municipal = Conection(Prefeitura_Utilizada, Mount_Mensage, Used_Companny)
-    
+
 End Function
 
 Public Function ListarServicosMunicipais(ByVal Prefeitura As String, ByVal Used_Companny As String) As Variant
-    
+
     Dim Mount_Mensage As String, Operacao As String, DadosMsg As String
-    
+
     Operacao = "ListarServicosMunicipais": DadosMsg = Compor_MensagemXML(Operacao): Mount_Mensage = Message_Assemble
     DadosMsg = Replace(DadosMsg, "[CAMPO_PREFEITURA]", Prefeitura)
     Mount_Mensage = Replace(Mount_Mensage, "[Mount_Mensage]", Operacao)
     Mount_Mensage = Replace(Mount_Mensage, "[DadosMsg]", DadosMsg)
-    
+
     ListarServicosMunicipais = Conection(Prefeitura_Utilizada, Mount_Mensage, Used_Companny)
-    
+
 End Function
 
 Public Function ListarServicosMunicipaisPrestador(ByVal CNPJ As String, ByVal Used_Companny As String) As Variant
-    
+
     Dim Mount_Mensage As String, Operacao As String, DadosMsg As String
-        
+
     Operacao = "ListarServicosMunicipaisPrestador": DadosMsg = Compor_MensagemXML(Operacao): Mount_Mensage = Message_Assemble
     DadosMsg = Replace(DadosMsg, "[CAMPO_CNPJ]", CNPJ)
     Mount_Mensage = Replace(Mount_Mensage, "[Mount_Mensage]", Operacao)
     Mount_Mensage = Replace(Mount_Mensage, "[DadosMsg]", DadosMsg)
-    
+
     ListarServicosMunicipaisPrestador = Conection(Prefeitura_Utilizada, Mount_Mensage, Used_Companny)
-    
+
 End Function
 
 Public Function requisitarAidf(ByVal CNPJ As String, ByVal Aidf_Inicial As String, ByVal Aidf_Final As String, ByVal Aidf_Tipo As String, _
                                ByVal Aidf_Quantidade As String, ByVal Aidf_Modelo_Serie As String, ByVal Aidf_Quantidade_Vias As String, _
                                ByVal Aidf_NomeGrafica As String, ByVal Aidf_CnpjGrafica As String, ByVal Aidf_Validade As String, _
                                ByVal Used_Companny As String) As Variant
-    
+
     Dim Mount_Mensage As String, Operacao As String, DadosMsg As String
-        
+
     Operacao = "requisitarAidf": DadosMsg = Compor_MensagemXML(Operacao): Mount_Mensage = Message_Assemble
     DadosMsg = Replace(DadosMsg, "[CAMPO_CNPJ]", CNPJ)
     DadosMsg = Replace(DadosMsg, "[CAMPO_AIDF_INICIAL]", Aidf_Inicial)
@@ -271,73 +271,73 @@ Public Function requisitarAidf(ByVal CNPJ As String, ByVal Aidf_Inicial As Strin
     DadosMsg = Replace(DadosMsg, "[CAMPO_AIDF_VALIDADE]", Aidf_Validade)
     Mount_Mensage = Replace(Mount_Mensage, "[Mount_Mensage]", Operacao)
     Mount_Mensage = Replace(Mount_Mensage, "[DadosMsg]", DadosMsg)
-    
+
     requisitarAidf = Conection(Prefeitura_Utilizada, Mount_Mensage, Used_Companny)
-    
+
 End Function
 
 Public Function validarAidf(ByVal Id_Aidf As String, ByVal Used_Companny As String) As Variant
-    
+
     Dim Mount_Mensage As String, Operacao As String, DadosMsg As String
-    
+
     Operacao = "validarAidf": DadosMsg = Compor_MensagemXML(Operacao): Mount_Mensage = Message_Assemble
     DadosMsg = Replace(DadosMsg, "[CAMPO_ID_AIDF]", Id_Aidf)
     Mount_Mensage = Replace(Mount_Mensage, "[Mount_Mensage]", Operacao)
     Mount_Mensage = Replace(Mount_Mensage, "[DadosMsg]", DadosMsg)
-    
+
     validarAidf = Conection(Prefeitura_Utilizada, Mount_Mensage, Used_Companny)
-    
+
 End Function
 
 Public Function ValidarLoteRps(ByVal CNPJ As String, ByVal Used_Companny As String) As Variant
-    
+
     Dim Mount_Mensage As String, Operacao As String, DadosMsg As String
-    
+
     Operacao = "ValidarLoteRps": DadosMsg = Compor_MensagemXML(Operacao): Mount_Mensage = Message_Assemble
     DadosMsg = Replace(DadosMsg, "[CAMPO_CNPJ]", CNPJ)
     Mount_Mensage = Replace(Mount_Mensage, "[Mount_Mensage]", Operacao)
     Mount_Mensage = Replace(Mount_Mensage, "[DadosMsg]", DadosMsg)
-    
+
     ValidarLoteRps = Conection(Prefeitura_Utilizada, Mount_Mensage, Used_Companny)
-    
+
 End Function
 
 Public Function verificarContribuinte(ByVal CNPJ As String, ByVal Password As String, ByVal Used_Companny As String) As Variant
-    
+
     Dim Mount_Mensage As String, Operacao As String, DadosMsg As String
-        
+
     Operacao = "verificarContribuinte": DadosMsg = Compor_MensagemXML(Operacao): Mount_Mensage = Message_Assemble
     DadosMsg = Replace(DadosMsg, "[CAMPO_CNPJ]", CNPJ)
     DadosMsg = Replace(DadosMsg, "[PASSWORD]", Password)
     Mount_Mensage = Replace(Mount_Mensage, "[Mount_Mensage]", Operacao)
     Mount_Mensage = Replace(Mount_Mensage, "[DadosMsg]", DadosMsg)
-    
+
     verificarContribuinte = Conection(Prefeitura_Utilizada, Mount_Mensage, Used_Companny)
-    
+
 End Function
 
 Public Function verificarEmpresa(ByVal CNPJ As String, ByVal Used_Companny As String) As Variant
-    
+
     Dim Mount_Mensage As String, Operacao As String, DadosMsg As String
-    
+
     Operacao = "verificarEmpresa": DadosMsg = Compor_MensagemXML(Operacao): Mount_Mensage = Message_Assemble
     DadosMsg = Replace(DadosMsg, "[CAMPO_CNPJ]", CNPJ)
     Mount_Mensage = Replace(Mount_Mensage, "[Mount_Mensage]", Operacao)
     Mount_Mensage = Replace(Mount_Mensage, "[DadosMsg]", DadosMsg)
-    
+
     verificarEmpresa = Conection(Prefeitura_Utilizada, Mount_Mensage, Used_Companny)
-    
+
 End Function
 
 Private Function Conection(ByVal Prefeitura As String, ByVal Mensage As String, ByVal Used_Companny As String) As Variant
-    
+
     Dim Conexao As cls_Connection, Headers As Object
-    
+
     Set Headers = CreateObject("Scripting.Dictionary")
         Headers.Add "Content-Type", "text/xml;charset=UTF-8"
-    
+
     Set Conexao = New cls_Connection: Conection = Conexao.Conexao(Prefeitura, Mensage, Used_Companny, Headers): Set Conexao = Nothing
-    
+
 End Function
 
 Private Function Message_Assemble() As String
@@ -348,22 +348,22 @@ Private Function Message_Assemble() As String
     Message_Assemble = Message_Assemble & "<el:[Mount_Mensage]>[DadosMsg]</el:[Mount_Mensage]>"
     Message_Assemble = Message_Assemble & "</soapenv:Body>"
     Message_Assemble = Message_Assemble & "</soapenv:Envelope>"
-    
+
 End Function
 
 Private Function Compor_MensagemXML(Tipo As String) As String
-   
+
     Dim MensagemXML As String
-   
+
     Select Case Tipo
-   
+
         Case Is = "autenticarContribuinte"
-    
+
             MensagemXML = "<identificacaoPrestador>[CAMPO_CNPJ]</identificacaoPrestador>"
             MensagemXML = MensagemXML & "<senha>[PASSWORD]</senha>"
-    
+
         Case Is = "CancelarNfseEnvio"
-        
+
             MensagemXML = "<identificacaoPrestador>[CAMPO_CNPJ]</identificacaoPrestador>"
             MensagemXML = MensagemXML & "<numeroNfse>[CAMPO_NUMERO_NOTA]</numeroNfse>"
 
@@ -373,7 +373,7 @@ Private Function Compor_MensagemXML(Tipo As String) As String
             MensagemXML = MensagemXML & "<senha>[PASSWORD]</senha>"
             MensagemXML = MensagemXML & "<numeroNfse>[CAMPO_NUMERO_NOTA]</numeroNfse>"
             MensagemXML = MensagemXML & "<motivoCancelamento>[CAMPO_MOTIVO_CANCELAMENTO]</motivoCancelamento>"
-    
+
         Case Is = "ConsultarCnae"
 
             MensagemXML = "<identificacaoPrestador>[CAMPO_CNPJ]</identificacaoPrestador>"
@@ -382,59 +382,59 @@ Private Function Compor_MensagemXML(Tipo As String) As String
 
             MensagemXML = "<identificacaoPrestador>[CAMPO_CNPJ]</identificacaoPrestador>"
             MensagemXML = MensagemXML & "<numeroProtocolo>[CAMPO_PROTOCOLO]</numeroProtocolo>"
-    
+
         Case Is = "ConsultarNfseEnvio"
 
             MensagemXML = "<identificacaoPrestador>[CAMPO_CNPJ]</identificacaoPrestador>"
             MensagemXML = MensagemXML & "<dataInicial>[CAMPO_DATA_INICIAL]</dataInicial>"
             MensagemXML = MensagemXML & "<dataFinal>[CAMPO_DATA_FINAL]</dataFinal>"
-   
+
         Case Is = "ConsultarNfseRpsEnvio"
 
             MensagemXML = "<identificacaoRps>[CAMPO_NUMERO_RPS]</identificacaoRps>"
             MensagemXML = MensagemXML & "<identificacaoPrestador>[CAMPO_CNPJ]</identificacaoPrestador>"
-   
+
         Case Is = "ConsultarSituacaoLoteRpsEnvio"
-            
+
             MensagemXML = "<identificacaoPrestador>[CAMPO_CNPJ]</identificacaoPrestador>"
             MensagemXML = MensagemXML & "<numeroProtocolo>[CAMPO_PROTOCOLO]</numeroProtocolo>"
-            
+
         Case Is = "ConsultarUltimaRps"
-            
+
             MensagemXML = "<identificacaoPrestador>[CAMPO_CNPJ]</identificacaoPrestador>"
-        
+
         Case Is = "ConsultarUltimoLote"
-        
+
             MensagemXML = "<identificacaoPrestador>[CAMPO_CNPJ]</identificacaoPrestador>"
-        
+
         Case Is = "EnviarLoteRpsEnvio"
-        
+
             MensagemXML = "<identificacaoPrestador>[CAMPO_CNPJ]</identificacaoPrestador>"
             MensagemXML = MensagemXML & "<hashIdentificador>[CAMPO_HASH]</hashIdentificador>"
             MensagemXML = MensagemXML & "<arquivo>[ADICIONAR ARQUIVO]</arquivo>" 'Falta Arquivo
-        
+
         Case Is = "fecharConexao"
-        
+
             MensagemXML = ""
-            
+
         Case Is = "finalizarSessao"
-        
+
             MensagemXML = "<hashIdentificador>[CAMPO_HASH]</hashIdentificador>"
-        
+
         Case Is = "ListarServicos116Municipal"
-        
+
             MensagemXML = "<identificacaoPrestador>[CAMPO_CNPJ]</identificacaoPrestador>"
-        
+
         Case Is = "ListarServicosMunicipais"
-        
+
             MensagemXML = "<identificacaoPrefeitura>[CAMPO_PREFEITURA]</identificacaoPrefeitura>"
-        
+
         Case Is = "ListarServicosMunicipaisPrestador"
-        
+
             MensagemXML = "<identificacaoPrestador>[CAMPO_CNPJ]</identificacaoPrestador>"
-        
+
         Case Is = "requisitarAidf"
-        
+
             MensagemXML = "<identificacaoPrestador>[CAMPO_CNPJ]</identificacaoPrestador>"
             MensagemXML = MensagemXML & "<numeroInicial>[CAMPO_AIDF_INICIAL]</numeroInicial>"
             MensagemXML = MensagemXML & "<numeroFinal>[CAMPO_AIDF_FINAL]</numeroFinal>"
@@ -445,36 +445,36 @@ Private Function Compor_MensagemXML(Tipo As String) As String
             MensagemXML = MensagemXML & "<nomeGrafica>[CAMPO_AIDF_NOME_GRAFICA]</nomeGrafica>"
             MensagemXML = MensagemXML & "<cnpjGrafica>[CAMPO_AIDF_CNPJ_GRAFICA]</cnpjGrafica>"
             MensagemXML = MensagemXML & "<validade>[CAMPO_AIDF_VALIDADE]</validade>"
-        
+
         Case Is = "validarAidf"
-        
+
             MensagemXML = "<identificacaoAidf>[CAMPO_ID_AIDF]</identificacaoAidf>"
-        
+
         Case Is = "ValidarLoteRps"
-        
+
             MensagemXML = "<identificacaoPrestador>[CAMPO_CNPJ]</identificacaoPrestador>"
             MensagemXML = MensagemXML & "<arquivo>[ADICIONAR ARQUIVO]</arquivo>" 'Falta Arquivo
-        
+
         Case Is = "verificarContribuinte"
-        
+
             MensagemXML = "<identificacaoPrestador>[CAMPO_CNPJ]</identificacaoPrestador>"
             MensagemXML = MensagemXML & "<senha>[PASSWORD]</senha>"
-        
+
         Case Is = "verificarEmpresa"
-                
+
             MensagemXML = "<identificacaoPrestador>[CAMPO_CNPJ]</identificacaoPrestador>"
-        
+
         Case Else
-        
+
             MsgBox "Tipo Não Cadastrado!"
             Stop
-            
+
     End Select
 
     Compor_MensagemXML = MensagemXML
-   
+
     MensagemXML = ""
-   
+
 End Function
 
 Private Function Tabela_Erros(ByVal Erro As String) As String
@@ -551,49 +551,49 @@ Private Function Tabela_Erros(ByVal Erro As String) As String
         Case Is = "EL69": Tabela_Erros = "Configuração inválida." & "-" & "Sistema não está configurado para Tomador como Não Informado!"
         Case Else: Tabela_Erros = "Erro não Cadastrado!"
     End Select
-    
+
 End Function
 
 Public Function Select_Template() As Object
 
     Dim Template As cls_Template
-    
+
     Set Template = New cls_Template
         Set Select_Template = Template.Select_Template(This.Filial_Usada)
     Set Template = Nothing
-        
+
 End Function
 
 Public Function Exluir_Template(ByVal PathTemplate As String) As Boolean
 
     Dim Template As cls_Template
-    
+
     Set Template = New cls_Template: Exluir_Template = Template.Delete_Template(PathTemplate): Set Template = Nothing
-    
+
 End Function
 
 Public Function Preecher_Template(ByVal Array_Dados_TNT As Variant, ByVal ParametersTemplate As Object, ByVal Dict_Xml As Object) As Variant
-    
+
     Dim htmlDoc As Object, Nodo As Object, ArrayDescricao As Variant, Data() As Variant, DictUF As Object
     Dim Descricao_Servico As cls_Descricao_Servico, DB_Connection As cls_DB_Connection, Url As String
-    
+
     Stop 'Necessita do Modulo E-Cold Funcionando
-    
+
     Set htmlDoc = CreateObject("htmlfile")
         htmlDoc.Body.innerHTML = ParametersTemplate.Item("LayoutHtml")
-    
+
     Set Descricao_Servico = New cls_Descricao_Servico
         ArrayDescricao = Descricao_Servico.DescrServ(Dict_Xml.Item("ItemListaServico"))
     Set Descricao_Servico = Nothing
-    
+
     Set DB_Connection = New cls_DB_Connection
         Data = Array("Codigo Municipio", Dict_Xml.Item("TomadorServico.Endereco.CodigoMunicipio"))
         Set DictUF = DB_Connection.SetQuery(Read, Municipios, Data)
     Set DB_Connection = Nothing
-    
+
     Url = "http://visualizar.ginfes.com.br/report/consultarNota?__report=nfs_ver4&cdVerificacao=" & Dict_Xml.Item("CodigoVerificacao") & "&numNota=" & Dict_Xml.Item("Numero") & "&cnpjPrestador=null"
     'Dict_Xml.Item("situacao") <> "A" Tag Cancelamento
-    
+
     With htmlDoc
         Set Nodo = .getElementById("css_b64")
             If Not Nodo Is Nothing Then Nodo.href = ParametersTemplate.Item("LayoutCss")
@@ -720,11 +720,11 @@ Public Function Preecher_Template(ByVal Array_Dados_TNT As Variant, ByVal Parame
         Set Nodo = .getElementById("outras_informacoes_7")
             If Not Nodo Is Nothing Then Nodo.innerHTML = Mid(Url, 535, 89)
     End With
-    
+
     Preecher_Template = Array(Dict_Xml.Item("CpfCnpj.Cnpj"), htmlDoc.Body.innerHTML)
-    
+
 End Function
 
 
-
+*/
 }

@@ -1,39 +1,42 @@
 <?php
 
-namespace App\CityHall\Nfe_Paulista;
+namespace App\Services\Towns\Nfe_Paulista;
 
 use InvalidArgumentException;
 use App\CityHall\Helpers\XmlSigner;
 use App\CityHall\Helpers\Connection;
 
-class Nfe_Paulista{
+class Nfe_Paulista
+{
 
     private static $instance;
     private static $Links_Prefeituras;
     private static $Filial;
     private static $Link_Prefeitura;
-    
-    public static function getInstance($value) { 
-        
-        if (!isset(self::$instance)) { 
-            self::$instance = new self; 
+
+    public static function getInstance($value)
+    {
+
+        if (!isset(self::$instance)) {
+            self::$instance = new self;
         }
-        
+
         self::$Links_Prefeituras = [
             'SAO' => 'https://nfe.prefeitura.sp.gov.br/ws/lotenfe.asmx', //Prefeitura São Paulo
         ];
 
-        if(array_key_exists($value, self::$Links_Prefeituras)){
+        if (array_key_exists($value, self::$Links_Prefeituras)) {
             self::$Filial = self::$Links_Prefeituras[$value];
             self::$Link_Prefeitura = explode("|", self::$Filial)[0];
-        }else{
+        } else {
             throw new InvalidArgumentException("Prefeitura {$value} não cadastrada");
         }
 
         return self::$instance;
     }
 
-    public function CancelamentoNFe(string $Numero_Nota_Fiscal, string $CNPJ, string $Inscricao_Municipal, string $Used_Companny): string|int{
+    public function CancelamentoNFe(string $Numero_Nota_Fiscal, string $CNPJ, string $Inscricao_Municipal, string $Used_Companny): string|int
+    {
 
         $Operacao = 'CancelamentoNFe';
         $DadosMsg = self::Compor_MensagemXML($Operacao);
@@ -41,20 +44,20 @@ class Nfe_Paulista{
         $DadosMsg = str_replace('[CAMPO_CNPJ]', $CNPJ, $DadosMsg);
         $DadosMsg = str_replace('[CAMPO_INSCRICAO_MUNICIPAL]', $Inscricao_Municipal, $DadosMsg);
         $DadosMsg = str_replace('[CAMPO_NUMERO_NOTA]', $Numero_Nota_Fiscal, $DadosMsg);
-        
+
         $Assinatura_Cancelamento = sha1(substr($DadosMsg, strpos($DadosMsg, "ChaveNFe"), strpos($DadosMsg, "/ChaveNFe") - strpos($DadosMsg, "ChaveNFe")), False);
-        
+
         $DigestValue = self::Sign_XML($Assinatura_Cancelamento, $Used_Companny);
         $DigestValue = substr($DigestValue, 1, 10); //Extrair somente o DigestValue para inserir no campo abaixo
         $DadosMsg = str_replace('[ASSINATURA_CANCELAMENTO]', $DigestValue, $DadosMsg);
         $Mount_Mensage = str_replace('[Mount_Mensage]', $Operacao, $Mount_Mensage);
         $Mount_Mensage = str_replace('[DadosMsg]', $DadosMsg, $Mount_Mensage);
-        
+
         return self::Conection(self::$Link_Prefeitura, $Mount_Mensage, $Used_Companny);
-    
     }
 
-    public function ConsultaCNPJ(string $CNPJ, string $Used_Companny): string|int{
+    public function ConsultaCNPJ(string $CNPJ, string $Used_Companny): string|int
+    {
 
         $Operacao = 'ConsultaCNPJ';
         $DadosMsg = self::Compor_MensagemXML($Operacao);
@@ -63,12 +66,12 @@ class Nfe_Paulista{
         $DadosMsg = self::Sign_XML($DadosMsg, $Used_Companny);
         $Mount_Mensage = str_replace('[Mount_Mensage]', $Operacao, $Mount_Mensage);
         $Mount_Mensage = str_replace('[DadosMsg]', $DadosMsg, $Mount_Mensage);
-        
+
         return self::Conection(self::$Link_Prefeitura, $Mount_Mensage, $Used_Companny);
-        
     }
 
-    public function ConsultaInformacoesLote(string $CNPJ, string $Inscricao_Municipal, string $Used_Companny): string|int{
+    public function ConsultaInformacoesLote(string $CNPJ, string $Inscricao_Municipal, string $Used_Companny): string|int
+    {
 
         $Operacao = 'ConsultaInformacoesLote';
         $DadosMsg = self::Compor_MensagemXML($Operacao);
@@ -78,12 +81,12 @@ class Nfe_Paulista{
         $DadosMsg = self::Sign_XML($DadosMsg, $Used_Companny);
         $Mount_Mensage = str_replace('[Mount_Mensage]', $Operacao, $Mount_Mensage);
         $Mount_Mensage = str_replace('[DadosMsg]', $DadosMsg, $Mount_Mensage);
-        
+
         return self::Conection(self::$Link_Prefeitura, $Mount_Mensage, $Used_Companny);
-        
     }
 
-    public function ConsultaLote(string $CNPJ, string $Numero_Lote, string $Used_Companny): string|int{
+    public function ConsultaLote(string $CNPJ, string $Numero_Lote, string $Used_Companny): string|int
+    {
 
         $Operacao = 'ConsultaLote';
         $DadosMsg = self::Compor_MensagemXML($Operacao);
@@ -93,12 +96,12 @@ class Nfe_Paulista{
         $DadosMsg = self::Sign_XML($DadosMsg, $Used_Companny);
         $Mount_Mensage = str_replace('[Mount_Mensage]', $Operacao, $Mount_Mensage);
         $Mount_Mensage = str_replace('[DadosMsg]', $DadosMsg, $Mount_Mensage);
-        
+
         return self::Conection(self::$Link_Prefeitura, $Mount_Mensage, $Used_Companny);
-        
     }
 
-    public function ConsultaNFe(string $CNPJ, string $Inscricao_Municipal, string $Numero_Nota_Fiscal, string $Serie_RPS, string $Numero_RPS, string $Used_Companny): string|int{
+    public function ConsultaNFe(string $CNPJ, string $Inscricao_Municipal, string $Numero_Nota_Fiscal, string $Serie_RPS, string $Numero_RPS, string $Used_Companny): string|int
+    {
 
         $Operacao = 'ConsultaNFe';
         $DadosMsg = self::Compor_MensagemXML($Operacao);
@@ -111,30 +114,30 @@ class Nfe_Paulista{
         $DadosMsg = self::Sign_XML($DadosMsg, $Used_Companny);
         $Mount_Mensage = str_replace('[Mount_Mensage]', $Operacao, $Mount_Mensage);
         $Mount_Mensage = str_replace('[DadosMsg]', $DadosMsg, $Mount_Mensage);
-        
+
         return self::Conection(self::$Link_Prefeitura, $Mount_Mensage, $Used_Companny);
-        
     }
 
-    public function ConsultaNFeEmitidas(string $CNPJ, string $Inscricao_Municipal, string $Data_Inicial, string $Data_Final, string $Used_Companny, int $Numero_Pagina = 1): string|int{
+    public function ConsultaNFeEmitidas(string $CNPJ, string $Inscricao_Municipal, string $Data_Inicial, string $Data_Final, string $Used_Companny, int $Numero_Pagina = 1): string|int
+    {
 
         $Operacao = 'ConsultaNFeEmitidas';
         $DadosMsg = self::Compor_MensagemXML($Operacao);
         $Mount_Mensage = self::Message_Assemble();
         $DadosMsg = str_replace('[CAMPO_CNPJ]', $CNPJ, $DadosMsg);
         $DadosMsg = str_replace('[CAMPO_INSCRICAO_MUNICIPAL]', $Inscricao_Municipal, $DadosMsg);
-        $DadosMsg = str_replace('[CAMPO_DATA_INICIAL]', date("Ymd",strtotime($Data_Inicial)), $DadosMsg);
-        $DadosMsg = str_replace('[CAMPO_DATA_FINAL]', date("Ymd",strtotime($Data_Final)), $DadosMsg);
+        $DadosMsg = str_replace('[CAMPO_DATA_INICIAL]', date("Ymd", strtotime($Data_Inicial)), $DadosMsg);
+        $DadosMsg = str_replace('[CAMPO_DATA_FINAL]', date("Ymd", strtotime($Data_Final)), $DadosMsg);
         $DadosMsg = str_replace('[CAMPO_NUMERO_PAGINA]', $Numero_Pagina, $DadosMsg);
         $DadosMsg = self::Sign_XML($DadosMsg, $Used_Companny);
         $Mount_Mensage = str_replace('[Mount_Mensage]', $Operacao, $Mount_Mensage);
         $Mount_Mensage = str_replace('[DadosMsg]', $DadosMsg, $Mount_Mensage);
-        
+
         return self::Conection(self::$Link_Prefeitura, $Mount_Mensage, $Used_Companny);
-        
     }
 
-    public function ConsultaNFeRecebidas(string $Used_Companny): string|int{
+    public function ConsultaNFeRecebidas(string $Used_Companny): string|int
+    {
 
         $Operacao = 'ConsultaNFeRecebidas';
         $DadosMsg = self::Compor_MensagemXML($Operacao);
@@ -142,12 +145,12 @@ class Nfe_Paulista{
         $DadosMsg = self::Sign_XML($DadosMsg, $Used_Companny);
         $Mount_Mensage = str_replace('[Mount_Mensage]', $Operacao, $Mount_Mensage);
         $Mount_Mensage = str_replace('[DadosMsg]', $DadosMsg, $Mount_Mensage);
-        
+
         return self::Conection(self::$Link_Prefeitura, $Mount_Mensage, $Used_Companny);
-        
     }
 
-    public function EnvioLoteRPS(string $Used_Companny): string|int{
+    public function EnvioLoteRPS(string $Used_Companny): string|int
+    {
 
         $Operacao = 'EnvioLoteRPS';
         $DadosMsg = self::Compor_MensagemXML($Operacao);
@@ -155,12 +158,12 @@ class Nfe_Paulista{
         $DadosMsg = self::Sign_XML($DadosMsg, $Used_Companny);
         $Mount_Mensage = str_replace('[Mount_Mensage]', $Operacao, $Mount_Mensage);
         $Mount_Mensage = str_replace('[DadosMsg]', $DadosMsg, $Mount_Mensage);
-        
+
         return self::Conection(self::$Link_Prefeitura, $Mount_Mensage, $Used_Companny);
-        
     }
 
-    public function EnvioRPS(string $Used_Companny): string|int{
+    public function EnvioRPS(string $Used_Companny): string|int
+    {
 
         $Operacao = 'EnvioRPS';
         $DadosMsg = self::Compor_MensagemXML($Operacao);
@@ -168,12 +171,12 @@ class Nfe_Paulista{
         $DadosMsg = self::Sign_XML($DadosMsg, $Used_Companny);
         $Mount_Mensage = str_replace('[Mount_Mensage]', $Operacao, $Mount_Mensage);
         $Mount_Mensage = str_replace('[DadosMsg]', $DadosMsg, $Mount_Mensage);
-        
+
         return self::Conection(self::$Link_Prefeitura, $Mount_Mensage, $Used_Companny);
-        
     }
 
-    public function TesteEnvioLoteRPS(string $Used_Companny): string|int{
+    public function TesteEnvioLoteRPS(string $Used_Companny): string|int
+    {
 
         $Operacao = 'TesteEnvioLoteRPS';
         $DadosMsg = self::Compor_MensagemXML($Operacao);
@@ -181,29 +184,29 @@ class Nfe_Paulista{
         $DadosMsg = self::Sign_XML($DadosMsg, $Used_Companny);
         $Mount_Mensage = str_replace('[Mount_Mensage]', $Operacao, $Mount_Mensage);
         $Mount_Mensage = str_replace('[DadosMsg]', $DadosMsg, $Mount_Mensage);
-        
+
         return self::Conection(self::$Link_Prefeitura, $Mount_Mensage, $Used_Companny);
-        
     }
 
-    private function Sign_XML(string $Xml_Not_Signing, string $Used_Companny): string{
-        
-        return XmlSigner::Sign_XML($Xml_Not_Signing, $Used_Companny);
+    private function Sign_XML(string $Xml_Not_Signing, string $Used_Companny): string
+    {
 
+        //return XmlSigner::Sign_XML($Xml_Not_Signing, $Used_Companny);
     }
 
-    private function Conection(string $Prefeitura, string $Mensage, string $Used_Companny): string|int{
-        
+    private function Conection(string $Prefeitura, string $Mensage, string $Used_Companny): string|int
+    {
+
         $Headers = [
             'Content-Type' => 'text/xml;charset=utf-8',
         ];
-            
+
         //Set Conexao = New cls_Connection:
-        return Connection::Conexao($Prefeitura, $Mensage, $Used_Companny, $Headers, 'POST', True, False);
-        
+        //return Connection::Conexao($Prefeitura, $Mensage, $Used_Companny, $Headers, 'POST', True, False);
     }
 
-    private function Message_Assemble(): string{
+    private function Message_Assemble(): string
+    {
 
         $Message_Assemble = '<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" xmlns:nfe="http://www.prefeitura.sp.gov.br/nfe">';
         $Message_Assemble .= '<soap:Header/>';
@@ -214,19 +217,19 @@ class Nfe_Paulista{
         $Message_Assemble .= '</nfe:[Mount_Mensage]Request>';
         $Message_Assemble .= '</soap:Body>';
         $Message_Assemble .= '</soap:Envelope>';
-        
-        return $Message_Assemble;
 
+        return $Message_Assemble;
     }
 
-    private function Compor_MensagemXML(string $Tipo): string{
-        
+    private function Compor_MensagemXML(string $Tipo): string
+    {
+
         $MensagemXML = '';
 
-        switch ($Tipo){
-    
-            Case 'CancelamentoNFe':
-        
+        switch ($Tipo) {
+
+            case 'CancelamentoNFe':
+
                 $MensagemXML = '<PedidoCancelamentoNFe xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.prefeitura.sp.gov.br/nfe">';
                 $MensagemXML .= '<Cabecalho Versao="1" xmlns="">';
                 $MensagemXML .= '<CPFCNPJRemetente>';
@@ -242,9 +245,9 @@ class Nfe_Paulista{
                 $MensagemXML .= '<AssinaturaCancelamento>[ASSINATURA_CANCELAMENTO]</AssinaturaCancelamento>';
                 $MensagemXML .= '</Detalhe>';
                 $MensagemXML .= '</PedidoCancelamentoNFe>';
-        
-            Case 'ConsultaCNPJ':
-    
+
+            case 'ConsultaCNPJ':
+
                 $MensagemXML = '<p1:PedidoConsultaCNPJ xmlns:p1="http://www.prefeitura.sp.gov.br/nfe" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">';
                 $MensagemXML .= '<Cabecalho Versao="1">';
                 $MensagemXML .= '<CPFCNPJRemetente>';
@@ -255,9 +258,9 @@ class Nfe_Paulista{
                 $MensagemXML .= '<CNPJ>[CAMPO_CNPJ]</CNPJ>';
                 $MensagemXML .= '</CNPJContribuinte>';
                 $MensagemXML .= '</p1:PedidoConsultaCNPJ>';
-    
-            Case 'ConsultaInformacoesLote':
-    
+
+            case 'ConsultaInformacoesLote':
+
                 $MensagemXML = '<p1:PedidoInformacoesLote xmlns:p1="http://www.prefeitura.sp.gov.br/nfe" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">';
                 $MensagemXML .= '<Cabecalho Versao="1">';
                 $MensagemXML .= '<CPFCNPJRemetente>';
@@ -266,9 +269,9 @@ class Nfe_Paulista{
                 $MensagemXML .= '<InscricaoPrestador>[CAMPO_INSCRICAO_MUNICIPAL]</InscricaoPrestador>';
                 $MensagemXML .= '</Cabecalho>';
                 $MensagemXML .= '</p1:PedidoInformacoesLote>';
-    
-            Case 'ConsultaLote':
-    
+
+            case 'ConsultaLote':
+
                 $MensagemXML = '<p1:PedidoConsultaLote xmlns:p1="http://www.prefeitura.sp.gov.br/nfe" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">';
                 $MensagemXML .= '<Cabecalho Versao="1">';
                 $MensagemXML .= '<CPFCNPJRemetente>';
@@ -277,9 +280,9 @@ class Nfe_Paulista{
                 $MensagemXML .= '<NumeroLote>[CAMPO_NUMERO_LOTE]</NumeroLote>';
                 $MensagemXML .= '</Cabecalho>';
                 $MensagemXML .= '</p1:PedidoConsultaLote>';
-    
-            Case 'ConsultaNFe':
-    
+
+            case 'ConsultaNFe':
+
                 $MensagemXML = '<p1:PedidoConsultaNFe xmlns:p1="http://www.prefeitura.sp.gov.br/nfe" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">';
                 $MensagemXML .= '<Cabecalho Versao="1">';
                 $MensagemXML .= '<CPFCNPJRemetente>';
@@ -300,9 +303,9 @@ class Nfe_Paulista{
                 $MensagemXML .= '</ChaveRPS>';
                 $MensagemXML .= '</Detalhe>';
                 $MensagemXML .= '</p1:PedidoConsultaNFe>';
-    
-            Case 'ConsultaNFeEmitidas':
-    
+
+            case 'ConsultaNFeEmitidas':
+
                 $MensagemXML = '<p1:PedidoConsultaNFePeriodo xmlns:p1="http://www.prefeitura.sp.gov.br/nfe" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">';
                 $MensagemXML .= '<Cabecalho Versao="1">';
                 $MensagemXML .= '<CPFCNPJRemetente>';
@@ -317,12 +320,12 @@ class Nfe_Paulista{
                 $MensagemXML .= '<NumeroPagina>[CAMPO_NUMERO_PAGINA]</NumeroPagina>';
                 $MensagemXML .= '</Cabecalho>';
                 $MensagemXML .= '</p1:PedidoConsultaNFePeriodo>';
-    
-            Case 'ConsultaNFeRecebidas':
-    
-    
-            Case 'EnvioLoteRPS':
-    
+
+            case 'ConsultaNFeRecebidas':
+
+
+            case 'EnvioLoteRPS':
+
                 $MensagemXML = '<PedidoEnvioLoteRPS xmlns="http://www.prefeitura.sp.gov.br/nfe" xmlns: xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">';
                 $MensagemXML .= '<Cabecalho xmlns="" Versao="1">';
                 $MensagemXML .= '<CPFCNPJRemetente>';
@@ -375,9 +378,9 @@ class Nfe_Paulista{
                 $MensagemXML .= '<FonteCargaTributaria>IBPT</FonteCargaTributaria>';
                 $MensagemXML .= '</RPS>';
                 $MensagemXML .= '</PedidoEnvioLoteRPS>';
-    
-            Case 'EnvioRPS':
-    
+
+            case 'EnvioRPS':
+
                 $MensagemXML = '<PedidoEnvioRPS xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.prefeitura.sp.gov.br/nfe">';
                 $MensagemXML .= '<Cabecalho Versao="1" xmlns="">';
                 $MensagemXML .= '<CPFCNPJRemetente>';
@@ -422,9 +425,9 @@ class Nfe_Paulista{
                 $MensagemXML .= '<Discriminacao>Desenvolvimento de Web Site Pessoal.</Discriminacao>';
                 $MensagemXML .= '</RPS>';
                 $MensagemXML .= '</PedidoEnvioRPS>';
-    
-            Case 'TesteEnvioLoteRPS':
-    
+
+            case 'TesteEnvioLoteRPS':
+
                 $MensagemXML = '<PedidoEnvioLoteRPS xmlns="http://www.prefeitura.sp.gov.br/nfe" xmlns: xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">';
                 $MensagemXML .= '<Cabecalho xmlns="" Versao="1">';
                 $MensagemXML .= '<CPFCNPJRemetente>';
@@ -477,18 +480,15 @@ class Nfe_Paulista{
                 $MensagemXML .= '<FonteCargaTributaria>IBPT</FonteCargaTributaria>';
                 $MensagemXML .= '</RPS>';
                 $MensagemXML .= '</PedidoEnvioLoteRPS>';
-    
         }
-    
+
         return $MensagemXML;
-    
     }
 
-    public function Select_Template(){
+    public function Select_Template()
+    {
 
         //Set Template = New cls_Template
         return view();
-            
     }
-
 }

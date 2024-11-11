@@ -1,11 +1,11 @@
 <?php
 
-namespace App\CityHall\Nfse_Publica;
+namespace App\Services\Towns\Nfse_Publica;
 
 
 class Nfse_Publica
 {
-    Option Explicit
+    /*    Option Explicit
 Private Type ClassType: Link_Prefeitura As String: Filial_Usada As String: End Type
 Private This As ClassType: Dim Links_Prefeituras As Object
 Public Property Get Prefeitura_Utilizada() As String: Prefeitura_Utilizada = This.Link_Prefeitura: End Property
@@ -22,199 +22,199 @@ End Sub
 Public Function CancelarDirEnvio(ByVal Used_Companny As String) As Variant
 
     Dim Mount_Mensage As String, Operacao As String, DadosMsg As String
-    
+
     Operacao = "CancelarDirEnvio": DadosMsg = Compor_MensagemXML(Operacao): Mount_Mensage = Message_Assemble(True)
     Mount_Mensage = Replace(Mount_Mensage, "[Mount_Mensage]", Operacao)
     Mount_Mensage = Replace(Mount_Mensage, "[DadosMsg]", DadosMsg)
-    
+
     CancelarDirEnvio = Conection(Prefeitura_Utilizada, Mount_Mensage, Used_Companny)
-    
+
 End Function
 
 Public Function CancelarNfse(ByVal Used_Companny As String) As Variant
 
     Dim Mount_Mensage As String, Operacao As String, DadosMsg As String
-    
+
     Operacao = "CancelarNfse": DadosMsg = Compor_MensagemXML(Operacao): Mount_Mensage = Message_Assemble(True)
     Mount_Mensage = Replace(Mount_Mensage, "[Mount_Mensage]", Operacao)
     Mount_Mensage = Replace(Mount_Mensage, "[DadosMsg]", DadosMsg)
-    
+
     CancelarNfse = Conection(Prefeitura_Utilizada, Mount_Mensage, Used_Companny)
-    
+
 End Function
 
 Public Function CartaCorrecaoNfseEnvio(ByVal Used_Companny As String) As Variant
 
     Dim Mount_Mensage As String, Operacao As String, DadosMsg As String
-    
+
     Operacao = "CartaCorrecaoNfseEnvio": DadosMsg = Compor_MensagemXML(Operacao): Mount_Mensage = Message_Assemble(True)
     Mount_Mensage = Replace(Mount_Mensage, "[Mount_Mensage]", Operacao)
     Mount_Mensage = Replace(Mount_Mensage, "[DadosMsg]", DadosMsg)
-    
+
     CartaCorrecaoNfseEnvio = Conection(Prefeitura_Utilizada, Mount_Mensage, Used_Companny)
-    
+
 End Function
 
 Public Function ConsultaDirCanceladasPeriodo(ByVal Used_Companny As String) As Variant
 
     Dim Mount_Mensage As String, Operacao As String, DadosMsg As String
-    
+
     Operacao = "ConsultaDirCanceladasPeriodo": DadosMsg = Compor_MensagemXML(Operacao): Mount_Mensage = Message_Assemble(False)
     Mount_Mensage = Replace(Mount_Mensage, "[Mount_Mensage]", Operacao)
     Mount_Mensage = Replace(Mount_Mensage, "[DadosMsg]", DadosMsg)
-    
+
     ConsultaDirCanceladasPeriodo = Conection(Prefeitura_Utilizada, Mount_Mensage, Used_Companny)
-    
+
 End Function
 
 Public Function ConsultaDirCompetenciaPrestador(ByVal Used_Companny As String) As Variant
 
     Dim Mount_Mensage As String, Operacao As String, DadosMsg As String
-    
+
     Operacao = "ConsultaDirCompetenciaPrestador": DadosMsg = Compor_MensagemXML(Operacao): Mount_Mensage = Message_Assemble(False)
     Mount_Mensage = Replace(Mount_Mensage, "[Mount_Mensage]", Operacao)
     Mount_Mensage = Replace(Mount_Mensage, "[DadosMsg]", DadosMsg)
-    
+
     ConsultaDirCompetenciaPrestador = Conection(Prefeitura_Utilizada, Mount_Mensage, Used_Companny)
-    
+
 End Function
 
 Public Function ConsultaDirPeriodo(ByVal Used_Companny As String) As Variant
 
     Dim Mount_Mensage As String, Operacao As String, DadosMsg As String
-    
+
     Operacao = "ConsultaDirPeriodo": DadosMsg = Compor_MensagemXML(Operacao): Mount_Mensage = Message_Assemble(False)
     Mount_Mensage = Replace(Mount_Mensage, "[Mount_Mensage]", Operacao)
     Mount_Mensage = Replace(Mount_Mensage, "[DadosMsg]", DadosMsg)
-    
+
     ConsultaDirPeriodo = Conection(Prefeitura_Utilizada, Mount_Mensage, Used_Companny)
-    
+
 End Function
 
 Public Function ConsultaDirPeriodoAlteracao(ByVal Used_Companny As String) As Variant
 
     Dim Mount_Mensage As String, Operacao As String, DadosMsg As String
-    
+
     Operacao = "ConsultaDirPeriodoAlteracao": DadosMsg = Compor_MensagemXML(Operacao): Mount_Mensage = Message_Assemble(False)
     Mount_Mensage = Replace(Mount_Mensage, "[Mount_Mensage]", Operacao)
     Mount_Mensage = Replace(Mount_Mensage, "[DadosMsg]", DadosMsg)
-    
+
     ConsultaDirPeriodoAlteracao = Conection(Prefeitura_Utilizada, Mount_Mensage, Used_Companny)
-    
+
 End Function
 
 Public Function ConsultaDirPeriodoPrestador(ByVal Used_Companny As String) As Variant
 
     Dim Mount_Mensage As String, Operacao As String, DadosMsg As String
-    
+
     Operacao = "ConsultaDirPeriodoPrestador": DadosMsg = Compor_MensagemXML(Operacao): Mount_Mensage = Message_Assemble(False)
     Mount_Mensage = Replace(Mount_Mensage, "[Mount_Mensage]", Operacao)
     Mount_Mensage = Replace(Mount_Mensage, "[DadosMsg]", DadosMsg)
-    
+
     ConsultaDirPeriodoPrestador = Conection(Prefeitura_Utilizada, Mount_Mensage, Used_Companny)
-    
+
 End Function
 
 Public Function ConsultaDirPeriodoPrestadorAlteracao(ByVal Used_Companny As String) As Variant
 
     Dim Mount_Mensage As String, Operacao As String, DadosMsg As String
-    
+
     Operacao = "ConsultaDirPeriodoPrestadorAlteracao": DadosMsg = Compor_MensagemXML(Operacao): Mount_Mensage = Message_Assemble(False)
     Mount_Mensage = Replace(Mount_Mensage, "[Mount_Mensage]", Operacao)
     Mount_Mensage = Replace(Mount_Mensage, "[DadosMsg]", DadosMsg)
-    
+
     ConsultaDirPeriodoPrestadorAlteracao = Conection(Prefeitura_Utilizada, Mount_Mensage, Used_Companny)
-    
+
 End Function
 
 Public Function ConsultaNfseCompetenciaPrestador(ByVal Used_Companny As String) As Variant
 
     Dim Mount_Mensage As String, Operacao As String, DadosMsg As String
-    
+
     Operacao = "ConsultaNfseCompetenciaPrestador": DadosMsg = Compor_MensagemXML(Operacao): Mount_Mensage = Message_Assemble(False)
     Mount_Mensage = Replace(Mount_Mensage, "[Mount_Mensage]", Operacao)
     Mount_Mensage = Replace(Mount_Mensage, "[DadosMsg]", DadosMsg)
-    
+
     ConsultaNfseCompetenciaPrestador = Conection(Prefeitura_Utilizada, Mount_Mensage, Used_Companny)
-    
+
 End Function
 
 Public Function ConsultaNfsePeriodo(ByVal Used_Companny As String) As Variant
 
     Dim Mount_Mensage As String, Operacao As String, DadosMsg As String
-    
+
     Operacao = "ConsultaNfsePeriodo": DadosMsg = Compor_MensagemXML(Operacao): Mount_Mensage = Message_Assemble(False)
     Mount_Mensage = Replace(Mount_Mensage, "[Mount_Mensage]", Operacao)
     Mount_Mensage = Replace(Mount_Mensage, "[DadosMsg]", DadosMsg)
-    
+
     ConsultaNfsePeriodo = Conection(Prefeitura_Utilizada, Mount_Mensage, Used_Companny)
-    
+
 End Function
 
 Public Function ConsultaNfsePeriodoAlteracao(ByVal Used_Companny As String) As Variant
 
     Dim Mount_Mensage As String, Operacao As String, DadosMsg As String
-    
+
     Operacao = "ConsultaNfsePeriodoAlteracao": DadosMsg = Compor_MensagemXML(Operacao): Mount_Mensage = Message_Assemble(False)
     Mount_Mensage = Replace(Mount_Mensage, "[Mount_Mensage]", Operacao)
     Mount_Mensage = Replace(Mount_Mensage, "[DadosMsg]", DadosMsg)
-    
+
     ConsultaNfsePeriodoAlteracao = Conection(Prefeitura_Utilizada, Mount_Mensage, Used_Companny)
-    
+
 End Function
 
 Public Function ConsultaNfsePeriodoPrestador(ByVal Used_Companny As String) As Variant
 
     Dim Mount_Mensage As String, Operacao As String, DadosMsg As String
-    
+
     Operacao = "ConsultaNfsePeriodoPrestador": DadosMsg = Compor_MensagemXML(Operacao): Mount_Mensage = Message_Assemble(False)
     Mount_Mensage = Replace(Mount_Mensage, "[Mount_Mensage]", Operacao)
     Mount_Mensage = Replace(Mount_Mensage, "[DadosMsg]", DadosMsg)
-    
+
     ConsultaNfsePeriodoPrestador = Conection(Prefeitura_Utilizada, Mount_Mensage, Used_Companny)
-    
+
 End Function
 
 Public Function ConsultaNfsePeriodoPrestadorAlteracao(ByVal Used_Companny As String) As Variant
 
     Dim Mount_Mensage As String, Operacao As String, DadosMsg As String
-    
+
     Operacao = "ConsultaNfsePeriodoPrestadorAlteracao": DadosMsg = Compor_MensagemXML(Operacao): Mount_Mensage = Message_Assemble(False)
     Mount_Mensage = Replace(Mount_Mensage, "[Mount_Mensage]", Operacao)
     Mount_Mensage = Replace(Mount_Mensage, "[DadosMsg]", DadosMsg)
-    
+
     ConsultaNfsePeriodoPrestadorAlteracao = Conection(Prefeitura_Utilizada, Mount_Mensage, Used_Companny)
-    
+
 End Function
 
 Public Function ConsultarCadastro(ByVal Used_Companny As String) As Variant
 
     Dim Mount_Mensage As String, Operacao As String, DadosMsg As String
-    
+
     Operacao = "ConsultarCadastro": DadosMsg = Compor_MensagemXML(Operacao): Mount_Mensage = Message_Assemble(False)
     Mount_Mensage = Replace(Mount_Mensage, "[Mount_Mensage]", Operacao)
     Mount_Mensage = Replace(Mount_Mensage, "[DadosMsg]", DadosMsg)
-    
+
     ConsultarCadastro = Conection(Prefeitura_Utilizada, Mount_Mensage, Used_Companny)
-    
+
 End Function
 
 Public Function ConsultarDirEnvio(ByVal Used_Companny As String) As Variant
 
     Dim Mount_Mensage As String, Operacao As String, DadosMsg As String
-    
+
     Operacao = "ConsultarDirEnvio": DadosMsg = Compor_MensagemXML(Operacao): Mount_Mensage = Message_Assemble(True)
     Mount_Mensage = Replace(Mount_Mensage, "[Mount_Mensage]", Operacao)
     Mount_Mensage = Replace(Mount_Mensage, "[DadosMsg]", DadosMsg)
-    
+
     ConsultarDirEnvio = Conection(Prefeitura_Utilizada, Mount_Mensage, Used_Companny)
-    
+
 End Function
 
 Public Function ConsultarDirFaixa(ByVal CNPJ As String, ByVal Data_Inicial As Date, ByVal Data_Final As Date, ByVal Used_Companny As String) As Variant
 
     Dim Mount_Mensage As String, Operacao As String, DadosMsg As String
-    
+
     Operacao = "ConsultarDirFaixa": DadosMsg = Compor_MensagemXML(Operacao): Mount_Mensage = Message_Assemble(True)
     DadosMsg = Replace(DadosMsg, "[CAMPO_CNPJ]", CNPJ)
     DadosMsg = Replace(DadosMsg, "[CAMPO_DATA_INICIAL]", Format(Data_Inicial, "YYYY-MM-DD") & "T00:00:01")
@@ -222,40 +222,40 @@ Public Function ConsultarDirFaixa(ByVal CNPJ As String, ByVal Data_Inicial As Da
     DadosMsg = Sign_XML(DadosMsg, Used_Companny)
     Mount_Mensage = Replace(Mount_Mensage, "[Mount_Mensage]", Operacao)
     Mount_Mensage = Replace(Mount_Mensage, "[DadosMsg]", DadosMsg)
-    
+
     ConsultarDirFaixa = Conection(Prefeitura_Utilizada, Mount_Mensage, Used_Companny)
-    
+
 End Function
 
 Public Function ConsultarLoteDir(ByVal Used_Companny As String) As Variant
 
     Dim Mount_Mensage As String, Operacao As String, DadosMsg As String
-    
+
     Operacao = "ConsultarLoteDir": DadosMsg = Compor_MensagemXML(Operacao): Mount_Mensage = Message_Assemble(True)
     Mount_Mensage = Replace(Mount_Mensage, "[Mount_Mensage]", Operacao)
     Mount_Mensage = Replace(Mount_Mensage, "[DadosMsg]", DadosMsg)
-    
+
     ConsultarLoteDir = Conection(Prefeitura_Utilizada, Mount_Mensage, Used_Companny)
-    
+
 End Function
 
 Public Function ConsultarLoteRps(ByVal Used_Companny As String) As Variant
 
     Dim Mount_Mensage As String, Operacao As String, DadosMsg As String
-    
+
     Operacao = "ConsultarLoteRps": DadosMsg = Compor_MensagemXML(Operacao): Mount_Mensage = Message_Assemble(True)
     Mount_Mensage = Replace(Mount_Mensage, "[Mount_Mensage]", Operacao)
     Mount_Mensage = Replace(Mount_Mensage, "[DadosMsg]", DadosMsg)
-    
+
     ConsultarLoteRps = Conection(Prefeitura_Utilizada, Mount_Mensage, Used_Companny)
-    
+
 End Function
 
 Public Function ConsultarNfseFaixa(ByVal CNPJ As String, ByVal Inscricao_Municipal As String, ByVal Nota_Inicial As String, _
                                    ByVal Nota_Final As String, ByVal Used_Companny As String) As Variant
 
     Dim Mount_Mensage As String, Operacao As String, DadosMsg As String
-    
+
     Operacao = "ConsultarNfseFaixa": DadosMsg = Compor_MensagemXML(Operacao): Mount_Mensage = Message_Assemble(True)
     DadosMsg = Replace(DadosMsg, "[CAMPO_CNPJ]", CNPJ)
     DadosMsg = Replace(DadosMsg, "[CAMPO_INSCRICAO_MUNICIPAL]", Inscricao_Municipal)
@@ -264,130 +264,130 @@ Public Function ConsultarNfseFaixa(ByVal CNPJ As String, ByVal Inscricao_Municip
     DadosMsg = Sign_XML(DadosMsg, Used_Companny, "#assinar")
     Mount_Mensage = Replace(Mount_Mensage, "[Mount_Mensage]", Operacao)
     Mount_Mensage = Replace(Mount_Mensage, "[DadosMsg]", DadosMsg)
-    
+
     ConsultarNfseFaixa = Conection(Prefeitura_Utilizada, Mount_Mensage, Used_Companny)
-    
+
 End Function
 
 Public Function ConsultarNfsePorRps(ByVal Used_Companny As String) As Variant
 
     Dim Mount_Mensage As String, Operacao As String, DadosMsg As String
-    
+
     Operacao = "ConsultarNfsePorRps": DadosMsg = Compor_MensagemXML(Operacao): Mount_Mensage = Message_Assemble(True)
     Mount_Mensage = Replace(Mount_Mensage, "[Mount_Mensage]", Operacao)
     Mount_Mensage = Replace(Mount_Mensage, "[DadosMsg]", DadosMsg)
-    
+
     ConsultarNfsePorRps = Conection(Prefeitura_Utilizada, Mount_Mensage, Used_Companny)
-    
+
 End Function
 
 Public Function ConsultarNfseRecebida(ByVal Used_Companny As String) As Variant
 
     Dim Mount_Mensage As String, Operacao As String, DadosMsg As String
-    
+
     Operacao = "ConsultarNfseRecebida": DadosMsg = Compor_MensagemXML(Operacao): Mount_Mensage = Message_Assemble(True)
     Mount_Mensage = Replace(Mount_Mensage, "[Mount_Mensage]", Operacao)
     Mount_Mensage = Replace(Mount_Mensage, "[DadosMsg]", DadosMsg)
-    
+
     ConsultarNfseRecebida = Conection(Prefeitura_Utilizada, Mount_Mensage, Used_Companny)
-    
+
 End Function
 
 Public Function ConsultarSituacaoLoteDir(ByVal Used_Companny As String) As Variant
 
     Dim Mount_Mensage As String, Operacao As String, DadosMsg As String
-    
+
     Operacao = "ConsultarSituacaoLoteDir": DadosMsg = Compor_MensagemXML(Operacao): Mount_Mensage = Message_Assemble(True)
     Mount_Mensage = Replace(Mount_Mensage, "[Mount_Mensage]", Operacao)
     Mount_Mensage = Replace(Mount_Mensage, "[DadosMsg]", DadosMsg)
-    
+
     ConsultarSituacaoLoteDir = Conection(Prefeitura_Utilizada, Mount_Mensage, Used_Companny)
-    
+
 End Function
 
 Public Function ConsultarSituacaoLoteRPS(ByVal Used_Companny As String) As Variant
 
     Dim Mount_Mensage As String, Operacao As String, DadosMsg As String
-    
+
     Operacao = "ConsultarSituacaoLoteRps": DadosMsg = Compor_MensagemXML(Operacao): Mount_Mensage = Message_Assemble(True)
     Mount_Mensage = Replace(Mount_Mensage, "[Mount_Mensage]", Operacao)
     Mount_Mensage = Replace(Mount_Mensage, "[DadosMsg]", DadosMsg)
-    
+
     ConsultarSituacaoLoteRPS = Conection(Prefeitura_Utilizada, Mount_Mensage, Used_Companny)
-    
+
 End Function
 
 Public Function GerarNfse(ByVal Used_Companny As String) As Variant
 
     Dim Mount_Mensage As String, Operacao As String, DadosMsg As String
-    
+
     Operacao = "GerarNfse": DadosMsg = Compor_MensagemXML(Operacao): Mount_Mensage = Message_Assemble(True)
     Mount_Mensage = Replace(Mount_Mensage, "[Mount_Mensage]", Operacao)
     Mount_Mensage = Replace(Mount_Mensage, "[DadosMsg]", DadosMsg)
-    
+
     GerarNfse = Conection(Prefeitura_Utilizada, Mount_Mensage, Used_Companny)
-    
+
 End Function
 
 Public Function RecepcionarLoteDir(ByVal Used_Companny As String) As Variant
 
     Dim Mount_Mensage As String, Operacao As String, DadosMsg As String
-    
+
     Operacao = "RecepcionarLoteDir": DadosMsg = Compor_MensagemXML(Operacao): Mount_Mensage = Message_Assemble(True)
     Mount_Mensage = Replace(Mount_Mensage, "[Mount_Mensage]", Operacao)
     Mount_Mensage = Replace(Mount_Mensage, "[DadosMsg]", DadosMsg)
-    
+
     RecepcionarLoteDir = Conection(Prefeitura_Utilizada, Mount_Mensage, Used_Companny)
-    
+
 End Function
 
 Public Function RecepcionarLoteRps(ByVal Used_Companny As String) As Variant
 
     Dim Mount_Mensage As String, Operacao As String, DadosMsg As String
-    
+
     Operacao = "RecepcionarLoteRps": DadosMsg = Compor_MensagemXML(Operacao): Mount_Mensage = Message_Assemble(True)
     Mount_Mensage = Replace(Mount_Mensage, "[Mount_Mensage]", Operacao)
     Mount_Mensage = Replace(Mount_Mensage, "[DadosMsg]", DadosMsg)
-    
+
     RecepcionarLoteRps = Conection(Prefeitura_Utilizada, Mount_Mensage, Used_Companny)
-    
+
 End Function
 
 Public Function SubstituirNfse(ByVal Used_Companny As String) As Variant
 
     Dim Mount_Mensage As String, Operacao As String, DadosMsg As String
-    
+
     Operacao = "SubstituirNfse": DadosMsg = Compor_MensagemXML(Operacao): Mount_Mensage = Message_Assemble(True)
     Mount_Mensage = Replace(Mount_Mensage, "[Mount_Mensage]", Operacao)
     Mount_Mensage = Replace(Mount_Mensage, "[DadosMsg]", DadosMsg)
-    
+
     SubstituirNfse = Conection(Prefeitura_Utilizada, Mount_Mensage, Used_Companny)
-    
+
 End Function
 
 Private Function Sign_XML(ByVal Xml_Not_Signing As String, ByVal Used_Companny As String, Optional URI As String = "") As String
-    
+
     Dim SignedXml As z_cls_WsFuncoes
-    
+
     Set SignedXml = New z_cls_WsFuncoes: Sign_XML = SignedXml.Sign_XML(Xml_Not_Signing, Used_Companny, URI): Set SignedXml = Nothing
 
 End Function
 
 Private Function Conection(ByVal Prefeitura As String, ByVal Mensage As String, ByVal Used_Companny As String) As Variant
-    
+
     Dim Conexao As cls_Connection, Headers As Object
-    
+
     Set Headers = CreateObject("Scripting.Dictionary")
         Headers.Add "Content-Type", "text/xml;charset=UTF-8"
-        
+
     Set Conexao = New cls_Connection: Conection = Conexao.Conexao(Prefeitura, Mensage, Used_Companny, Headers): Set Conexao = Nothing
-    
+
 End Function
 
 Private Function Message_Assemble(ByVal Alter_Version As Boolean) As String
-    
+
     If Alter_Version Then
-    
+
         Message_Assemble = "<soapenv:Envelope xmlns:soapenv=""http://schemas.xmlsoap.org/soap/envelope/"" xmlns:ser=""http://service.nfse.integracao.ws.publica/"">"
         Message_Assemble = Message_Assemble & "<soapenv:Header/>"
         Message_Assemble = Message_Assemble & "<soapenv:Body>"
@@ -396,9 +396,9 @@ Private Function Message_Assemble(ByVal Alter_Version As Boolean) As String
         Message_Assemble = Message_Assemble & "</ser:[Mount_Mensage]>"
         Message_Assemble = Message_Assemble & "</soapenv:Body>"
         Message_Assemble = Message_Assemble & "</soapenv:Envelope>"
-    
+
     Else
-    
+
         Message_Assemble = "<soapenv:Envelope xmlns:soapenv=""http://schemas.xmlsoap.org/soap/envelope/"" xmlns:ser=""http://service.nfse.integracao.ws.publica/"">"
         Message_Assemble = Message_Assemble & "<soapenv:Header/>"
         Message_Assemble = Message_Assemble & "<soapenv:Body>"
@@ -409,99 +409,99 @@ Private Function Message_Assemble(ByVal Alter_Version As Boolean) As String
         Message_Assemble = Message_Assemble & "</ser:[Mount_Mensage]>"
         Message_Assemble = Message_Assemble & "</soapenv:Body>"
         Message_Assemble = Message_Assemble & "</soapenv:Envelope>"
-    
+
     End If
 
 End Function
 
 Private Function Compor_MensagemXML(Tipo As String) As String
-   
+
     Dim MensagemXML As String
-   
+
     Select Case Tipo
-   
+
         Case Is = "CancelarDirEnvio"
-    
+
             MensagemXML = ""
             MensagemXML = MensagemXML & ""
-           
+
         Case Is = "CancelarNfse"
-    
+
             MensagemXML = ""
             MensagemXML = MensagemXML & ""
-       
+
         Case Is = "CartaCorrecaoNfseEnvio"
-       
+
             MensagemXML = ""
             MensagemXML = MensagemXML & ""
-       
+
         Case Is = "ConsultaDirCanceladasPeriodo"
-       
+
             MensagemXML = ""
             MensagemXML = MensagemXML & ""
-       
+
         Case Is = "ConsultaDirCompetenciaPrestador"
-       
+
             MensagemXML = ""
             MensagemXML = MensagemXML & ""
-       
+
         Case Is = "ConsultaDirPeriodo"
-       
+
             MensagemXML = ""
             MensagemXML = MensagemXML & ""
-           
+
         Case Is = "ConsultaDirPeriodoAlteracao"
-       
+
             MensagemXML = ""
             MensagemXML = MensagemXML & ""
-           
+
         Case Is = "ConsultaDirPeriodoPrestador"
-            
+
             MensagemXML = ""
             MensagemXML = MensagemXML & ""
-       
+
         Case Is = "ConsultaDirPeriodoPrestadorAlteracao"
-       
+
             MensagemXML = ""
             MensagemXML = MensagemXML & ""
-           
+
         Case Is = "ConsultaNfseCompetenciaPrestador"
-          
+
             MensagemXML = ""
             MensagemXML = MensagemXML & ""
-          
+
         Case Is = "ConsultaNfsePeriodo"
-       
+
             MensagemXML = ""
             MensagemXML = MensagemXML & ""
-       
+
         Case Is = "ConsultaNfsePeriodoAlteracao"
-       
+
             MensagemXML = ""
             MensagemXML = MensagemXML & ""
-           
+
         Case Is = "ConsultaNfsePeriodoPrestador"
-            
+
             MensagemXML = ""
             MensagemXML = MensagemXML & ""
-       
+
         Case Is = "ConsultaNfsePeriodoPrestadorAlteracao"
-            
+
             MensagemXML = ""
             MensagemXML = MensagemXML & ""
-            
+
         Case Is = "ConsultarCadastro"
-            
+
             MensagemXML = ""
             MensagemXML = MensagemXML & ""
-            
+
         Case Is = "ConsultarDirEnvio"
-            
+
             MensagemXML = ""
             MensagemXML = MensagemXML & ""
-            
+
         Case Is = "ConsultarDirFaixa"
-            
+
             MensagemXML = "<ConsultarDirFaixaEnvio xmlns=""http://www.publica.inf.br/dir"">"
             MensagemXML = MensagemXML & "<Tomador>"
             MensagemXML = MensagemXML & "<Cnpj>[CAMPO_CNPJ]</Cnpj>"
@@ -511,19 +511,19 @@ Private Function Compor_MensagemXML(Tipo As String) As String
             MensagemXML = MensagemXML & "<DataDeclaracaoFinal>[CAMPO_DATA_FINAL]</DataDeclaracaoFinal>"
             MensagemXML = MensagemXML & "</Faixa>"
             MensagemXML = MensagemXML & "</ConsultarDirFaixaEnvio>"
-            
+
         Case Is = "ConsultarLoteDir"
-            
+
             MensagemXML = ""
             MensagemXML = MensagemXML & ""
-            
+
         Case Is = "ConsultarLoteRps"
-            
+
             MensagemXML = ""
             MensagemXML = MensagemXML & ""
-            
+
         Case Is = "ConsultarNfseFaixa"
-            
+
             MensagemXML = "<ConsultarNfseFaixaEnvio xmlns=""http://www.publica.inf.br"">"
             MensagemXML = MensagemXML & "<Prestador id=""assinar"">"
             MensagemXML = MensagemXML & "<Cnpj>[CAMPO_CNPJ]</Cnpj>"
@@ -534,96 +534,96 @@ Private Function Compor_MensagemXML(Tipo As String) As String
             MensagemXML = MensagemXML & "<NumeroNfseFinal>[CAMPO_NOTA_FINAL]</NumeroNfseFinal>"
             MensagemXML = MensagemXML & "</Faixa>"
             MensagemXML = MensagemXML & "</ConsultarNfseFaixaEnvio>"
-            
+
         Case Is = "ConsultarNfsePorRps"
-            
+
             MensagemXML = ""
             MensagemXML = MensagemXML & ""
-                        
+
         Case Is = "ConsultarNfseRecebida"
-            
+
             MensagemXML = ""
             MensagemXML = MensagemXML & ""
-            
+
         Case Is = "ConsultarSituacaoLoteDir"
-            
+
             MensagemXML = ""
             MensagemXML = MensagemXML & ""
-            
+
         Case Is = "ConsultarSituacaoLoteRps"
-            
+
             MensagemXML = ""
             MensagemXML = MensagemXML & ""
-            
+
         Case Is = "GerarNfse"
-            
+
             MensagemXML = ""
             MensagemXML = MensagemXML & ""
-            
+
         Case Is = "RecepcionarLoteDir"
-            
+
             MensagemXML = ""
             MensagemXML = MensagemXML & ""
-            
+
         Case Is = "RecepcionarLoteRps"
-            
+
             MensagemXML = ""
             MensagemXML = MensagemXML & ""
-            
+
         Case Is = "SubstituirNfse"
-            
+
             MensagemXML = ""
             MensagemXML = MensagemXML & ""
-            
+
         Case Else
             MsgBox "Tipo Não Cadastrado!"
             Stop
-       
+
    End Select
-   
+
    Compor_MensagemXML = MensagemXML
-   
+
    MensagemXML = ""
-   
+
 End Function
 
 Public Function Select_Template() As Object
 
     Dim Template As cls_Template
-    
+
     Set Template = New cls_Template
         Set Select_Template = Template.Select_Template(This.Filial_Usada)
     Set Template = Nothing
-        
+
 End Function
 
 Public Function Exluir_Template(ByVal PathTemplate As String) As Boolean
 
     Dim Template As cls_Template
-    
+
     Set Template = New cls_Template: Exluir_Template = Template.Delete_Template(PathTemplate): Set Template = Nothing
-    
+
 End Function
 
 Public Function Preecher_Template(ByVal Array_Dados_TNT As Variant, ByVal ParametersTemplate As Object, ByVal Dict_Xml As Object) As Variant
-    
+
     Dim htmlDoc As Object, Nodo As Object, ArrayDescricao As Variant, Data() As Variant, DictUF As Object
     Dim Descricao_Servico As cls_Descricao_Servico, DB_Connection As cls_DB_Connection, Url As String
-    
+
     Set htmlDoc = CreateObject("htmlfile")
         htmlDoc.Body.innerHTML = ParametersTemplate.Item("LayoutHtml")
-    
+
     Set Descricao_Servico = New cls_Descricao_Servico
         ArrayDescricao = Descricao_Servico.DescrServ(Dict_Xml.Item("ItemListaServico"))
     Set Descricao_Servico = Nothing
-    
+
     Set DB_Connection = New cls_DB_Connection
         Data = Array("Codigo Municipio", Dict_Xml.Item("TomadorServico.Endereco.CodigoMunicipio"))
         Set DictUF = DB_Connection.SetQuery(Read, Municipios, Data)
     Set DB_Connection = Nothing
-    
+
     Url = Dict_Xml.Item("OutrasInformacoes") & vbNewLine & " " & Dict_Xml.Item("LinkVisualizacaoNfse")
-          
+
     With htmlDoc
         Set Nodo = .getElementById("css_b64")
             If Not Nodo Is Nothing Then Nodo.href = ParametersTemplate.Item("LayoutCss")
@@ -750,11 +750,11 @@ Public Function Preecher_Template(ByVal Array_Dados_TNT As Variant, ByVal Parame
         Set Nodo = .getElementById("outras_informacoes_7")
             If Not Nodo Is Nothing Then Nodo.innerHTML = Mid(Url, 535, 89)
     End With
-    
+
     Preecher_Template = Array(Dict_Xml.Item("CpfCnpj.Cnpj"), htmlDoc.Body.innerHTML)
-    
+
 End Function
 
 
-
+*/
 }

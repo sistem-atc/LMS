@@ -1,0 +1,9 @@
+<EnviarLoteRpsEnvio>
+	<LoteRps id="">
+		<NumeroLote></NumeroLote>
+		<Cnpj></Cnpj>
+		<InscricaoMunicipal></InscricaoMunicipal>
+		<QuantidadeRps></QuantidadeRps>
+		<ListaRps></ListaRps>
+	</LoteRps>
+</EnviarLoteRpsEnvio>

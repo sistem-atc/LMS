@@ -1,45 +1,50 @@
 <?php
 
-namespace App\CityHall\Ginfes_2;
+namespace App\Services\Towns\Ginfes_2;
 
 use App\Helpers\Connection;
 
 use InvalidArgumentException;
 use const App\CityHall\Tinus\Nothing;
 
-enum Consulta_Notas{
+enum Consulta_Notas
+{
     case Por_Tipo;
     case Por_Periodo;
 }
 
-class Ginfes_2{
+class Ginfes_2
+{
 
     private static $instance;
     private static $Links_Prefeituras;
     private static $Filial;
     private static $Link_Prefeitura;
 
-    public static function getInstance($value) { 
-        
-        if (!isset(self::$instance)) { 
-            self::$instance = new self; 
+    public static function getInstance($value)
+    {
+
+        if (!isset(self::$instance)) {
+            self::$instance = new self;
         }
-        
+
         self::$Links_Prefeituras = [
-            'FTZ', 'https://iss.fortaleza.ce.gov.br/grpfor-iss/ServiceGinfesImplService', //Prefeitura Fortaleza
+            'FTZ',
+            'https://iss.fortaleza.ce.gov.br/grpfor-iss/ServiceGinfesImplService', //Prefeitura Fortaleza
         ];
 
-        if(array_key_exists($value, self::$Links_Prefeituras)){
+        if (array_key_exists($value, self::$Links_Prefeituras)) {
             self::$Filial = self::$Links_Prefeituras[$value];
             self::$Link_Prefeitura = self::$Filial;
-        }else{
+        } else {
             throw new InvalidArgumentException("Prefeitura {$value} não cadastrada");
         }
 
         return self::$instance;
     }
 
-    public static function CancelarNfse(string $CNPJ, string $Used_Companny, Consulta_Notas $Tipo_Consulta): string|int{
+    public static function CancelarNfse(string $CNPJ, string $Used_Companny, Consulta_Notas $Tipo_Consulta): string|int
+    {
 
         $Operacao = 'CancelarNfse';
         $Mount_Mensage = self::Message_Assemble();
@@ -49,12 +54,12 @@ class Ginfes_2{
         $Mount_Mensage = str_replace('[Mount_Mensage]', $Operacao, $Mount_Mensage);
         $Mount_Mensage = str_replace('<prod:CancelarNfseV3>', '<prod:CancelarNfse>', $Mount_Mensage);
         $Mount_Mensage = str_replace('[DadosMsg]', $DadosMsg, $Mount_Mensage);
-    
+
         return self::Conection(self::$Link_Prefeitura, $Mount_Mensage, $Used_Companny);
-        
     }
 
-    public static function ConsultarLoteRpsV3(string $CNPJ, string $Used_Companny, Consulta_Notas $Tipo_Consulta): string|int{
+    public static function ConsultarLoteRpsV3(string $CNPJ, string $Used_Companny, Consulta_Notas $Tipo_Consulta): string|int
+    {
 
         $Operacao = 'ConsultarLoteRps';
         $Mount_Mensage = self::Message_Assemble();
@@ -63,12 +68,12 @@ class Ginfes_2{
         $DadosMsg = self::Sign_XML($DadosMsg, $Used_Companny);
         $Mount_Mensage = str_replace('[Mount_Mensage]', $Operacao, $Mount_Mensage);
         $Mount_Mensage = str_replace('[DadosMsg]', $DadosMsg, $Mount_Mensage);
-        
+
         return self::Conection(self::$Link_Prefeitura, $Mount_Mensage, $Used_Companny);
-        
     }
 
-    public static function ConsultarNfsePorRpsV3(string $CNPJ, string $Used_Companny, Consulta_Notas $Tipo_Consulta): string|int{
+    public static function ConsultarNfsePorRpsV3(string $CNPJ, string $Used_Companny, Consulta_Notas $Tipo_Consulta): string|int
+    {
 
         $Operacao = 'ConsultarNfsePorRps';
         $Mount_Mensage = self::Message_Assemble();
@@ -77,35 +82,35 @@ class Ginfes_2{
         $DadosMsg = self::Sign_XML($DadosMsg, $Used_Companny);
         $Mount_Mensage = str_replace('[Mount_Mensage]', $Operacao, $Mount_Mensage);
         $Mount_Mensage = str_replace('[DadosMsg]', $DadosMsg, $Mount_Mensage);
-        
+
         return self::Conection(self::$Link_Prefeitura, $Mount_Mensage, $Used_Companny);
-        
     }
 
-    public static function ConsultarNfseV3(string $CNPJ, string $Inscricao_Municipal, Consulta_Notas $Tipo_Consulta, string $Used_Companny,  string $Data_Inicial, string $Data_Final, string $Numero_Nota_Fiscal): string|int{
+    public static function ConsultarNfseV3(string $CNPJ, string $Inscricao_Municipal, Consulta_Notas $Tipo_Consulta, string $Used_Companny,  string $Data_Inicial, string $Data_Final, string $Numero_Nota_Fiscal): string|int
+    {
 
         $Operacao = 'ConsultarNfse';
         $Mount_Mensage = self::Message_Assemble();
         $DadosMsg = self::Compor_MensagemXML($Operacao, $Tipo_Consulta);
         $DadosMsg = str_replace('[CAMPO_CNPJ]', $CNPJ, $DadosMsg);
         $DadosMsg = str_replace('[CAMPO_INSCRICAO_MUNICIPAL]', $Inscricao_Municipal, $DadosMsg);
-        
-        if ($Tipo_Consulta == 0){
+
+        if ($Tipo_Consulta == 0) {
             $DadosMsg = str_replace('[CAMPO_NUMERO_NOTA]', $Numero_Nota_Fiscal, $DadosMsg);
-        }elseif($Tipo_Consulta == 1){
-            $DadosMsg = str_replace('[CAMPO_DATA_INICIAL]', date("Ymd",strtotime($Data_Inicial)), $DadosMsg);
-            $DadosMsg = str_replace('[CAMPO_DATA_FINAL]', date("Ymd",strtotime($Data_Final)), $DadosMsg);
+        } elseif ($Tipo_Consulta == 1) {
+            $DadosMsg = str_replace('[CAMPO_DATA_INICIAL]', date("Ymd", strtotime($Data_Inicial)), $DadosMsg);
+            $DadosMsg = str_replace('[CAMPO_DATA_FINAL]', date("Ymd", strtotime($Data_Final)), $DadosMsg);
         }
-        
+
         $DadosMsg = self::Sign_XML($DadosMsg, $Used_Companny);
         $Mount_Mensage = str_replace('[Mount_Mensage]', $Operacao, $Mount_Mensage);
         $Mount_Mensage = str_replace('[DadosMsg]', $DadosMsg, $Mount_Mensage);
-        
+
         return self::Conection(self::$Link_Prefeitura, $Mount_Mensage, $Used_Companny);
-        
     }
 
-    public static function ConsultarSituacaoLoteRpsV3(string $CNPJ, string $Used_Companny, Consulta_Notas $Tipo_Consulta): string|int{
+    public static function ConsultarSituacaoLoteRpsV3(string $CNPJ, string $Used_Companny, Consulta_Notas $Tipo_Consulta): string|int
+    {
 
         $Operacao = 'ConsultarSituacaoLoteRps';
         $Mount_Mensage = self::Message_Assemble();
@@ -114,12 +119,12 @@ class Ginfes_2{
         $DadosMsg = self::Sign_XML($DadosMsg, $Used_Companny);
         $Mount_Mensage = str_replace('[Mount_Mensage]', $Operacao, $Mount_Mensage);
         $Mount_Mensage = str_replace('[DadosMsg]', $DadosMsg, $Mount_Mensage);
-        
+
         return self::Conection(self::$Link_Prefeitura, $Mount_Mensage, $Used_Companny);
-        
     }
 
-    public static function RecepcionarLoteRpsV3(string $CNPJ, string $Used_Companny, Consulta_Notas $Tipo_Consulta): string|int{
+    public static function RecepcionarLoteRpsV3(string $CNPJ, string $Used_Companny, Consulta_Notas $Tipo_Consulta): string|int
+    {
 
         $Operacao = 'RecepcionarLoteRps';
         $Mount_Mensage = self::Message_Assemble();
@@ -129,27 +134,28 @@ class Ginfes_2{
         $Mount_Mensage = str_replace('[Mount_Mensage]', $Operacao, $Mount_Mensage);
         $Mount_Mensage = str_replace('<RecepcionarLoteRpsEnvio>', '<EnviarLoteRpsEnvio>', $Mount_Mensage);
         $Mount_Mensage = str_replace('[DadosMsg]', $DadosMsg, $Mount_Mensage);
-        
+
         return self::Conection(self::$Link_Prefeitura, $Mount_Mensage, $Used_Companny);
-        
     }
 
-    private static function Sign_XML(string $Xml_Not_Signing, string $Used_Companny): string{
-        
+    private static function Sign_XML(string $Xml_Not_Signing, string $Used_Companny): string
+    {
+
         //Set SignedXml = New z_cls_WsFuncoes;
         //return SignedXml.Sign_XML($Xml_Not_Signing, $Used_Companny);
         dd($Xml_Not_Signing);
+    }
+
+    private static function Conection(string $Prefeitura, string $Mensage, string $Used_Companny): string|int
+    {
+
+        return ''; //Connection::Conexao($Prefeitura, $Mensage, $Used_Companny, Nothing , 'POST', false, false);
 
     }
 
-    private static function Conection(string $Prefeitura, string $Mensage, string $Used_Companny): string|int{
-        
-        return Connection::Conexao($Prefeitura, $Mensage, $Used_Companny, Nothing , 'POST', false, false);
-        
-    }
+    private static function Message_Assemble(): string
+    {
 
-    private static function Message_Assemble(): string{
-        
         $Message_Assemble = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:prod="http://producao.issfortaleza.com.br">';
         $Message_Assemble = $Message_Assemble . '<soapenv:Header/>';
         $Message_Assemble = $Message_Assemble . '<soapenv:Body>';
@@ -161,26 +167,26 @@ class Ginfes_2{
         $Message_Assemble = $Message_Assemble . '</soapenv:Envelope>';
 
         return $Message_Assemble;
-        
     }
 
-    private static function Compor_MensagemXML(string $Tipo, Consulta_Notas $Tipo_Consulta): string{
-        
+    private static function Compor_MensagemXML(string $Tipo, Consulta_Notas $Tipo_Consulta): string
+    {
+
         $MensagemXML = '';
 
-        switch($Tipo){
-            Case 'CancelarNfse':
+        switch ($Tipo) {
+            case 'CancelarNfse':
                 $MensagemXML = '';
-            
-            Case 'ConsultarLoteRps':
+
+            case 'ConsultarLoteRps':
                 $MensagemXML = '';
-        
-            Case 'ConsultarNfsePorRps':
+
+            case 'ConsultarNfsePorRps':
                 $MensagemXML = '';
-        
-            Case 'ConsultarNfse':
-                
-                if ($Tipo_Consulta == 0){
+
+            case 'ConsultarNfse':
+
+                if ($Tipo_Consulta == 0) {
                     $MensagemXML = '<ns2:ConsultarNfseEnvio xmlns:ns2="http://www.ginfes.com.br/servico_consultar_nfse_envio_v03.xsd" xmlns="http://www.ginfes.com.br/tipos_v03.xsd" xmlns:ns3="http://www.w3.org/2000/09/xmldsig#">';
                     $MensagemXML = $MensagemXML . '<ns2:Prestador>';
                     $MensagemXML = $MensagemXML . '<Cnpj>[CAMPO_CNPJ]</Cnpj>';
@@ -188,7 +194,7 @@ class Ginfes_2{
                     $MensagemXML = $MensagemXML . '</ns2:Prestador>';
                     $MensagemXML = $MensagemXML . '<ns2:NumeroNfse>[CAMPO_NUMERO_NOTA]</ns2:NumeroNfse>';
                     $MensagemXML = $MensagemXML . '</ns2:ConsultarNfseEnvio>';
-                }elseif($Tipo_Consulta == 1){
+                } elseif ($Tipo_Consulta == 1) {
                     $MensagemXML = '<ConsultarNfseEnvio xmlns="http://www.ginfes.com.br/servico_consultar_nfse_envio_v03.xsd">';
                     $MensagemXML = $MensagemXML . '<Prestador>';
                     $MensagemXML = $MensagemXML . '<tipos:Cnpj xmlns:tipos="http://www.ginfes.com.br/tipos_v03.xsd">[CAMPO_CNPJ]</tipos:Cnpj>';
@@ -201,52 +207,51 @@ class Ginfes_2{
                     $MensagemXML = $MensagemXML . '</ConsultarNfseEnvio>';
                 };
 
-            Case 'ConsultarSituacaoLoteRps':
-                $MensagemXML = '';
-            
-            Case 'RecepcionarLoteRps':
+            case 'ConsultarSituacaoLoteRps':
                 $MensagemXML = '';
 
+            case 'RecepcionarLoteRps':
+                $MensagemXML = '';
         };
-    
-        return $MensagemXML;
 
+        return $MensagemXML;
     }
 
-    public static function Select_Template(){
-        
+    public static function Select_Template()
+    {
+
         //Set Template = New cls_Template
         //return Template.Select_Template(self::$Filial);
         dd(self::$Filial);
-
     }
 
-    public static function Exluir_Template(string $PathTemplate): bool{
+    public static function Exluir_Template(string $PathTemplate): bool
+    {
 
         //Set Template = New cls_Template
         //return Template.Delete_Template($PathTemplate);
         dd($PathTemplate);
-        
     }
 
-    public static function Preecher_Template($Array_Dados_TNT, $ParametersTemplate, $Dict_Xml): array{
+    public static function Preecher_Template($Array_Dados_TNT, $ParametersTemplate, $Dict_Xml): array
+    {
 
         /*
         Set htmlDoc = CreateObject("htmlfile")
             htmlDoc.Body.innerHTML = ParametersTemplate.Item("LayoutHtml")
-        
+
         Set Descricao_Servico = New cls_Descricao_Servico
             ArrayDescricao = Descricao_Servico.DescrServ(Dict_Xml.Item("ItemListaServico"))
         Set Descricao_Servico = Nothing
-        
+
         Set DB_Connection = New cls_DB_Connection
             Data = Array("Codigo Municipio", Dict_Xml.Item("TomadorServico.Endereco.CodigoMunicipio"))
             Set DictUF = DB_Connection.SetQuery(Read, Municipios, Data)
         Set DB_Connection = Nothing
-        
+
         Url = ""
         //Dict_Xml.Exists("Motivo") TagCancelamento
-        
+
         With htmlDoc
             Set Nodo = .getElementById("css_b64")
                 If Not Nodo Is Nothing Then Nodo.href = ParametersTemplate.Item("LayoutCss")
@@ -376,8 +381,6 @@ class Ginfes_2{
         */
 
         //Dict_Xml.Item("CpfCnpj.Cnpj"), htmlDoc.Body.innerHTML
-        return Array('');
-        
+        return array('');
     }
-
 }

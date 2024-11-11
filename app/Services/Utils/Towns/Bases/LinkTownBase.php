@@ -2,34 +2,41 @@
 
 namespace App\Services\Utils\Towns\Bases;
 
-use App\Models\Branch;
-use App\Services\Utils\Towns\Helpers\Connection;
-use App\Services\Utils\Towns\Helpers\LinksTowns;
-use App\Services\Utils\Towns\Helpers\XmlSigner;
-use Illuminate\Support\Facades\Auth;
 use SimpleXMLElement;
+use App\Models\Branch;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Auth;
+use App\Services\Utils\Towns\Helpers\Connection;
+use App\Services\Utils\Towns\Helpers\XmlSigner;
 
 class LinkTownBase
 {
 
-    protected $linkTowns;
-    protected $url;
-    private $codeIbge;
+    protected static $linkTowns;
+    protected static $url;
+    protected static $headerVersion;
+    protected static $codeIbge;
 
-    public function __construct(LinksTowns $linkTowns, $codeIbge)
+    public function __construct($codeIbge)
     {
-        $this->codeIbge = $codeIbge;
-        $this->linkTowns = $linkTowns;
+        self::$codeIbge = $codeIbge;
+        self::$url = config('links-towns.' . $codeIbge . '.url.' . $this->getAmbient());
+        self::$headerVersion = config('links-towns.' . $codeIbge . '.headerVersion');
     }
 
-    protected function getUrl(): ?string
+    protected static function getUrl(): ?string
     {
-        return $this->url = $this->linkTowns->getLinkTown($this->codeIbge)['url'] ?? null;
+        return self::$url ?? null;
     }
 
-    protected function getHeaderVersion(): ?string
+    protected static function getHeaderVersion(): ?string
     {
-        return $this->url = $this->linkTowns->getLinkTown($this->codeIbge)['headerVersion'] ?? null;
+        return self::$headerVersion ?? null;
+    }
+
+    private function getAmbient(): string
+    {
+        return App::environment('production') == 'production' ? 'prod' : 'homolog';
     }
 
     protected static function Sign_XML(string $xmlNoSigned): SimpleXMLElement

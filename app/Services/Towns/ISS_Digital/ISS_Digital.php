@@ -1,11 +1,11 @@
 <?php
 
-namespace App\CityHall\ISS_Digital;
+namespace App\Services\Towns\ISS_Digital;
 
 
 class ISS_Digital
 {
-    Option Explicit
+    /*    Option Explicit
 Private Type ClassType: Link_Prefeitura As String: Codigo_Cidade As String: Formato_IE As String: Url_Verificacao As String: Filial_Usada As String: End Type
 Private This As ClassType: Dim Links_Prefeituras As Object
 Public Property Get Prefeitura_Utilizada() As String: Prefeitura_Utilizada = This.Link_Prefeitura: End Property
@@ -28,9 +28,9 @@ End Sub
 
 Public Function cancelar(ByVal CNPJ As String, ByVal Inscricao_Municipal As String, ByVal Used_Companny As String, _
                          ByVal Numero_Nota As String, ByVal Codigo_Verificacao As String, ByVal Motivo_Cancelamento As String) As Variant
-    
+
     Dim Operacao As String, DadosMsg As String, Mount_Mensage As String
-    
+
     Operacao = "cancelar": DadosMsg = Compor_MensagemXML(Operacao): Mount_Mensage = Message_Assemble
     DadosMsg = Replace(DadosMsg, "[CAMPO_CODIGO_CIDADE]", Codigo_Cidade)
     DadosMsg = Replace(DadosMsg, "[CAMPO_CNPJ]", CNPJ)
@@ -44,53 +44,53 @@ Public Function cancelar(ByVal CNPJ As String, ByVal Inscricao_Municipal As Stri
     Mount_Mensage = Replace(Mount_Mensage, "[Mount_Mensage]", Operacao)
     Mount_Mensage = Replace(Mount_Mensage, "[DadosMsg]", DadosMsg)
     cancelar = Conection(Prefeitura_Utilizada, Mount_Mensage, Used_Companny)
-    
+
 End Function
 
 Public Function consultarAliquotaSimplesNacional(ByVal Used_Companny As String) As Variant
-    
+
     Dim Operacao As String, DadosMsg As String, Mount_Mensage As String
-    
+
     Operacao = "consultarAliquotaSimplesNacional": DadosMsg = Compor_MensagemXML(Operacao): Mount_Mensage = Message_Assemble
     DadosMsg = Replace(DadosMsg, "[CAMPO_CODIGO_CIDADE]", Codigo_Cidade)
     DadosMsg = Sign_XML(DadosMsg, Used_Companny)
     Mount_Mensage = Replace(Mount_Mensage, "[Mount_Mensage]", Operacao)
     Mount_Mensage = Replace(Mount_Mensage, "[DadosMsg]", DadosMsg)
     consultarAliquotaSimplesNacional = Conection(Prefeitura_Utilizada, Mount_Mensage, Used_Companny)
-    
+
 End Function
 
 Public Function consultarLote(ByVal Used_Companny As String) As Variant
-    
+
     Dim Operacao As String, DadosMsg As String, Mount_Mensage As String
-    
+
     Operacao = "consultarLote": DadosMsg = Compor_MensagemXML(Operacao): Mount_Mensage = Message_Assemble
     DadosMsg = Replace(DadosMsg, "[CAMPO_CODIGO_CIDADE]", Codigo_Cidade)
     DadosMsg = Sign_XML(DadosMsg, Used_Companny)
     Mount_Mensage = Replace(Mount_Mensage, "[Mount_Mensage]", Operacao)
     Mount_Mensage = Replace(Mount_Mensage, "[DadosMsg]", DadosMsg)
     consultarLote = Conection(Prefeitura_Utilizada, Mount_Mensage, Used_Companny)
-    
+
 End Function
 
 Public Function ConsultarNfseRps(ByVal Used_Companny As String) As Variant
-    
+
     Dim Operacao As String, DadosMsg As String, Mount_Mensage As String
-    
+
     Operacao = "consultarNFSeRps": DadosMsg = Compor_MensagemXML(Operacao): Mount_Mensage = Message_Assemble
     DadosMsg = Replace(DadosMsg, "[CAMPO_CODIGO_CIDADE]", Codigo_Cidade)
     DadosMsg = Sign_XML(DadosMsg, Used_Companny)
     Mount_Mensage = Replace(Mount_Mensage, "[Mount_Mensage]", Operacao)
     Mount_Mensage = Replace(Mount_Mensage, "[DadosMsg]", DadosMsg)
     ConsultarNfseRps = Conection(Prefeitura_Utilizada, Mount_Mensage, Used_Companny)
-    
+
 End Function
 
 Public Function consultarNota(ByVal CNPJ As String, ByVal Inscricao_Municipal As String, ByVal Data_Inicial As String, _
                               ByVal Data_Final As String, ByVal Used_Companny As String, Optional Numero_Nota As String = "1") As Variant
-                              
+
     Dim Operacao As String, DadosMsg As String, Mount_Mensage As String
-    
+
     Operacao = "consultarNota": DadosMsg = Compor_MensagemXML(Operacao): Mount_Mensage = Message_Assemble
     DadosMsg = Replace(DadosMsg, "[CAMPO_CODIGO_CIDADE]", Codigo_Cidade)
     DadosMsg = Replace(DadosMsg, "[CAMPO_CNPJ]", Conf.Item("CNPJ_Matriz_" & Used_Companny))
@@ -101,40 +101,40 @@ Public Function consultarNota(ByVal CNPJ As String, ByVal Inscricao_Municipal As
     DadosMsg = Sign_XML(DadosMsg, Used_Companny)
     Mount_Mensage = Replace(Mount_Mensage, "[Mount_Mensage]", Operacao)
     Mount_Mensage = Replace(Mount_Mensage, "[DadosMsg]", DadosMsg)
-    
+
     consultarNota = Conection(Prefeitura_Utilizada, Mount_Mensage, Used_Companny)
-    
+
 End Function
 
 Public Function consultarNotaTomada(ByVal Used_Companny As String) As Variant
-    
+
     Dim Operacao As String, DadosMsg As String, Mount_Mensage As String
-    
+
     Operacao = "consultarNotaTomada": DadosMsg = Compor_MensagemXML(Operacao): Mount_Mensage = Message_Assemble
     DadosMsg = Replace(DadosMsg, "[CAMPO_CODIGO_CIDADE]", Codigo_Cidade)
     DadosMsg = Sign_XML(DadosMsg, Used_Companny)
     Mount_Mensage = Replace(Mount_Mensage, "[Mount_Mensage]", Operacao)
     Mount_Mensage = Replace(Mount_Mensage, "[DadosMsg]", DadosMsg)
     consultarNotaTomada = Conection(Prefeitura_Utilizada, Mount_Mensage, Used_Companny)
-    
+
 End Function
 
 Public Function consultarSequencialRps(ByVal Used_Companny As String) As Variant
-    
+
     Dim Operacao As String, DadosMsg As String, Mount_Mensage As String
-    
+
     Operacao = "consultarSequencialRps": DadosMsg = Compor_MensagemXML(Operacao): Mount_Mensage = Message_Assemble
     DadosMsg = Replace(DadosMsg, "[CAMPO_CODIGO_CIDADE]", Codigo_Cidade)
     DadosMsg = Sign_XML(DadosMsg, Used_Companny)
     Mount_Mensage = Replace(Mount_Mensage, "[Mount_Mensage]", Operacao)
     Mount_Mensage = Replace(Mount_Mensage, "[DadosMsg]", DadosMsg)
     consultarSequencialRps = Conection(Prefeitura_Utilizada, Mount_Mensage, Used_Companny)
-    
+
 End Function
 
 Public Function enviar(ByVal CNPJ As String, ByVal Inscricao_Municipal As String, ByVal Razao_Social As String, ByVal Data_Inicial As String, _
                        ByVal Data_Final As String, ByRef Dict_Dados_Notas As Object, ByVal Used_Companny As String) As Variant
-    
+
     Dim Operacao As String, DadosMsg As String, Mount_Mensage As String, Conexao As z_cls_WsFuncoes
     Dim Quantidade_RPS As String, Valor_Total_Servicos As Currency, Valor_Total_Deducoes As String, Dados_Nota As Variant
     Dim Signature As String, String_URI As String, Split_Dados_Nota As Variant, XmlDom As Object
@@ -142,14 +142,14 @@ Public Function enviar(ByVal CNPJ As String, ByVal Inscricao_Municipal As String
     Dim Data_Emissao_Formatado As String, Tributacao_Formatado As String, Situacao_RPS_Formatado As String, Tipo_Recolhimento As String
     Dim Valor_Servico As String, Valor_Deducao As String, Codigo_Atividade As String, CNPJ_Formatado As String
     Dim Node_Value As Variant
-    
+
     Operacao = "enviar": DadosMsg = Compor_MensagemXML(Operacao): Mount_Mensage = Message_Assemble
     DadosMsg = Replace(DadosMsg, "[CAMPO_CODIGO_CIDADE]", Codigo_Cidade)
     DadosMsg = Replace(DadosMsg, "[CAMPO_CNPJ_REMETENTE]", CNPJ)
     DadosMsg = Replace(DadosMsg, "[CAMPO_RAZAO_SOCIAL_REMETENTE]", Razao_Social)
     DadosMsg = Replace(DadosMsg, "[CAMPO_DATA_INICIAL]", Format(Data_Inicial, "YYYY-MM-DD"))
     DadosMsg = Replace(DadosMsg, "[CAMPO_DATA_FINAL]", Format(Data_Final, "YYYY-MM-DD"))
-    
+
     For Each Dados_Nota In Dict_Dados_Notas
         If Dados_Nota = "[CAMPO_INSCRICAO_MUNICIPAL_TOMADOR]" Then
             DadosMsg = Replace(DadosMsg, Dados_Nota, Format(Dict_Dados_Notas.Item(Dados_Nota), "0000000"))
@@ -157,19 +157,19 @@ Public Function enviar(ByVal CNPJ As String, ByVal Inscricao_Municipal As String
             DadosMsg = Replace(DadosMsg, Dados_Nota, Dict_Dados_Notas.Item(Dados_Nota))
         End If
     Next Dados_Nota
-    
+
     Set XmlDom = CreateObject("MSXML2.DOMDocument")
         XmlDom.Async = False
         If Not XmlDom.LoadXML(DadosMsg) Then
             Err.Raise XmlDom.parseError.ErrorCode, , XmlDom.parseError.reason
         End If
-    
+
     Quantidade_RPS = XmlDom.SelectNodes("/ns1:ReqEnvioLoteRPS/Lote/RPS").Length
-    
+
     For Each Node_Value In XmlDom.SelectNodes("/ns1:ReqEnvioLoteRPS/Lote/RPS/Itens/Item/ValorTotal")
         Valor_Total_Servicos = Valor_Total_Servicos + Replace(Node_Value.text, ".", ",")
     Next Node_Value
-    
+
     Ie_Formatado = Format(Inscricao_Municipal, "00000000000")
     Serie_RPS_Formatado = Dict_Dados_Notas.Item("[CAMPO_SERIE_RPS]") & "   "
     Numero_RPS_Formatado = Format((Dict_Dados_Notas.Item("[CAMPO_NUMERO_RPS]")), "000000000000")
@@ -185,11 +185,11 @@ Public Function enviar(ByVal CNPJ As String, ByVal Inscricao_Municipal As String
     Valor_Deducao = "000000000000000"
     Codigo_Atividade = Format(Replace(Dict_Dados_Notas.Item("[CAMPO_CODIGO_ATIVIDADE]"), ".", ""), "0000000000")
     CNPJ_Formatado = Format(Replace(Dict_Dados_Notas.Item("[CAMPO_CPF_CNPJ_TOMADOR]"), ".", ""), "00000000000000")
-    
+
     Signature = Ie_Formatado & Serie_RPS_Formatado & Numero_RPS_Formatado & Data_Emissao_Formatado & Tributacao_Formatado & _
                 Situacao_RPS_Formatado & Tipo_Recolhimento & Valor_Servico & Valor_Deducao & Codigo_Atividade & CNPJ_Formatado
     Set Conexao = New z_cls_WsFuncoes: Signature = Conexao.SHA1(Signature): Set Conexao = Nothing
-    
+
     DadosMsg = Replace(DadosMsg, "[CAMPO_ASSINATURA]", Signature)
     DadosMsg = Replace(DadosMsg, "[CAMPO_QUANTIDADE_RPS]", Quantidade_RPS)
     DadosMsg = Replace(DadosMsg, "[CAMPO_VALOR_TOTAL_SERVICOS]", Replace(Valor_Total_Servicos, ",", "."))
@@ -197,41 +197,41 @@ Public Function enviar(ByVal CNPJ As String, ByVal Inscricao_Municipal As String
     DadosMsg = Sign_XML(DadosMsg, Used_Companny, "#" & Dict_Dados_Notas.Item("[CAMPO_ID_LOTE]"))
     Mount_Mensage = Replace(Mount_Mensage, "[Mount_Mensage]", Operacao)
     Mount_Mensage = Replace(Mount_Mensage, "[DadosMsg]", DadosMsg)
-    
+
     enviar = Conection(Prefeitura_Utilizada, Mount_Mensage, Used_Companny)
-    
+
 End Function
 
 Public Function enviarSincrono(ByVal Used_Companny As String) As Variant
-    
+
     Dim Operacao As String, DadosMsg As String, Mount_Mensage As String
-    
+
     Operacao = "enviarSincrono": DadosMsg = Compor_MensagemXML(Operacao): Mount_Mensage = Message_Assemble
     DadosMsg = Replace(DadosMsg, "[CAMPO_CODIGO_CIDADE]", Codigo_Cidade)
     DadosMsg = Sign_XML(DadosMsg, Used_Companny)
     Mount_Mensage = Replace(Mount_Mensage, "[Mount_Mensage]", Operacao)
     Mount_Mensage = Replace(Mount_Mensage, "[DadosMsg]", DadosMsg)
     enviarSincrono = Conection(Prefeitura_Utilizada, Mount_Mensage, Used_Companny)
-    
+
 End Function
 
 Public Function testeEnviar(ByVal Used_Companny As String) As Variant
-    
+
     Dim Operacao As String, DadosMsg As String, Mount_Mensage As String
-    
+
     Operacao = "testeEnviar": DadosMsg = Compor_MensagemXML(Operacao): Mount_Mensage = Message_Assemble
     DadosMsg = Replace(DadosMsg, "[CAMPO_CODIGO_CIDADE]", Codigo_Cidade)
     DadosMsg = Sign_XML(DadosMsg, Used_Companny)
     Mount_Mensage = Replace(Mount_Mensage, "[Mount_Mensage]", Operacao)
     Mount_Mensage = Replace(Mount_Mensage, "[DadosMsg]", DadosMsg)
     testeEnviar = Conection(Prefeitura_Utilizada, Mount_Mensage, Used_Companny)
-    
+
 End Function
 
 Private Function Sign_XML(ByVal Xml_Not_Signing As String, ByVal Used_Companny As String, Optional URI As String = "") As String
-    
+
     Dim SignedXml As z_cls_WsFuncoes
-    
+
     Set SignedXml = New z_cls_WsFuncoes: Sign_XML = SignedXml.Sign_XML(Xml_Not_Signing, Used_Companny, URI): Set SignedXml = Nothing
 
 End Function
@@ -239,12 +239,12 @@ End Function
 Private Function Conection(ByVal Prefeitura As String, ByVal Mensage As String, ByVal Used_Companny As String) As Variant
 
     Dim Conexao As cls_Connection, Headers As Object
-    
+
     Set Headers = CreateObject("Scripting.Dictionary")
         Headers.Add "SOAPAction", "POST"
-    
+
     Set Conexao = New cls_Connection: Conection = Conexao.Conexao(Prefeitura, Mensage, Used_Companny, Headers): Set Conexao = Nothing
-    
+
 End Function
 
 Private Function Message_Assemble() As String
@@ -261,13 +261,13 @@ Private Function Message_Assemble() As String
 End Function
 
 Private Function Compor_MensagemXML(Tipo As String) As String
-    
+
     Dim MensagemXML As String
-    
+
     Select Case Tipo
-    
+
         Case Is = "cancelar"
-        
+
             MensagemXML = "<ns1:ReqCancelamentoNFSe xmlns:ns1=""http://localhost:8080/WsNFe2/lote"" xmlns:tipos=""http://localhost:8080/WsNFe2/tp"" xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xsi:schemaLocation=""http://localhost:8080/WsNFe2/lote http://localhost:8080/WsNFe2/xsd/ReqCancelamentoNFSe.xsd"">"
             MensagemXML = MensagemXML & "<Cabecalho>"
             MensagemXML = MensagemXML & "<CodCidade>[CAMPO_CODIGO_CIDADE]</CodCidade>"
@@ -284,11 +284,11 @@ Private Function Compor_MensagemXML(Tipo As String) As String
             MensagemXML = MensagemXML & "</Nota>"
             MensagemXML = MensagemXML & "</Lote>"
             MensagemXML = MensagemXML & "</ns1:ReqCancelamentoNFSe>"
-            
+
         Case Is = "consultarAliquotaSimplesNacional"
-         
+
         Case Is = "consultarLote"
-         
+
             MensagemXML = "<ns1:ReqConsultaLote xmlns:ns1=""http://localhost:8080/WsNFe2/lote"" xmlns:tipos=""http://localhost:8080/WsNFe2/tp"" xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xsi:schemaLocation=""http://localhost:8080/WsNFe2/lote  http://localhost:8080/WsNFe2/xsd/ReqConsultaLote.xsd"">"
             MensagemXML = MensagemXML & "<Cabecalho>"
             MensagemXML = MensagemXML & "<CodCidade>[CAMPO_CODIGO_CIDADE]</CodCidade>"
@@ -297,9 +297,9 @@ Private Function Compor_MensagemXML(Tipo As String) As String
             MensagemXML = MensagemXML & "<NumeroLote>[CAMPO_NUMERO_LOTE]</NumeroLote>"
             MensagemXML = MensagemXML & "</Cabecalho>"
             MensagemXML = MensagemXML & "</ns1:ReqConsultaLote>"
-         
+
         Case Is = "consultarNFSeRps"
-         
+
             MensagemXML = "<ns1:ReqConsultaNFSeRPS xmlns:ns1=""http://localhost:8080/WsNFe2/lote"" xmlns:tipos=""http://localhost:8080/WsNFe2/tp"" xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xsi:schemaLocation=""http://localhost:8080/WsNFe2/lote http://localhost:8080/WsNFe2/xsd/ReqConsultaNFSeRPS.xsd"">"
             MensagemXML = MensagemXML & "<Cabecalho>"
             MensagemXML = MensagemXML & "<CodCidade>[CAMPO_CODIGO_CIDADE]</CodCidade>"
@@ -324,9 +324,9 @@ Private Function Compor_MensagemXML(Tipo As String) As String
             MensagemXML = MensagemXML & "</RPSConsulta>"
             MensagemXML = MensagemXML & "</Lote>"
             MensagemXML = MensagemXML & "</ns1:ReqConsultaNFSeRPS>"
-         
+
         Case Is = "consultarNota"
-        
+
             MensagemXML = "<ns1:ReqConsultaNotas xmlns:ns1=""http://localhost:8080/WsNFe2/lote"" xmlns:tipos=""http://localhost:8080/WsNFe2/tp"" xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xsi:schemaLocation=""http://localhost:8080/WsNFe2/lote http://localhost:8080/WsNFe2/xsd/ReqConsultaNotas.xsd"">"
             MensagemXML = MensagemXML & "<Cabecalho Id=""Consulta:notas"">"
             MensagemXML = MensagemXML & "<CodCidade>[CAMPO_CODIGO_CIDADE]</CodCidade>"
@@ -338,13 +338,13 @@ Private Function Compor_MensagemXML(Tipo As String) As String
             MensagemXML = MensagemXML & "<Versao>1</Versao>"
             MensagemXML = MensagemXML & "</Cabecalho>"
             MensagemXML = MensagemXML & "</ns1:ReqConsultaNotas>"
-         
+
         Case Is = "consultarNotaTomada"
-         
+
         Case Is = "consultarSequencialRps"
-         
+
         Case Is = "enviar"
-                     
+
             MensagemXML = "<ns1:ReqEnvioLoteRPS xmlns:ns1=""http://localhost:8080/WsNFe2/lote"" xmlns:tipos=""http://localhost:8080/WsNFe2/tp"" xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xsi:schemaLocation=""http://localhost:8080/WsNFe2/lote http://localhost:8080/WsNFe2/xsd/ReqEnvioLoteRPS.xsd"">"
             MensagemXML = MensagemXML & "<Cabecalho>"
             MensagemXML = MensagemXML & "<CodCidade>[CAMPO_CODIGO_CIDADE]</CodCidade>"
@@ -434,58 +434,58 @@ Private Function Compor_MensagemXML(Tipo As String) As String
             MensagemXML = MensagemXML & "</RPS>"
             MensagemXML = MensagemXML & "</Lote>"
             MensagemXML = MensagemXML & "</ns1:ReqEnvioLoteRPS>"
-            
+
         Case Is = "enviarSincrono"
-         
+
         Case Is = "testeEnviar"
-         
+
         Case Else
-         
+
          Stop 'Tipo não cadastrado!
-    
+
     End Select
-   
+
    Compor_MensagemXML = MensagemXML
-   
+
 End Function
 
 Public Function Select_Template() As Object
 
     Dim Template As cls_Template
-    
+
     Set Template = New cls_Template
         Set Select_Template = Template.Select_Template(This.Filial_Usada)
     Set Template = Nothing
-        
+
 End Function
 
 Public Function Exluir_Template(ByVal PathTemplate As String) As Boolean
 
     Dim Template As cls_Template
-    
+
     Set Template = New cls_Template: Exluir_Template = Template.Delete_Template(PathTemplate): Set Template = Nothing
-    
+
 End Function
 
 Public Function Preecher_Template(ByVal Array_Dados_TNT As Variant, ByVal ParametersTemplate As Object, ByVal Dict_Xml As Object) As Variant
-    
+
     Dim htmlDoc As Object, Nodo As Object, ArrayDescricao As Variant, ValueIss, CotaPosition As Integer
     Dim Descricao_Servico As cls_Descricao_Servico, DB_Connection As cls_DB_Connection, Data() As Variant, DictUF As Object
-    
+
     Set htmlDoc = CreateObject("htmlfile")
         htmlDoc.Body.innerHTML = ParametersTemplate.Item("LayoutHtml")
-    
+
     Set Descricao_Servico = New cls_Descricao_Servico
         ArrayDescricao = Descricao_Servico.DescrServ(Dict_Xml.Item("CodigoAtividade"))
     Set Descricao_Servico = Nothing
-    
+
     Set DB_Connection = New cls_DB_Connection
         Data = Array("Nome Municipio", Dict_Xml.Item("CidadeTomadorDescricao"))
         Set DictUF = DB_Connection.SetQuery(Read, Municipios, Data)
     Set DB_Connection = Nothing
-    
+
     With htmlDoc
-    
+
         Set Nodo = .getElementById("css_b64")
             If Not Nodo Is Nothing Then Nodo.href = ParametersTemplate.Item("LayoutCss")
         Set Nodo = .getElementById("img_company")
@@ -617,11 +617,11 @@ Public Function Preecher_Template(ByVal Array_Dados_TNT As Variant, ByVal Parame
                     .getElementById("notify_url_nota").innerText = ""
                 End If
             End If
-        
-    End With
-    
-    Preecher_Template = Array(Dict_Xml.Item("CPFCNPJTomador"), htmlDoc.Body.innerHTML)
-    
-End Function
 
+    End With
+
+    Preecher_Template = Array(Dict_Xml.Item("CPFCNPJTomador"), htmlDoc.Body.innerHTML)
+
+End Function
+*/
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\CityHall\Fi1_Fiorilli;
+namespace App\Services\Towns\Fi1_Fiorilli;
 
 use Carbon\Carbon;
 use Illuminate\Support\Str;

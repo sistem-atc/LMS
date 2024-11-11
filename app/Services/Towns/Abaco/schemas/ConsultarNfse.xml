@@ -1,10 +1,26 @@
 <ConsultarNfsEnvio>
-    <Prestador>
-        <Cnpj></Cnpj>
-        <InscricaoMunicipal></InscricaoMunicipal>
-    </Prestador>
-    <PeriodoEmissao>
-        <DataInicial></DataInicial>
-        <DataFinal></DataFinal>
-    </PeriodoEmissao>
+	<Prestador>
+		<Cnpj></Cnpj>
+		<InscricaoMunicipal></InscricaoMunicipal>
+	</Prestador>
+	<NumeroNfse/>
+	<PeriodoEmissao>
+		<DataInicial></DataInicial>
+		<DataFinal></DataFinal>
+	</PeriodoEmissao>
+	<Tomador>
+		<CpfCnpj>
+			<Cpf/>
+			<Cnpj/>
+		</CpfCnpj>
+		<InscricaoMunicipal/>
+	</Tomador>
+	<IntermediarioServico>
+		<RazaoSocial/>
+		<CpfCnpj>
+			<Cpf/>
+			<Cnpj/>
+		</CpfCnpj>
+		<InscricaoMunicipal/>
+	</IntermediarioServico>
 </ConsultarNfsEnvio>

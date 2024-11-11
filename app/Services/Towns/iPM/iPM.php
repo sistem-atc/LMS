@@ -1,11 +1,11 @@
 <?php
 
-namespace App\CityHall\iPM;
+namespace App\Services\Towns\iPM;
 
 
 class iPM
 {
-    Option Explicit
+    /*
 Private Type ClassType: Link_Prefeitura As String: Cadastro_Economico As String: Str_Boundary As String: Filial_Usada As String: End Type
 Private This As ClassType: Dim Links_Prefeituras As Object
 Public Property Get Prefeitura_Utilizada() As String: Prefeitura_Utilizada = This.Link_Prefeitura: End Property
@@ -23,17 +23,17 @@ End Sub
 
 Public Function Consulta_NotaFiscal(ByVal Username As String, ByVal Password As String, ByVal Numero_Nota As String, _
                                     ByVal Used_Companny As String) As Variant
-    
+
     Dim Authorization As String, Operacao As String, Mount_Mensage As String, DadosMsg As String
-    
+
     Operacao = "Consulta_NotaFiscal": DadosMsg = Compor_MensagemXML(Operacao): Mount_Mensage = Message_Assemble
     DadosMsg = Replace(DadosMsg, "[NUMERO_NOTA]", Numero_Nota)
     DadosMsg = Replace(DadosMsg, "[SERIE_NOTA]", "1")
     DadosMsg = Replace(DadosMsg, "[CADASTRO]", Cadastro_Economico)
     Mount_Mensage = Replace(Mount_Mensage, "[DadosMsg]", DadosMsg)
-    
+
     Consulta_NotaFiscal = Conection(Prefeitura_Utilizada, Mount_Mensage, Used_Companny, Array(Username, Password))
-    
+
 End Function
 
 Private Function Message_Assemble() As String
@@ -49,33 +49,33 @@ Private Function Message_Assemble() As String
 End Function
 
 Private Function Code_Authorization(ByVal Username As String, ByVal Password As String) As Variant
-    
+
     Dim Conexao As cls_Connection
-    
+
     Set Conexao = New cls_Connection: Code_Authorization = Conexao.EncodeBase64(Username & ":" & Password): Set Conexao = Nothing
-    
+
 End Function
 
 Private Function Conection(ByVal Prefeitura As String, ByVal Mensage As String, ByVal Used_Companny As String, ByVal Array_Data As Variant) As Variant
-    
+
     Dim Conexao As cls_Connection, Headers As Object
-    
+
     Set Headers = CreateObject("Scripting.Dictionary")
         Headers.Add "Content-Type", "multipart/form-data; boundary=" & Str_Boundary
         Headers.Add "Authorization", "Basic " & Code_Authorization(Array_Data(0), Array_Data(1))
-    
+
     Set Conexao = New cls_Connection: Conection = Conexao.Conexao(Prefeitura, Mensage, Used_Companny, Headers, , , , , True): Set Conexao = Nothing
-    
+
 End Function
 
 Private Function Compor_MensagemXML(Tipo As String) As String
-    
+
     Dim MensagemXML As String
-   
+
     Select Case Tipo
-        
+
         Case Is = "Emitir_NotaFiscal"
-        
+
             MensagemXML = "<nfse>"
             MensagemXML = MensagemXML & vbNewLine & "<rps>"
             MensagemXML = MensagemXML & vbNewLine & "<nro_recibo_provisorio></nro_recibo_provisorio>"
@@ -166,9 +166,9 @@ Private Function Compor_MensagemXML(Tipo As String) As String
             MensagemXML = MensagemXML & vbNewLine & "</parcelas>"
             MensagemXML = MensagemXML & vbNewLine & "</forma_pagamento>"
             MensagemXML = MensagemXML & vbNewLine & "</nfse>"
-                    
+
         Case Is = "Consulta_NotaFiscal"
-    
+
             MensagemXML = "<nfse>"
             MensagemXML = MensagemXML & vbNewLine & "<pesquisa>"
             MensagemXML = MensagemXML & vbNewLine & "<numero>[NUMERO_NOTA]</numero>"
@@ -176,9 +176,9 @@ Private Function Compor_MensagemXML(Tipo As String) As String
             MensagemXML = MensagemXML & vbNewLine & "<cadastro>[CADASTRO]</cadastro>"
             MensagemXML = MensagemXML & vbNewLine & "</pesquisa>"
             MensagemXML = MensagemXML & vbNewLine & "</nfse>"
-        
+
         Case Is = "Cancelar_NotaFiscal"
-        
+
             MensagemXML = "<nfse>"
             MensagemXML = MensagemXML & vbNewLine & "<nf>"
             MensagemXML = MensagemXML & vbNewLine & "<numero></numero>"
@@ -192,13 +192,13 @@ Private Function Compor_MensagemXML(Tipo As String) As String
             MensagemXML = MensagemXML & vbNewLine & "</prestador>"
             MensagemXML = MensagemXML & vbNewLine & "</nfse>"
             MensagemXML = MensagemXML & vbNewLine & "<observacao></observacao>"
-        
+
     End Select
-    
+
     Compor_MensagemXML = MensagemXML
-    
+
     MensagemXML = ""
-    
+
 End Function
 
 Private Function Random(ByVal Length As Integer, ByVal rString As Boolean, ByVal rInteger As Boolean) As Variant
@@ -206,13 +206,13 @@ Private Function Random(ByVal Length As Integer, ByVal rString As Boolean, ByVal
     Dim CharacterBank As Variant, LoopFor As Long, str As String
 
     If Length < 1 Then Exit Function
-    
+
     If rString Then
         CharacterBank = Array("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", _
                               "t", "u", "v", "w", "x", "y", "z", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", _
                               "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", _
                               "V", "W", "X", "Y", "Z")
-    
+
         For LoopFor = 1 To Length
             Randomize
             str = str & CharacterBank(Int((UBound(CharacterBank) - LBound(CharacterBank) + 1) * Rnd + LBound(CharacterBank)))
@@ -224,7 +224,7 @@ Private Function Random(ByVal Length As Integer, ByVal rString As Boolean, ByVal
             str = str & CharacterBank(Int((UBound(CharacterBank) - LBound(CharacterBank) + 1) * Rnd + LBound(CharacterBank)))
         Next LoopFor
     End If
-    
+
     Random = str
 
 End Function
@@ -232,36 +232,36 @@ End Function
 Public Function Select_Template() As Object
 
     Dim Template As cls_Template
-    
+
     Set Template = New cls_Template
         Set Select_Template = Template.Select_Template(This.Filial_Usada)
     Set Template = Nothing
-        
+
 End Function
 
 Public Function Exluir_Template(ByVal PathTemplate As String) As Boolean
 
     Dim Template As cls_Template
-    
+
     Set Template = New cls_Template: Exluir_Template = Template.Delete_Template(PathTemplate): Set Template = Nothing
-    
+
 End Function
 
 Public Function Preecher_Template(ByVal Array_Dados_TNT As Variant, ByVal ParametersTemplate As Object, ByVal Dict_Xml As Object) As Variant
-    
+
     Dim htmlDoc As Object, Nodo As Object, ArrayDescricao As Variant, Url As String
     Dim Descricao_Servico As cls_Descricao_Servico, Functions As z_cls_WsFuncoes
-    
+
     Set htmlDoc = CreateObject("htmlfile")
         htmlDoc.Body.innerHTML = ParametersTemplate.Item("LayoutHtml")
-    
+
     Set Descricao_Servico = New cls_Descricao_Servico
         ArrayDescricao = Descricao_Servico.DescrServ(Dict_Xml.Item("codigo_item_lista_servico"))
     Set Descricao_Servico = Nothing
-    
+
     Url = Dict_Xml.Item("link_nfse")
     'CInt(Dict_Xml.Item("situacao_codigo_nfse")) <> 1 Tag Cancelamento
-    
+
     With htmlDoc
         Set Nodo = .getElementById("css_b64")
             If Not Nodo Is Nothing Then Nodo.href = ParametersTemplate.Item("LayoutCss")
@@ -384,11 +384,11 @@ Public Function Preecher_Template(ByVal Array_Dados_TNT As Variant, ByVal Parame
         Set Nodo = .getElementById("outras_informacoes_7")
             If Not Nodo Is Nothing Then Nodo.innerHTML = Mid(Url, 535, 89)
     End With
-    
+
     Preecher_Template = Array(Dict_Xml.Item("tomador.cpfcnpj"), htmlDoc.Body.innerHTML)
-    
+
 End Function
 
 
-
+*/
 }

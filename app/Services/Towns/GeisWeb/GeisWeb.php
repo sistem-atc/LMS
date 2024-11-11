@@ -1,6 +1,6 @@
 <?php
 
-namespace App\CityHall\GeisWeb;
+namespace App\Services\Towns\GeisWeb;
 
 use App\Services\Utils\Towns\Bases\LinkTownBase;
 
@@ -39,7 +39,6 @@ class GeisWeb extends LinkTownBase
         $mountMessage = Str::replace("[DadosMsg]", $dataMsg, $mountMessage);
 
         return parent::Conection(self::$url, Mount_Mensage, self::$headers, self::$verb, true);
-
     }
 
     public static function ConsultaLoteRps(
@@ -56,7 +55,6 @@ class GeisWeb extends LinkTownBase
         $mountMessage = Str::replace('[DadosMsg]', $dataMsg, $mountMessage);
 
         return parent::Conection(self::$url, $mountMessage, self::$headers, self::$verb, true);
-
     }
 
     public static function ConsultaNfse(
@@ -77,7 +75,6 @@ class GeisWeb extends LinkTownBase
         $mountMessage = Str::replace('[DadosMsg]', $dataMsg, $mountMessage);
 
         return parent::Conection(self::$url, $mountMessage, self::$headers, self::$verb, true);
-
     }
 
     public static function ConsultaRps(
@@ -98,7 +95,6 @@ class GeisWeb extends LinkTownBase
         $mountMessage = Str::replace(Mount_Mensage, '[DadosMsg]', DadosMsg);
 
         return parent::Conection(self::$url, Mount_Mensage, self::$headers, self::$verb, true);
-
     }
 
     public static function ConsultaSituacaoLoteAsync(
@@ -117,7 +113,6 @@ class GeisWeb extends LinkTownBase
         $mountMessage = Str::replace(Mount_Mensage, '[DadosMsg]', DadosMsg);
 
         return parent::Conection(self::$url, Mount_Mensage, self::$headers, self::$verb, true);
-
     }
 
     public static function EmailNFSeTomador(
@@ -136,7 +131,6 @@ class GeisWeb extends LinkTownBase
         $mountMessage = Str::replace(Mount_Mensage, '[DadosMsg]', DadosMsg);
 
         return parent::Conection(self::$url, Mount_Mensage, self::$headers, self::$verb, true);
-
     }
 
     public static function EnviaLoteRps(
@@ -152,7 +146,6 @@ class GeisWeb extends LinkTownBase
         $mountMessage = Str::replace(Mount_Mensage, '[DadosMsg]', DadosMsg);
 
         return parent::Conection(self::$url, Mount_Mensage, self::$headers, self::$verb, true);
-
     }
 
     public static function EnviaLoteRpsAsync(
@@ -168,7 +161,6 @@ class GeisWeb extends LinkTownBase
         $mountMessage = Str::replace(Mount_Mensage, '[DadosMsg]', DadosMsg);
 
         return parent::Conection(self::$url, Mount_Mensage, self::$headers, self::$verb, true);
-
     }
 
     public static function GeraPDFNFSe(
@@ -187,10 +179,9 @@ class GeisWeb extends LinkTownBase
         $mountMessage = Str::replace(Mount_Mensage, '[DadosMsg]', DadosMsg);
 
         return parent::Conection(self::$url, Mount_Mensage, self::$headers, self::$verb, true);
-
     }
 
-    private static function Message_Assemble(): string
+    /*private static function Message_Assemble(): string
 
             Message_Assemble = '<soapenv:Envelope xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" xmlns:soapenv=""http://schemas.xmlsoap.org/soap/envelope/"" xmlns:geis=""urn:https://www.geisweb.net.br/producao/cajamar/webservice/GeisWebServiceImpl.php"">"
             Message_Assemble = Message_Assemble & "<soapenv:Header/>"
@@ -405,5 +396,5 @@ class GeisWeb extends LinkTownBase
 
         return MensagemXML;
 
-    }
+    }*/
 }

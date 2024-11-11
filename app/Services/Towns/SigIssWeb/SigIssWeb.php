@@ -1,11 +1,11 @@
 <?php
 
-namespace App\CityHall\SigIssWeb;
+namespace App\Services\Towns\SigIssWeb;
 
 
 class SigIssWeb
 {
-    Option Explicit
+    /*    Option Explicit
 Private Type ClassType: Link_Prefeitura As String: Token As String: Filial_Usada As String: End Type
 Private This As ClassType: Dim Links_Prefeituras As Object: Const SenhaWS As String = "3hMzEQ8S4"
 Public Property Get Prefeitura_Utilizada() As String: Prefeitura_Utilizada = This.Link_Prefeitura: End Property
@@ -15,37 +15,37 @@ Public Property Let Token(Value As String): This.Token = Value: End Property
 Public Property Get Filial_Usada() As String: Filial_Usada = This.Filial_Usada: End Property
 
 Private Sub Class_Initialize()
-    
+
     Set Links_Prefeituras = CreateObject("Scripting.Dictionary")
     Links_Prefeituras.Add "CPQ", "https://wssumare.sigissweb.com/rest" 'Prefeitura Sumaré
 
 End Sub
 
 Public Function Login(ByVal CNPJ As String, ByVal Used_Companny As String) As Variant
-    
+
     Dim Json As String, Url As String
-        
+
     Url = "/login"
     Json = "{""login"":""{CNPJ}"", ""senha"":""{Senha}""};"
     Json = Replace(Json, "{CNPJ}", CNPJ)
     Json = Replace(Json, "{Senha}", SenhaWS)
     Token = Conection(Prefeitura_Utilizada & Url, Json, "POST", Used_Companny)
-    
+
 End Function
 
 Public Function Emissao_NFECliente(ByVal Used_Companny As String) As Variant
-    
+
     Dim Url As String
-    
+
     Url = "/nfes"
     Emissao_NFECliente = Conection(Prefeitura_Utilizada & Url, "", "PUT", Used_Companny)
 
 End Function
 
 Public Function Emissao_Json(ByVal Used_Companny As String) As Variant
-    
+
     Dim Json As String, Url As String
-    
+
     Url = "/nfes"
     Json = """cnpj_cpf_prestador"": ""CNPJ PRESTADOR"", ""exterior_dest"": ""0"", ""cnpj_cpf_destinatario"": ""CNPJ TOMADOR"", "
     Json = Json & """pessoa_destinatario"": ""J"", ""ie_destinatario"": ""1231231"", ""im_destinatario"": ""123213"", "
@@ -62,15 +62,15 @@ Public Function Emissao_Json(ByVal Used_Companny As String) As Variant
     Json = Json & """0,00"", ""valor_csll"": ""0,00"", ""bc_irrf"": ""0,00"",  ""aliq_irrf"": ""0,00"", ""valor_irrf"": "
     Json = Json & """0,00"", ""bc_inss"": ""0,00"", ""aliq_inss"": ""0,00"", ""valor_inss"": ""0,00"", ""sistema_gerador"": "
     Json = Json & """nome do erp emissor"", ""serie_rps"": ""RP"", ""rps"": ""1"""
-    
+
     Emissao_Json = Conection(Prefeitura_Utilizada & Url, Json, "POST", Used_Companny)
 
 End Function
 
 Public Function ObtemPDF(ByVal Numero_NF As String, ByVal Serie_NF As String, ByVal Used_Companny As String) As Variant
-    
+
     Dim Url As String
-    
+
     Url = "/nfes/nfimpressa/{numeronf}/serie/{serie}"
     Url = Replace(Url, "{numeronf}", Numero_NF)
     Url = Replace(Url, "{serie}", Serie_NF)
@@ -79,9 +79,9 @@ Public Function ObtemPDF(ByVal Numero_NF As String, ByVal Serie_NF As String, By
 End Function
 
 Public Function Cancelar_NF(ByVal Numero_NF As String, ByVal Serie_NF As String, ByVal Motivo As String, ByVal Used_Companny As String) As Variant
-    
+
     Dim Url As String
-    
+
     Url = "/nfes/cancela/{numeronf}/serie/{serie}/motivo/{motivo}"
     Url = Replace(Url, "{numeronf}", Numero_NF)
     Url = Replace(Url, "{serie}", Serie_NF)
@@ -91,9 +91,9 @@ Public Function Cancelar_NF(ByVal Numero_NF As String, ByVal Serie_NF As String,
 End Function
 
 Public Function Obtem_XML(ByVal Numero_RPS As String, ByVal Serie_RPS As String, ByVal Used_Companny As String) As Variant
-    
+
     Dim Url As String
-    
+
     Url = "/nfes/pegaxml/{numerorps}/serierps/{serierps}"
     Url = Replace(Url, "{numerorps}", Numero_RPS)
     Url = Replace(Url, "{serierps}", Serie_RPS)
@@ -102,9 +102,9 @@ Public Function Obtem_XML(ByVal Numero_RPS As String, ByVal Serie_RPS As String,
 End Function
 
 Public Function Enviar_Nota(ByVal Numero_NF As String, ByVal Serie As String, ByVal Copia_Prestador As String, ByVal Used_Companny As String) As Variant
-    
+
     Dim Url As String
-    
+
     Url = "/nfes/envianf/{numeronf}/serie/{serie}/comcopiaprestador/{comcopiaprestador}"
     Url = Replace(Url, "{numeronf}", Numero_NF)
     Url = Replace(Url, "{serie}", Serie)
@@ -114,50 +114,50 @@ Public Function Enviar_Nota(ByVal Numero_NF As String, ByVal Serie As String, By
 End Function
 
 Private Function Conection(ByVal Prefeitura As String, ByVal Mensage As String, ByVal TypeSend As String, ByVal Used_Companny As String) As Variant
-    
+
     Dim Conexao As cls_Connection, Headers As Object
-    
+
     Set Headers = CreateObject("Scripting.Dictionary")
         Headers.Add "Content-Type", "application/json; charset=utf-8"
         If InStr(Prefeitura, "/login") = 0 Then Headers.Add "Authorization", This.Token
-    
+
     Set Conexao = New cls_Connection: Conection = Conexao.Conexao(Prefeitura, Mensage, Used_Companny, Headers, TypeSend): Set Conexao = Nothing
-    
+
 End Function
 
 Public Function Select_Template() As Object
 
     Dim Template As cls_Template
-    
+
     Set Template = New cls_Template
         Set Select_Template = Template.Select_Template(This.Filial_Usada)
     Set Template = Nothing
-        
+
 End Function
 
 Public Function Exluir_Template(ByVal PathTemplate As String) As Boolean
 
     Dim Template As cls_Template
-    
+
     Set Template = New cls_Template: Exluir_Template = Template.Delete_Template(PathTemplate): Set Template = Nothing
-    
+
 End Function
 
 Public Function Preecher_Template(ByVal Array_Dados_TNT As Variant, ByVal ParametersTemplate As Object, ByVal Dict_Xml As Object) As Variant
-    
+
     Dim htmlDoc As Object, Nodo As Object, ArrayDescricao As Variant, Data() As Variant, DictUF As Object
     Dim Descricao_Servico As cls_Descricao_Servico, DB_Connection As cls_DB_Connection, Url As String
-    
+
     Set htmlDoc = CreateObject("htmlfile")
         htmlDoc.Body.innerHTML = ParametersTemplate.Item("LayoutHtml")
-    
+
     Set Descricao_Servico = New cls_Descricao_Servico
         ArrayDescricao = Descricao_Servico.DescrServ(Dict_Xml.Item("id_codigo_servico"))
     Set Descricao_Servico = Nothing
-    
+
     Url = "https://sumare.sigissweb.com/nfecentral?oper=imprimir&cnpj=" & Array_Dados_TNT(12) & "&numeronf=" & Dict_Xml.Item("numero_nf") & "&serienf=" & Dict_Xml.Item("serie") & "&tipo=I"
     'If Dict_Xml.Item("cancelada") <> "N" Tag Cancelada
-          
+
     With htmlDoc
         Set Nodo = .getElementById("css_b64")
             If Not Nodo Is Nothing Then Nodo.href = ParametersTemplate.Item("LayoutCss")
@@ -284,11 +284,11 @@ Public Function Preecher_Template(ByVal Array_Dados_TNT As Variant, ByVal Parame
         Set Nodo = .getElementById("outras_informacoes_7")
             If Not Nodo Is Nothing Then Nodo.innerHTML = Mid(Url, 535, 89)
     End With
-    
+
     Preecher_Template = Array(Dict_Xml.Item("cnpj_cpf_destinatario"), htmlDoc.Body.innerHTML)
-    
+
 End Function
 
 
-
+*/
 }

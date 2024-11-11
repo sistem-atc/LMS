@@ -2,16 +2,16 @@
 
 namespace App\Enums;
 
-enum TypeRPS: string
+enum TypeRPS: int
 {
-    case RPS = 'RPS';
-    case CUPOM = 'Cupom';
+    case RPS = 1;
+    case CUPOM = 2;
 
-    public function getLabel(): ?string
+    public function getLabel(): int
     {
         return match ($this) {
-            self::RPS => 'RPS',
-            self::CUPOM => 'Cupom',
+            self::RPS => 1,
+            self::CUPOM => 2,
         };
     }
 }

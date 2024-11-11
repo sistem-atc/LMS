@@ -1,11 +1,11 @@
 <?php
 
-namespace App\CityHall\Iss_Londrina;
+namespace App\Services\Towns\Iss_Londrina;
 
 
 class Iss_Londrina
 {
-    Option Explicit
+    /*    Option Explicit
 Private Type ClassType: Link_Prefeitura As String: Filial_Usada As String: End Type
 Private This As ClassType: Dim Links_Prefeituras As Object
 Public Property Get Prefeitura_Utilizada() As String: Prefeitura_Utilizada = This.Link_Prefeitura: End Property
@@ -35,16 +35,16 @@ Public Function CancelarNota(ByVal CCM As String, ByVal CNPJ As String, ByVal CP
     DadosMsg = Replace(DadosMsg, "[CAMPO_EMAIL]", Email)
     Mount_Mensage = Replace(Mount_Mensage, "[Mount_Mensage]", Operacao)
     Mount_Mensage = Replace(Mount_Mensage, "[DadosMsg]", DadosMsg)
-    
+
     CancelarNota = Conection(Prefeitura_Utilizada, Mount_Mensage, Used_Companny)
-    
+
 End Function
 
 Public Function ConsultarCadastroContribuinte(ByVal CCM As String, ByVal CNPJ As String, ByVal CPF As String, ByVal Senha As String, _
                                               ByVal CNPJ_Consulta As Integer, ByVal Used_Companny As String) As Variant
 
     Dim Operacao As String, DadosMsg As String, Mount_Mensage As String
-    
+
     Operacao = "ConsultarCadastroContribuinte": DadosMsg = Compor_MensagemXML(Operacao): Mount_Mensage = Message_Assemble
     DadosMsg = Replace(DadosMsg, "[CAMPO_CCM]", CCM)
     DadosMsg = Replace(DadosMsg, "[CAMPO_CNPJ]", CNPJ)
@@ -55,14 +55,14 @@ Public Function ConsultarCadastroContribuinte(ByVal CCM As String, ByVal CNPJ As
     Mount_Mensage = Replace(Mount_Mensage, "[DadosMsg]", DadosMsg)
 
     ConsultarCadastroContribuinte = Conection(Prefeitura_Utilizada, Mount_Mensage, Used_Companny)
-    
+
 End Function
 
 Public Function ConsultarNfseServicoPrestado(ByVal CCM As String, ByVal CNPJ As String, ByVal CPF As String, ByVal Senha As String, _
                                              ByVal Numero_Nota As String, ByVal Used_Companny As String) As Variant
 
     Dim Operacao As String, DadosMsg As String, Mount_Mensage As String
-    
+
     Operacao = "ConsultarNfseServicoPrestado": DadosMsg = Compor_MensagemXML(Operacao): Mount_Mensage = Message_Assemble
     DadosMsg = Replace(DadosMsg, "[CAMPO_CCM]", CCM)
     DadosMsg = Replace(DadosMsg, "[CAMPO_CNPJ]", CNPJ)
@@ -73,14 +73,14 @@ Public Function ConsultarNfseServicoPrestado(ByVal CCM As String, ByVal CNPJ As 
     Mount_Mensage = Replace(Mount_Mensage, "[DadosMsg]", DadosMsg)
 
     ConsultarNfseServicoPrestado = Conection(Prefeitura_Utilizada, Mount_Mensage, Used_Companny)
-    
+
 End Function
 
 Public Function ConsultarRpsServicoPrestado(ByVal CCM As String, ByVal CNPJ As String, ByVal CPF As String, ByVal Senha As String, _
                                             ByVal Numero_RPS As String, ByVal Data_Emissao_RPS As Date, ByVal Used_Companny As String) As Variant
 
     Dim Operacao As String, DadosMsg As String, Mount_Mensage As String
-    
+
     Operacao = "ConsultarRpsServicoPrestado": DadosMsg = Compor_MensagemXML(Operacao): Mount_Mensage = Message_Assemble
     DadosMsg = Replace(DadosMsg, "[CAMPO_CCM]", CCM)
     DadosMsg = Replace(DadosMsg, "[CAMPO_CNPJ]", CNPJ)
@@ -94,7 +94,7 @@ Public Function ConsultarRpsServicoPrestado(ByVal CCM As String, ByVal CNPJ As S
     Mount_Mensage = Replace(Mount_Mensage, "[DadosMsg]", DadosMsg)
 
     ConsultarRpsServicoPrestado = Conection(Prefeitura_Utilizada, Mount_Mensage, Used_Companny)
-    
+
 End Function
 
 Public Function GerarNota(ByVal Used_Companny As String) As Variant
@@ -106,19 +106,19 @@ Public Function GerarNota(ByVal Used_Companny As String) As Variant
     Mount_Mensage = Replace(Mount_Mensage, "[DadosMsg]", DadosMsg)
 
     GerarNota = Conection(Prefeitura_Utilizada, Mount_Mensage, Used_Companny)
-    
+
 End Function
 
 Private Function Conection(ByVal Prefeitura As String, ByVal Mensage As String, ByVal Used_Companny As String) As Variant
-    
+
     Dim Conexao As cls_Connection, Headers As Object
-    
+
     Set Headers = CreateObject("Scripting.Dictionary")
         Headers.Add "Content-Type", "text/xml;charset=UTF-8"
         Headers.Add "SOAPAction", "POST"
-        
+
     Set Conexao = New cls_Connection: Conection = Conexao.Conexao(Prefeitura, Mensage, Used_Companny, Headers): Set Conexao = Nothing
-    
+
 End Function
 
 Private Function Message_Assemble() As String
@@ -129,17 +129,17 @@ Private Function Message_Assemble() As String
     Message_Assemble = Message_Assemble & "<v1:[Mount_Mensage]>[DadosMsg]</v1:[Mount_Mensage]>"
     Message_Assemble = Message_Assemble & "</soapenv:Body>"
     Message_Assemble = Message_Assemble & "</soapenv:Envelope>"
-    
+
 End Function
 
 Private Function Compor_MensagemXML(Tipo As String) As String
-    
+
     Dim MensagemXML As String
-    
+
     Select Case Tipo
-    
+
         Case Is = "CancelarNota"
-        
+
             MensagemXML = "<DescricaoCancelaNota>"
             MensagemXML = MensagemXML & "<ccm>[CAMPO_CCM]</ccm>"
             MensagemXML = MensagemXML & "<cnpj>[CAMPO_CNPJ]</cnpj>"
@@ -149,9 +149,9 @@ Private Function Compor_MensagemXML(Tipo As String) As String
             MensagemXML = MensagemXML & "<cod_cancelamento>[CAMPO_CODIGO_CANCELAMENTO]</cod_cancelamento>"
             MensagemXML = MensagemXML & "<email>[CAMPO_EMAIL]</email>"
             MensagemXML = MensagemXML & "</DescricaoCancelaNota>"
-            
+
         Case Is = "ConsultarCadastroContribuinte"
-         
+
             MensagemXML = MensagemXML & "<ConsultarCadastroContribuinteEnvio>"
             MensagemXML = MensagemXML & "<ccm>[CAMPO_CCM]</ccm>"
             MensagemXML = MensagemXML & "<cnpj>[CAMPO_CNPJ]</cnpj>"
@@ -159,9 +159,9 @@ Private Function Compor_MensagemXML(Tipo As String) As String
             MensagemXML = MensagemXML & "<senha>[CAMPO_SENHA]</senha>"
             MensagemXML = MensagemXML & "<cnpj_cpf_cadastro>[CAMPO_CNPJ_CONSULTA]</cnpj_cpf_cadastro>"
             MensagemXML = MensagemXML & "</ConsultarCadastroContribuinteEnvio>"
-    
+
         Case Is = "ConsultarNfseServicoPrestado"
-         
+
             MensagemXML = MensagemXML & "<ConsultarNfseServicoPrestadoEnvio>"
             MensagemXML = MensagemXML & "<ccm>[CAMPO_CCM]</ccm>"
             MensagemXML = MensagemXML & "<cnpj>[CAMPO_CNPJ]</cnpj>"
@@ -169,9 +169,9 @@ Private Function Compor_MensagemXML(Tipo As String) As String
             MensagemXML = MensagemXML & "<senha>[CAMPO_SENHA]</senha>"
             MensagemXML = MensagemXML & "<numero_nfse>[CAMPO_NUMERO_NOTA]</numero_nfse>"
             MensagemXML = MensagemXML & "</ConsultarNfseServicoPrestadoEnvio>"
-         
+
         Case Is = "ConsultarRpsServicoPrestado"
-         
+
             MensagemXML = MensagemXML & "<ConsultarRpsServicoPrestadoEnvio>"
             MensagemXML = MensagemXML & "<ccm>[CAMPO_CCM]</ccm>"
             MensagemXML = MensagemXML & "<cnpj>[CAMPO_CNPJ]</cnpj>"
@@ -182,9 +182,9 @@ Private Function Compor_MensagemXML(Tipo As String) As String
             MensagemXML = MensagemXML & "<mes_rps>[CAMPO_MES_RPS]</mes_rps>"
             MensagemXML = MensagemXML & "<ano_rps>[CAMPO_ANO_RPS]</ano_rps>"
             MensagemXML = MensagemXML & "</ConsultarRpsServicoPrestadoEnvio>"
-         
+
         Case Is = "GerarNota"
-        
+
             MensagemXML = MensagemXML & "<DescricaoRps>"
             MensagemXML = MensagemXML & "<ccm>?</ccm>"
             MensagemXML = MensagemXML & "<cnpj>?</cnpj>"
@@ -235,55 +235,55 @@ Private Function Compor_MensagemXML(Tipo As String) As String
             MensagemXML = MensagemXML & "<obra_local_quadra>?</obra_local_quadra>"
             MensagemXML = MensagemXML & "<obra_local_bairro>?</obra_local_bairro>"
             MensagemXML = MensagemXML & "</DescricaoRps>"
-         
+
         Case Else
-         
+
          Stop 'Tipo não cadastrado!
-    
+
     End Select
-   
+
    Compor_MensagemXML = MensagemXML
-   
+
 End Function
 
 Public Function Select_Template() As Object
 
     Dim Template As cls_Template
-    
+
     Set Template = New cls_Template
         Set Select_Template = Template.Select_Template(This.Filial_Usada)
     Set Template = Nothing
-        
+
 End Function
 
 Public Function Exluir_Template(ByVal PathTemplate As String) As Boolean
 
     Dim Template As cls_Template
-    
+
     Set Template = New cls_Template: Exluir_Template = Template.Delete_Template(PathTemplate): Set Template = Nothing
-    
+
 End Function
 
 Public Function Preecher_Template(ByVal Array_Dados_TNT As Variant, ByVal ParametersTemplate As Object, ByVal Dict_Xml As Object) As Variant
-    
+
     Dim htmlDoc As Object, Nodo As Object, ArrayDescricao As Variant, Data() As Variant, DictUF As Object
     Dim Descricao_Servico As cls_Descricao_Servico, DB_Connection As cls_DB_Connection, Url As String
-    
+
     Set htmlDoc = CreateObject("htmlfile")
         htmlDoc.Body.innerHTML = ParametersTemplate.Item("LayoutHtml")
-    
+
     Set Descricao_Servico = New cls_Descricao_Servico
         ArrayDescricao = Descricao_Servico.DescrServ(Dict_Xml.Item("CodigoTributacaoMunicipio"))
     Set Descricao_Servico = Nothing
-    
+
     Set DB_Connection = New cls_DB_Connection
         Data = Array("Codigo Municipio", Dict_Xml.Item("TomadorCodigoMunicipio"))
         Set DictUF = DB_Connection.SetQuery(Read, Municipios, Data)
     Set DB_Connection = Nothing
-    
+
     Url = Dict_Xml.Item("Observacoes")
     'CInt(Dict_Xml.Item("StatusNfse")) <> 1 Tag Cancelamento
-    
+
     With htmlDoc
         Set Nodo = .getElementById("css_b64")
             If Not Nodo Is Nothing Then Nodo.href = ParametersTemplate.Item("LayoutCss")
@@ -410,11 +410,11 @@ Public Function Preecher_Template(ByVal Array_Dados_TNT As Variant, ByVal Parame
         Set Nodo = .getElementById("outras_informacoes_7")
             If Not Nodo Is Nothing Then Nodo.innerHTML = Mid(Url, 447, 89)
     End With
-    
+
     Preecher_Template = Array(Dict_Xml.Item("TomadorCpfCnpj"), htmlDoc.Body.innerHTML)
-    
+
 End Function
 
 
-
+*/
 }

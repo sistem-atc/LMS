@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use Filament\Facades\Filament;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -21,6 +23,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Config::set('speed-cte.tpAmb', App::environment('production') ? (int) 1 : (int) 2);
         Model::unguard();
         Filament::registerNavigationGroups([
             'Configurações',
@@ -28,6 +31,5 @@ class AppServiceProvider extends ServiceProvider
             'Financeiro',
             'Operacional',
         ]);
-
     }
 }

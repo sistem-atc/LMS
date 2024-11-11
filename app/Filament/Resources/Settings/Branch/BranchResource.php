@@ -2,29 +2,32 @@
 
 namespace App\Filament\Resources\Settings\Branch;
 
-use App\Enums\TypeBranchEnum;
-use App\Filament\Resources\Settings\Branch\BranchResource\Pages;
+use ReflectionClass;
 use App\Models\Branch;
-use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Get;
+use Filament\Forms\Form;
+use Filament\Tables\Table;
+use App\Enums\TypeBranchEnum;
+use Filament\Resources\Resource;
 use Filament\Forms\Components\Grid;
+use Illuminate\Support\Facades\File;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Section;
-use Filament\Forms\Components\Select;
+use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Form;
-use Filament\Forms\Get;
-use Filament\Resources\Resource;
+use Illuminate\Database\Eloquent\Builder;
+use Filament\Forms\Components\FileUpload;
+use Filament\Tables\Filters\TrashedFilter;
+use Leandrocfe\FilamentPtbrFormFields\Cep;
 use Filament\Tables\Actions\BulkActionGroup;
 use Filament\Tables\Actions\DeleteBulkAction;
-use Filament\Tables\Actions\EditAction;
-use Filament\Tables\Actions\ForceDeleteBulkAction;
 use Filament\Tables\Actions\RestoreBulkAction;
-use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Filters\TrashedFilter;
-use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
+use Filament\Tables\Actions\ForceDeleteBulkAction;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Leandrocfe\FilamentPtbrFormFields\Cep;
+use App\Services\Utils\Towns\Interfaces\ExcludeSelectInterface;
+use App\Filament\Resources\Settings\Branch\BranchResource\Pages;
 
 class BranchResource extends Resource
 {
@@ -89,7 +92,7 @@ class BranchResource extends Resource
                             ->revealable(true)
                             ->columnSpan(1),
                     ])
-                    ->visible(fn (Get $get): bool => $get('type_branch') == TypeBranchEnum::MATRIZ->getLabel())
+                    ->visible(fn(Get $get): bool => $get('type_branch') == TypeBranchEnum::MATRIZ->getLabel())
                     ->columns(3),
                 Section::make()
                     ->schema([
@@ -98,17 +101,20 @@ class BranchResource extends Resource
                             ->relationship(
                                 name: 'branch_matriz',
                                 titleAttribute: 'name',
-                                modifyQueryUsing: fn (Builder $query) => $query->where('type_branch', '=', TypeBranchEnum::MATRIZ),
+                                modifyQueryUsing: fn(Builder $query) => $query->where('type_branch', '=', TypeBranchEnum::MATRIZ),
                             )
                             ->columnSpan(2),
                     ])
-                    ->visible(fn (Get $get): bool => $get('type_branch') == TypeBranchEnum::FILIAL->getLabel())
+                    ->visible(fn(Get $get): bool => $get('type_branch') == TypeBranchEnum::FILIAL->getLabel())
                     ->columns(3),
                 Section::make()
                     ->schema([
                         TextInput::make('municipal_registration')->label('Incrição Municipal'),
                         TextInput::make('state_registration')->label('Incrição Estadual'),
-                    ])->columns(2),
+                        Select::make('system_town')
+                            ->label('Selecionar o sistema da Prefeitura')
+                            ->options(fn() => self::getClassesTowns(app_path('Services/Towns')))
+                    ])->columns(3),
                 Section::make()
                     ->schema([
                         Section::make('')->schema([
@@ -199,5 +205,47 @@ class BranchResource extends Resource
             ->withoutGlobalScopes([
                 SoftDeletingScope::class,
             ]);
+    }
+
+    private static function getClassesTowns($folderPath): array
+    {
+
+        $classes = [];
+
+        foreach (File::allFiles($folderPath) as $file) {
+            $filePath = $file->getRealPath();
+            $className = self::getClassNameFromFile($filePath);
+
+            if ($className) {
+                $reflection = new ReflectionClass($className);
+
+                if (
+                    !$reflection->isAbstract() &&
+                    !$reflection->implementsInterface(ExcludeSelectInterface::class)
+                ) {
+                    $classes[$reflection->getName()] = $reflection->getShortName();
+                }
+            }
+        }
+
+        return $classes;
+    }
+
+    private static function getClassNameFromFile($filePath)
+    {
+
+        $content = file_get_contents($filePath);
+        $namespace = '';
+        $className = '';
+
+        if (preg_match('/namespace\s+(.+?);/', $content, $matches)) {
+            $namespace = $matches[1];
+        }
+
+        if (preg_match('/class\s+(\w+)/', $content, $matches)) {
+            $className = $matches[1];
+        }
+
+        return $namespace ? $namespace . '\\' . $className : null;
     }
 }

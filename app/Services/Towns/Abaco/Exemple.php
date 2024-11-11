@@ -2,15 +2,17 @@
 
 namespace App\Services\Towns\Abaco;
 
+use Carbon\Carbon;
 use App\Enums\TypeRPS;
+use App\Services\Utils\Towns\Interfaces\ExcludeSelectInterface;
 
-class Exemple
+class Exemple implements ExcludeSelectInterface
 {
 
-    private function recepcionarLoteRps(): void
+    protected function recepcionarLoteRps(): void
     {
 
-        $arrayRPS = [
+        $arrayData = [
             'idLote' => 'LOTE123456789',
             'numeroLote' => 123456789,
             'cnpj' => '18575072000122',
@@ -74,6 +76,65 @@ class Exemple
         $class = Abaco::class;
         $abaco = app($class, ['codeIbge' => '1302603']);
 
-        dd($abaco->recepcionarLoteRps($arrayRPS));
+        dd($abaco->recepcionarLoteRps($arrayData));
+    }
+
+    private function ConsultarSituacaoLoteRPS(): void
+    {
+        $arrayData = [
+            'cnpj' => '18575072000122',
+            'inscricaoMunicipal' => 854776,
+            'protocolo' => 123456,
+        ];
+
+        $class = Abaco::class;
+        $abaco = app($class, ['codeIbge' => '1302603']);
+
+        dd($abaco->recepcionarLoteRps($arrayData));
+    }
+
+    private function ConsultarNfsePorRps(): void
+    {
+        $arrayData = [
+            'cnpj' => '18575072000122',
+            'inscricaoMunicipal' => 854776,
+            'numero_RPS' => 123456,
+            'serie_RPS' => 'A1',
+            'tipo_RPS' => TypeRPS::RPS->getLabel(),
+        ];
+
+        $class = Abaco::class;
+        $abaco = app($class, ['codeIbge' => '1302603']);
+
+        dd($abaco->recepcionarLoteRps($arrayData));
+    }
+
+    private function ConsultarLoteRps(): void
+    {
+        $arrayData = [
+            'cnpj' => '18575072000122',
+            'inscricaoMunicipal' => 854776,
+            'protocolo' => 123456,
+        ];
+
+        $class = Abaco::class;
+        $abaco = app($class, ['codeIbge' => '1302603']);
+
+        dd($abaco->recepcionarLoteRps($arrayData));
+    }
+
+    private function ConsultarNfse(): void
+    {
+        $arrayData = [
+            'cnpj' => '18575072000122',
+            'inscricaoMunicipal' => 854776,
+            'dataInicial' => Carbon::now()->format('Y-m-d H:i:s'),
+            'dataFinal' => Carbon::now()->format('Y-m-d H:i:s'),
+        ];
+
+        $class = Abaco::class;
+        $abaco = app($class, ['codeIbge' => '1302603']);
+
+        dd($abaco->recepcionarLoteRps($arrayData));
     }
 }

@@ -5,23 +5,22 @@ namespace App\Services\Towns\DBSeller;
 use Illuminate\Support\Str;
 use App\Services\Utils\Towns\Bases\LinkTownBase;
 use App\Services\Utils\Towns\Helpers\LinksTowns;
+use SimpleXMLElement;
 
 class DBSeller extends LinkTownBase
 {
 
-    protected static $link;
     protected static $verb = 'POST';
-    private static $url;
-    private static $headerVersion;
+    private static SimpleXMLElement $headMsg;
+    protected static $operation;
 
     protected static $headers = [];
 
-    public function __construct(LinksTowns $linksTowns, $codeIbge)
+
+    public function __construct($codeIbge)
     {
-        parent::__construct($linksTowns);
-        static::$link = $this->getLinkForIbge($codeIbge);
-        self::$url = explode("|", self::$link)[0];
-        self::$headerVersion = explode("|", self::$link)[1] ?? null;
+        parent::__construct($codeIbge);
+        self::$headMsg = self::composeHeader(parent::getHeaderVersion());
     }
 
     public static function CancelarNfse(): string|int

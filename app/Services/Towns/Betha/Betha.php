@@ -4,23 +4,25 @@ namespace App\Services\Towns\Betha;
 
 use SimpleXMLElement;
 use App\Enums\TypeRPS;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use App\Enums\MotivosCancelamento;
 use Illuminate\Support\Facades\Validator;
 use App\Services\Utils\Towns\Bases\LinkTownBase;
-use App\Services\Utils\Towns\Helpers\LinksTowns;
 
 class Betha extends LinkTownBase
 {
 
     protected static $verb = 'POST';
     private static SimpleXMLElement $headMsg;
+    protected static $operation;
 
     protected static $headers = [];
 
-    public function __construct(LinksTowns $linksTowns, $codeIbge)
+
+    public function __construct($codeIbge)
     {
-        parent::__construct($linksTowns, $codeIbge);
+        parent::__construct($codeIbge);
         self::$headMsg = self::composeHeader(parent::getHeaderVersion());
     }
 
@@ -39,12 +41,12 @@ class Betha extends LinkTownBase
         ]);
 
         if ($validator->fails()) {
-            return ['errors' => $validator->errors()];
+            return ['errors' => $validator->errors(), 'response' => 422];
         };
 
-        $operacao = 'CancelarNfse';
-        $dataMsg = self::composeMessage($operacao);
-        $codigoCancelamento = 'MC0' . MotivosCancelamento::from($data['motivoCancelamento']);
+        self::$operation = 'CancelarNfse';
+        $dataMsg = self::composeMessage(self::$operation);
+        $codigoCancelamento = 'MC0' . MotivosCancelamento::from($data['motivoCancelamento'])->getLabel();
 
         $dataMsg->Numero = $data['numeroNF'];
         $dataMsg->Cnpj = $data['cnpj'];
@@ -52,7 +54,7 @@ class Betha extends LinkTownBase
         $dataMsg->CodigoMunicipio = $data['codigoMunicipio'];
         $dataMsg->CodigoCancelamento = $codigoCancelamento;
 
-        $mountMessage = self::mountMensage($operacao, self::$headMsg, $dataMsg);
+        $mountMessage = self::mountMensage(self::$headMsg, $dataMsg);
 
         return parent::Conection(parent::$url, $mountMessage, self::$headers, self::$verb, false);
     }
@@ -67,16 +69,16 @@ class Betha extends LinkTownBase
         ]);
 
         if ($validator->fails()) {
-            return ['errors' => $validator->errors()];
+            return ['errors' => $validator->errors(), 'response' => 422];
         };
 
-        $operacao = 'ConsultarLoteRps';
-        $dataMsg = self::composeMessage($operacao);
+        self::$operation = 'ConsultarLoteRps';
+        $dataMsg = self::composeMessage(self::$operation);
         $dataMsg->Cnpj = $data['cnpj'];
         $dataMsg->InscricaoMunicipal = $data['inscricaoMunicipal'];
         $dataMsg->Protocolo = $data['protocolo'];
 
-        $mountMessage = self::mountMensage($operacao, self::$headMsg, $dataMsg);
+        $mountMessage = self::mountMensage(self::$headMsg, $dataMsg);
 
         return parent::Conection(self::$url, $mountMessage, self::$headers, self::$verb, false);
     }
@@ -91,18 +93,18 @@ class Betha extends LinkTownBase
         ]);
 
         if ($validator->fails()) {
-            return ['errors' => $validator->errors()];
+            return ['errors' => $validator->errors(), 'response' => 422];
         };
 
-        $operacao = 'ConsultarNfseFaixa';
-        $dataMsg = self::composeMessage($operacao);
+        self::$operation = 'ConsultarNfseFaixa';
+        $dataMsg = self::composeMessage(self::$operation);
 
         $dataMsg->Cnpj = $data['cnpj'];
         $dataMsg->InscricaoMunicipal = $data['inscricaoMunicipal'];
         $dataMsg->NumeroNfseInicial = $data['numeroNfInicial'];
         $dataMsg->Pagina = $data['pagina'] ?? 1;
 
-        $mountMessage = self::mountMensage($operacao, self::$headMsg, $dataMsg);
+        $mountMessage = self::mountMensage(self::$headMsg, $dataMsg);
 
         return parent::Conection(self::$url, $mountMessage, self::$headers, self::$verb, false);
     }
@@ -111,31 +113,30 @@ class Betha extends LinkTownBase
     {
 
         $validator = Validator::make($data, [
-            'numeroRPS' => 'required',
-            'Serie' => 'required',
-            'Tipo' => [
+            'cnpj' => 'required|max:14',
+            'inscricaoMunicipal' => 'required',
+            'numero_RPS' => 'required',
+            'serie_RPS' => 'required',
+            'tipo_RPS' => [
                 'required',
-                Rule::in(TypeRPS::cases()),
+                Rule::in(TypeRPS::cases())
             ],
-            'Cnpj' => 'required',
-            'InscricaoMunicipal' => 'required',
         ]);
 
         if ($validator->fails()) {
-            return ['errors' => $validator->errors()];
+            return ['errors' => $validator->errors(), 'response' => 422];
         };
 
-        $operacao = 'ConsultarNfsePorRps';
-        $dataMsg = self::composeMessage($operacao);
+        self::$operation = 'ConsultarNfsePorRps';
+        $dataMsg = self::composeMessage(self::$operation);
 
-        $dataMsg->Numero = $data['numeroRPS'];
-        $dataMsg->Serie = $data['serie'];
-        $dataMsg->Tipo = $data['tipo'];
         $dataMsg->Cnpj = $data['cnpj'];
         $dataMsg->InscricaoMunicipal = $data['inscricaoMunicipal'];
-        $dataMsg->Protocolo = $data['protocolo'];
+        $dataMsg->Numero = $data['numero_RPS'];
+        $dataMsg->Serie = $data['serie_RPS'];
+        $dataMsg->Tipo = $data['tipo_RPS'];
 
-        $mountMessage = self::mountMensage($operacao, self::$headMsg, $dataMsg);
+        $mountMessage = self::mountMensage(self::$headMsg, $dataMsg);
 
         return parent::Conection(self::$url, $mountMessage, self::$headers, self::$verb, false);
     }
@@ -144,18 +145,18 @@ class Betha extends LinkTownBase
     {
 
         $validator = Validator::make($data, [
-            'Cnpj' => 'required',
-            'InscricaoMunicipal' => 'required',
-            'DataInicial' => 'required|date',
-            'DataFinal' => 'required|date',
+            'cnpj' => 'required',
+            'inscricaoMunicipal' => 'required',
+            'dataInicial' => 'required|date',
+            'dataFinal' => 'required|date',
         ]);
 
         if ($validator->fails()) {
-            return ['errors' => $validator->errors()];
+            return ['errors' => $validator->errors(), 'response' => 422];
         };
 
-        $operacao = 'ConsultarNfseServicoPrestado';
-        $dataMsg = self::composeMessage($operacao);
+        self::$operation = 'ConsultarNfseServicoPrestado';
+        $dataMsg = self::composeMessage(self::$operation);
 
         $dataMsg->Cnpj = $data['cnpj'];
         $dataMsg->InscricaoMunicipal = $data['inscricaoMunicipal'];
@@ -163,7 +164,7 @@ class Betha extends LinkTownBase
         $dataMsg->DataFinal = $data['dataFinal'];
         $dataMsg->Pagina = $data['pagina'] ?? 1;
 
-        $mountMessage = self::mountMensage($operacao, self::$headMsg, $dataMsg);
+        $mountMessage = self::mountMensage(self::$headMsg, $dataMsg);
 
         return parent::Conection(self::$url, $mountMessage, self::$headers, self::$verb, false);
     }
@@ -171,35 +172,42 @@ class Betha extends LinkTownBase
     public static function ConsultarNfseServicoTomado($data): string|int|array
     {
 
-        $validator = Validator::make($data, [
-            'Cnpj' => 'required',
-            'consulenteCnpj' => 'required',
-            'tomadorCnpj' => 'required',
-            'intermediarioCnpj' => 'required',
-            'InscricaoMunicipal' => 'required',
-            'consulenteInscricaoMunicipal' => 'required',
-            'tomadorInscricaoMunicipal' => 'required',
-            'intermediarioInscricaoMunicipal' => 'required',
-            'DataInicial' => 'required',
-            'DataFinal' => 'required',
-            'CompetenciaInicial' => 'required',
-            'CompetenciaFinal' => 'required',
-            'DataFinal' => 'required',
-        ]);
+        self::$operation = 'ConsultarNfseServicoTomado';
+        $dataMsg = self::composeMessage(self::$operation);
 
-        if ($validator->fails()) {
-            return ['errors' => $validator->errors()];
-        };
+        if (!isset($data['cnpjTomador'])) {
+            unset($dataMsg->Intermediario);
+            $dataMsg->Tomador->CpfCnpj->Cnpj = $data['cnpjTomador'];
+            $dataMsg->Consulente->CpfCnpj->Cnpj = $data['cnpjTomador'];
+            $dataMsg->Tomador->InscricaoMunicipal = $data['incricaoMunicialTomador'];
+            $dataMsg->Consulente->InscricaoMunicipal = $data['incricaoMunicialTomador'];
+        } else {
+            unset($dataMsg->Tomador);
+            $dataMsg->Intermediario->CpfCnpj->Cnpj = $data['cnpjIntermediario'];
+            $dataMsg->Consulente->CpfCnpj->Cnpj = $data['cnpjIntermediario'];
+            $dataMsg->Intermediario->InscricaoMunicipal = $data['incricaoMunicialIntermediario'];
+            $dataMsg->Consulente->InscricaoMunicipal = $data['incricaoMunicialIntermediario'];
+        }
 
-        $operacao = 'ConsultarNfseServicoTomado';
-        $dataMsg = self::composeMessage($operacao);
+        if (!isset($data['periodoEmissaoDataInicial'])) {
+            unset($dataMsg->PeriodoEmissao);
+            $dataMsg->PeriodoCompetencia->DataInicial = $data['periodoCompetenciaDataInicial'];
+            $dataMsg->PeriodoCompetencia->DataFinal = $data['periodoCompetenciaDataFinal'];
+        } else {
+            unset($dataMsg->PeriodoCompetencia);
+            $dataMsg->PeriodoEmissao->DataInicial = $data['periodoEmissaoDataInicial'];
+            $dataMsg->PeriodoEmissao->DataFinal = $data['periodoEmissaoDataFinal'];
+        }
 
-        /* Incluir as demais tags */
-        $dataMsg->Cnpj = $data['cnpj'];
-        $dataMsg->InscricaoMunicipal = $data['inscricaoMunicipal'];
+        if (!isset($data['numeroNF'])) {
+            unset($dataMsg->NumeroNfse);
+        } else {
+            $dataMsg->NumeroNfse = $data['numeroNF'];
+        }
+
         $dataMsg->Protocolo = $data['pagina'] ?? 1;
 
-        $mountMessage = self::mountMensage($operacao, self::$headMsg, $dataMsg);
+        $mountMessage = self::mountMensage(self::$headMsg, $dataMsg);
 
         return parent::Conection(self::$url, $mountMessage, self::$headers, self::$verb, false);
     }
@@ -208,28 +216,63 @@ class Betha extends LinkTownBase
     {
 
         $validator = Validator::make($data, [
-            'Numero' => 'required',
-            'Cnpj' => 'required',
-            'InscricaoMunicipal' => 'required',
-            'CodigoMunicipio' => 'required',
-            'CodigoCancelamento' => [
-                'required',
-                Rule::in(MotivosCancelamento::cases())
-            ],
+            'infoId' => ['required', 'string'],
+            'numeroRps' => 'required',
+            'serieRps' => 'required',
+            'tipo_RPS' => ['required', Rule::in(TypeRPS::cases())],
+            'dataEmissao' => ['required', 'date'],
+            'status' => ['required', 'integer'],
+            'competencia' => ['required', 'date'],
+            'rps.*.valorServicos' => ['required', 'numeric', 'regex:/^\d+(\.\d{1,2})?$/'],
+            'rps.*.valorDeducoes' => ['required', 'numeric', 'regex:/^\d+(\.\d{1,2})?$/'],
+            'rps.*.valorPis' => ['required', 'numeric', 'regex:/^\d+(\.\d{1,2})?$/'],
+            'rps.*.valorCofins' => ['required', 'numeric', 'regex:/^\d+(\.\d{1,2})?$/'],
+            'rps.*.valorInss' => ['required', 'numeric', 'regex:/^\d+(\.\d{1,2})?$/'],
+            'rps.*.valorIr' => ['required', 'numeric', 'regex:/^\d+(\.\d{1,2})?$/'],
+            'rps.*.valorCsll' => ['required', 'numeric', 'regex:/^\d+(\.\d{1,2})?$/'],
+            'rps.*.valorOutraRetencoes' => ['required', 'numeric', 'regex:/^\d+(\.\d{1,2})?$/'],
+            'rps.*.descontoIncodicionado' => ['required', 'numeric', 'regex:/^\d+(\.\d{1,2})?$/'],
+            'rps.*.descontoCodicionado' => ['required', 'numeric', 'regex:/^\d+(\.\d{1,2})?$/'],
+            'rps.*.issRetido' => ['required', 'integer'],
+            'itemListaServico',
+            'rps.*.codigoTributacao' => ['required'],
+            'rps.*.discriminacao' => ['required'],
+            'rps.*.codigoMunicipio' => ['required'],
+            'exigibilidadeIss',
+            'municipioIncidencia',
+            'rps.*.prestador.cnpj' => ['required'],
+            'rps.*.prestador.inscricaoMunicipal' => ['required'],
+            'rps.*.tomador.cnpj' => ['required'],
+            'rps.*.tomador.razaoSocial' => ['required'],
+            'rps.*.tomador.endereco' => ['required'],
+            'rps.*.tomador.numero' => ['required'],
+            'rps.*.tomador.complemento' => ['required'],
+            'rps.*.tomador.bairro' => ['required'],
+            'rps.*.tomador.codigoMunicipio' => ['required'],
+            'rps.*.tomador.uf' => ['required'],
+            'rps.*.tomador.cep' => ['required'],
+            'rps.*.tomador.contato' => ['required'],
+            'rps.*.tomador.email' => ['required'],
+            'construcaoCivil',
+            'codigoObra',
+            'art',
+            'regimeEspecialTributacao',
+            'optanteSimplesNacional',
+            'incentivoFiscal'
         ]);
 
         if ($validator->fails()) {
-            return ['errors' => $validator->errors()];
+            return ['errors' => $validator->errors(), 'response' => 422];
         };
 
-        $operacao = 'GerarNfse';
-        $dataMsg = self::composeMessage($operacao);
+        self::$operation = 'GerarNfse';
+        $dataMsg = self::composeMessage(self::$operation);
 
         $dataMsg->Cnpj = $data['cnpj'];
         $dataMsg->InscricaoMunicipal = $data['inscricaoMunicipal'];
         $dataMsg->Protocolo = $data['protocolo'];
 
-        $mountMessage = self::mountMensage($operacao, self::$headMsg, $dataMsg);
+        $mountMessage = self::mountMensage(self::$headMsg, $dataMsg);
 
         return parent::Conection(self::$url, $mountMessage, self::$headers, self::$verb, false);
     }
@@ -249,17 +292,17 @@ class Betha extends LinkTownBase
         ]);
 
         if ($validator->fails()) {
-            return ['errors' => $validator->errors()];
+            return ['errors' => $validator->errors(), 'response' => 422];
         };
 
-        $operacao = 'RecepcionarLoteRps';
-        $dataMsg = self::composeMessage($operacao);
+        self::$operation = 'RecepcionarLoteRps';
+        $dataMsg = self::composeMessage(self::$operation);
 
         $dataMsg->Cnpj = $data['cnpj'];
         $dataMsg->InscricaoMunicipal = $data['inscricaoMunicipal'];
         $dataMsg->Protocolo = $data['protocolo'];
 
-        $mountMessage = self::mountMensage($operacao, self::$headMsg, $dataMsg);
+        $mountMessage = self::mountMensage(self::$headMsg, $dataMsg);
 
         return parent::Conection(self::$url, $mountMessage, self::$headers, self::$verb, false);
     }
@@ -279,17 +322,17 @@ class Betha extends LinkTownBase
         ]);
 
         if ($validator->fails()) {
-            return ['errors' => $validator->errors()];
+            return ['errors' => $validator->errors(), 'response' => 422];
         };
 
-        $operacao = 'RecepcionarLoteRpsSincrono';
-        $dataMsg = self::composeMessage($operacao);
+        self::$operation = 'RecepcionarLoteRpsSincrono';
+        $dataMsg = self::composeMessage(self::$operation);
 
         $dataMsg->Cnpj = $data['cnpj'];
         $dataMsg->InscricaoMunicipal = $data['inscricaoMunicipal'];
         $dataMsg->Protocolo = $data['protocolo'];
 
-        $mountMessage = self::mountMensage($operacao, self::$headMsg, $dataMsg);
+        $mountMessage = self::mountMensage(self::$headMsg, $dataMsg);
 
         return parent::Conection(self::$url, $mountMessage, self::$headers, self::$verb, false);
     }
@@ -309,50 +352,49 @@ class Betha extends LinkTownBase
         ]);
 
         if ($validator->fails()) {
-            return ['errors' => $validator->errors()];
+            return ['errors' => $validator->errors(), 'response' => 422];
         };
 
-        $operacao = 'SubstituirNfse';
-        $dataMsg = self::composeMessage($operacao);
+        self::$operation = 'SubstituirNfse';
+        $dataMsg = self::composeMessage(self::$operation);
 
         $dataMsg->Cnpj = $data['cnpj'];
         $dataMsg->InscricaoMunicipal = $data['inscricaoMunicipal'];
         $dataMsg->Protocolo = $data['protocolo'];
 
-        $mountMessage = self::mountMensage($operacao, self::$headMsg, $dataMsg);
+        $mountMessage = self::mountMensage(self::$headMsg, $dataMsg);
 
         return parent::Conection(self::$url, $mountMessage, self::$headers, self::$verb, false);
+    }
+
+    private static function mountMensage(SimpleXMLElement $headMsg, SimpleXMLElement $dataMsg): SimpleXMLElement
+    {
+
+        $mountMessage = self::assembleMessage();
+
+        $mountMessage->registerXPathNamespace('e', 'http://www.e-nfs.com.br');
+        $mountMessage->registerXPathNamespace('soapenv', 'http://schemas.xmlsoap.org/soap/envelope/');
+
+        $cabecMsg = $mountMessage->xpath('//e:Nfsecabecmsg')[0];
+        $dom = dom_import_simplexml($cabecMsg);
+        $fragment = dom_import_simplexml($headMsg);
+        $dom->appendChild($dom->ownerDocument->createCDATASection($dom->ownerDocument->saveXML($fragment)));
+
+        $dadosMsg = $mountMessage->xpath('//e:Nfsedadosmsg')[0];
+        $dom = dom_import_simplexml($dadosMsg);
+        $fragment = dom_import_simplexml($dataMsg);
+        $dom->appendChild($dom->ownerDocument->createCDATASection($dom->ownerDocument->saveXML($fragment)));
+
+        return $mountMessage;
     }
 
     private static function assembleMessage(): SimpleXMLElement
     {
 
         $content = file_get_contents(__DIR__ . 'schemas/AssembleMensage.xml');
+        $content = Str::replace('[Mount_Mensage]', self::$operation, $content);
+
         return new SimpleXMLElement($content);
-    }
-
-    private static function mountMensage(string $operation, SimpleXMLElement $headMsg, SimpleXMLElement $dataMsg): SimpleXMLElement
-    {
-
-        $mountMessage = self::assembleMessage();
-
-        $mountMessage->xpath('//e:[Mount_Mensage].Execute')[0]->getName('//e:' . $operation . '.Execute');
-
-        $nfseCabecMsg = $mountMessage->xpath('//nfseCabecMsg')[0];
-        $xmlContentCabec = $headMsg->asXML();
-
-        $domCabec = dom_import_simplexml($nfseCabecMsg);
-        $cdataCabec = $domCabec->ownerDocument->createCDATASection($xmlContentCabec);
-        $domCabec->appendChild($cdataCabec);
-
-        $nfseDadosMsg = $mountMessage->xpath('//nfseDadosMsg')[0];
-        $xmlContentDados = $dataMsg->asXML();
-
-        $domDados = dom_import_simplexml($nfseDadosMsg);
-        $cdataDados = $domDados->ownerDocument->createCDATASection($xmlContentDados);
-        $domDados->appendChild($cdataDados);
-
-        return $mountMessage;
     }
 
     private static function composeMessage(string $Tipo): SimpleXMLElement

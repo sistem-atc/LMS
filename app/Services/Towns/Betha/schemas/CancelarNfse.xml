@@ -1,6 +1,6 @@
 <CancelarNfseEnvio xmlns = "http://www.betha.com.br/e-nota-contribuinte-ws">
     <Pedido>
-        <InfPedidoCancelamento Id="1">
+        <InfPedidoCancelamento Id="">
             <IdentificacaoNfse>
                 <Numero></Numero>
                 <CpfCnpj>

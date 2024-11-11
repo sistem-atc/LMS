@@ -166,12 +166,12 @@ class Abaco extends LinkTownBase
         ]);
 
         if ($validator->fails()) {
-            return ['errors' => $validator->errors()];
+            return ['errors' => $validator->errors(), 'response' => 422];
         };
 
         $endPoint = 'aconsultarsituacaoloterps?wsdl';
-        $operation = 'ConsultarSituacaoLoteRps';
-        $dataMsg = self::composeMessage($operation);
+        self::$operation = 'ConsultarSituacaoLoteRps';
+        $dataMsg = self::composeMessage(self::$operation);
 
         $dataMsg->Cnpj = $data['cnpj'];
         $dataMsg->InscricaoMunicipal = $data['inscricaoMunicipal'];
@@ -197,7 +197,7 @@ class Abaco extends LinkTownBase
         ]);
 
         if ($validator->fails()) {
-            return ['errors' => $validator->errors()];
+            return ['errors' => $validator->errors(), 'response' => 422];
         };
 
         $endPoint = 'aconsultarnfseporrps?wsdl';
@@ -225,7 +225,7 @@ class Abaco extends LinkTownBase
         ]);
 
         if ($validator->fails()) {
-            return ['errors' => $validator->errors()];
+            return ['errors' => $validator->errors(), 'response' => 422];
         };
 
         $endPoint = 'aconsultarloterps?wsdl';
@@ -252,7 +252,7 @@ class Abaco extends LinkTownBase
         ]);
 
         if ($validator->fails()) {
-            return ['errors' => $validator->errors()];
+            return ['errors' => $validator->errors(), 'response' => 422];
         };
 
         $endPoint = 'aconsultarnfse?wsdl';
@@ -320,6 +320,7 @@ class Abaco extends LinkTownBase
     {
         $content = file_get_contents(__DIR__ . '/schemas/AssembleMensage.xml');
         $content = Str::replace('[Mount_Mensage]', self::$operation, $content);
+
         return new SimpleXMLElement($content);
     }
 

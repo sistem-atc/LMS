@@ -1,6 +1,6 @@
 <GerarNfseEnvio xmlns="http://www.betha.com.br/e-nota-contribuinte-ws">
 	<Rps>
-		<InfDeclaracaoPrestacaoServico Id="lote">
+		<InfDeclaracaoPrestacaoServico Id="">
 			<Rps>
 				<IdentificacaoRps>
 					<Numero></Numero>

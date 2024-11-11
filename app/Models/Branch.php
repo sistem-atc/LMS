@@ -38,7 +38,8 @@ class Branch extends Model
         'siafi',
         'certificatePFX',
         'password_certificate',
-        'phantasy_name'
+        'phantasy_name',
+        'system_town',
     ];
 
     protected $casts = [

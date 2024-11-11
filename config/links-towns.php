@@ -15,7 +15,7 @@ return [
     [
         'url' => [
             'prod' => 'https://e-gov.betha.com.br/e-nota-contribuinte-ws/nfseWS',
-            'homolog' => '',
+            'homolog' => 'http://e-gov.betha.com.br/e-nota-contribuinte-test-ws/nfseWS',
         ],
         'headerVersion' => '2.02',
     ],
@@ -24,7 +24,7 @@ return [
     [
         'url' => [
             'prod' => 'https://e-gov.betha.com.br/e-nota-contribuinte-ws/nfseWS',
-            'homolog' => '',
+            'homolog' => 'http://e-gov.betha.com.br/e-nota-contribuinte-test-ws/nfseWS',
         ],
         'headerVersion' => '2.02',
     ],
@@ -33,7 +33,7 @@ return [
     [
         'url' => [
             'prod' => 'https://e-gov.betha.com.br/e-nota-contribuinte-ws/nfseWS',
-            'homolog' => '',
+            'homolog' => 'http://e-gov.betha.com.br/e-nota-contribuinte-test-ws/nfseWS',
         ],
         'headerVersion' => '2.02',
     ],
@@ -42,7 +42,7 @@ return [
     [
         'url' => [
             'prod' => 'https://e-gov.betha.com.br/e-nota-contribuinte-ws/nfseWS',
-            'homolog' => null,
+            'homolog' => 'http://e-gov.betha.com.br/e-nota-contribuinte-test-ws/nfseWS',
         ],
         'headerVersion' => '2.02',
     ],
@@ -51,7 +51,7 @@ return [
     [
         'url' => [
             'prod' => 'https://e-gov.betha.com.br/e-nota-contribuinte-ws/nfseWS',
-            'homolog' => null,
+            'homolog' => 'http://e-gov.betha.com.br/e-nota-contribuinte-test-ws/nfseWS',
         ],
         'headerVersion' => '2.02',
     ],
@@ -60,7 +60,7 @@ return [
     [
         'url' => [
             'prod' => 'https://e-gov.betha.com.br/e-nota-contribuinte-ws/nfseWS',
-            'homolog' => '',
+            'homolog' => 'http://e-gov.betha.com.br/e-nota-contribuinte-test-ws/nfseWS',
         ],
         'headerVersion' => '2.02',
     ],

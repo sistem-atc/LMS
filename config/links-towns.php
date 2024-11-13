@@ -2,7 +2,7 @@
 
 return [
 
-    '1302603' => //Manaus - AM
+    '1302603' => //Manaus
     [
         'url' => [
             'prod' => 'https://nfse-prd.manaus.am.gov.br/nfse/servlet/',
@@ -63,6 +63,15 @@ return [
             'homolog' => 'http://e-gov.betha.com.br/e-nota-contribuinte-test-ws/nfseWS',
         ],
         'headerVersion' => '2.02',
+    ],
+
+    '3505708' => //Barueri
+    [
+        'url' => [
+            'prod' => 'https://www.barueri.sp.gov.br/nfeservice/wsrps.asmx',
+            'homolog' => 'https://testeeiss.barueri.sp.gov.br/nfeservice/wsrps.asmx',
+        ],
+        'headerVersion' => null,
     ],
 
     '4317103' => //Sant'Ana de Livramento

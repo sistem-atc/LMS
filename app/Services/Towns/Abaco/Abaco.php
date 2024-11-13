@@ -139,6 +139,9 @@ class Abaco extends LinkTownBase
         $mountRPS->Tomador->IdentificacaoTomador->Contato->Contato = $data['rps'][0]['tomador']['contato'];
         $mountRPS->Tomador->IdentificacaoTomador->Contato->Email = $data['rps'][0]['tomador']['email'];
 
+        //Assinar XML
+        $mountRPS = parent::Sign_XML($mountRPS);
+
         $dataMsg = self::composeMessage(self::$operation);
         $dataMsg->LoteRps['id'] = $data['idLote'];
         $dataMsg->LoteRps->NumeroLote = $data['numeroLote'];
@@ -152,6 +155,9 @@ class Abaco extends LinkTownBase
         $dom->appendChild($dom->ownerDocument->importNode($fragment, true));
 
         $mountMessage = self::mountMensage(self::$headMsg, $dataMsg);
+
+        //Assinar MountMessage
+        $mountMessage = parent::Sign_XML($mountMessage);
 
         return parent::Conection(parent::$url . $endPoint, $mountMessage, static::$headers, self::$verb, false);
     }

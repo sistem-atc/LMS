@@ -2,10 +2,10 @@
 
 namespace App\Services\Utils\Towns\Helpers;
 
-class Descricao_Servicos
+class DescriptionServices
 {
 
-    public static function descrServ(string $codList): array
+    public static function descriptionServices(string $codList): array
     {
 
         if (strlen($codList) == 5 || strlen($codList) == 4) {

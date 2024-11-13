@@ -140,7 +140,7 @@ class Abaco extends LinkTownBase
         $mountRPS->Tomador->IdentificacaoTomador->Contato->Email = $data['rps'][0]['tomador']['email'];
 
         //Assinar XML
-        $mountRPS = parent::Sign_XML($mountRPS);
+        $mountRPS = parent::Sign_XML($mountRPS->asXML());
 
         $dataMsg = self::composeMessage(self::$operation);
         $dataMsg->LoteRps['id'] = $data['idLote'];

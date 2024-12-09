@@ -1,0 +1,8 @@
+<DadosCancelaNota xsi:type=urn:tcDadosCancelaNota>
+    <ccm xsi:type=xsd:int></ccm>
+    <cnpj xsi:type=xsd:string></cnpj>
+    <senha xsi:type=xsd:string></senha>
+    <nota xsi:type=xsd:int></nota>
+    <motivo xsi:type=xsd:string></motivo>
+    <email xsi:type=xsd:string></email>
+</DadosCancelaNota>

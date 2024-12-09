@@ -1,0 +1,7 @@
+<DadosPrestador
+    xsi:type="urn:tcDadosPrestador">
+    <ccm xsi:type="xsd:int"></ccm>
+    <cnpj xsi:type="xsd:string"></cnpj>
+    <senha xsi:type="xsd:string"></senha>
+</DadosPrestador>"
+<Nota xsi:type="xsd:int"></Nota>

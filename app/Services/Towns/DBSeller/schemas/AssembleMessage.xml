@@ -1,0 +1,8 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:prod="https://nfe.sdolivramento.com.br/webservice/index/producao">
+    <soapenv:Header/>
+    <soapenv:Body>
+        <prod:[Mount_Mensage]>
+            <xml></xml>
+        </prod:[Mount_Mensage]>
+    </soapenv:Body>
+</soapenv:Envelope>

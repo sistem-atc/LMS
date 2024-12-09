@@ -1,0 +1,12 @@
+<tcLoteCancelamento>
+    <tsCodCadBic></tsCodCadBic>
+    <tsChvAcs></tsChvAcs>
+    <tsVrsArq></tsVrsArq>
+    <tcNotCan>
+        <tcInfNotCan>
+            <tsNumNot></tsNumNot>
+            <tsCodVer></tsCodVer>
+            <tsDesMotCan></tsDesMotCan>
+            </tcInfNotCan>
+    </tcNotCan>
+</tcLoteCancelamento>

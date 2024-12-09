@@ -1,0 +1,8 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.integracao.nfsd.desenvolve/">
+    <soapenv:Header/>
+    <soapenv:Body>
+        <ws:[Mount_Mensage]>
+            <xml></xml>
+        </ws:[Mount_Mensage]>
+    </soapenv:Body>
+</soapenv:Envelope>

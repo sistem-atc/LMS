@@ -5,185 +5,247 @@ namespace App\Services\Towns\Desenvolve;
 use App\Enums\TypeRPS;
 use Illuminate\Support\Str;
 use App\Services\Utils\Towns\Bases\LinkTownBase;
-use App\Services\Utils\Towns\Helpers\LinksTowns;
+use App\Services\Utils\Towns\Interfaces\LinkTownsInterface;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
+use SimpleXMLElement;
 
-class Desenvolve extends LinkTownBase
+class Desenvolve extends LinkTownBase implements LinkTownsInterface
 {
 
-    protected static $link;
     protected static $verb = 'POST';
-    private static $url;
-    private static $headerVersion;
+    protected static $operation;
 
     protected static $headers = [];
 
-    public function __construct(LinksTowns $linksTowns, $codeIbge)
+    public function gerarNota(array $data): string|int|array
     {
-        parent::__construct($linksTowns);
-        static::$link = $this->getLinkForIbge($codeIbge);
-        self::$url = explode("|", self::$link)[0];
-        self::$headerVersion = explode("|", self::$link)[1] ?? null;
+        return '';
     }
 
-    public static function cancelarNfseEnvio(): string|int
+    public function consultarNota(array $data): string|int|array
+    {
+        return '';
+    }
+
+    public function cancelarNota(array $data): string|int|array
+    {
+        return '';
+    }
+
+    public function __construct($codeIbge)
+    {
+        parent::__construct($codeIbge);
+    }
+
+    public static function cancelarNfseEnvio($data): string|int
     {
 
-        $operacao = 'cancelarNfseEnvio';
-        $dataMsg = self::composeMessage($operacao);
-        $mountMessage = self::assembleMessage();
+        $validator = Validator::make($data, [
+            'cnpj' => 'required|max:14',
+            'inscricaoMunicipal' => 'required',
+            'numero_RPS' => 'required',
+            'serie_RPS' => 'required',
+            'tipo_RPS' => [
+                'required',
+                Rule::in(TypeRPS::cases())
+            ],
+        ]);
+
+        if ($validator->fails()) {
+            return ['errors' => $validator->errors(), 'response' => 422];
+        };
+
+        self::$operation = 'cancelarNfseEnvio';
+        $dataMsg = self::composeMessage(self::$operation, __DIR__);
+
+        $dataMsg->Cnpj = $data['cnpj'];
+        $dataMsg->InscricaoMunicipal = $data['inscricaoMunicipal'];
+        $dataMsg->Protocolo = $data['protocolo'];
+
         $dataMsg = self::Sign_XML($dataMsg);
-        $mountMessage = Str::replace('[Mount_Mensage]', $operacao, $mountMessage);
-        $mountMessage = Str::replace('[DadosMsg]', $dataMsg, $mountMessage);
+
+        $mountMessage = self::mountMensage($dataMsg);
 
         return parent::Conection(self::$url, $mountMessage, self::$headers, self::$verb, false);
     }
 
-    public static function consultarLoteRpsEnvio(): string|int
+    public static function consultarLoteRpsEnvio($data): string|int
     {
 
-        $operacao = 'consultarLoteRpsEnvio';
-        $dataMsg = self::composeMessage($operacao);
-        $mountMessage = self::assembleMessage();
-        $mountMessage = Str::replace('[Mount_Mensage]', $operacao, $mountMessage);
-        $mountMessage = Str::replace('[DadosMsg]', $dataMsg, $mountMessage);
+        $validator = Validator::make($data, [
+            'cnpj' => 'required|max:14',
+            'inscricaoMunicipal' => 'required',
+            'numero_RPS' => 'required',
+            'serie_RPS' => 'required',
+            'tipo_RPS' => [
+                'required',
+                Rule::in(TypeRPS::cases())
+            ],
+        ]);
+
+        if ($validator->fails()) {
+            return ['errors' => $validator->errors(), 'response' => 422];
+        };
+
+        self::$operation = 'consultarLoteRpsEnvio';
+        $dataMsg = self::composeMessage(self::$operation, __DIR__);
+
+        $dataMsg->Protocolo = $data['protocolo'];
+
+        $mountMessage = self::mountMensage($dataMsg);
 
         return parent::Conection(self::$url, $mountMessage, self::$headers, self::$verb, false);
     }
 
-    public static function consultarNfseRpsEnvio(
-        string $CNPJ,
-        string $Inscricao_Municipal,
-        string $Numero_RPS,
-        string $Serie_RPS,
-        TypeRPS $Tipo_RPS
-    ): string|int {
+    public static function consultarNfseRpsEnvio($data): string|int
+    {
 
-        $operacao = 'consultarNfseRpsEnvio';
-        $dataMsg = self::composeMessage($operacao);
-        $mountMessage = self::assembleMessage();
-        $dataMsg = Str::replace('[CAMPO_CNPJ]', $CNPJ, $dataMsg);
-        $dataMsg = Str::replace('[CAMPO_INSCRICAO_MUNICIPAL]', $Inscricao_Municipal, $dataMsg);
-        $dataMsg = Str::replace('[CAMPO_NUMERO_RPS]', $Numero_RPS, $dataMsg);
-        $dataMsg = Str::replace('[CAMPO_SERIE_RPS]', $Serie_RPS, $dataMsg);
-        $dataMsg = Str::replace('[CAMPO_TIPO_RPS]', $Tipo_RPS[0], $dataMsg);
+        self::$operation = 'consultarNfseRpsEnvio';
+        $dataMsg = self::composeMessage(self::$operation, __DIR__);
+
+        $dataMsg->Protocolo = $data['protocolo'];
         $dataMsg = self::Sign_XML($dataMsg);
-        $mountMessage = Str::replace('[Mount_Mensage]', $operacao, $mountMessage);
-        $mountMessage = Str::replace('[DadosMsg]', $dataMsg, $mountMessage);
+
+        $mountMessage = self::mountMensage($dataMsg);
 
         return parent::Conection(self::$url, $mountMessage, self::$headers, self::$verb, false);
     }
 
-    public static function consultarNfseServicoTomadoEnvio(): string|int
+    public static function consultarNfseServicoTomadoEnvio($data): string|int
     {
 
-        $operacao = 'consultarNfseServicoTomadoEnvio';
-        $dataMsg = self::composeMessage($operacao);
+        $validator = Validator::make($data, [
+            'cnpj' => 'required|max:14',
+            'inscricaoMunicipal' => 'required',
+            'numero_RPS' => 'required',
+            'serie_RPS' => 'required',
+            'tipo_RPS' => [
+                'required',
+                Rule::in(TypeRPS::cases())
+            ],
+        ]);
+
+        if ($validator->fails()) {
+            return ['errors' => $validator->errors(), 'response' => 422];
+        };
+
+        self::$operation = 'consultarNfseServicoTomadoEnvio';
+        $dataMsg = self::composeMessage(self::$operation, __DIR__);
+
+        $dataMsg->Protocolo = $data['protocolo'];
+        $dataMsg = self::Sign_XML($dataMsg);
+
+        $mountMessage = self::mountMensage($dataMsg);
+
+        return parent::Conection(self::$url, $mountMessage, self::$headers, self::$verb, false);
+    }
+
+    public static function enviarLoteRpsEnvio($data): string|int
+    {
+
+        $validator = Validator::make($data, [
+            'cnpj' => 'required|max:14',
+            'inscricaoMunicipal' => 'required',
+            'numero_RPS' => 'required',
+            'serie_RPS' => 'required',
+            'tipo_RPS' => [
+                'required',
+                Rule::in(TypeRPS::cases())
+            ],
+        ]);
+
+        if ($validator->fails()) {
+            return ['errors' => $validator->errors(), 'response' => 422];
+        };
+
+        self::$operation = 'enviarLoteRpsEnvio';
+        $dataMsg = self::composeMessage(self::$operation, __DIR__);
+
+        $dataMsg->Protocolo = $data['protocolo'];
+        $dataMsg = self::Sign_XML($dataMsg);
+
+        $mountMessage = self::mountMensage($dataMsg);
+
+        return parent::Conection(self::$url, $mountMessage, self::$headers, self::$verb, false);
+    }
+
+    public static function enviarLoteRpsSincronoEnvio($data): string|int
+    {
+
+        $validator = Validator::make($data, [
+            'cnpj' => 'required|max:14',
+            'inscricaoMunicipal' => 'required',
+            'numero_RPS' => 'required',
+            'serie_RPS' => 'required',
+            'tipo_RPS' => [
+                'required',
+                Rule::in(TypeRPS::cases())
+            ],
+        ]);
+
+        if ($validator->fails()) {
+            return ['errors' => $validator->errors(), 'response' => 422];
+        };
+
+        self::$operation = 'enviarLoteRpsSincronoEnvio';
+        $dataMsg = self::composeMessage(self::$operation, __DIR__);
+
+        $dataMsg->Protocolo = $data['protocolo'];
+        $dataMsg = self::Sign_XML($dataMsg);
+
+        $mountMessage = self::mountMensage($dataMsg);
+
+        return parent::Conection(self::$url, $mountMessage, self::$headers, self::$verb, false);
+    }
+
+    public static function gerarNfseEnvio($data): string|int
+    {
+
+        $validator = Validator::make($data, [
+            'cnpj' => 'required|max:14',
+            'inscricaoMunicipal' => 'required',
+            'numero_RPS' => 'required',
+            'serie_RPS' => 'required',
+            'tipo_RPS' => [
+                'required',
+                Rule::in(TypeRPS::cases())
+            ],
+        ]);
+
+        if ($validator->fails()) {
+            return ['errors' => $validator->errors(), 'response' => 422];
+        };
+
+        self::$operation = "gerarNfseEnvio";
+        $dataMsg = self::composeMessage(self::$operation, __DIR__);
+
+        $dataMsg->Protocolo = $data['protocolo'];
+        $dataMsg = self::Sign_XML($dataMsg);
+
+        $mountMessage = self::mountMensage($dataMsg);
+
+        return parent::Conection(self::$url, $mountMessage, self::$headers, self::$verb, false);
+    }
+
+    private static function mountMensage(SimpleXMLElement $dataMsg): SimpleXMLElement
+    {
+
         $mountMessage = self::assembleMessage();
-        $mountMessage = Str::replace('[Mount_Mensage]', $operacao, $mountMessage);
-        $mountMessage = Str::replace('[DadosMsg]', $dataMsg, $mountMessage);
 
-        return parent::Conection(self::$url, $mountMessage, self::$headers, self::$verb, false);
+        $mountMessage->registerXPathNamespace('e', 'http://www.e-nfs.com.br');
+
+        $dadosMsg = $mountMessage->xpath('//e:Nfsedadosmsg')[0];
+        $dom = dom_import_simplexml($dadosMsg);
+        $fragment = dom_import_simplexml($dataMsg);
+        $dom->appendChild($dom->ownerDocument->importNode($fragment, true));
+
+        return $mountMessage;
     }
 
-    public static function enviarLoteRpsEnvio(): string|int
+    private static function assembleMessage(): SimpleXMLElement
     {
-
-        $operacao = 'enviarLoteRpsEnvio';
-        $dataMsg = self::composeMessage($operacao);
-        $mountMessage = self::assembleMessage();
-        $mountMessage = Str::replace('[Mount_Mensage]', $operacao, $mountMessage);
-        $mountMessage = Str::replace('[DadosMsg]', $dataMsg, $mountMessage);
-
-        return parent::Conection(self::$url, $mountMessage, self::$headers, self::$verb, false);
-    }
-
-    public static function enviarLoteRpsSincronoEnvio(): string|int
-    {
-
-        $operacao = 'enviarLoteRpsSincronoEnvio';
-        $dataMsg = self::composeMessage($operacao);
-        $mountMessage = self::assembleMessage();
-        $mountMessage = Str::replace('[Mount_Mensage]', $operacao, $mountMessage);
-        $mountMessage = Str::replace('[DadosMsg]', $dataMsg, $mountMessage);
-
-        return parent::Conection(self::$url, $mountMessage, self::$headers, self::$verb, false);
-    }
-
-    public static function gerarNfseEnvio(): string|int
-    {
-
-        $operacao = "gerarNfseEnvio";
-        $dataMsg = self::composeMessage($operacao);
-        $mountMessage = self::assembleMessage();
-        $mountMessage = Str::replace('[Mount_Mensage]', $operacao, $mountMessage);
-        $mountMessage = Str::replace('[DadosMsg]', $dataMsg, $mountMessage);
-
-        return parent::Conection(self::$url, $mountMessage, self::$headers, self::$verb, false);
-    }
-
-    private static function assembleMessage(): string
-    {
-
-        $assembleMessage = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.integracao.nfsd.desenvolve/">';
-        $assembleMessage .= '<soapenv:Header/>';
-        $assembleMessage .= '<soapenv:Body>';
-        $assembleMessage .= '<ws:[Mount_Mensage]>';
-        $assembleMessage .= '<xml><![CDATA[[DadosMsg]]]></xml>';
-        $assembleMessage .= '</ws:[Mount_Mensage]>';
-        $assembleMessage .= '</soapenv:Body>';
-        $assembleMessage .= '</soapenv:Envelope>';
-
-        return $assembleMessage;
-    }
-
-    private static function composeMessage(string $Tipo): string
-    {
-
-        $MensagemXML = '';
-
-        switch ($Tipo) {
-
-            case 'cancelarNfseEnvio':
-
-                $MensagemXML = '';
-
-            case 'consultarLoteRpsEnvio':
-
-                $MensagemXML = '';
-
-            case 'consultarNfseRpsEnvio':
-
-                $MensagemXML = '<ConsultarNfseRpsEnvio xmlns="http://www.abrasf.org.br/nfse.xsd">';
-                $MensagemXML .= '<IdentificacaoRps>';
-                $MensagemXML .= '<Numero>[CAMPO_NUMERO_RPS]</Numero>';
-                $MensagemXML .= '<Serie>[CAMPO_SERIE_RPS]</Serie>';
-                $MensagemXML .= '<Tipo>[CAMPO_TIPO_RPS]</Tipo>';
-                $MensagemXML .= '</IdentificacaoRps>';
-                $MensagemXML .= '<Prestador>';
-                $MensagemXML .= '<CpfCnpj>';
-                $MensagemXML .= '<Cnpj>[CAMPO_CNPJ]</Cnpj>';
-                $MensagemXML .= '</CpfCnpj>';
-                $MensagemXML .= '<InscricaoMunicipal>[CAMPO_INSCRICAO_MUNICIPAL]</InscricaoMunicipal>';
-                $MensagemXML .= '</Prestador>';
-                $MensagemXML .= '</ConsultarNfseRpsEnvio>';
-
-            case 'consultarNfseServicoTomadoEnvio':
-
-                $MensagemXML = '';
-
-            case 'enviarLoteRpsEnvio':
-
-                $MensagemXML = '';
-
-            case 'enviarLoteRpsSincronoEnvio':
-
-                $MensagemXML = '';
-
-            case 'gerarNfseEnvio':
-
-                $MensagemXML = '';
-        }
-
-        return $MensagemXML;
+        //<![CDATA[[DadosMsg]]]>
+        return new SimpleXMLElement(file_get_contents(__DIR__ . 'schemas/AssembleMessage.xml'));
     }
 }

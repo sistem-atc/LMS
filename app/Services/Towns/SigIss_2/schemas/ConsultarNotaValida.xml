@@ -1,0 +1,8 @@
+<DadosConsultaNota xsi:type="urn:tcDadosConsultaNota">
+    <nota xsi:type="xsd:int"></nota>
+    <serie xsi:type="xsd:string"></serie>
+    <valor xsi:type="xsd:string"></valor>
+    <prestador_ccm xsi:type="xsd:int"></prestador_ccm>
+    <prestador_cnpj xsi:type="xsd:string"></prestador_cnpj>
+    <autenticidade xsi:type="xsd:string"></autenticidade>
+</DadosConsultaNota>

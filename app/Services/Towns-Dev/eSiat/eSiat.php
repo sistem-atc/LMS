@@ -2,383 +2,210 @@
 
 namespace App\Services\Towns\eSiat;
 
+use SimpleXMLElement;
 use Illuminate\Support\Str;
 use App\Enums\MotivosCancelamento;
 use App\Services\Utils\Towns\Bases\LinkTownBase;
-use App\Services\Utils\Towns\Helpers\LinksTowns;
+use App\Services\Utils\Towns\Interfaces\LinkTownsInterface;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
-class eSiat extends LinkTownBase
+class eSiat extends LinkTownBase implements LinkTownsInterface
 {
 
-    protected static $link;
     protected static $verb = 'POST';
-    private static $url;
-    private static $accessCode;
+    protected static $operation;
 
     protected static $headers = [
         "Content-Type" => "application/soap+xml;charset=utf-8",
     ];
 
-
-    public function __construct(LinksTowns $linksTowns, $codeIbge)
+    public function gerarNota(array $data): string|int|array
     {
-        parent::__construct($linksTowns);
-        static::$link = $this->getLinkForIbge($codeIbge);
-        self::$url = explode("|", self::$link)[0];
-        self::$accessCode = explode("|", self::$link)[1] ?? null;
+        return '';
     }
 
-    public static function ConsultarTomador(
-        string $CNPJ_Tomador
-    ): string|int {
-
-        $operacao = 'ConsultarTomador';
-        $dataMsg = self::composeMessage($operacao);
-        $mountMessage = self::assembleMessage();
-        $dataMsg = Str::replace('[CAMPO_CHAVE_DE_ACESSO]', self::$accessCode, $dataMsg);
-        $dataMsg = Str::replace('[CAMPO_CNPJ_TOMADOR]', $CNPJ_Tomador, $dataMsg);
-        $mountMessage = Str::replace('[Mount_Mensage]', $operacao, $mountMessage);
-        $mountMessage = Str::replace('[DadosMsg]', $dataMsg, $mountMessage);
-
-        return parent::Conection(self::$url, $mountMessage, self::$headers, self::$verb, false);
-    }
-
-    public static function RecepcionarApuracaoMensalDESIF(): string|int
+    public function consultarNota(array $data): string|int|array
     {
-
-        $operacao = 'RecepcionarApuracaoMensalDESIF';
-        $dataMsg = self::composeMessage($operacao);
-        $mountMessage = self::assembleMessage();
-        $dataMsg = Str::replace('[CAMPO_CHAVE_DE_ACESSO]', self::$accessCode, $dataMsg);
-        $mountMessage = Str::replace('[Mount_Mensage]', $operacao, $mountMessage);
-        $mountMessage = Str::replace('[DadosMsg]', $dataMsg, $mountMessage);
-
-        return parent::Conection(self::$url, $mountMessage, self::$headers, self::$verb, false);
+        return '';
     }
 
-    public static function RecepcionarConsultaNotaCancelada(
-        string $Numero_Nota,
-        string $Codigo_Verificacao
-    ): string|int {
-
-        $operacao = 'RecepcionarConsultaNotaCancelada';
-        $dataMsg = self::composeMessage($operacao);
-        $mountMessage = self::assembleMessage();
-        $dataMsg = Str::replace('[CAMPO_CHAVE_DE_ACESSO]', self::$accessCode, $dataMsg);
-        $dataMsg = Str::replace('[CAMPO_NUMERO_NOTA]', $Numero_Nota, $dataMsg);
-        $dataMsg = Str::replace('[CAMPO_CODIGO_VERIFICACAO]', $Codigo_Verificacao, $dataMsg);
-        $mountMessage = Str::replace('[Mount_Mensage]', $operacao, $mountMessage);
-        $mountMessage = Str::replace('[DadosMsg]', $dataMsg, $mountMessage);
-
-        return parent::Conection(self::$url, $mountMessage, self::$headers, self::$verb, false);
+    public function cancelarNota(array $data): string|int|array
+    {
+        return '';
     }
 
-    public static function RecepcionarConsultaRPS(
-        string $Numero_RPS,
-        string $Codigo_Verificacao,
-        int $fileVersion = 4
-    ): string|int {
-
-        $operacao = 'RecepcionarConsultaRPS';
-        $dataMsg = self::composeMessage($operacao);
-        $mountMessage = self::assembleMessage();
-        $dataMsg = Str::replace('[CAMPO_CHAVE_DE_ACESSO]', self::$accessCode, $dataMsg);
-        $dataMsg = Str::replace('[CAMPO_VERSAO_ARQUIVO]', $fileVersion, $dataMsg);
-        $dataMsg = Str::replace('[CAMPO_NUMERO_RPS]', $Numero_RPS, $dataMsg);
-        $dataMsg = Str::replace('[CAMPO_CODIGO_VERIFICACAO]', $Codigo_Verificacao, $dataMsg);
-        $mountMessage = Str::replace('[Mount_Mensage]', $operacao, $mountMessage);
-        $mountMessage = Str::replace('[DadosMsg]', $dataMsg, $mountMessage);
-
-        return parent::Conection(self::$url, $mountMessage, self::$headers, self::$verb, false);
+    public function __construct($codeIbge)
+    {
+        parent::__construct($codeIbge);
     }
 
-    public static function RecepcionarDeclaracaoAdministradoraCartao(): string|int
+    public static function ConsultarTomador($data): string|int|array
+    {
+        $validator = Validator::make($data, [
+            'Numero' => 'required',
+            'Cnpj' => 'required',
+            'InscricaoMunicipal' => 'required',
+            'CodigoMunicipio' => 'required',
+            'CodigoCancelamento' => [
+                'required',
+                Rule::in(MotivosCancelamento::cases())
+            ],
+        ]);
+
+        if ($validator->fails()) {
+            return ['errors' => $validator->errors(), 'response' => 422];
+        };
+
+        self::$operation = 'ConsultarTomador';
+        $dataMsg = parent::composeMessage(self::$operation, __DIR__);
+        $codigoCancelamento = 'MC0' . MotivosCancelamento::from($data['motivoCancelamento'])->getLabel();
+
+        $dataMsg->Numero = $data['numeroNF'];
+        $dataMsg->Cnpj = $data['cnpj'];
+        $dataMsg->InscricaoMunicipal = $data['inscricaoMunicipal'];
+        $dataMsg->CodigoMunicipio = $data['codigoMunicipio'];
+        $dataMsg->CodigoCancelamento = $codigoCancelamento;
+
+        $mountMessage = self::mountMensage($dataMsg);
+
+        return parent::Conection(parent::$url, $mountMessage, self::$headers, self::$verb, false);
+    }
+
+    public static function RecepcionarApuracaoMensalDESIF($data): string|int|array
     {
 
-        $operacao = 'RecepcionarDeclaracaoAdministradoraCartao';
-        $dataMsg = self::composeMessage($operacao);
-        $mountMessage = self::assembleMessage();
-        $dataMsg = Str::replace('[CAMPO_CHAVE_DE_ACESSO]', self::$accessCode, $dataMsg);
-        $mountMessage = Str::replace('[Mount_Mensage]', $operacao, $mountMessage);
-        $mountMessage = Str::replace('[DadosMsg]', $dataMsg, $mountMessage);
+        self::$operation = 'RecepcionarApuracaoMensalDESIF';
+        $dataMsg = parent::composeMessage(self::$operation, __DIR__);
+
+        $dataMsg->Numero = $data['numeroNF'];
+
+        $mountMessage = self::mountMensage($dataMsg);
 
         return parent::Conection(self::$url, $mountMessage, self::$headers, self::$verb, false);
     }
 
-    public static function RecepcionarLoteNotasCanceladas(
-        string $Numero_Nota,
-        string $Codigo_Verificacao,
-        MotivosCancelamento $Motivo_Cancelamento,
-        int $fileVersion = 4
-    ): string|int {
+    public static function RecepcionarConsultaNotaCancelada($data): string|int|array
+    {
+        self::$operation = 'RecepcionarConsultaNotaCancelada';
+        $dataMsg = parent::composeMessage(self::$operation, __DIR__);
 
-        $operacao = 'RecepcionarLoteNotasCanceladas';
-        $dataMsg = self::composeMessage($operacao);
-        $mountMessage = self::assembleMessage();
-        $dataMsg = Str::replace('[CAMPO_CHAVE_DE_ACESSO]', self::$accessCode, $dataMsg);
-        $dataMsg = Str::replace('[CAMPO_VERSAO_ARQUIVO]', $fileVersion, $dataMsg);
-        $dataMsg = Str::replace('[CAMPO_NUMERO_NOTA]', $Numero_Nota, $dataMsg);
-        $dataMsg = Str::replace('[CAMPO_CODIGO_VERIFICACAO]', $Codigo_Verificacao, $dataMsg);
-        $dataMsg = Str::replace('[CAMPO_MOTIVO_CANCELAMENTO]', $Motivo_Cancelamento, $dataMsg);
-        $mountMessage = Str::replace('[Mount_Mensage]', $operacao, $mountMessage);
-        $mountMessage = Str::replace('[DadosMsg]', $dataMsg, $mountMessage);
+        $dataMsg->Numero = $data['numeroNF'];
+
+        $mountMessage = self::mountMensage($dataMsg);
 
         return parent::Conection(self::$url, $mountMessage, self::$headers, self::$verb, false);
     }
 
-    public static function RecepcionarLoteRps(): string|int
+    public static function RecepcionarConsultaRPS($data): string|int|array
+    {
+        self::$operation = 'RecepcionarConsultaRPS';
+        $dataMsg = parent::composeMessage(self::$operation, __DIR__);
+
+        $dataMsg->Numero = $data['numeroNF'];
+
+        $mountMessage = self::mountMensage($dataMsg);
+
+        return parent::Conection(self::$url, $mountMessage, self::$headers, self::$verb, false);
+    }
+
+    public static function RecepcionarDeclaracaoAdministradoraCartao($data): string|int|array
     {
 
-        $operacao = 'recepcionarLoteRps';
-        $dataMsg = self::composeMessage($operacao);
-        $mountMessage = self::assembleMessage();
-        $dataMsg = Str::replace("[CAMPO_CHAVE_DE_ACESSO]", self::$accessCode, $dataMsg);
-        $mountMessage = Str::replace("[Mount_Mensage]", $operacao, $mountMessage);
-        $mountMessage = Str::replace("[DadosMsg]", $dataMsg, $mountMessage);
+        self::$operation = 'RecepcionarDeclaracaoAdministradoraCartao';
+        $dataMsg = parent::composeMessage(self::$operation, __DIR__);
+
+        $dataMsg->Numero = $data['numeroNF'];
+
+        $mountMessage = self::mountMensage($dataMsg);
 
         return parent::Conection(self::$url, $mountMessage, self::$headers, self::$verb, false);
     }
 
-    public static function RecepcionarNFSe(): string|int
+    public static function RecepcionarLoteNotasCanceladas($data): string|int|array
     {
+        self::$operation = 'RecepcionarLoteNotasCanceladas';
+        $dataMsg = parent::composeMessage(self::$operation, __DIR__);
 
-        $operacao = 'RecepcionarNFSe';
-        $dataMsg = self::composeMessage($operacao);
-        $mountMessage = self::assembleMessage();
-        $dataMsg = Str::replace("[CAMPO_CHAVE_DE_ACESSO]", self::$accessCode, $dataMsg);
-        $mountMessage = Str::replace("[Mount_Mensage]", $operacao, $dataMsg);
-        $mountMessage = Str::replace("[DadosMsg]", $dataMsg, $dataMsg);
+        $dataMsg->Numero = $data['numeroNF'];
+
+        $mountMessage = self::mountMensage($dataMsg);
 
         return parent::Conection(self::$url, $mountMessage, self::$headers, self::$verb, false);
     }
 
-    public static function VerificarExistenciaNota(
-        string $CNPJ_Tomador,
-        string $Data_Emissao,
-        string $Valor_Servicos
-    ): string|int {
+    public static function RecepcionarLoteRps($data): string|int|array
+    {
 
-        $operacao = 'VerificarExistenciaNota';
-        $dataMsg = self::composeMessage($operacao);
-        $mountMessage = self::assembleMessage();
-        $dataMsg = Str::replace('[CAMPO_CHAVE_DE_ACESSO]', self::$accessCode, $dataMsg);
-        $dataMsg = Str::replace('[CAMPO_CNPJ_TOMADOR]', $CNPJ_Tomador, $dataMsg);
-        $dataMsg = Str::replace('[CAMPO_DATA_EMISSAO]', date("Ymd", strtotime($Data_Emissao)), $dataMsg);
-        $dataMsg = Str::replace('[CAMPO_VALOR_SERVICOS]', $Valor_Servicos, $dataMsg);
-        $mountMessage = Str::replace('[Mount_Mensage]', $operacao, $mountMessage);
-        $mountMessage = Str::replace('[DadosMsg]', $dataMsg, $mountMessage);
+        self::$operation = 'recepcionarLoteRps';
+        $dataMsg = parent::composeMessage(self::$operation, __DIR__);
+
+        $dataMsg->Numero = $data['numeroNF'];
+
+        $mountMessage = self::mountMensage($dataMsg);
 
         return parent::Conection(self::$url, $mountMessage, self::$headers, self::$verb, false);
     }
 
-    public static function VersaoInstalada(): string|int
+    public static function RecepcionarNFSe($data): string|int|array
     {
 
-        $operacao = 'VerificarExistenciaNota';
-        $mountMessage = self::assembleMessage();
-        $mountMessage = Str::replace('[Mount_Mensage]', $operacao, $mountMessage);
-        $mountMessage = Str::replace('[DadosMsg]', '', $mountMessage);
+        self::$operation = 'RecepcionarNFSe';
+        $dataMsg = parent::composeMessage(self::$operation, __DIR__);
+
+        $dataMsg->Numero = $data['numeroNF'];
+
+        $mountMessage = self::mountMensage($dataMsg);
 
         return parent::Conection(self::$url, $mountMessage, self::$headers, self::$verb, false);
     }
 
-    private static function assembleMessage(): string
+    public static function VerificarExistenciaNota($data): string|int|array
     {
+        self::$operation = 'VerificarExistenciaNota';
+        $dataMsg = parent::composeMessage(self::$operation, __DIR__);
 
-        $assembleMessage = '<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" xmlns:tem="http://tempuri.org/">';
-        $assembleMessage .= '<soap:Header/>';
-        $assembleMessage .= '<soap:Body>';
-        $assembleMessage .= '<tem:[Mount_Mensage]>';
-        $assembleMessage .= '<tem:pArquivoXML><![CDATA[[DadosMsg]]]></tem:pArquivoXML>';
-        $assembleMessage .= '</tem:[Mount_Mensage]>';
-        $assembleMessage .= '</soap:Body>';
-        $assembleMessage .= '</soap:Envelope>';
+        $dataMsg->Numero = $data['numeroNF'];
 
-        return $assembleMessage;
+        $mountMessage = self::mountMensage($dataMsg);
+
+        return parent::Conection(self::$url, $mountMessage, self::$headers, self::$verb, false);
     }
 
-    private static function composeMessage(string $Tipo): string
+    public static function VersaoInstalada($data): string|int|array
     {
 
-        $MensagemXML = '';
+        self::$operation = 'VerificarExistenciaNota';
+        $dataMsg = parent::composeMessage(self::$operation, __DIR__);
 
-        switch ($Tipo) {
+        $dataMsg->Numero = $data['numeroNF'];
 
-            case 'ConsultarTomador':
+        $mountMessage = self::mountMensage($dataMsg);
 
-                $MensagemXML = "<tcConsultaTomador>";
-                $MensagemXML .= "<tsCodCadBic>1</tsCodCadBic>";
-                $MensagemXML .= "<tsChvAcs>[CAMPO_CHAVE_DE_ACESSO]</tsChvAcs>";
-                $MensagemXML .= "<tsNumDocTmd>[CAMPO_CNPJ_TOMADOR]</tsNumDocTmd>";
-                $MensagemXML .= "</tcConsultaTomador>";
+        return parent::Conection(self::$url, $mountMessage, self::$headers, self::$verb, false);
+    }
 
-            case 'RecepcionarApuracaoMensalDESIF':
+    private static function mountMensage(SimpleXMLElement $dataMsg): SimpleXMLElement
+    {
 
-                $MensagemXML = '';
+        $mountMessage = self::assembleMessage();
 
-            case 'RecepcionarConsultaNotaCancelada':
+        $mountMessage->registerXPathNamespace('soapenv', 'http://schemas.xmlsoap.org/soap/envelope/');
 
-                $MensagemXML = "<tcConsultaCancelamento>";
-                $MensagemXML .= "<tsCodCadBic>1</tsCodCadBic>";
-                $MensagemXML .= "<tsChvAcs>[CAMPO_CHAVE_DE_ACESSO]</tsChvAcs>";
-                $MensagemXML .= "<tsNumNot>[CAMPO_NUMERO_NOTA]</tsNumNot>";
-                $MensagemXML .= "<tsCodVer>[CAMPO_CODIGO_VERIFICACAO]</tsCodVer>";
-                $MensagemXML .= "</tcConsultaCancelamento>";
+        $dadosMsg = $mountMessage->xpath('//e:Nfsedadosmsg')[0];
+        $dom = dom_import_simplexml($dadosMsg);
+        $fragment = dom_import_simplexml($dataMsg);
+        $dom->appendChild($dom->ownerDocument->createCDATASection($dom->ownerDocument->saveXML($fragment)));
 
-            case 'RecepcionarConsultaRPS':
+        return $mountMessage;
+    }
 
-                $MensagemXML = "<tcConsultaRPS>";
-                $MensagemXML .= "<tsCodCadBic>1</tsCodCadBic>";
-                $MensagemXML .= "<tsChvAcs>[CAMPO_CHAVE_DE_ACESSO]</tsChvAcs>";
-                $MensagemXML .= "<tsVrsArq>[CAMPO_VERSAO_ARQUIVO]</tsVrsArq>";
-                $MensagemXML .= "<tcInfConsultaRPS>";
-                $MensagemXML .= "<tsNumRPS>[CAMPO_NUMERO_RPS]</tsNumRPS>";
-                $MensagemXML .= "<tsCodVer>[CAMPO_CODIGO_VERIFICACAO]</tsCodVer>";
-                $MensagemXML .= "</tcInfConsultaRPS>";
-                $MensagemXML .= "</tcConsultaRPS>";
+    private static function assembleMessage(): SimpleXMLElement
+    {
+        //<![CDATA[[DadosMsg]]]>
+        $content = file_get_contents(__DIR__ . 'schemas/AssembleMensage.xml');
+        $content = Str::replace('[Mount_Mensage]', self::$operation, $content);
 
-            case 'RecepcionarDeclaracaoAdministradoraCartao':
-
-                $MensagemXML = '';
-
-            case 'RecepcionarLoteNotasCanceladas':
-
-                $MensagemXML = "<tcLoteCancelamento>";
-                $MensagemXML .= "<tsCodCadBic>1</tsCodCadBic>";
-                $MensagemXML .= "<tsChvAcs>[CAMPO_CHAVE_DE_ACESSO]</tsChvAcs>";
-                $MensagemXML .= "<tsVrsArq>[CAMPO_VERSAO_ARQUIVO]</tsVrsArq>";
-                $MensagemXML .= "<tcNotCan>";
-                $MensagemXML .= "<tcInfNotCan>";
-                $MensagemXML .= "<tsNumNot>[CAMPO_NUMERO_NOTA]</tsNumNot>";
-                $MensagemXML .= "<tsCodVer>[CAMPO_CODIGO_VERIFICACAO]</tsCodVer>";
-                $MensagemXML .= "<tsDesMotCan>[CAMPO_MOTIVO_CANCELAMENTO]</tsDesMotCan>";
-                $MensagemXML .= "</tcInfNotCan>";
-                $MensagemXML .= "</tcNotCan>";
-                $MensagemXML .= "</tcLoteCancelamento>";
-
-            case 'RecepcionarLoteRps':
-
-                $MensagemXML = "<tcLoteRps>";
-                $MensagemXML .= "<tsCodCadBic>02</tsCodCadBic>";
-                $MensagemXML .= "<tsVrsArq>4</tsVrsArq>";
-                $MensagemXML .= "<tsChvAcs>[CAMPO_CHAVE_DE_ACESSO]</tsChvAcs>";
-                $MensagemXML .= "<tcRps>";
-                $MensagemXML .= "<tcInfRps>";
-                $MensagemXML .= "<tsNumRps>2</tsNumRps>";
-                $MensagemXML .= "<tsCodVer>F2Z6HZPBGW</tsCodVer>";
-                $MensagemXML .= "<tsVrsImp>5</tsVrsImp>";
-                $MensagemXML .= "<tsNumDocTmd>12345678909</tsNumDocTmd>";
-                $MensagemXML .= "<tsInsEstTmd>Isento</tsInsEstTmd>";
-                $MensagemXML .= "<tsInsMunTmd/>";
-                $MensagemXML .= "<tsNomTmd>Nome do Tomador do Serviço</tsNomTmd>";
-                $MensagemXML .= "<tsDesEndTmd>Av. Brasil, 10</tsDesEndTmd>";
-                $MensagemXML .= "<tsNomBaiTmd>Bairro Central</tsNomBaiTmd>";
-                $MensagemXML .= "<tsNomCidTmd>Município A</tsNomCidTmd>";
-                $MensagemXML .= "<tsCodEstTmd>MG</tsCodEstTmd>";
-                $MensagemXML .= "<tsTlfTmd>1122223333</tsTlfTmd>";
-                $MensagemXML .= "<tsCEPTmd>38400684</tsCEPTmd>";
-                $MensagemXML .= "<tsEmlTmd/>";
-                $MensagemXML .= "<tsCodAti>902</tsCodAti>";
-                $MensagemXML .= "<tsPerAlq>2</tsPerAlq>";
-                $MensagemXML .= "<tsRegRec>0</tsRegRec>";
-                $MensagemXML .= "<tsFrmRec>0</tsFrmRec>";
-                $MensagemXML .= "<tsMesCmp>2</tsMesCmp>";
-                $MensagemXML .= "<tsAnoCmp>2018</tsAnoCmp>";
-                $MensagemXML .= "<tsDatEmsRps>20180205</tsDatEmsRps>";
-                $MensagemXML .= "<tsVlrRep>0</tsVlrRep>";
-                $MensagemXML .= "<tsVlrDed>0</tsVlrDed>";
-                $MensagemXML .= "<tsVlrDsc>0</tsVlrDsc>";
-                $MensagemXML .= "<tsVlrPIS>0</tsVlrPIS>";
-                $MensagemXML .= "<tsVlrCOFINS>0</tsVlrCOFINS>";
-                $MensagemXML .= "<tsVlrINSS>0</tsVlrINSS>";
-                $MensagemXML .= "<tsVlrIR>0</tsVlrIR>";
-                $MensagemXML .= "<tsVlrCSLL>0</tsVlrCSLL>";
-                $MensagemXML .= "<tsVlrOtrRtn>0</tsVlrOtrRtn>";
-                $MensagemXML .= "<tsDesOtrRtn/>";
-                $MensagemXML .= "<tsObs>Informe aqui a observação quando houver.</tsObs>";
-                $MensagemXML .= "<tsEstServ>31</tsEstServ>";
-                $MensagemXML .= "<tsMunSvc>3148004</tsMunSvc>";
-                $MensagemXML .= "<tcItensRps>";
-                $MensagemXML .= "<tcItemRps>";
-                $MensagemXML .= "<tsSeqItem>1</tsSeqItem>";
-                $MensagemXML .= "<tsDesSvc>Descrição do item 01</tsDesSvc>";
-                $MensagemXML .= "<tsVlrUnt>100,00</tsVlrUnt>";
-                $MensagemXML .= "</tcItemRps>";
-                $MensagemXML .= "<tcItemRps>";
-                $MensagemXML .= "<tsSeqItem>2</tsSeqItem>";
-                $MensagemXML .= "<tsDesSvc>Descrição do item 02</tsDesSvc>";
-                $MensagemXML .= "<tsVlrUnt>200,00</tsVlrUnt>";
-                $MensagemXML .= "</tcItemRps>";
-                $MensagemXML .= "</tcItensRps>";
-                $MensagemXML .= "</tcInfRps>";
-                $MensagemXML .= "</tcRps>";
-                $MensagemXML .= "</tcLoteRps>";
-
-            case 'RecepcionarNFSe':
-
-                $MensagemXML = "<tcGrcNFSe>";
-                $MensagemXML .= "<tsCodCadBic>02</tsCodCadBic>";
-                $MensagemXML .= "<tsVrsArq>4</tsVrsArq>";
-                $MensagemXML .= "<tsChvAcs>[CAMPO_CHAVE_DE_ACESSO]</tsChvAcs>";
-                $MensagemXML .= "<tcInfNFSe>";
-                $MensagemXML .= "<tsVrsImp>5</tsVrsImp>";
-                $MensagemXML .= "<tsNumDocTmd>12345678909</tsNumDocTmd>";
-                $MensagemXML .= "<tsInsEstTmd>111111</tsInsEstTmd>";
-                $MensagemXML .= "<tsInsMunTmd>222222</tsInsMunTmd>";
-                $MensagemXML .= "<tsNomTmd>Nome do Tomador</tsNomTmd>";
-                $MensagemXML .= "<tsDesEndTmd>Av. Brasil, 10</tsDesEndTmd>";
-                $MensagemXML .= "<tsNomCidTmd>Município ABC</tsNomCidTmd>";
-                $MensagemXML .= "<tsNomBaiTmd>Centro</tsNomBaiTmd>";
-                $MensagemXML .= "<tsTlfTmd>3422223333</tsTlfTmd>";
-                $MensagemXML .= "<tsCodEstTmd>MG</tsCodEstTmd>";
-                $MensagemXML .= "<tsCEPTmd>38300123</tsCEPTmd>";
-                $MensagemXML .= "<tsEmlTmd/>";
-                $MensagemXML .= "<tsCodAti>902</tsCodAti>";
-                $MensagemXML .= "<tsPerAlq>2</tsPerAlq>";
-                $MensagemXML .= "<tsRegRec>0</tsRegRec>";
-                $MensagemXML .= "<tsFrmRec>0</tsFrmRec>";
-                $MensagemXML .= "<tsMesCmp>2</tsMesCmp>";
-                $MensagemXML .= "<tsAnoCmp>2018</tsAnoCmp>";
-                $MensagemXML .= "<tsDatEmsNFSe>20180205</tsDatEmsNFSe>";
-                $MensagemXML .= "<tsVlrRep>0</tsVlrRep>";
-                $MensagemXML .= "<tsVlrDed>0</tsVlrDed>";
-                $MensagemXML .= "<tsVlrDsc>0</tsVlrDsc>";
-                $MensagemXML .= "<tsVlrPIS>0</tsVlrPIS>";
-                $MensagemXML .= "<tsVlrCOFINS>0</tsVlrCOFINS>";
-                $MensagemXML .= "<tsVlrINSS>0</tsVlrINSS>";
-                $MensagemXML .= "<tsVlrIR>0</tsVlrIR>";
-                $MensagemXML .= "<tsVlrCSLL>0</tsVlrCSLL>";
-                $MensagemXML .= "<tsVlrOtrRtn>0</tsVlrOtrRtn>";
-                $MensagemXML .= "<tsDesOtrRtn/>";
-                $MensagemXML .= "<tsObs>Informe aqui a observação quando houver.</tsObs>";
-                $MensagemXML .= "<tsEstServ>31</tsEstServ>";
-                $MensagemXML .= "<tsMunSvc>3148004</tsMunSvc>";
-                $MensagemXML .= "<tcItensNFSe>";
-                $MensagemXML .= "<tcItemNFSe>";
-                $MensagemXML .= "<tsSeqItem>1</tsSeqItem>";
-                $MensagemXML .= "<tsDesSvc>Descrição do item 1</tsDesSvc>";
-                $MensagemXML .= "<tsVlrUnt>100,00</tsVlrUnt>";
-                $MensagemXML .= "</tcItemNFSe>";
-                $MensagemXML .= "<tcItemNFSe>";
-                $MensagemXML .= "<tsSeqItem>2</tsSeqItem>";
-                $MensagemXML .= "<tsDesSvc>Descrição do item 2</tsDesSvc>";
-                $MensagemXML .= "<tsVlrUnt>100,00</tsVlrUnt>";
-                $MensagemXML .= "</tcItemNFSe>";
-                $MensagemXML .= "</tcItensNFSe>";
-                $MensagemXML .= "</tcInfNFSe>";
-                $MensagemXML .= "</tcGrcNFSe>";
-
-            case 'VerificarExistenciaNota':
-
-                $MensagemXML = "<tcConsultaExistenciaNota>";
-                $MensagemXML .= "<tsCodCadBic>1</tsCodCadBic>";
-                $MensagemXML .= "<tsChvAcs>[CAMPO_CHAVE_DE_ACESSO]</tsChvAcs>";
-                $MensagemXML .= "<tsNumDocTmd>[CAMPO_CNPJ_TOMADOR]</tsNumDocTmd>";
-                $MensagemXML .= "<tsDatEms>[CAMPO_DATA_EMISSAO]</tsDatEms>";
-                $MensagemXML .= "<tsVlrSvc>[CAMPO_VALOR_SERVICOS]</tsVlrSvc>";
-                $MensagemXML .= "</tcConsultaExistenciaNota>";
-        }
-
-        return $MensagemXML;
+        return new SimpleXMLElement($content);
     }
 }

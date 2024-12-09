@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Enums\TypeRPS;
+use App\Models\CitySetting;
 use App\Services\Towns\Abaco\Abaco;
 use App\Services\Utils\Towns\Helpers\LinksTowns;
 use Carbon\Carbon;
@@ -25,8 +26,9 @@ class Playground extends Command
             'dataFinal' => Carbon::now()->format('Y-m-d H:i:s'),
         ];
 
-        $class = Abaco::class;
-        $abaco = app($class, ['codeIbge' => '1302603']);
+        $ibgeCode = '1302603';
+        $class = CitySetting::where('ibge', $ibgeCode)->first();
+        $abaco = app($class->class_path, ['codeIbge' => $ibgeCode]);
         dd($abaco->ConsultarNfse($arrayData));
 
         return Command::SUCCESS;

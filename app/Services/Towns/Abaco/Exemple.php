@@ -4,6 +4,7 @@ namespace App\Services\Towns\Abaco;
 
 use Carbon\Carbon;
 use App\Enums\TypeRPS;
+use App\Models\CitySetting;
 use App\Services\Utils\Towns\Interfaces\ExcludeSelectInterface;
 
 class Exemple implements ExcludeSelectInterface
@@ -73,10 +74,11 @@ class Exemple implements ExcludeSelectInterface
             ],
         ];
 
-        $class = Abaco::class;
-        $abaco = app($class, ['codeIbge' => '1302603']);
+        $ibgeCode = '1302603';
+        $class = CitySetting::where('ibge', $ibgeCode)->first();
+        $abaco = app($class, ['codeIbge' => $ibgeCode]);
 
-        dd($abaco->recepcionarLoteRps($arrayData));
+        dd($abaco->gerarNota($arrayData));
     }
 
     private function ConsultarSituacaoLoteRPS(): void
@@ -87,10 +89,11 @@ class Exemple implements ExcludeSelectInterface
             'protocolo' => 123456,
         ];
 
-        $class = Abaco::class;
-        $abaco = app($class, ['codeIbge' => '1302603']);
+        $ibgeCode = 'codeIbge';
+        $class = config('links-towns.' . $ibgeCode . '.class');
+        $abaco = app($class, ['codeIbge' => $ibgeCode]);
 
-        dd($abaco->recepcionarLoteRps($arrayData));
+        dd($abaco->gerarNota($arrayData));
     }
 
     private function ConsultarNfsePorRps(): void
@@ -103,10 +106,11 @@ class Exemple implements ExcludeSelectInterface
             'tipo_RPS' => TypeRPS::RPS->getLabel(),
         ];
 
-        $class = Abaco::class;
-        $abaco = app($class, ['codeIbge' => '1302603']);
+        $ibgeCode = '1302603';
+        $class = CitySetting::where('ibge', $ibgeCode)->first();
+        $abaco = app($class, ['codeIbge' => $ibgeCode]);
 
-        dd($abaco->recepcionarLoteRps($arrayData));
+        dd($abaco->consultarNota($arrayData));
     }
 
     private function ConsultarLoteRps(): void
@@ -117,10 +121,11 @@ class Exemple implements ExcludeSelectInterface
             'protocolo' => 123456,
         ];
 
-        $class = Abaco::class;
-        $abaco = app($class, ['codeIbge' => '1302603']);
+        $ibgeCode = '1302603';
+        $class = CitySetting::where('ibge', $ibgeCode)->first();
+        $abaco = app($class, ['codeIbge' => $ibgeCode]);
 
-        dd($abaco->recepcionarLoteRps($arrayData));
+        dd($abaco->consultarNota($arrayData));
     }
 
     private function ConsultarNfse(): void
@@ -132,9 +137,10 @@ class Exemple implements ExcludeSelectInterface
             'dataFinal' => Carbon::now()->format('Y-m-d H:i:s'),
         ];
 
-        $class = Abaco::class;
-        $abaco = app($class, ['codeIbge' => '1302603']);
+        $ibgeCode = '1302603';
+        $class = CitySetting::where('ibge', $ibgeCode)->first();
+        $abaco = app($class, ['codeIbge' => $ibgeCode]);
 
-        dd($abaco->recepcionarLoteRps($arrayData));
+        dd($abaco->consultarNota($arrayData));
     }
 }

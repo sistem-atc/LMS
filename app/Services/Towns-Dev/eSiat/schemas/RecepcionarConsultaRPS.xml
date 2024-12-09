@@ -1,0 +1,9 @@
+<tcConsultaRPS>
+    <tsCodCadBic></tsCodCadBic>
+    <tsChvAcs></tsChvAcs>
+    <tsVrsArq></tsVrsArq>
+    <tcInfConsultaRPS>
+        <tsNumRPS></tsNumRPS>
+        <tsCodVer></tsCodVer>
+    </tcInfConsultaRPS>
+</tcConsultaRPS>

@@ -9,8 +9,9 @@ use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Validator;
 use App\Services\Utils\Towns\Bases\LinkTownBase;
+use App\Services\Utils\Towns\Interfaces\LinkTownsInterface;
 
-class Abaco extends LinkTownBase
+class Abaco extends LinkTownBase implements LinkTownsInterface
 {
 
     protected static $verb = 'POST';
@@ -21,6 +22,20 @@ class Abaco extends LinkTownBase
         'Content-Type' => 'text/xml;charset=UTF-8'
     ];
 
+    public function gerarNota(array $data): string|int|array
+    {
+        return self::recepcionarLoteRps($data);
+    }
+
+    public function consultarNota(array $data): string|int|array
+    {
+        return self::ConsultarNfsePorRps($data);
+    }
+
+    public function cancelarNota(array $data): string|int|array
+    {
+        return self::recepcionarLoteRps($data);
+    }
 
     public function __construct($codeIbge)
     {
@@ -92,7 +107,7 @@ class Abaco extends LinkTownBase
         $mountMessage = self::assembleMessage();
         $loteRPS = 'LoteRPS';
 
-        $mountRPS = self::composeMessage($loteRPS);
+        $mountRPS = parent::composeMessage($loteRPS, __DIR__);
         $mountRPS->InfRps->attributes()->id = $data['rps'][0]['infoId'];
         $mountRPS->InfRps->IdentificacaoRps->Numero = $data['rps'][0]['numeroRps'];
         $mountRPS->InfRps->IdentificacaoRps->Serie = $data['rps'][0]['serieRps'];
@@ -142,7 +157,7 @@ class Abaco extends LinkTownBase
         //Assinar XML
         $mountRPS = parent::Sign_XML($mountRPS->asXML());
 
-        $dataMsg = self::composeMessage(self::$operation);
+        $dataMsg = parent::composeMessage(self::$operation, __DIR__);
         $dataMsg->LoteRps['id'] = $data['idLote'];
         $dataMsg->LoteRps->NumeroLote = $data['numeroLote'];
         $dataMsg->LoteRps->Cnpj = $data['cnpj'];
@@ -162,7 +177,7 @@ class Abaco extends LinkTownBase
         return parent::Conection(parent::$url . $endPoint, $mountMessage, static::$headers, self::$verb, false);
     }
 
-    public static function ConsultarSituacaoLoteRPS($data): string|int|array
+    public static function ConsultarSituacaoLoteRPS(array $data): string|int|array
     {
 
         $validator = Validator::make($data, [
@@ -177,7 +192,7 @@ class Abaco extends LinkTownBase
 
         $endPoint = 'aconsultarsituacaoloterps?wsdl';
         self::$operation = 'ConsultarSituacaoLoteRps';
-        $dataMsg = self::composeMessage(self::$operation);
+        $dataMsg = parent::composeMessage(self::$operation, __DIR__);
 
         $dataMsg->Cnpj = $data['cnpj'];
         $dataMsg->InscricaoMunicipal = $data['inscricaoMunicipal'];
@@ -188,7 +203,7 @@ class Abaco extends LinkTownBase
         return parent::Conection(parent::$url . $endPoint, $mountMessage->asXML(), static::$headers, self::$verb, false);
     }
 
-    public static function ConsultarNfsePorRps($data): string|int|array
+    public static function ConsultarNfsePorRps(array $data): string|int|array
     {
 
         $validator = Validator::make($data, [
@@ -208,7 +223,7 @@ class Abaco extends LinkTownBase
 
         $endPoint = 'aconsultarnfseporrps?wsdl';
         self::$operation = 'ConsultarNfsePorRps';
-        $dataMsg = self::composeMessage(self::$operation);
+        $dataMsg = parent::composeMessage(self::$operation, __DIR__);
 
         $dataMsg->Numero = $data['numero_RPS'];
         $dataMsg->Serie = $data['serie_RPS'];
@@ -221,7 +236,7 @@ class Abaco extends LinkTownBase
         return parent::Conection(parent::$url . $endPoint, $mountMessage, static::$headers, self::$verb, false);
     }
 
-    public static function ConsultarLoteRps($data): string|int|array
+    public static function ConsultarLoteRps(array $data): string|int|array
     {
 
         $validator = Validator::make($data, [
@@ -236,7 +251,7 @@ class Abaco extends LinkTownBase
 
         $endPoint = 'aconsultarloterps?wsdl';
         self::$operation = 'ConsultarLoteRps';
-        $dataMsg = self::composeMessage(self::$operation);
+        $dataMsg = parent::composeMessage(self::$operation, __DIR__);
 
         $dataMsg->Cnpj = $data['cnpj'];
         $dataMsg->InscricaoMunicipal = $data['inscricaoMunicipal'];
@@ -247,7 +262,7 @@ class Abaco extends LinkTownBase
         return parent::Conection(parent::$url . $endPoint, $mountMessage, static::$headers, self::$verb, false);
     }
 
-    public static function ConsultarNfse($data): string|int|array
+    public static function ConsultarNfse(array $data): string|int|array
     {
 
         $validator = Validator::make($data, [
@@ -263,7 +278,7 @@ class Abaco extends LinkTownBase
 
         $endPoint = 'aconsultarnfse?wsdl';
         self::$operation = 'ConsultarNfse';
-        $dataMsg = self::composeMessage(self::$operation);
+        $dataMsg = parent::composeMessage(self::$operation, __DIR__);
 
         if (!isset($data['tomador'])) {
             unset($dataMsg->Tomador);
@@ -330,45 +345,15 @@ class Abaco extends LinkTownBase
         return new SimpleXMLElement($content);
     }
 
-    private static function composeMessage(string $type): SimpleXMLElement
-    {
-        switch ($type) {
-
-            case 'LoteRPS':
-                $content = file_get_contents(__DIR__ . '/schemas/LoteRPS.xml');
-                break;
-
-            case 'RecepcionarLoteRPS':
-                $content = file_get_contents(__DIR__ . '/schemas/RecepcionarLoteRPS.xml');
-                break;
-
-            case 'ConsultarSituacaoLoteRps':
-                $content = file_get_contents(__DIR__ . '/schemas/ConsultarSituacaoLoteRps.xml');
-                break;
-
-            case 'ConsultarNfsePorRps':
-                $content = file_get_contents(__DIR__ . '/schemas/ConsultarNfsePorRps.xml');
-                break;
-
-            case 'ConsultarLoteRps':
-                $content = file_get_contents(__DIR__ . '/schemas/ConsultarLoteRps.xml');
-                break;
-
-            case 'ConsultarNfse':
-                $content = file_get_contents(__DIR__ . '/schemas/ConsultarNfse.xml');
-                break;
-        }
-
-        return new SimpleXMLElement($content);
-    }
-
-    private static function composeHeader(string $type): SimpleXMLElement
+    private static function composeHeader(string $type): SimpleXMLElement | null
     {
 
         switch ($type) {
             case '2.02':
-                $content = file_get_contents(__DIR__ . '/schemas/ComposeHeader.xml');
-                return new SimpleXMLElement($content);
+                return new SimpleXMLElement(file_get_contents(__DIR__ . '/schemas/ComposeHeader.xml'));
+
+            default:
+                return null;
         }
     }
 }

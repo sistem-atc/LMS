@@ -1,0 +1,3 @@
+<cancelarNfseEnvio xmlns="http://www.abrasf.org.br/nfse.xsd">
+    <Pedido></Pedido>
+</cancelarNfseEnvio>

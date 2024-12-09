@@ -9,8 +9,9 @@ use Illuminate\Validation\Rule;
 use App\Enums\MotivosCancelamento;
 use Illuminate\Support\Facades\Validator;
 use App\Services\Utils\Towns\Bases\LinkTownBase;
+use App\Services\Utils\Towns\Interfaces\LinkTownsInterface;
 
-class Betha extends LinkTownBase
+class Betha extends LinkTownBase implements LinkTownsInterface
 {
 
     protected static $verb = 'POST';
@@ -19,6 +20,20 @@ class Betha extends LinkTownBase
 
     protected static $headers = [];
 
+    public function gerarNota(array $data): string|int|array
+    {
+        return self::GerarNfse($data);
+    }
+
+    public function consultarNota(array $data): string|int|array
+    {
+        return self::ConsultarNfsePorRps($data);
+    }
+
+    public function cancelarNota(array $data): string|int|array
+    {
+        return self::CancelarNfse($data);
+    }
 
     public function __construct($codeIbge)
     {
@@ -45,7 +60,7 @@ class Betha extends LinkTownBase
         };
 
         self::$operation = 'CancelarNfse';
-        $dataMsg = self::composeMessage(self::$operation);
+        $dataMsg = parent::composeMessage(self::$operation, __DIR__);
         $codigoCancelamento = 'MC0' . MotivosCancelamento::from($data['motivoCancelamento'])->getLabel();
 
         $dataMsg->Numero = $data['numeroNF'];
@@ -73,7 +88,7 @@ class Betha extends LinkTownBase
         };
 
         self::$operation = 'ConsultarLoteRps';
-        $dataMsg = self::composeMessage(self::$operation);
+        $dataMsg = parent::composeMessage(self::$operation, __DIR__);
         $dataMsg->Cnpj = $data['cnpj'];
         $dataMsg->InscricaoMunicipal = $data['inscricaoMunicipal'];
         $dataMsg->Protocolo = $data['protocolo'];
@@ -97,7 +112,7 @@ class Betha extends LinkTownBase
         };
 
         self::$operation = 'ConsultarNfseFaixa';
-        $dataMsg = self::composeMessage(self::$operation);
+        $dataMsg = parent::composeMessage(self::$operation, __DIR__);
 
         $dataMsg->Cnpj = $data['cnpj'];
         $dataMsg->InscricaoMunicipal = $data['inscricaoMunicipal'];
@@ -128,7 +143,7 @@ class Betha extends LinkTownBase
         };
 
         self::$operation = 'ConsultarNfsePorRps';
-        $dataMsg = self::composeMessage(self::$operation);
+        $dataMsg = parent::composeMessage(self::$operation, __DIR__);
 
         $dataMsg->Cnpj = $data['cnpj'];
         $dataMsg->InscricaoMunicipal = $data['inscricaoMunicipal'];
@@ -156,7 +171,7 @@ class Betha extends LinkTownBase
         };
 
         self::$operation = 'ConsultarNfseServicoPrestado';
-        $dataMsg = self::composeMessage(self::$operation);
+        $dataMsg = parent::composeMessage(self::$operation, __DIR__);
 
         $dataMsg->Cnpj = $data['cnpj'];
         $dataMsg->InscricaoMunicipal = $data['inscricaoMunicipal'];
@@ -173,7 +188,7 @@ class Betha extends LinkTownBase
     {
 
         self::$operation = 'ConsultarNfseServicoTomado';
-        $dataMsg = self::composeMessage(self::$operation);
+        $dataMsg = parent::composeMessage(self::$operation, __DIR__);
 
         if (!isset($data['cnpjTomador'])) {
             unset($dataMsg->Intermediario);
@@ -263,7 +278,7 @@ class Betha extends LinkTownBase
         };
 
         self::$operation = 'GerarNfse';
-        $dataMsg = self::composeMessage(self::$operation);
+        $dataMsg = parent::composeMessage(self::$operation, __DIR__);
 
         $dataMsg->Cnpj = $data['cnpj'];
         $dataMsg->InscricaoMunicipal = $data['inscricaoMunicipal'];
@@ -293,7 +308,7 @@ class Betha extends LinkTownBase
         };
 
         self::$operation = 'RecepcionarLoteRps';
-        $dataMsg = self::composeMessage(self::$operation);
+        $dataMsg = parent::composeMessage(self::$operation, __DIR__);
 
         $dataMsg->Cnpj = $data['cnpj'];
         $dataMsg->InscricaoMunicipal = $data['inscricaoMunicipal'];
@@ -323,7 +338,7 @@ class Betha extends LinkTownBase
         };
 
         self::$operation = 'RecepcionarLoteRpsSincrono';
-        $dataMsg = self::composeMessage(self::$operation);
+        $dataMsg = parent::composeMessage(self::$operation, __DIR__);
 
         $dataMsg->Cnpj = $data['cnpj'];
         $dataMsg->InscricaoMunicipal = $data['inscricaoMunicipal'];
@@ -353,7 +368,7 @@ class Betha extends LinkTownBase
         };
 
         self::$operation = 'SubstituirNfse';
-        $dataMsg = self::composeMessage(self::$operation);
+        $dataMsg = parent::composeMessage(self::$operation, __DIR__);
 
         $dataMsg->Cnpj = $data['cnpj'];
         $dataMsg->InscricaoMunicipal = $data['inscricaoMunicipal'];
@@ -394,53 +409,16 @@ class Betha extends LinkTownBase
         return new SimpleXMLElement($content);
     }
 
-    private static function composeMessage(string $Tipo): SimpleXMLElement
-    {
-
-        switch ($Tipo) {
-
-            case 'CancelarNfse':
-                $content = file_get_contents(__DIR__ . 'schemas/CancelarNfse.xml');
-
-            case 'ConsultarLoteRps':
-                $content = file_get_contents(__DIR__ . 'schemas/ConsultarLoteRps.xml');
-
-            case 'ConsultarNfseFaixa':
-                $content = file_get_contents(__DIR__ . 'schemas/ConsultarNfseFaixa.xml');
-
-            case 'ConsultarNfsePorRps':
-                $content = file_get_contents(__DIR__ . 'schemas/ConsultarNfsePorRps.xml');
-
-            case 'ConsultarNfseServicoPrestado':
-                $content = file_get_contents(__DIR__ . 'schemas/ConsultarNfseServicoPrestado.xml');
-
-            case 'ConsultarNfseServicoTomado':
-                $content = file_get_contents(__DIR__ . 'schemas/ConsultarNfseServicoTomado.xml');
-
-            case 'GerarNfse':
-                $content = file_get_contents(__DIR__ . 'schemas/GerarNfse.xml');
-
-            case 'RecepcionarLoteRps':
-                $content = file_get_contents(__DIR__ . 'schemas/RecepcionarLoteRps.xml');
-
-            case 'RecepcionarLoteRpsSincrono':
-                $content = file_get_contents(__DIR__ . 'schemas/RecepcionarLoteRpsSincrono.xml');
-
-            case 'SubstituirNfse':
-                $content = file_get_contents(__DIR__ . 'schemas/SubstituirNfse.xml');
-        }
-
-        return new SimpleXMLElement($content);
-    }
-
-    private static function composeHeader(string $type): ?string
+    private static function composeHeader(string $type): SimpleXMLElement | null
     {
 
         switch ($type) {
 
             case '2.02':
-                $content = file_get_contents(__DIR__ . 'schemas/ComposeHeader.xml');
-                return new SimpleXMLElement($content);
+                return new SimpleXMLElement(file_get_contents(__DIR__ . 'schemas/ComposeHeader.xml'));
+
+            default:
+                return null;
         }
     }
 }

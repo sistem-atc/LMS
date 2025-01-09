@@ -29,11 +29,11 @@ use App\Models\Customer;
 class BillResource extends Resource
 {
     protected static ?string $model = Bill::class;
-    protected static ?string $modelLabel = 'Fatura';
-    protected static ?string $pluralModelLabel = 'Faturas';
     protected static ?string $navigationLabel = 'Faturamento';
     protected static ?string $navigationIcon = 'heroicon-o-credit-card';
     protected static ?string $navigationGroup = 'Financeiro';
+    protected static ?string $modelLabel = 'Fatura';
+    protected static ?string $pluralModelLabel = 'Faturas';
 
     public static function form(Form $form): Form
     {
@@ -43,39 +43,39 @@ class BillResource extends Resource
                     Wizard\Step::make('Dados Fatura')
                         ->columns(2)
                         ->schema([
-                        Select::make('customer_id')
-                            ->label('Cliente')
-                            ->searchable()
-                            ->getSearchResultsUsing(
-                                fn (string $search): array =>
+                            Select::make('customer_id')
+                                ->label('Cliente')
+                                ->searchable()
+                                ->getSearchResultsUsing(
+                                    fn(string $search): array =>
                                     DB::table('customers')
                                         ->select(DB::raw("concat(cpf_or_cnpj, ' ', company_name) as name, id"))
                                         ->where('cpf_or_cnpj', 'like', "%{$search}%")
                                         ->orWhere('company_name', 'like', "%{$search}%")
                                         ->limit(50)->pluck('name', 'id')->toArray()
                                 )
-                            ->reactive()
-                            ->afterStateUpdated(
-                                function($state, Set $set, Get $get){
-                                    if(blank($state)) return;
-                                    $set('bank_id', Customer::where($get('customer_id'))->bank()->id);
-                                    $duoDate = SuportFunctions::CalculateDuoDate($state, $get);
-                                    $set('due_date', $duoDate);
-                                }
-                            ),
-                        DatePicker::make('emission_date')
-                            ->label('Data de Emissão')
-                            ->default(date('d-m-Y H:i:s',strtotime(now()))),
-                        DatePicker::make('due_date')
-                            ->label('Data de Vencimento')
-                            ->placeholder('dd/mm/aaaa'),
-                        TextInput::make('historic')
-                            ->label('Historico'),
-                        Select::make('situation_id')
-                            ->label('Situação')
-                            ->searchable()
-                            ->relationship('situation', 'name')
-                            ->options(json_decode(Situation::all()->pluck('name', 'id')->toJson(), true)),
+                                ->reactive()
+                                ->afterStateUpdated(
+                                    function ($state, Set $set, Get $get) {
+                                        if (blank($state)) return;
+                                        $set('bank_id', Customer::where($get('customer_id'))->bank()->id);
+                                        $duoDate = SuportFunctions::CalculateDuoDate($state, $get);
+                                        $set('due_date', $duoDate);
+                                    }
+                                ),
+                            DatePicker::make('emission_date')
+                                ->label('Data de Emissão')
+                                ->default(date('d-m-Y H:i:s', strtotime(now()))),
+                            DatePicker::make('due_date')
+                                ->label('Data de Vencimento')
+                                ->placeholder('dd/mm/aaaa'),
+                            TextInput::make('historic')
+                                ->label('Historico'),
+                            Select::make('situation_id')
+                                ->label('Situação')
+                                ->searchable()
+                                ->relationship('situation', 'name')
+                                ->options(json_decode(Situation::all()->pluck('name', 'id')->toJson(), true)),
                         ]),
                     Wizard\Step::make('Ctes a faturar')
                         ->schema([
@@ -85,7 +85,7 @@ class BillResource extends Resource
                                 ->bulkToggleable()
                                 ->options(
                                     fn(Get $get): ?Collection =>
-                                        DB::table('ctes')
+                                    DB::table('ctes')
                                         ->join('branches', 'ctes.branch_id', '=', 'branches.id')
                                         ->select(DB::raw("
                                             concat('Origem: ', branches.abbreviation, ' | ', 'Numero do CT-e: ', ctes.id,
@@ -159,7 +159,7 @@ class BillResource extends Resource
                             TextInput::make('barr_code')
                                 ->disabled()
                                 ->label('Codigo de Barras'),
-                                DatePicker::make('writeoff_date')
+                            DatePicker::make('writeoff_date')
                                 ->label('Data de Baixa'),
                             Select::make('receiving_type_id')
                                 ->label('Tipo de Recebimento')
@@ -220,5 +220,4 @@ class BillResource extends Resource
                 SoftDeletingScope::class,
             ]);
     }
-
 }

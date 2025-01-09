@@ -18,6 +18,8 @@ class AccountPayableResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $navigationLabel = 'Contas a Pagar';
     protected static ?string $navigationGroup = 'Financeiro';
+    protected static ?string $modelLabel = 'Contas a Pagar';
+    protected static ?string $pluralModelLabel = 'Contas a Pagar';
 
     public static function form(Form $form): Form
     {

@@ -31,15 +31,10 @@ use Leandrocfe\FilamentPtbrFormFields\PhoneNumber;
 class CustomerResource extends Resource
 {
     protected static ?string $model = Customer::class;
-
     protected static ?string $modelLabel = 'Cliente';
-
     protected static ?string $pluralModelLabel = 'Clientes';
-
     protected static ?string $navigationIcon = 'heroicon-o-user-plus';
-
     protected static ?string $navigationGroup = 'Cadastros';
-
     protected static ?string $navigationLabel = 'Clientes';
 
     public static function form(Form $form): Form

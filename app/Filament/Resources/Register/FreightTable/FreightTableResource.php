@@ -24,15 +24,10 @@ use Leandrocfe\FilamentPtbrFormFields\Money;
 class FreightTableResource extends Resource
 {
     protected static ?string $model = FreightTable::class;
-
     protected static ?string $modelLabel = 'Tabela de Frete';
-
     protected static ?string $pluralModelLabel = 'Tabelas de Frete';
-
     protected static ?string $navigationIcon = 'heroicon-o-truck';
-
     protected static ?string $navigationGroup = 'Cadastros';
-
     protected static ?string $navigationLabel = 'Tabelas de Frete';
 
     public static function form(Form $form): Form

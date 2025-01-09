@@ -18,15 +18,10 @@ use Filament\Forms\Components\Grid;
 class CitySettingResource extends Resource
 {
     protected static ?string $model = CitySetting::class;
-
     protected static ?string $modelLabel = 'Configurar Prefeitura';
-
     protected static ?string $pluralModelLabel = 'Prefeituras';
-
     protected static ?string $navigationGroup = 'Configurações';
-
     protected static ?string $navigationLabel = 'Prefeitura';
-
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form

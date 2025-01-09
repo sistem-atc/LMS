@@ -15,7 +15,7 @@ class BranchSeeder extends Seeder
     {
 
         Branch::create([
-            'abbreviation' => 'MTZ',
+            'abbreviation' => '01001',
             'name' => 'G2L LOGISTICA S.A',
             'phantasy_name' => 'G2L LOGISTICA S.A',
             'cnpj' => '29081265000143',

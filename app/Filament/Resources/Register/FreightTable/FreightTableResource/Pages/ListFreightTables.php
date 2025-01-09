@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Register\FreightTable\FreightTableResource\Pages;
 
+use App\Actions\FilamentActions\FavoriteResourceAction;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 use App\Filament\Resources\Register\FreightTable\FreightTableResource;
@@ -14,6 +15,7 @@ class ListFreightTables extends ListRecords
     {
         return [
             Actions\CreateAction::make()->label('Cadastrar Nova Tabela de Frete'),
+            FavoriteResourceAction::make()->className(static::$resource),
         ];
     }
 }

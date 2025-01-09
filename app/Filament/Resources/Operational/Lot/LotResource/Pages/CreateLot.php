@@ -3,9 +3,9 @@
 namespace App\Filament\Resources\Operational\Lot\LotResource\Pages;
 
 use Illuminate\Support\Arr;
+use App\Models\DocumentFiscalCustomer;
 use Filament\Resources\Pages\CreateRecord;
 use App\Filament\Resources\Operational\Lot\LotResource;
-use App\Models\DocumentFiscalCustomer;
 
 class CreateLot extends CreateRecord
 {
@@ -28,8 +28,7 @@ class CreateLot extends CreateRecord
     {
         $lotId = $this->record->id;
 
-        foreach($this->documentsFiscalCustomer as $id)
-        {
+        foreach ($this->documentsFiscalCustomer as $id) {
             DocumentFiscalCustomer::where('id', $id)
                 ->update([
                     'lot_id' => $lotId,

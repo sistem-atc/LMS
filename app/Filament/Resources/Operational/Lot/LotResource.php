@@ -33,16 +33,11 @@ use Leandrocfe\FilamentPtbrFormFields\Money;
 class LotResource extends Resource
 {
     protected static ?string $model = Lot::class;
-
-    protected static ?string $modelLabel = 'Lote';
-
-    protected static ?string $pluralModelLabel = 'Lotes';
-
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-
     protected static ?string $navigationGroup = 'Operacional';
-
     protected static ?string $navigationLabel = 'Lotes Pré CTes';
+    protected static ?string $modelLabel = 'Lote';
+    protected static ?string $pluralModelLabel = 'Lotes';
 
     public static function form(Form $form): Form
     {

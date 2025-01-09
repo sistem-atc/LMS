@@ -39,7 +39,6 @@ class Branch extends Model
         'certificatePFX',
         'password_certificate',
         'phantasy_name',
-        'system_town',
     ];
 
     protected $casts = [

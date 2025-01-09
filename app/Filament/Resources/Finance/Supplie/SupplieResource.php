@@ -18,6 +18,8 @@ class SupplieResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $navigationLabel = 'Suprimentos';
     protected static ?string $navigationGroup = 'Financeiro';
+    protected static ?string $modelLabel = 'Suprimento';
+    protected static ?string $pluralModelLabel = 'Suprimentos';
 
     public static function form(Form $form): Form
     {

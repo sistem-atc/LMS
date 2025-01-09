@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Register\Nature\NatureResource\Pages;
 
+use App\Actions\FilamentActions\FavoriteResourceAction;
 use App\Filament\Resources\Register\Nature\NatureResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
@@ -14,6 +15,7 @@ class ListNatures extends ListRecords
     {
         return [
             Actions\CreateAction::make()->label('Cadastrar Naturezas'),
+            FavoriteResourceAction::make()->className(static::$resource),
         ];
     }
 }

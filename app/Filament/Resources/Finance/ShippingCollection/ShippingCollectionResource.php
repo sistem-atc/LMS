@@ -18,6 +18,8 @@ class ShippingCollectionResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $navigationLabel = 'Cobrança';
     protected static ?string $navigationGroup = 'Financeiro';
+    protected static ?string $modelLabel = 'Cobrança';
+    protected static ?string $pluralModelLabel = 'Cobranças';
 
     public static function form(Form $form): Form
     {

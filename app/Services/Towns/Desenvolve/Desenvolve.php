@@ -2,18 +2,18 @@
 
 namespace App\Services\Towns\Desenvolve;
 
+use SimpleXMLElement;
 use App\Enums\TypeRPS;
-use Illuminate\Support\Str;
+use App\Enums\HttpMethod;
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Validator;
 use App\Services\Utils\Towns\Bases\LinkTownBase;
 use App\Services\Utils\Towns\Interfaces\LinkTownsInterface;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule;
-use SimpleXMLElement;
 
 class Desenvolve extends LinkTownBase implements LinkTownsInterface
 {
 
-    protected static $verb = 'POST';
+    protected static $verb = HttpMethod::POST;
     protected static $operation;
 
     protected static $headers = [];
@@ -230,8 +230,8 @@ class Desenvolve extends LinkTownBase implements LinkTownsInterface
 
     private static function mountMensage(SimpleXMLElement $dataMsg): SimpleXMLElement
     {
-
-        $mountMessage = self::assembleMessage();
+        //<![CDATA[[DadosMsg]]]>
+        $mountMessage = parent::assembleMessage();
 
         $mountMessage->registerXPathNamespace('e', 'http://www.e-nfs.com.br');
 
@@ -241,11 +241,5 @@ class Desenvolve extends LinkTownBase implements LinkTownsInterface
         $dom->appendChild($dom->ownerDocument->importNode($fragment, true));
 
         return $mountMessage;
-    }
-
-    private static function assembleMessage(): SimpleXMLElement
-    {
-        //<![CDATA[[DadosMsg]]]>
-        return new SimpleXMLElement(file_get_contents(__DIR__ . 'schemas/AssembleMessage.xml'));
     }
 }

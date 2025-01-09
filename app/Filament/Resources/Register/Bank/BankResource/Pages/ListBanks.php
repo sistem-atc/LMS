@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Register\Bank\BankResource\Pages;
 
+use App\Actions\FilamentActions\FavoriteResourceAction;
 use App\Filament\Resources\Register\Bank\BankResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
@@ -14,6 +15,7 @@ class ListBanks extends ListRecords
     {
         return [
             Actions\CreateAction::make()->label('Cadastrar Banco'),
+            FavoriteResourceAction::make()->className(static::$resource),
         ];
     }
 }

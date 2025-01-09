@@ -2,9 +2,9 @@
 
 namespace App\Services\Towns\Betha;
 
+use App\Enums\HttpMethod;
 use SimpleXMLElement;
 use App\Enums\TypeRPS;
-use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use App\Enums\MotivosCancelamento;
 use Illuminate\Support\Facades\Validator;
@@ -14,7 +14,7 @@ use App\Services\Utils\Towns\Interfaces\LinkTownsInterface;
 class Betha extends LinkTownBase implements LinkTownsInterface
 {
 
-    protected static $verb = 'POST';
+    protected static $verb = HttpMethod::POST;
     private static SimpleXMLElement $headMsg;
     protected static $operation;
 
@@ -60,7 +60,7 @@ class Betha extends LinkTownBase implements LinkTownsInterface
         };
 
         self::$operation = 'CancelarNfse';
-        $dataMsg = parent::composeMessage(self::$operation, __DIR__);
+        $dataMsg = parent::composeMessage(self::$operation);
         $codigoCancelamento = 'MC0' . MotivosCancelamento::from($data['motivoCancelamento'])->getLabel();
 
         $dataMsg->Numero = $data['numeroNF'];
@@ -88,7 +88,7 @@ class Betha extends LinkTownBase implements LinkTownsInterface
         };
 
         self::$operation = 'ConsultarLoteRps';
-        $dataMsg = parent::composeMessage(self::$operation, __DIR__);
+        $dataMsg = parent::composeMessage(self::$operation);
         $dataMsg->Cnpj = $data['cnpj'];
         $dataMsg->InscricaoMunicipal = $data['inscricaoMunicipal'];
         $dataMsg->Protocolo = $data['protocolo'];
@@ -112,7 +112,7 @@ class Betha extends LinkTownBase implements LinkTownsInterface
         };
 
         self::$operation = 'ConsultarNfseFaixa';
-        $dataMsg = parent::composeMessage(self::$operation, __DIR__);
+        $dataMsg = parent::composeMessage(self::$operation);
 
         $dataMsg->Cnpj = $data['cnpj'];
         $dataMsg->InscricaoMunicipal = $data['inscricaoMunicipal'];
@@ -143,7 +143,7 @@ class Betha extends LinkTownBase implements LinkTownsInterface
         };
 
         self::$operation = 'ConsultarNfsePorRps';
-        $dataMsg = parent::composeMessage(self::$operation, __DIR__);
+        $dataMsg = parent::composeMessage(self::$operation);
 
         $dataMsg->Cnpj = $data['cnpj'];
         $dataMsg->InscricaoMunicipal = $data['inscricaoMunicipal'];
@@ -171,7 +171,7 @@ class Betha extends LinkTownBase implements LinkTownsInterface
         };
 
         self::$operation = 'ConsultarNfseServicoPrestado';
-        $dataMsg = parent::composeMessage(self::$operation, __DIR__);
+        $dataMsg = parent::composeMessage(self::$operation);
 
         $dataMsg->Cnpj = $data['cnpj'];
         $dataMsg->InscricaoMunicipal = $data['inscricaoMunicipal'];
@@ -188,7 +188,7 @@ class Betha extends LinkTownBase implements LinkTownsInterface
     {
 
         self::$operation = 'ConsultarNfseServicoTomado';
-        $dataMsg = parent::composeMessage(self::$operation, __DIR__);
+        $dataMsg = parent::composeMessage(self::$operation);
 
         if (!isset($data['cnpjTomador'])) {
             unset($dataMsg->Intermediario);
@@ -278,7 +278,7 @@ class Betha extends LinkTownBase implements LinkTownsInterface
         };
 
         self::$operation = 'GerarNfse';
-        $dataMsg = parent::composeMessage(self::$operation, __DIR__);
+        $dataMsg = parent::composeMessage(self::$operation);
 
         $dataMsg->Cnpj = $data['cnpj'];
         $dataMsg->InscricaoMunicipal = $data['inscricaoMunicipal'];
@@ -308,7 +308,7 @@ class Betha extends LinkTownBase implements LinkTownsInterface
         };
 
         self::$operation = 'RecepcionarLoteRps';
-        $dataMsg = parent::composeMessage(self::$operation, __DIR__);
+        $dataMsg = parent::composeMessage(self::$operation);
 
         $dataMsg->Cnpj = $data['cnpj'];
         $dataMsg->InscricaoMunicipal = $data['inscricaoMunicipal'];
@@ -338,7 +338,7 @@ class Betha extends LinkTownBase implements LinkTownsInterface
         };
 
         self::$operation = 'RecepcionarLoteRpsSincrono';
-        $dataMsg = parent::composeMessage(self::$operation, __DIR__);
+        $dataMsg = parent::composeMessage(self::$operation);
 
         $dataMsg->Cnpj = $data['cnpj'];
         $dataMsg->InscricaoMunicipal = $data['inscricaoMunicipal'];
@@ -368,7 +368,7 @@ class Betha extends LinkTownBase implements LinkTownsInterface
         };
 
         self::$operation = 'SubstituirNfse';
-        $dataMsg = parent::composeMessage(self::$operation, __DIR__);
+        $dataMsg = parent::composeMessage(self::$operation);
 
         $dataMsg->Cnpj = $data['cnpj'];
         $dataMsg->InscricaoMunicipal = $data['inscricaoMunicipal'];
@@ -382,7 +382,7 @@ class Betha extends LinkTownBase implements LinkTownsInterface
     private static function mountMensage(SimpleXMLElement $headMsg, SimpleXMLElement $dataMsg): SimpleXMLElement
     {
 
-        $mountMessage = self::assembleMessage();
+        $mountMessage = parent::assembleMessage();
 
         $mountMessage->registerXPathNamespace('e', 'http://www.e-nfs.com.br');
         $mountMessage->registerXPathNamespace('soapenv', 'http://schemas.xmlsoap.org/soap/envelope/');
@@ -398,15 +398,6 @@ class Betha extends LinkTownBase implements LinkTownsInterface
         $dom->appendChild($dom->ownerDocument->createCDATASection($dom->ownerDocument->saveXML($fragment)));
 
         return $mountMessage;
-    }
-
-    private static function assembleMessage(): SimpleXMLElement
-    {
-
-        $content = file_get_contents(__DIR__ . 'schemas/AssembleMensage.xml');
-        $content = Str::replace('[Mount_Mensage]', self::$operation, $content);
-
-        return new SimpleXMLElement($content);
     }
 
     private static function composeHeader(string $type): SimpleXMLElement | null

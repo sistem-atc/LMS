@@ -18,6 +18,8 @@ class AccountingResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $navigationLabel = 'Contabilidade';
     protected static ?string $navigationGroup = 'Financeiro';
+    protected static ?string $modelLabel = 'Contabilidade';
+    protected static ?string $pluralModelLabel = 'Contabilidades';
 
     public static function form(Form $form): Form
     {

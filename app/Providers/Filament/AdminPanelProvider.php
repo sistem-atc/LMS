@@ -22,6 +22,8 @@ use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use App\Filament\Resources\Settings\User\UserResource\Pages\EditProfile;
+use Filament\View\PanelsRenderHook;
+use Illuminate\Support\Facades\Blade;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -48,7 +50,7 @@ class AdminPanelProvider extends PanelProvider
                 'info' => Color::Amber,
             ])
             ->renderHook(
-                'panels::global-search.before',
+                PanelsRenderHook::GLOBAL_SEARCH_BEFORE,
                 function (): View {
                     session(null)->has('DateBase') ?
                         $DateBase = session(null)->get('DateBase') :
@@ -71,6 +73,7 @@ class AdminPanelProvider extends PanelProvider
                     );
                 }
             )
+            ->renderHook(PanelsRenderHook::TOPBAR_START, fn(): string => Blade::render('@livewire(\'topbar.favorite-resources\')'))
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([

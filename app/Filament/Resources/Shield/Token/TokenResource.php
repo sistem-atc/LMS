@@ -12,6 +12,10 @@ use Rupadana\ApiService\Resources\TokenResource as ResourcesTokenResource;
 
 class TokenResource extends ResourcesTokenResource
 {
+
+    protected static ?string $modelLabel = 'Token';
+    protected static ?string $pluralModelLabel = 'Tokens';
+
     public static function form(Form $form): Form
     {
         return $form
@@ -42,5 +46,4 @@ class TokenResource extends ResourcesTokenResource
             'edit' => Pages\EditToken::route('/{record}/edit'),
         ];
     }
-
 }

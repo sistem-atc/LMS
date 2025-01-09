@@ -26,12 +26,12 @@ use App\Filament\Resources\HumanResources\Employee\EmployeeResource\Pages;
 class EmployeeResource extends Resource
 {
     protected static ?string $model = Employee::class;
-    protected static ?string $modelLabel = 'Funcionário';
-    protected static ?string $pluralModelLabel = 'Funcionários';
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $navigationGroup = 'Recursos Humanos';
     protected static ?string $navigationLabel = 'Funcionários';
     protected static ?string $recordTitleAttribute = 'name';
+    protected static ?string $modelLabel = 'Funcionário';
+    protected static ?string $pluralModelLabel = 'Funcionários';
 
     public static function form(Form $form): Form
     {
@@ -40,26 +40,26 @@ class EmployeeResource extends Resource
                 Grid::make([
                     'default' => 1,
                 ])
-                ->schema([
-                   Tabs::make('Employee Register')
-                   ->tabs([
-                        Tabs\Tab::make('Basic')
-                            ->label('Dados Pessoais')
-                            ->icon('carbon-document-horizontal')
-                            ->columns(2)
-                            ->schema(self::getBasicEmployee()),
-                        Tabs\Tab::make('Address')
-                            ->label('Endereço')
-                            ->icon('carbon-stay-inside')
-                            ->columns(2)
-                            ->schema(self::getAddressEmployee()),
-                        /*Tabs\Tab::make('admission')
+                    ->schema([
+                        Tabs::make('Employee Register')
+                            ->tabs([
+                                Tabs\Tab::make('Basic')
+                                    ->label('Dados Pessoais')
+                                    ->icon('carbon-document-horizontal')
+                                    ->columns(2)
+                                    ->schema(self::getBasicEmployee()),
+                                Tabs\Tab::make('Address')
+                                    ->label('Endereço')
+                                    ->icon('carbon-stay-inside')
+                                    ->columns(2)
+                                    ->schema(self::getAddressEmployee()),
+                                /*Tabs\Tab::make('admission')
                             ->label('Admissão')
                             ->icon('carbon-calendar-heat-map')
                             ->columns(2)
                             ->schema(self::getAdmissionEmployee()),*/
-                   ]),
-                ])
+                            ]),
+                    ])
             ]);
     }
 
@@ -87,8 +87,7 @@ class EmployeeResource extends Resource
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])
-            ->bulkActions([
-            ]);
+            ->bulkActions([]);
     }
 
     public static function getRelations(): array
@@ -110,8 +109,7 @@ class EmployeeResource extends Resource
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()
-            ->withoutGlobalScopes([
-            ]);
+            ->withoutGlobalScopes([]);
     }
 
     protected static function getBasicEmployee(): array
@@ -121,7 +119,7 @@ class EmployeeResource extends Resource
                 ->required()
                 ->rules([
                     function () {
-                        return function ($property ,$value, Closure $fail) {
+                        return function ($property, $value, Closure $fail) {
                             if (count(explode(' ', $value)) === 1) {
                                 $fail('Informe o Nome Completo');
                             }
@@ -202,5 +200,4 @@ class EmployeeResource extends Resource
                 ->label('Data de Demissão'),
         ];
     }
-
 }

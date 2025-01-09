@@ -35,7 +35,6 @@ return new class extends Migration
             $table->string('siafi')->nullable();
             $table->string('certificatePFX')->nullable();
             $table->string('password_certificate')->nullable();
-            $table->string('system_town')->nullable();
             $table->blameable();
             $table->timestamps();
             $table->softDeletes();

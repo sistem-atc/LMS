@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\HumanResources\Employee\EmployeeResource\Pages;
 
+use App\Actions\FilamentActions\FavoriteResourceAction;
 use App\Filament\Resources\HumanResources\Employee\EmployeeResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
@@ -14,6 +15,7 @@ class ListEmployees extends ListRecords
     {
         return [
             Actions\CreateAction::make()->label('Cadastrar Funcionarios'),
+            FavoriteResourceAction::make()->className(static::$resource),
         ];
     }
 }

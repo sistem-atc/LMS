@@ -30,15 +30,10 @@ use App\Services\Utils\Towns\Helpers\GetClassTowns;
 class BranchResource extends Resource
 {
     protected static ?string $model = Branch::class;
-
     protected static ?string $modelLabel = 'Filial';
-
     protected static ?string $pluralModelLabel = 'Filiais';
-
     protected static ?string $navigationIcon = 'heroicon-o-building-library';
-
     protected static ?string $navigationGroup = 'Configurações';
-
     protected static ?string $navigationLabel = 'Filiais';
 
     public static function form(Form $form): Form
@@ -109,10 +104,7 @@ class BranchResource extends Resource
                     ->schema([
                         TextInput::make('municipal_registration')->label('Incrição Municipal'),
                         TextInput::make('state_registration')->label('Incrição Estadual'),
-                        Select::make('system_town')
-                            ->label('Selecionar o sistema da Prefeitura')
-                            ->options(fn() => GetClassTowns::getClassesTowns(app_path('Services/Towns')))
-                    ])->columns(3),
+                    ])->columns(2),
                 Section::make()
                     ->schema([
                         Section::make('')->schema([
@@ -145,7 +137,7 @@ class BranchResource extends Resource
                         TextInput::make('district')->label('Bairro'),
                         TextInput::make('city')->label('Cidade'),
                         TextInput::make('state')->label('UF'),
-                        Hidden::make('ibge'),
+                        TextInput::make('ibge')->label('Codigo IGBE')->readOnly(),
                         Hidden::make('gia'),
                         Hidden::make('ddd'),
                         Hidden::make('siafi'),

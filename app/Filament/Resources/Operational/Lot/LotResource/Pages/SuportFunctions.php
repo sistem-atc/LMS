@@ -2,27 +2,30 @@
 
 namespace App\Filament\Resources\Operational\Lot\LotResource\Pages;
 
-use App\Models\Lot;
-use App\Enums\LotEnum;
-use App\Models\Cte;
-use Filament\Forms\Get;
-use App\Models\DocumentFiscalCustomer;
 use Carbon\Carbon;
+use App\Models\Lot;
+use App\Models\Cte;
+use App\Enums\LotEnum;
+use Filament\Forms\Get;
+use Illuminate\Support\Collection;
+use App\Models\DocumentFiscalCustomer;
 use Illuminate\Database\Eloquent\Model;
 use Filament\Notifications\Notification;
-use Illuminate\Support\Collection;
 
 class SuportFunctions
 {
     public static function generate(Model $record): Notification
     {
-
         $allDocuments = DocumentFiscalCustomer::where('lot_id', $record->id)->get();
 
-        if ($record->status == LotEnum::DIGITAÇÃO) {
+        if ($record->status == LotEnum::DIGITAÇÃO->getLabel()) {
+
+            //Validar o tipo de documento a ser criado
+            // Intermunicipal RPS-t
+            // Intramunicipal CT-e
 
             $dataCte = static::calculateCTe($allDocuments);
-
+            dd($dataCte);
             //Validar como parametrizar todos os campos incluindo os devidos calculos
 
             $cteNumber = Cte::create([
@@ -108,7 +111,7 @@ class SuportFunctions
             $subTotal = $doc['pesoB'];
             $weightTotal += $subTotal;
         };
-
+        //Criar Regra para calcular de acordo com a tabela, ou em caso de ausencia na tabela frete cheio
         return $weightTotal * 0.3;
     }
 

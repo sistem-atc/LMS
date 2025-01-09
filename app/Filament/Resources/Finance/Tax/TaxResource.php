@@ -18,6 +18,8 @@ class TaxResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $navigationLabel = 'Fiscal';
     protected static ?string $navigationGroup = 'Financeiro';
+    protected static ?string $modelLabel = 'Fiscal';
+    protected static ?string $pluralModelLabel = 'Fiscais';
 
     public static function form(Form $form): Form
     {

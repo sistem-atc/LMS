@@ -2,10 +2,10 @@
 
 namespace App\Services\Towns\Abaco;
 
+use App\Enums\HttpMethod;
 use Carbon\Carbon;
 use SimpleXMLElement;
 use App\Enums\TypeRPS;
-use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Validator;
 use App\Services\Utils\Towns\Bases\LinkTownBase;
@@ -14,7 +14,7 @@ use App\Services\Utils\Towns\Interfaces\LinkTownsInterface;
 class Abaco extends LinkTownBase implements LinkTownsInterface
 {
 
-    protected static $verb = 'POST';
+    protected static $verb = HttpMethod::POST;
     private static SimpleXMLElement $headMsg;
     protected static $operation;
 
@@ -104,10 +104,10 @@ class Abaco extends LinkTownBase implements LinkTownsInterface
 
         $endPoint = 'arecepcionarloterps?wsdl';
         self::$operation = 'RecepcionarLoteRPS';
-        $mountMessage = self::assembleMessage();
+        $mountMessage = parent::assembleMessage();
         $loteRPS = 'LoteRPS';
 
-        $mountRPS = parent::composeMessage($loteRPS, __DIR__);
+        $mountRPS = parent::composeMessage($loteRPS);
         $mountRPS->InfRps->attributes()->id = $data['rps'][0]['infoId'];
         $mountRPS->InfRps->IdentificacaoRps->Numero = $data['rps'][0]['numeroRps'];
         $mountRPS->InfRps->IdentificacaoRps->Serie = $data['rps'][0]['serieRps'];
@@ -157,7 +157,7 @@ class Abaco extends LinkTownBase implements LinkTownsInterface
         //Assinar XML
         $mountRPS = parent::Sign_XML($mountRPS->asXML());
 
-        $dataMsg = parent::composeMessage(self::$operation, __DIR__);
+        $dataMsg = parent::composeMessage(self::$operation);
         $dataMsg->LoteRps['id'] = $data['idLote'];
         $dataMsg->LoteRps->NumeroLote = $data['numeroLote'];
         $dataMsg->LoteRps->Cnpj = $data['cnpj'];
@@ -192,7 +192,7 @@ class Abaco extends LinkTownBase implements LinkTownsInterface
 
         $endPoint = 'aconsultarsituacaoloterps?wsdl';
         self::$operation = 'ConsultarSituacaoLoteRps';
-        $dataMsg = parent::composeMessage(self::$operation, __DIR__);
+        $dataMsg = parent::composeMessage(self::$operation);
 
         $dataMsg->Cnpj = $data['cnpj'];
         $dataMsg->InscricaoMunicipal = $data['inscricaoMunicipal'];
@@ -223,7 +223,7 @@ class Abaco extends LinkTownBase implements LinkTownsInterface
 
         $endPoint = 'aconsultarnfseporrps?wsdl';
         self::$operation = 'ConsultarNfsePorRps';
-        $dataMsg = parent::composeMessage(self::$operation, __DIR__);
+        $dataMsg = parent::composeMessage(self::$operation);
 
         $dataMsg->Numero = $data['numero_RPS'];
         $dataMsg->Serie = $data['serie_RPS'];
@@ -251,7 +251,7 @@ class Abaco extends LinkTownBase implements LinkTownsInterface
 
         $endPoint = 'aconsultarloterps?wsdl';
         self::$operation = 'ConsultarLoteRps';
-        $dataMsg = parent::composeMessage(self::$operation, __DIR__);
+        $dataMsg = parent::composeMessage(self::$operation);
 
         $dataMsg->Cnpj = $data['cnpj'];
         $dataMsg->InscricaoMunicipal = $data['inscricaoMunicipal'];
@@ -278,7 +278,7 @@ class Abaco extends LinkTownBase implements LinkTownsInterface
 
         $endPoint = 'aconsultarnfse?wsdl';
         self::$operation = 'ConsultarNfse';
-        $dataMsg = parent::composeMessage(self::$operation, __DIR__);
+        $dataMsg = parent::composeMessage(self::$operation);
 
         if (!isset($data['tomador'])) {
             unset($dataMsg->Tomador);
@@ -319,7 +319,7 @@ class Abaco extends LinkTownBase implements LinkTownsInterface
     private static function mountMensage(SimpleXMLElement $headMsg, SimpleXMLElement $dataMsg): SimpleXMLElement
     {
 
-        $mountMessage = self::assembleMessage();
+        $mountMessage = parent::assembleMessage();
 
         $mountMessage->registerXPathNamespace('e', 'http://www.e-nfs.com.br');
         $mountMessage->registerXPathNamespace('soapenv', 'http://schemas.xmlsoap.org/soap/envelope/');
@@ -335,14 +335,6 @@ class Abaco extends LinkTownBase implements LinkTownsInterface
         $dom->appendChild($dom->ownerDocument->importNode($fragment, true));
 
         return $mountMessage;
-    }
-
-    private static function assembleMessage(): SimpleXMLElement
-    {
-        $content = file_get_contents(__DIR__ . '/schemas/AssembleMensage.xml');
-        $content = Str::replace('[Mount_Mensage]', self::$operation, $content);
-
-        return new SimpleXMLElement($content);
     }
 
     private static function composeHeader(string $type): SimpleXMLElement | null

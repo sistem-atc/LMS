@@ -2,6 +2,7 @@
 
 namespace App\Services\Towns\Dsf;
 
+use App\Enums\HttpMethod;
 use App\Enums\TypeRPS;
 use Illuminate\Support\Str;
 use App\Services\Utils\Towns\Bases\LinkTownBase;
@@ -9,7 +10,7 @@ use App\Services\Utils\Towns\Bases\LinkTownBase;
 class Dsf extends LinkTownBase
 {
 
-    protected static $verb = 'POST';
+    protected static $verb = HttpMethod::POST;
     protected static $operation;
 
     protected static $headers = ['Content-Type' => 'text/xml;charset=utf-8'];
@@ -235,16 +236,6 @@ class Dsf extends LinkTownBase
         $mountMessage = Str::replace('[DadosMsg]', $dataMsg, $mountMessage);
 
         return parent::Conection(self::$url, $mountMessage, self::$headers, self::$verb, false);
-    }
-
-    private static function assembleMessage(bool $Version): string
-    {
-
-        if ($Version) {
-        } else {
-        }
-
-        return '';
     }
 
     private static function composeHeader(string $Tipo): string

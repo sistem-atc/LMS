@@ -81,7 +81,7 @@ class Exemple implements ExcludeSelectInterface
         dd($abaco->gerarNota($arrayData));
     }
 
-    private function ConsultarSituacaoLoteRPS(): void
+    protected function ConsultarSituacaoLoteRPS(): void
     {
         $arrayData = [
             'cnpj' => '18575072000122',
@@ -89,14 +89,14 @@ class Exemple implements ExcludeSelectInterface
             'protocolo' => 123456,
         ];
 
-        $ibgeCode = 'codeIbge';
+        $ibgeCode = '1302603';
         $class = config('links-towns.' . $ibgeCode . '.class');
         $abaco = app($class, ['codeIbge' => $ibgeCode]);
 
-        dd($abaco->gerarNota($arrayData));
+        dd($abaco->ConsultarSituacaoLoteRPS($arrayData));
     }
 
-    private function ConsultarNfsePorRps(): void
+    protected function ConsultarNfsePorRps(): void
     {
         $arrayData = [
             'cnpj' => '18575072000122',
@@ -110,10 +110,10 @@ class Exemple implements ExcludeSelectInterface
         $class = CitySetting::where('ibge', $ibgeCode)->first();
         $abaco = app($class, ['codeIbge' => $ibgeCode]);
 
-        dd($abaco->consultarNota($arrayData));
+        dd($abaco->ConsultarNfsePorRps($arrayData));
     }
 
-    private function ConsultarLoteRps(): void
+    protected function ConsultarLoteRps(): void
     {
         $arrayData = [
             'cnpj' => '18575072000122',
@@ -125,10 +125,10 @@ class Exemple implements ExcludeSelectInterface
         $class = CitySetting::where('ibge', $ibgeCode)->first();
         $abaco = app($class, ['codeIbge' => $ibgeCode]);
 
-        dd($abaco->consultarNota($arrayData));
+        dd($abaco->ConsultarLoteRps($arrayData));
     }
 
-    private function ConsultarNfse(): void
+    protected function ConsultarNfse(): void
     {
         $arrayData = [
             'cnpj' => '18575072000122',
@@ -141,6 +141,6 @@ class Exemple implements ExcludeSelectInterface
         $class = CitySetting::where('ibge', $ibgeCode)->first();
         $abaco = app($class, ['codeIbge' => $ibgeCode]);
 
-        dd($abaco->consultarNota($arrayData));
+        dd($abaco->ConsultarNfse($arrayData));
     }
 }

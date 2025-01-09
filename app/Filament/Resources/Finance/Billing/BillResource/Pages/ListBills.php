@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Finance\Billing\BillResource\Pages;
 
+use App\Actions\FilamentActions\FavoriteResourceAction;
 use Filament\Actions;
 use App\Models\Customer;
 use Filament\Forms\Components\Select;
@@ -80,7 +81,7 @@ class ListBills extends ListRecords
                         ->title('User registered')
                         ->body('The user has been created successfully.'),
                 ),
-
+            FavoriteResourceAction::make()->className(static::$resource),
         ];
     }
 }

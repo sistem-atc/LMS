@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Finance\Supplie\SupplieResource\Pages;
 
+use App\Actions\FilamentActions\FavoriteResourceAction;
 use App\Filament\Resources\Finance\Supplie\SupplieResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
@@ -14,6 +15,7 @@ class ListSupplies extends ListRecords
     {
         return [
             Actions\CreateAction::make(),
+            FavoriteResourceAction::make()->className(static::$resource),
         ];
     }
 }

@@ -7,12 +7,10 @@ use App\Services\Banks\BanksGateway\Contracts\BanksInterface;
 class BanksStrategy
 {
 
-    private $service;
+    protected $service;
 
     public function __construct(BanksInterface $service)
     {
         $this->service = $service;
     }
-
-
 }

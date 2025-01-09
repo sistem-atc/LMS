@@ -2,6 +2,7 @@
 
 namespace App\Services\Towns\SigIss_2;
 
+use App\Enums\HttpMethod;
 use Carbon\Carbon;
 use SimpleXMLElement;
 use Illuminate\Support\Str;
@@ -14,7 +15,7 @@ use App\Services\Utils\Towns\Interfaces\LinkTownsInterface;
 class SigIss_2 extends LinkTownBase implements LinkTownsInterface
 {
 
-    protected static $verb = 'POST';
+    protected static $verb = HttpMethod::POST;
     protected static $operation;
 
     protected static $headers = [];
@@ -44,7 +45,7 @@ class SigIss_2 extends LinkTownBase implements LinkTownsInterface
         };
 
         self::$operation = 'CancelarNota';
-        $dataMsg = parent::composeMessage(self::$operation, __DIR__);
+        $dataMsg = parent::composeMessage(self::$operation);
         $codigoCancelamento = 'MC0' . MotivosCancelamento::from($data['motivoCancelamento'])->getLabel();
 
         $dataMsg->nota = $data['Numero'];
@@ -74,7 +75,7 @@ class SigIss_2 extends LinkTownBase implements LinkTownsInterface
         };
 
         self::$operation = 'ConsultarNotaPrestador';
-        $dataMsg = parent::composeMessage(self::$operation, __DIR__);
+        $dataMsg = parent::composeMessage(self::$operation);
 
         $dataMsg->nota = $data['Numero'];
         $dataMsg->cnpj = $data['Cnpj'];
@@ -103,7 +104,7 @@ class SigIss_2 extends LinkTownBase implements LinkTownsInterface
         };
 
         self::$operation = 'ConsultarNotaValida';
-        $dataMsg = parent::composeMessage(self::$operation, __DIR__);
+        $dataMsg = parent::composeMessage(self::$operation);
 
         $dataMsg->nota = $data['Numero'];
         $dataMsg->serie = $data['Serie'];
@@ -172,7 +173,7 @@ class SigIss_2 extends LinkTownBase implements LinkTownsInterface
         };
 
         self::$operation = 'GerarNota';
-        $dataMsg = parent::composeMessage(self::$operation, __DIR__);
+        $dataMsg = parent::composeMessage(self::$operation);
 
         $dataMsg->ccm = $data['InscricaoMunicipal'];
         $dataMsg->cnpj = $data['Cnpj'];
@@ -236,7 +237,7 @@ class SigIss_2 extends LinkTownBase implements LinkTownsInterface
         };
 
         self::$operation = 'gerateste';
-        $dataMsg = parent::composeMessage(self::$operation, __DIR__);
+        $dataMsg = parent::composeMessage(self::$operation);
 
         $dataMsg->dado = $data['dado'];
 
@@ -247,20 +248,10 @@ class SigIss_2 extends LinkTownBase implements LinkTownsInterface
 
     private static function mountMensage(SimpleXMLElement $dataMsg): SimpleXMLElement
     {
-        $mountMessage = self::assembleMessage();
+        $mountMessage = parent::assembleMessage();
         $mountMessage = Str::replace('[DadosMsg]', self::$operation, $dataMsg);
 
         return new SimpleXMLElement($mountMessage);
-    }
-
-
-    private static function assembleMessage(): SimpleXMLElement
-    {
-
-        $content = file_get_contents(__DIR__ . 'schemas/AssembleMensage.xml');
-        $content = Str::replace('[Mount_Mensage]', self::$operation, $content);
-
-        return new SimpleXMLElement($content);
     }
 
     private static function Tratar_Data(string $data): Carbon

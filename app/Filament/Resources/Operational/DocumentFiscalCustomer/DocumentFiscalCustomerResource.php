@@ -27,11 +27,11 @@ use Illuminate\Support\Collection;
 class DocumentFiscalCustomerResource extends Resource
 {
     protected static ?string $model = DocumentFiscalCustomer::class;
-    protected static ?string $modelLabel = 'Nota Fiscal';
-    protected static ?string $pluralModelLabel = 'Notas Fiscais';
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $navigationGroup = 'Operacional';
     protected static ?string $navigationLabel = 'Notas Fiscais Clientes';
+    protected static ?string $modelLabel = 'Nota Fiscal';
+    protected static ?string $pluralModelLabel = 'Notas Fiscais';
 
     public static function form(Form $form): Form
     {

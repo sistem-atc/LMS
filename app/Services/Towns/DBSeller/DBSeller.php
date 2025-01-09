@@ -2,20 +2,20 @@
 
 namespace App\Services\Towns\DBSeller;
 
-use App\Enums\MotivosCancelamento;
+use Carbon\Carbon;
+use SimpleXMLElement;
 use App\Enums\TypeRPS;
-use Illuminate\Support\Str;
+use App\Enums\HttpMethod;
+use Illuminate\Validation\Rule;
+use App\Enums\MotivosCancelamento;
+use Illuminate\Support\Facades\Validator;
 use App\Services\Utils\Towns\Bases\LinkTownBase;
 use App\Services\Utils\Towns\Interfaces\LinkTownsInterface;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule;
-use SimpleXMLElement;
 
 class DBSeller extends LinkTownBase implements LinkTownsInterface
 {
 
-    protected static $verb = 'POST';
+    protected static $verb = HttpMethod::POST;
     protected static $operation;
     protected static $headers = [];
 
@@ -58,7 +58,7 @@ class DBSeller extends LinkTownBase implements LinkTownsInterface
         };
 
         self::$operation = 'CancelarNfse';
-        $dataMsg = parent::composeMessage(self::$operation, __DIR__);
+        $dataMsg = parent::composeMessage(self::$operation);
 
         $dataMsg->Numero = $data['Numero'];
         $dataMsg->Cnpj = $data['Cnpj'];
@@ -87,8 +87,8 @@ class DBSeller extends LinkTownBase implements LinkTownsInterface
         };
 
         self::$operation = 'ConsultarLoteRps';
-        $dataMsg = parent::composeMessage(self::$operation, __DIR__);
-        $mountMessage = self::assembleMessage();
+        $dataMsg = parent::composeMessage(self::$operation);
+        $mountMessage = parent::assembleMessage();
 
         $dataMsg->Cnpj = $data['Cnpj'];
         $dataMsg->InscricaoMunicipal = $data['InscricaoMunicipal'];
@@ -113,8 +113,8 @@ class DBSeller extends LinkTownBase implements LinkTownsInterface
         };
 
         self::$operation = 'ConsultarNfse';
-        $dataMsg = parent::composeMessage(self::$operation, __DIR__);
-        $mountMessage = self::assembleMessage();
+        $dataMsg = parent::composeMessage(self::$operation);
+        $mountMessage = parent::assembleMessage();
 
         $dataMsg->Cnpj = $data['Cnpj'];
         $dataMsg->InscricaoMunicipal = $data['InscricaoMunicipal'];
@@ -141,8 +141,8 @@ class DBSeller extends LinkTownBase implements LinkTownsInterface
         };
 
         self::$operation = 'ConsultarNfsePorRps';
-        $dataMsg = parent::composeMessage(self::$operation, __DIR__);
-        $mountMessage = self::assembleMessage();
+        $dataMsg = parent::composeMessage(self::$operation);
+        $mountMessage = parent::assembleMessage();
 
         $dataMsg->Numero = $data['Numero'];
         $dataMsg->Serie = $data['Serie'];
@@ -168,8 +168,8 @@ class DBSeller extends LinkTownBase implements LinkTownsInterface
         };
 
         self::$operation = 'ConsultarSituacaoLoteRps';
-        $dataMsg = parent::composeMessage(self::$operation, __DIR__);
-        $mountMessage = self::assembleMessage();
+        $dataMsg = parent::composeMessage(self::$operation);
+        $mountMessage = parent::assembleMessage();
 
         $dataMsg->Cnpj = $data['Cnpj'];
         $dataMsg->InscricaoMunicipal = $data['InscricaoMunicipal'];
@@ -240,12 +240,9 @@ class DBSeller extends LinkTownBase implements LinkTownsInterface
         };
 
         self::$operation = 'RecepcionarLoteRps';
-        $dataMsg = parent::composeMessage(self::$operation, __DIR__);
-        $mountRPS = self::assembleMessage();
 
         $loteRPS = 'LoteRPS';
-
-        $mountRPS = parent::composeMessage($loteRPS, __DIR__);
+        $mountRPS = parent::composeMessage($loteRPS);
         $mountRPS->InfRps->attributes()->id = $data['rps'][0]['infoId'];
         $mountRPS->InfRps->IdentificacaoRps->Numero = $data['rps'][0]['numeroRps'];
         $mountRPS->InfRps->IdentificacaoRps->Serie = $data['rps'][0]['serieRps'];
@@ -291,27 +288,11 @@ class DBSeller extends LinkTownBase implements LinkTownsInterface
         $mountRPS->Tomador->IdentificacaoTomador->Endereco->Cep = $data['rps'][0]['tomador']['cep'];
         $mountRPS->Tomador->IdentificacaoTomador->Contato->Contato = $data['rps'][0]['tomador']['contato'];
         $mountRPS->Tomador->IdentificacaoTomador->Contato->Email = $data['rps'][0]['tomador']['email'];
-
-        //Assinar XML
         $mountRPS = parent::Sign_XML($mountRPS->asXML());
 
-        $dataMsg = parent::composeMessage(self::$operation, __DIR__);
-        $dataMsg->LoteRps['id'] = $data['idLote'];
-        $dataMsg->LoteRps->NumeroLote = $data['numeroLote'];
-        $dataMsg->LoteRps->Cnpj = $data['cnpj'];
-        $dataMsg->LoteRps->InscricaoMunicipal = $data['inscricaoMunicipal'];
-        $dataMsg->LoteRps->QuantidadeRps = $data['qtdRps'];
-
-        $listaRps = $dataMsg->LoteRps->ListaRps;
-        $dom = dom_import_simplexml($listaRps);
-        $fragment = dom_import_simplexml($mountRPS);
-        $dom->appendChild($dom->ownerDocument->importNode($fragment, true));
-
+        $dataMsg = parent::composeMessage(self::$operation);
         $mountMessage = self::mountMensage($dataMsg);
-
-        //Assinar MountMessage
         $mountMessage = parent::Sign_XML($mountMessage);
-
 
         $dataMsg->Numero = $data['numeroNF'];
         $dataMsg = self::Sign_XML($dataMsg);
@@ -322,22 +303,14 @@ class DBSeller extends LinkTownBase implements LinkTownsInterface
     private static function mountMensage(SimpleXMLElement $dataMsg): SimpleXMLElement
     {
 
-        $mountMessage = self::assembleMessage();
+        $mountMessage = parent::assembleMessage();
 
         $dadosMsg = $mountMessage->xpath('//xml')[0];
+        //<![CDATA[[DadosMsg]]]>
         $dom = dom_import_simplexml($dadosMsg);
         $fragment = dom_import_simplexml($dataMsg);
         $dom->appendChild($dom->ownerDocument->importNode($fragment, true));
 
         return $mountMessage;
-    }
-
-    private static function assembleMessage(): SimpleXMLElement
-    {
-        //<![CDATA[[DadosMsg]]]>
-        $content = file_get_contents(__DIR__ . '/schemas/AssembleMensage.xml');
-        $content = Str::replace('[Mount_Mensage]', self::$operation, $content);
-
-        return new SimpleXMLElement($content);
     }
 }

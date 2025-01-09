@@ -15,21 +15,20 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class MultiSoftwareResource extends Resource
 {
     protected static ?string $model = MultiSoftware::class;
-    protected static ?string $modelLabel = 'Multi Cte';
-    protected static ?string $pluralModelLabel = 'Multi Ctes';
     protected static ?string $navigationIcon = 'heroicon-o-rss';
-
     protected static ?string $navigationGroup = 'Operacional';
     protected static ?string $navigationLabel = 'Multi Cte';
+    protected static ?string $modelLabel = 'Multi Cte';
+    protected static ?string $pluralModelLabel = 'Multi Ctes';
 
     public static function form(Form $form): Form
     {
         return $form
-        ->schema([
-            Forms\Components\TextInput::make('Filial Origem')->required(),
-            Forms\Components\TextInput::make('Numero Documento')->required(),
-            Forms\Components\TextInput::make('Serie')->required(),
-        ]);
+            ->schema([
+                Forms\Components\TextInput::make('Filial Origem')->required(),
+                Forms\Components\TextInput::make('Numero Documento')->required(),
+                Forms\Components\TextInput::make('Serie')->required(),
+            ]);
     }
 
     public static function table(Table $table): Table

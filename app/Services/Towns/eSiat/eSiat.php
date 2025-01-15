@@ -3,7 +3,7 @@
 namespace App\Services\Towns\eSiat;
 
 use SimpleXMLElement;
-use Illuminate\Support\Str;
+use App\Enums\HttpMethod;
 use App\Enums\MotivosCancelamento;
 use App\Services\Utils\Towns\Bases\LinkTownBase;
 use App\Services\Utils\Towns\Interfaces\LinkTownsInterface;
@@ -14,7 +14,7 @@ use Illuminate\Validation\Rule;
 class eSiat extends LinkTownBase implements LinkTownsInterface, DevelopInterface
 {
 
-    protected static $verb = 'POST';
+    protected static $verb = HttpMethod::POST;
     protected static $operation;
 
     protected static $headers = [
@@ -189,6 +189,7 @@ class eSiat extends LinkTownBase implements LinkTownsInterface, DevelopInterface
     private static function mountMensage(SimpleXMLElement $dataMsg): SimpleXMLElement
     {
 
+        //<![CDATA[[DadosMsg]]]>
         $mountMessage = self::assembleMessage();
 
         $mountMessage->registerXPathNamespace('soapenv', 'http://schemas.xmlsoap.org/soap/envelope/');
@@ -201,12 +202,4 @@ class eSiat extends LinkTownBase implements LinkTownsInterface, DevelopInterface
         return $mountMessage;
     }
 
-    private static function assembleMessage(): SimpleXMLElement
-    {
-        //<![CDATA[[DadosMsg]]]>
-        $content = file_get_contents(__DIR__ . 'schemas/AssembleMensage.xml');
-        $content = Str::replace('[Mount_Mensage]', self::$operation, $content);
-
-        return new SimpleXMLElement($content);
-    }
 }

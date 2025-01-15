@@ -3,20 +3,20 @@
 namespace App\Services\Towns\Etransparencia;
 
 use Carbon\Carbon;
+use App\Enums\HttpMethod;
 use Illuminate\Support\Str;
 use App\Enums\MotivosCancelamento;
 use App\Services\Utils\Towns\Bases\LinkTownBase;
-use App\Services\Utils\Towns\Helpers\LinksTowns;
+use App\Services\Utils\Towns\Interfaces\DevelopInterface;
 use App\Services\Utils\Towns\Interfaces\LinkTownsInterface;
-
-class Etransparencia extends LinkTownBase implements LinkTownsInterface
+class Etransparencia extends LinkTownBase implements LinkTownsInterface, DevelopInterface
 {
 
     private static $Codigo_Usuario = 'a5a07214-136a-4254-bad1-0272dc48238018ah24ni0119grav000-ed10--5l';
     private static $Codigo_Contribuinte = '1d658984-9ea7-4cbb-8769-e50f53fdd1f250ah10ni0091grav104-ed28--1l';
 
     protected static $link;
-    protected static $verb = 'POST';
+    protected static $verb = HttpMethod::POST;
     private static $url;
 
     protected static $headers = [];

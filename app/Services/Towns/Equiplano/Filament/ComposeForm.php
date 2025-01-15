@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Towns\Desenvolve\Filament;
+namespace App\Services\Towns\Equiplano\Filament;
 
 use Filament\Forms\Form;
 use App\Services\Utils\Towns\Interfaces\ExcludeSelectInterface;

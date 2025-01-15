@@ -7,10 +7,11 @@ use Illuminate\Support\Str;
 use App\Enums\MotivosCancelamento;
 use App\Services\Utils\Towns\Bases\LinkTownBase;
 use App\Services\Utils\Towns\Interfaces\LinkTownsInterface;
+use App\Services\Utils\Towns\Interfaces\DevelopInterface;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
-class eSiat extends LinkTownBase implements LinkTownsInterface
+class eSiat extends LinkTownBase implements LinkTownsInterface, DevelopInterface
 {
 
     protected static $verb = 'POST';

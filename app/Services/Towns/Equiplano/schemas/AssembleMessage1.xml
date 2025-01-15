@@ -1,0 +1,7 @@
+<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope"
+    xmlns:ser="http://services.enfsws.es">
+    <soap:Header/>
+    <soap:Body>
+        <ser:[Mount_Mensage]></ser:[Mount_Mensage]>
+    </soap:Body>
+</soap:Envelope>

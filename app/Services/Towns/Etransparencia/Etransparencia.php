@@ -7,8 +7,9 @@ use Illuminate\Support\Str;
 use App\Enums\MotivosCancelamento;
 use App\Services\Utils\Towns\Bases\LinkTownBase;
 use App\Services\Utils\Towns\Helpers\LinksTowns;
+use App\Services\Utils\Towns\Interfaces\LinkTownsInterface;
 
-class Etransparencia extends LinkTownBase
+class Etransparencia extends LinkTownBase implements LinkTownsInterface
 {
 
     private static $Codigo_Usuario = 'a5a07214-136a-4254-bad1-0272dc48238018ah24ni0119grav000-ed10--5l';
@@ -17,16 +18,35 @@ class Etransparencia extends LinkTownBase
     protected static $link;
     protected static $verb = 'POST';
     private static $url;
-    private static $headerVersion;
 
     protected static $headers = [];
 
-    public function __construct(LinksTowns $linksTowns, $codeIbge)
+    public function gerarNota(array $dados): string|int|array
     {
-        parent::__construct($linksTowns);
-        static::$link = $this->getLinkForIbge($codeIbge);
-        self::$url = explode("|", self::$link)[0];
-        self::$headerVersion = explode("|", self::$link)[1] ?? null;
+        return self::PROCESSARPS();
+    }
+
+    public function consultarNota(array $dados): string|int|array
+    {
+        return self::CONSULTANOTASPROTOCOLO($dados['protocolo'] ?? '');
+    }
+
+    public function cancelarNota(array $dados): string|int|array
+    {
+        return self::cancelarNotaEletronica(
+            $dados['serieNota'],
+            $dados['numeroNota'],
+            $dados['serieRps'],
+            $dados['numeroRps'],
+            $dados['valorNota'],
+            $dados['motivoCancelamento'],
+            $dados['cancelarGuia']
+        );
+    }
+
+    public function __construct($codeIbge)
+    {
+        parent::__construct($codeIbge);
     }
 
     public static function cancelarNotaEletronica(
@@ -400,4 +420,5 @@ class Etransparencia extends LinkTownBase
         }
         return $mensageXML;
     }
+
 }

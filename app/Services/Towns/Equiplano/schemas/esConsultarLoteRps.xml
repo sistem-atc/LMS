@@ -1,0 +1,9 @@
+<es:esConsultarLoteRpsEnvio xmlns:es="http://www.equiplano.com.br/esnfs"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.equiplano.com.br/enfs esConsultarLoteRpsEnvio_v01.xsd">
+    <prestador>
+        <nrInscricaoMunicipal></nrInscricaoMunicipal>
+        <cnpj></cnpj>
+        <idEntidade></idEntidade>
+    </prestador>
+    <nrLoteRps></nrLoteRps>
+</es:esConsultarLoteRpsEnvio>

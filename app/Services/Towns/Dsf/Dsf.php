@@ -6,8 +6,10 @@ use App\Enums\HttpMethod;
 use App\Enums\TypeRPS;
 use Illuminate\Support\Str;
 use App\Services\Utils\Towns\Bases\LinkTownBase;
+use App\Services\Utils\Towns\Interfaces\DevelopInterface;
+use App\Services\Utils\Towns\Interfaces\LinkTownsInterface;
 
-class Dsf extends LinkTownBase
+class Dsf extends LinkTownBase implements LinkTownsInterface, DevelopInterface
 {
 
     protected static $verb = HttpMethod::POST;

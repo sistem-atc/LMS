@@ -21,6 +21,8 @@ return new class extends Migration
             $table->string('namespace')->nullable();
             $table->string('version')->default(0);
             $table->string('class_path');
+            $table->string('username')->nullable();
+            $table->string('password')->nullable();
             $table->blameable();
             $table->timestamps();
             $table->softDeletes();

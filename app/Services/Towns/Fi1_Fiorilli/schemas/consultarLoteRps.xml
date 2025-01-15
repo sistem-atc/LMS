@@ -1,0 +1,9 @@
+<nfse:ConsultarLoteRpsEnvio>
+    <nfse:Prestador>
+        <nfse:CpfCnpj>
+            <nfse:Cnpj></nfse:Cnpj>
+        </nfse:CpfCnpj>
+        <nfse:InscricaoMunicipal></nfse:InscricaoMunicipal>
+    </nfse:Prestador>
+    <nfse:Protocolo></nfse:Protocolo>
+</nfse:ConsultarLoteRpsEnvio>

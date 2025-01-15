@@ -1,0 +1,15 @@
+<nfse:CancelarNfseEnvio>
+    <nfse:Pedido>
+        <nfse:InfPedidoCancelamento Id="">
+            <nfse:IdentificacaoNfse>
+                <nfse:Numero></nfse:Numero>
+                <nfse:CpfCnpj>
+                    <nfse:Cnpj></nfse:Cnpj>
+                </nfse:CpfCnpj>
+                <nfse:InscricaoMunicipal></nfse:InscricaoMunicipal>
+                <nfse:CodigoMunicipio></nfse:CodigoMunicipio>
+            </nfse:IdentificacaoNfse>
+            <nfse:CodigoCancelamento></nfse:CodigoCancelamento>
+        </nfse:InfPedidoCancelamento>
+    </nfse:Pedido>
+</nfse:CancelarNfseEnvio>

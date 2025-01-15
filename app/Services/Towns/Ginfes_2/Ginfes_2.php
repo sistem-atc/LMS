@@ -2,10 +2,10 @@
 
 namespace App\Services\Towns\Ginfes_2;
 
-use App\Helpers\Connection;
-
+use App\Services\Utils\Towns\Bases\LinkTownBase;
+use App\Services\Utils\Towns\Interfaces\DevelopInterface;
+use App\Services\Utils\Towns\Interfaces\LinkTownsInterface;
 use InvalidArgumentException;
-use const App\CityHall\Tinus\Nothing;
 
 enum Consulta_Notas
 {
@@ -13,7 +13,7 @@ enum Consulta_Notas
     case Por_Periodo;
 }
 
-class Ginfes_2
+class Ginfes_2 extends LinkTownBase implements LinkTownsInterface, DevelopInterface
 {
 
     private static $instance;

@@ -3,10 +3,11 @@
 namespace App\Services\Towns\Nfe_Paulista;
 
 use InvalidArgumentException;
-use App\CityHall\Helpers\XmlSigner;
-use App\CityHall\Helpers\Connection;
+use App\Services\Utils\Towns\Bases\LinkTownBase;
+use App\Services\Utils\Towns\Interfaces\LinkTownsInterface;
+use App\Services\Utils\Towns\Interfaces\DevelopInterface;
 
-class Nfe_Paulista
+class Nfe_Paulista extends LinkTownBase implements LinkTownsInterface, DevelopInterface
 {
 
     private static $instance;

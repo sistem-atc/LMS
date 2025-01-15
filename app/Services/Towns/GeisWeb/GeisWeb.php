@@ -3,8 +3,10 @@
 namespace App\Services\Towns\GeisWeb;
 
 use App\Services\Utils\Towns\Bases\LinkTownBase;
+use App\Services\Utils\Towns\Interfaces\LinkTownsInterface;
+use App\Services\Utils\Towns\Interfaces\DevelopInterface;
 
-class GeisWeb extends LinkTownBase
+class GeisWeb extends LinkTownBase implements LinkTownsInterface, DevelopInterface
 {
 
     protected static $link;

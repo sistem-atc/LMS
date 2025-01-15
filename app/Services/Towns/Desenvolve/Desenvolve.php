@@ -9,8 +9,9 @@ use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Validator;
 use App\Services\Utils\Towns\Bases\LinkTownBase;
 use App\Services\Utils\Towns\Interfaces\LinkTownsInterface;
+use App\Services\Utils\Towns\Interfaces\DevelopInterface;
 
-class Desenvolve extends LinkTownBase implements LinkTownsInterface
+class Desenvolve extends LinkTownBase implements LinkTownsInterface, DevelopInterface
 {
 
     protected static $verb = HttpMethod::POST;
@@ -67,7 +68,7 @@ class Desenvolve extends LinkTownBase implements LinkTownsInterface
 
         $mountMessage = self::mountMensage($dataMsg);
 
-        return parent::Conection(self::$url, $mountMessage, self::$headers, self::$verb, false);
+        return parent::Conection(parent::$url, $mountMessage, static::$headers, self::$verb, false);
     }
 
     public static function consultarLoteRpsEnvio($data): string|int
@@ -95,7 +96,7 @@ class Desenvolve extends LinkTownBase implements LinkTownsInterface
 
         $mountMessage = self::mountMensage($dataMsg);
 
-        return parent::Conection(self::$url, $mountMessage, self::$headers, self::$verb, false);
+        return parent::Conection(parent::$url, $mountMessage, self::$headers, self::$verb, false);
     }
 
     public static function consultarNfseRpsEnvio($data): string|int
@@ -109,7 +110,7 @@ class Desenvolve extends LinkTownBase implements LinkTownsInterface
 
         $mountMessage = self::mountMensage($dataMsg);
 
-        return parent::Conection(self::$url, $mountMessage, self::$headers, self::$verb, false);
+        return parent::Conection(parent::$url, $mountMessage, self::$headers, self::$verb, false);
     }
 
     public static function consultarNfseServicoTomadoEnvio($data): string|int
@@ -138,7 +139,7 @@ class Desenvolve extends LinkTownBase implements LinkTownsInterface
 
         $mountMessage = self::mountMensage($dataMsg);
 
-        return parent::Conection(self::$url, $mountMessage, self::$headers, self::$verb, false);
+        return parent::Conection(parent::$url, $mountMessage, self::$headers, self::$verb, false);
     }
 
     public static function enviarLoteRpsEnvio($data): string|int
@@ -167,7 +168,7 @@ class Desenvolve extends LinkTownBase implements LinkTownsInterface
 
         $mountMessage = self::mountMensage($dataMsg);
 
-        return parent::Conection(self::$url, $mountMessage, self::$headers, self::$verb, false);
+        return parent::Conection(parent::$url, $mountMessage, self::$headers, self::$verb, false);
     }
 
     public static function enviarLoteRpsSincronoEnvio($data): string|int
@@ -196,7 +197,7 @@ class Desenvolve extends LinkTownBase implements LinkTownsInterface
 
         $mountMessage = self::mountMensage($dataMsg);
 
-        return parent::Conection(self::$url, $mountMessage, self::$headers, self::$verb, false);
+        return parent::Conection(parent::$url, $mountMessage, self::$headers, self::$verb, false);
     }
 
     public static function gerarNfseEnvio($data): string|int
@@ -225,7 +226,7 @@ class Desenvolve extends LinkTownBase implements LinkTownsInterface
 
         $mountMessage = self::mountMensage($dataMsg);
 
-        return parent::Conection(self::$url, $mountMessage, self::$headers, self::$verb, false);
+        return parent::Conection(parent::$url, $mountMessage, self::$headers, self::$verb, false);
     }
 
     private static function mountMensage(SimpleXMLElement $dataMsg): SimpleXMLElement

@@ -5,8 +5,10 @@ namespace App\Services\Towns\eCity;
 use Illuminate\Support\Str;
 use App\Services\Utils\Towns\Bases\LinkTownBase;
 use SimpleXMLElement;
+use App\Services\Utils\Towns\Interfaces\DevelopInterface;
+use App\Services\Utils\Towns\Interfaces\LinkTownsInterface;
 
-class eCity extends LinkTownBase
+class eCity extends LinkTownBase implements LinkTownsInterface, DevelopInterface
 {
 
     protected static $link;

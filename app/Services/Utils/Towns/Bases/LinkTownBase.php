@@ -22,24 +22,41 @@ class LinkTownBase
     protected static $codeIbge;
     protected static $namespace;
     protected static $version;
-
+    protected static $username;
+    protected static $password;
 
     public function __construct($codeIbge)
     {
 
         $dataTowns = CitySetting::where('ibge', $codeIbge)->first();
 
+        $urlAmbient = 'url_' . $this->getAmbient();
+
         if ($dataTowns === null) {
             throw new \InvalidArgumentException("Prefeitura Não Configurada.");
         };
 
-        $urlAmbient = 'url_' . $this->getAmbient();
+        if ($dataTowns->$urlAmbient === null) {
+            throw new \InvalidArgumentException("Ambiente não configurado.");
+        }
 
         self::$codeIbge = $codeIbge;
+        self::$username = $dataTowns->username;
+        self::$password = $dataTowns->password;
         self::$url = $dataTowns->$urlAmbient;
         self::$headerVersion = $dataTowns->headerversion;
         self::$namespace = $dataTowns->namespace;
         self::$version = $dataTowns->version;
+    }
+
+    protected static function getUsername(): ?string
+    {
+        return self::$username ?? null;
+    }
+
+    protected static function getPassword(): ?string
+    {
+        return self::$password ?? null;
     }
 
     protected static function getNamespace(): ?string
@@ -68,11 +85,16 @@ class LinkTownBase
         return new SimpleXMLElement(file_get_contents($basedir . '/schemas/' . $type . '.xml'));
     }
 
-    protected static function assembleMessage(string $replaceOperation = null): SimpleXMLElement
+    protected static function assembleMessage(string $replaceOperation = null, int $version = 0): SimpleXMLElement
     {
 
         $baseDir = self::getDir();
-        $content = file_get_contents($baseDir . '/schemas/AssembleMensage.xml');
+
+        if ($version === 0) {
+            $content = file_get_contents($baseDir . '/schemas/AssembleMensage.xml');
+        } else {
+            $content = file_get_contents($baseDir . '/schemas/AssembleMensage' . $version . '.xml');
+        }
 
         if (strpos($content, $replaceOperation) !== false) {
             $content = Str::replace('[Mount_Mensage]', $replaceOperation, $content);

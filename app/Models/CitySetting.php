@@ -22,5 +22,7 @@ class CitySetting extends Model
         'namespace',
         'version',
         'class_path',
+        'username',
+        'password',
     ];
 }

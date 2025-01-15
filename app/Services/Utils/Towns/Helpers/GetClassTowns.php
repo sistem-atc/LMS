@@ -5,7 +5,7 @@ namespace App\Services\Utils\Towns\Helpers;
 use ReflectionClass;
 use Illuminate\Support\Facades\File;
 use App\Services\Utils\Towns\Interfaces\ExcludeSelectInterface;
-
+use App\Services\Utils\Towns\Interfaces\DevelopInterface;
 class GetClassTowns
 {
 
@@ -23,7 +23,8 @@ class GetClassTowns
 
                 if (
                     !$reflection->isAbstract() &&
-                    !$reflection->implementsInterface(ExcludeSelectInterface::class)
+                    !$reflection->implementsInterface(ExcludeSelectInterface::class) &&
+                    !$reflection->implementsInterface(DevelopInterface::class)
                 ) {
                     $classes[$reflection->getName()] = $reflection->getShortName();
                 }

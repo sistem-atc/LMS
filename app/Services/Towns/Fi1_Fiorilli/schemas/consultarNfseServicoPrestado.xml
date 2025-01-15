@@ -1,0 +1,13 @@
+<nfse:ConsultarNfseServicoPrestadoEnvio>
+    <nfse:Prestador>
+        <nfse:CpfCnpj>
+            <nfse:Cnpj></nfse:Cnpj>
+        </nfse:CpfCnpj>
+        <nfse:InscricaoMunicipal></nfse:InscricaoMunicipal>
+    </nfse:Prestador>
+    <nfse:PeriodoEmissao>
+        <nfse:DataInicial></nfse:DataInicial>
+        <nfse:DataFinal></nfse:DataFinal>
+    </nfse:PeriodoEmissao>
+    <nfse:Pagina></nfse:Pagina>
+</nfse:ConsultarNfseServicoPrestadoEnvio>

@@ -90,7 +90,7 @@ class Exemple implements ExcludeSelectInterface
         ];
 
         $ibgeCode = '1302603';
-        $class = config('links-towns.' . $ibgeCode . '.class');
+        $class = CitySetting::where('ibge', $ibgeCode)->first();
         $abaco = app($class, ['codeIbge' => $ibgeCode]);
 
         dd($abaco->ConsultarSituacaoLoteRPS($arrayData));

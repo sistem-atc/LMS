@@ -3,8 +3,11 @@
 namespace App\Services\Towns\WebIss;
 
 use SimpleXMLElement;
+use App\Services\Utils\Towns\Bases\LinkTownBase;
+use App\Services\Utils\Towns\Interfaces\LinkTownsInterface;
+use App\Services\Utils\Towns\Interfaces\DevelopInterface;
 
-class WebIss
+class WebIss extends LinkTownBase implements LinkTownsInterface, DevelopInterface
 {
 
     public static function CancelarNfse(ByVal Used_Companny As String): string|int {

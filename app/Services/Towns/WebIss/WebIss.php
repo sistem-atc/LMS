@@ -17,8 +17,12 @@ class WebIss extends LinkTownBase implements LinkTownsInterface,DevelopInterface
     private static string|int|array|null $connection;
     private static SimpleXMLElement $mountMessage;
     private static string $operation;
+    protected static $headers;
 
-    protected static $headers = [];
+    public static function getHeaders(): array
+    {
+        return [];
+    }
 
     public function gerarNota(array $data): string|int|array
     {

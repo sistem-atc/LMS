@@ -19,9 +19,14 @@ class Abaco extends LinkTownBase implements LinkTownsInterface
     protected static string|int|array|null $connection;
     private static SimpleXMLElement $mountMessage;
     private static string $endPoint;
-    protected static $headers = [
-        'Content-Type' => 'text/xml;charset=UTF-8'
-    ];
+    protected static $headers;
+
+    public static function getHeaders(): array
+    {
+        return [
+            'Content-Type' => 'text/xml;charset=UTF-8'
+        ];
+    }
 
     public function gerarNota(array $data): string|int|array
     {

@@ -2,9 +2,44 @@
 
 namespace App\Services\Towns\Thema;
 
+use SimpleXMLElement;
+use App\Enums\HttpMethod;
+use App\Services\Utils\Towns\Bases\LinkTownBase;
+use App\Services\Utils\Towns\Interfaces\DevelopInterface;
+use App\Services\Utils\Towns\Interfaces\LinkTownsInterface;
 
-class Thema
+class Thema extends LinkTownBase implements LinkTownsInterface,DevelopInterface
 {
+
+    protected static $verb = HttpMethod::POST;
+    private static string|int|array|null $connection;
+    private static SimpleXMLElement $mountMessage;
+    private static string $endpoint;
+    private static string $operation;
+    protected static $headers;
+
+    public static function getHeaders(): array
+    {
+        return [
+            'Content-Type' => 'text/xml;charset=UTF-8',
+            'SOAPAction' => 'http://www.tinus.com.br/WSNFSE.' . self::$operation . '.' . self::$operation . ''
+        ];
+    }
+
+    public function gerarNota(array $data): string|int|array
+    {
+        return '';
+    }
+
+    public function consultarNota(array $data): string|int|array
+    {
+        return '';
+    }
+
+    public function cancelarNota(array $data): string|int|array
+    {
+        return '';
+    }
     /*    Option Explicit
 Private Type ClassType: Link_Prefeitura As String: Codigo_Cidade As String: Filial_Usada As String: End Type
 Private This As ClassType: Dim Links_Prefeituras As Object

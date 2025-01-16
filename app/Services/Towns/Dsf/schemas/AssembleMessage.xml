@@ -1,4 +1,6 @@
-<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:nfse="http://www.abrasf.org.br/nfse.xsd" xmlns:nfse1="http:/www.abrasf.org.br/nfse.xsd">
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+    xmlns:nfse="http://www.abrasf.org.br/nfse.xsd"
+    xmlns:nfse1="http:/www.abrasf.org.br/nfse.xsd">
     <soapenv:Header/>
     <soapenv:Body>
         <nfse:[Mount_Mensage]></nfse:[Mount_Mensage]>

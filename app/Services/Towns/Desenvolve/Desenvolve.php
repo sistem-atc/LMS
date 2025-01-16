@@ -15,9 +15,14 @@ class Desenvolve extends LinkTownBase implements LinkTownsInterface, DevelopInte
 {
 
     protected static $verb = HttpMethod::POST;
-    protected static $headers = [];
     protected static string|int|array|null $connection;
     private static SimpleXMLElement $mountMessage;
+    protected static $headers;
+
+    public static function getHeaders(): array
+    {
+        return [];
+    }
 
     public function gerarNota(array $data): string|int|array
     {

@@ -16,9 +16,15 @@ class DBSeller extends LinkTownBase implements LinkTownsInterface
 {
 
     protected static $verb = HttpMethod::POST;
-    protected static $headers = [];
     protected static string|int|array|null $connection;
     private static SimpleXMLElement $mountMessage;
+    protected static $headers;
+
+    public static function getHeaders(): array
+    {
+        return [];
+    }
+
 
     public function consultarNota(array $data): string|int|array
     {

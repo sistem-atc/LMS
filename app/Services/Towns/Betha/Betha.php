@@ -18,8 +18,12 @@ class Betha extends LinkTownBase implements LinkTownsInterface
     private static SimpleXMLElement $headMsg;
     protected static string|int|array|null $connection;
     private static SimpleXMLElement $mountMessage;
+    protected static $headers;
 
-    protected static $headers = [];
+    public static function getHeaders(): array
+    {
+        return [];
+    }
 
     public function gerarNota(array $data): string|int|array
     {

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Towns\Infisc_Gif\Filament;
+namespace App\Services\Towns\INfse\Filament;
 
 use Filament\Forms\Form;
 use App\Services\Utils\Towns\Interfaces\ExcludeSelectInterface;
@@ -13,3 +13,4 @@ class ComposeForm implements ExcludeSelectInterface
             ->schema([]);
     }
 }
+

@@ -1,0 +1,9 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+    xmlns:tin="http://www.tinus.com.br">
+    <soapenv:Header/>
+    <soapenv:Body>
+        <tin:[Mount_Mensage]>
+            <tin:Arg></tin:Arg>
+        </tin:[Mount_Mensage]>
+    </soapenv:Body>
+</soapenv:Envelope>

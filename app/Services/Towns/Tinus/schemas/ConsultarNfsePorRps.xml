@@ -1,0 +1,9 @@
+<tin:IdentificacaoRps>
+    <tin:Numero></tin:Numero>
+    <tin:Serie></tin:Serie>
+    <tin:Tipo></tin:Tipo>
+</tin:IdentificacaoRps>
+<tin:Prestador>
+    <tin:Cnpj></tin:Cnpj>
+    <tin:InscricaoMunicipal></tin:InscricaoMunicipal>
+</tin:Prestador>

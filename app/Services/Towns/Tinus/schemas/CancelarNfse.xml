@@ -1,0 +1,11 @@
+<tin:Pedido>
+    <tin:InfPedidoCancelamento id="">
+        <tin:IdentificacaoNfse>
+            <tin:Numero></tin:Numero>
+            <tin:Cnpj></tin:Cnpj>
+            <tin:InscricaoMunicipal></tin:InscricaoMunicipal>
+            <tin:CodigoMunicipio></tin:CodigoMunicipio>
+        </tin:IdentificacaoNfse>
+        <tin:CodigoCancelamento></tin:CodigoCancelamento>
+    </tin:InfPedidoCancelamento>
+</tin:Pedido>

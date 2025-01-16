@@ -1,0 +1,8 @@
+<tin:Prestador>
+    <tin:Cnpj></tin:Cnpj>
+    <tin:InscricaoMunicipal></tin:InscricaoMunicipal>
+</tin:Prestador>
+<tin:PeriodoEmissao>
+    <tin:DataInicial></tin:DataInicial>
+    <tin:DataFinal></tin:DataFinal>
+</tin:PeriodoEmissao>

@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum DocumentoTypeEnum: int
+enum DocumentTypeEnum: int
 {
     case CTE = 1;
     case RPSt = 2;

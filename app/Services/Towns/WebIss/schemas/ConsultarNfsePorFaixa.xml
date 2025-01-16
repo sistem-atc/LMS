@@ -1,0 +1,12 @@
+<ConsultarNfseFaixaEnvio xmlns="http://www.abrasf.org.br/nfse.xsd">
+    <Prestador>
+        <CpfCnpj>
+            <Cnpj></Cnpj>
+        </CpfCnpj>
+        <InscricaoMunicipal></InscricaoMunicipal>
+    </Prestador>
+    <Faixa>
+        <NumeroNfseInicial></NumeroNfseInicial>
+    </Faixa>
+    <Pagina></Pagina>
+</ConsultarNfseFaixaEnvio>

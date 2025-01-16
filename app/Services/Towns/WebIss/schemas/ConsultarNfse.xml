@@ -1,0 +1,11 @@
+<ConsultarNfseEnvio>
+    <Prestador>
+        <Cnpj></Cnpj>
+        <InscricaoMunicipal></InscricaoMunicipal>
+    </Prestador>
+    <NumeroNfse></NumeroNfse>
+    <PeriodoEmissao>
+        <DataInicial></DataInicial>
+        <DataFinal></DataFinal>
+    </PeriodoEmissao>
+</ConsultarNfseEnvio>

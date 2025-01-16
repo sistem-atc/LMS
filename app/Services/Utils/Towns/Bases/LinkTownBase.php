@@ -79,24 +79,34 @@ class LinkTownBase
         return self::$headerVersion ?? null;
     }
 
+    protected static function composeHeader(): SimpleXMLElement
+    {
+        $basedir = self::getDir();
+        $content = new SimpleXMLElement(file_get_contents($basedir . '/schemas/ComposeHeader.xml'));
+        $content->attributes()->versao = self::getHeaderVersion();
+        $content->versaoDados = self::getHeaderVersion();
+
+        return $content;
+    }
+
     protected static function composeMessage(string $type): SimpleXMLElement | null
     {
         $basedir = self::getDir();
         return new SimpleXMLElement(file_get_contents($basedir . '/schemas/' . $type . '.xml'));
     }
 
-    protected static function assembleMessage(string $replaceOperation = null, int $version = 0): SimpleXMLElement
+    protected static function assembleMessage(string $replaceOperation = null): SimpleXMLElement
     {
 
         $baseDir = self::getDir();
 
-        if ($version === 0) {
+        if (self::getVersion() === null) {
             $content = file_get_contents($baseDir . '/schemas/AssembleMensage.xml');
         } else {
-            $content = file_get_contents($baseDir . '/schemas/AssembleMensage' . $version . '.xml');
+            $content = file_get_contents($baseDir . '/schemas/AssembleMensage' . self::getVersion() . '.xml');
         }
 
-        if (strpos($content, $replaceOperation) !== false) {
+        if (strpos($content, '[Mount_Mensage]') !== false) {
             $content = Str::replace('[Mount_Mensage]', $replaceOperation, $content);
         }
 
@@ -122,7 +132,7 @@ class LinkTownBase
         return simplexml_load_string($xmlSigner::Sign_XML($xmlNoSigned));
     }
 
-    protected static function Conection(string $url, string $Mensage, ?array $headers, ?HttpMethod $verb): ?string
+    protected static function Conection(string $url, string $Mensage, ?array $headers, ?HttpMethod $verb): string|int|array|null
     {
         return Connection::Conexao($url, $Mensage, $headers, $verb);
     }

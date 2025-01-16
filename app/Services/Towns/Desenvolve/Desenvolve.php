@@ -15,28 +15,29 @@ class Desenvolve extends LinkTownBase implements LinkTownsInterface, DevelopInte
 {
 
     protected static $verb = HttpMethod::POST;
-    protected static $operation;
-
     protected static $headers = [];
+    protected static string|int|array|null $connection;
+    private static SimpleXMLElement $mountMessage;
 
     public function gerarNota(array $data): string|int|array
     {
-        return '';
+        return self::gerarNfseEnvio($data);
     }
 
     public function consultarNota(array $data): string|int|array
     {
-        return '';
+        return self::consultarNfseRpsEnvio($data);
     }
 
     public function cancelarNota(array $data): string|int|array
     {
-        return '';
+        return self::cancelarNfseEnvio($data);
     }
 
     public function __construct($codeIbge)
     {
         parent::__construct($codeIbge);
+        self::$connection = self::Conection(parent::$url, self::$mountMessage->asXML(), static::$headers, self::$verb, false);
     }
 
     public static function cancelarNfseEnvio($data): string|int
@@ -57,8 +58,7 @@ class Desenvolve extends LinkTownBase implements LinkTownsInterface, DevelopInte
             return ['errors' => $validator->errors(), 'response' => 422];
         };
 
-        self::$operation = 'cancelarNfseEnvio';
-        $dataMsg = self::composeMessage(self::$operation, __DIR__);
+        $dataMsg = self::composeMessage(__FUNCTION__);
 
         $dataMsg->Cnpj = $data['cnpj'];
         $dataMsg->InscricaoMunicipal = $data['inscricaoMunicipal'];
@@ -66,9 +66,9 @@ class Desenvolve extends LinkTownBase implements LinkTownsInterface, DevelopInte
 
         $dataMsg = self::Sign_XML($dataMsg);
 
-        $mountMessage = self::mountMensage($dataMsg);
+        self::mountMensage($dataMsg);
 
-        return parent::Conection(parent::$url, $mountMessage, static::$headers, self::$verb, false);
+        return self::$connection;
     }
 
     public static function consultarLoteRpsEnvio($data): string|int
@@ -89,28 +89,34 @@ class Desenvolve extends LinkTownBase implements LinkTownsInterface, DevelopInte
             return ['errors' => $validator->errors(), 'response' => 422];
         };
 
-        self::$operation = 'consultarLoteRpsEnvio';
-        $dataMsg = self::composeMessage(self::$operation, __DIR__);
+        $dataMsg = self::composeMessage(__FUNCTION__);
 
         $dataMsg->Protocolo = $data['protocolo'];
 
-        $mountMessage = self::mountMensage($dataMsg);
+        self::mountMensage($dataMsg);
 
-        return parent::Conection(parent::$url, $mountMessage, self::$headers, self::$verb, false);
+        return self::$connection;
     }
 
     public static function consultarNfseRpsEnvio($data): string|int
     {
 
-        self::$operation = 'consultarNfseRpsEnvio';
-        $dataMsg = self::composeMessage(self::$operation, __DIR__);
+        $validator = Validator::make($data, [
+            //Incluir as validações
+        ]);
+
+        if ($validator->fails()) {
+            return ['errors' => $validator->errors(), 'response' => 422];
+        };
+
+        $dataMsg = self::composeMessage(__FUNCTION__);
 
         $dataMsg->Protocolo = $data['protocolo'];
         $dataMsg = self::Sign_XML($dataMsg);
 
-        $mountMessage = self::mountMensage($dataMsg);
+        self::mountMensage($dataMsg);
 
-        return parent::Conection(parent::$url, $mountMessage, self::$headers, self::$verb, false);
+        return self::$connection;
     }
 
     public static function consultarNfseServicoTomadoEnvio($data): string|int
@@ -131,15 +137,14 @@ class Desenvolve extends LinkTownBase implements LinkTownsInterface, DevelopInte
             return ['errors' => $validator->errors(), 'response' => 422];
         };
 
-        self::$operation = 'consultarNfseServicoTomadoEnvio';
-        $dataMsg = self::composeMessage(self::$operation, __DIR__);
+        $dataMsg = self::composeMessage(__FUNCTION__);
 
         $dataMsg->Protocolo = $data['protocolo'];
         $dataMsg = self::Sign_XML($dataMsg);
 
-        $mountMessage = self::mountMensage($dataMsg);
+        self::mountMensage($dataMsg);
 
-        return parent::Conection(parent::$url, $mountMessage, self::$headers, self::$verb, false);
+        return self::$connection;
     }
 
     public static function enviarLoteRpsEnvio($data): string|int
@@ -160,15 +165,14 @@ class Desenvolve extends LinkTownBase implements LinkTownsInterface, DevelopInte
             return ['errors' => $validator->errors(), 'response' => 422];
         };
 
-        self::$operation = 'enviarLoteRpsEnvio';
-        $dataMsg = self::composeMessage(self::$operation, __DIR__);
+        $dataMsg = self::composeMessage(__FUNCTION__);
 
         $dataMsg->Protocolo = $data['protocolo'];
         $dataMsg = self::Sign_XML($dataMsg);
 
-        $mountMessage = self::mountMensage($dataMsg);
+        self::mountMensage($dataMsg);
 
-        return parent::Conection(parent::$url, $mountMessage, self::$headers, self::$verb, false);
+        return self::$connection;
     }
 
     public static function enviarLoteRpsSincronoEnvio($data): string|int
@@ -189,15 +193,14 @@ class Desenvolve extends LinkTownBase implements LinkTownsInterface, DevelopInte
             return ['errors' => $validator->errors(), 'response' => 422];
         };
 
-        self::$operation = 'enviarLoteRpsSincronoEnvio';
-        $dataMsg = self::composeMessage(self::$operation, __DIR__);
+        $dataMsg = self::composeMessage(__FUNCTION__);
 
         $dataMsg->Protocolo = $data['protocolo'];
         $dataMsg = self::Sign_XML($dataMsg);
 
-        $mountMessage = self::mountMensage($dataMsg);
+        self::mountMensage($dataMsg);
 
-        return parent::Conection(parent::$url, $mountMessage, self::$headers, self::$verb, false);
+        return self::$connection;
     }
 
     public static function gerarNfseEnvio($data): string|int
@@ -218,29 +221,27 @@ class Desenvolve extends LinkTownBase implements LinkTownsInterface, DevelopInte
             return ['errors' => $validator->errors(), 'response' => 422];
         };
 
-        self::$operation = "gerarNfseEnvio";
-        $dataMsg = self::composeMessage(self::$operation, __DIR__);
+        $dataMsg = self::composeMessage(__FUNCTION__);
 
         $dataMsg->Protocolo = $data['protocolo'];
         $dataMsg = self::Sign_XML($dataMsg);
 
-        $mountMessage = self::mountMensage($dataMsg);
+        self::mountMensage($dataMsg);
 
-        return parent::Conection(parent::$url, $mountMessage, self::$headers, self::$verb, false);
+        return self::$connection;
     }
 
-    private static function mountMensage(SimpleXMLElement $dataMsg): SimpleXMLElement
+    private static function mountMensage(SimpleXMLElement $dataMsg): void
     {
         //<![CDATA[[DadosMsg]]]>
-        $mountMessage = parent::assembleMessage();
+        self::$mountMessage = parent::assembleMessage();
 
-        $mountMessage->registerXPathNamespace('e', 'http://www.e-nfs.com.br');
+        self::$mountMessage->registerXPathNamespace('e', 'http://www.e-nfs.com.br');
 
-        $dadosMsg = $mountMessage->xpath('//e:Nfsedadosmsg')[0];
+        $dadosMsg = self::$mountMessage->xpath('//e:Nfsedadosmsg')[0];
         $dom = dom_import_simplexml($dadosMsg);
         $fragment = dom_import_simplexml($dataMsg);
         $dom->appendChild($dom->ownerDocument->importNode($fragment, true));
 
-        return $mountMessage;
     }
 }

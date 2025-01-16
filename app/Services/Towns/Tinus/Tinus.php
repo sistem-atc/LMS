@@ -2,38 +2,57 @@
 
 namespace App\Services\Towns\Tinus;
 
+use App\Services\Utils\Towns\Bases\LinkTownBase;
+use App\Services\Utils\Towns\Interfaces\LinkTownsInterface;
+use App\Services\Utils\Towns\Interfaces\DevelopInterface;
 
-class Tinus
+class Tinus extends LinkTownBase implements LinkTownsInterface,DevelopInterface
 {
-    /*    Option Explicit
-Private Type ClassType: Link_Prefeitura As String: Filial_Usada As String: End Type
-Private This As ClassType: Dim Links_Prefeituras As Object
-Public Property Get Prefeitura_Utilizada() As String: Prefeitura_Utilizada = This.Link_Prefeitura: End Property
-Public Property Let Prefeitura_Utilizada(Value As String): This.Filial_Usada = Value: This.Link_Prefeitura = Links_Prefeituras.Item(Value): End Property
-Public Property Get Filial_Usada() As String: Filial_Usada = This.Filial_Usada: End Property
+    protected static $verb = HttpMethod::POST;
+    private static SimpleXMLElement $headMsg;
+    private static string|int|array|null $connection;
+    private static SimpleXMLElement $mountMessage;
+    private static string $endpoint;
+    private static string $operation;
+    protected static $headers = [
+        'Content-Type' => 'text/xml;charset=UTF-8',
+        'SOAPAction' => 'http://www.tinus.com.br/WSNFSE.' . self::$operation . '.' . self::$operation . ''
+    ];
 
-Private Sub Class_Initialize()
+    public function gerarNota(array $data): string|int|array
+    {
+        return '';
+    }
 
-    Set Links_Prefeituras = CreateObject("Scripting.Dictionary")
-    Links_Prefeituras.Add "REC", "https://www.tinus.com.br/csp/jaboatao/"  'Prefeitura Recife
+    public function consultarNota(array $data): string|int|array
+    {
+        return '';
+    }
 
-End Sub
+    public function cancelarNota(array $data): string|int|array
+    {
+        return '';
+    }
 
-Public Function RecepcionarLoteRps(ByVal Used_Companny As String) As Variant
+    public function __construct($codeIbge)
+    {
+        parent::__construct($codeIbge);
+        self::$connection = self::Conection(parent::$url . self::$endpoint, self::$mountMessage->asXML(), static::$headers, self::$verb, false);
+    }
 
-    Dim EndPoint As String, Mount_Mensage As String, Operacao As String, DadosMsg As String
+    public static function RecepcionarLoteRps(array $data): string|int|array
+    {
 
-    Operacao = "RecepcionarLoteRps"
-    EndPoint = "WSNFSE." & Operacao & ".cls"
-    DadosMsg = Compor_MensagemXML(Operacao)
-    DadosMsg = Sign_XML(DadosMsg, Used_Companny)
-    Mount_Mensage = Message_Assemble
-    Mount_Mensage = Replace(Mount_Mensage, "[Mount_Mensage]", Operacao)
-    Mount_Mensage = Replace(Mount_Mensage, "[DadosMsg]", DadosMsg)
+        self::$operation = __FUNCTION__;
+        self::$endpoint = "WSNFSE." . self::$operation . ".cls";
+        $mountRPS = Compor_MensagemXML(self::$operation);
+        $mountRPS = self::Sign_XML($mountRPS->asXML());
 
-    RecepcionarLoteRps = Conection(Prefeitura_Utilizada & EndPoint, Mount_Mensage, Used_Companny, Operacao)
+        self::mountMensage(self::$headMsg, $dataMsg);
 
-End Function
+        return self::$connection;
+    }
+
 
 Public Function ConsultarSituacaoLoteRPS(ByVal CNPJ As String, ByVal Inscricao_Municipal As String, ByVal Protocolo As String, _
                                          ByVal Used_Companny As String) As Variant
@@ -133,13 +152,6 @@ Public Function CancelarNfse(ByVal Used_Companny As String) As Variant
 
 End Function
 
-Private Function Sign_XML(ByVal Xml_Not_Signing As String, ByVal Used_Companny As String) As String
-
-    Dim SignedXml As z_cls_WsFuncoes
-
-    Set SignedXml = New z_cls_WsFuncoes: Sign_XML = SignedXml.Sign_XML(Xml_Not_Signing, Used_Companny): Set SignedXml = Nothing
-
-End Function
 
 Private Function Conection(ByVal Prefeitura As String, ByVal Mensage As String, ByVal Used_Companny As String, ByVal Operation As String) As Variant
 

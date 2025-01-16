@@ -1,0 +1,10 @@
+<soapenv:Envelope xmlns:soapenv=""
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <soapenv:Body>
+        <ConsultarNfse xmlns="http://tempuri.org/">
+            <cabec></cabec>
+            <msg></msg>
+        </ConsultarNfse>
+    </soapenv:Body>
+</soapenv:Envelope>

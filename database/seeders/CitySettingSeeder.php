@@ -9,7 +9,7 @@ use App\Services\Towns\Desenvolve\Desenvolve;
 use App\Services\Towns\SigIss\SigIss;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-
+use App\Services\Towns\WebIss\WebIss;
 class CitySettingSeeder extends Seeder
 {
     /**
@@ -24,10 +24,10 @@ class CitySettingSeeder extends Seeder
                 'city_name' => 'Manaus',
                 'ibge'=> '1302603',
                 'url_prod' => 'https://nfse-prd.manaus.am.gov.br/nfse/servlet/',
-                'url_homolog' => 'https://testeeiss.barueri.sp.gov.br/nfeservice/wsrps.asmx',
+                'url_homolog' => 'https://nfsev-prd.manaus.am.gov.br/nfsev/servlet/hlogin',
                 'headerversion' => '2.02',
                 'namespace' => '',
-                'version' => 0,
+                'version' => null,
                 'class_path' => Abaco::class
             ],
 
@@ -38,7 +38,7 @@ class CitySettingSeeder extends Seeder
                 'url_homolog' => 'http://e-gov.betha.com.br/e-nota-contribuinte-test-ws/nfseWS',
                 'headerversion' => '2.02',
                 'namespace' => '',
-                'version' => 0,
+                'version' => null,
                 'class_path' => Betha::class
             ],
 
@@ -49,7 +49,7 @@ class CitySettingSeeder extends Seeder
                 'url_homolog' => 'http://e-gov.betha.com.br/e-nota-contribuinte-test-ws/nfseWS',
                 'headerversion' => '2.02',
                 'namespace' => '',
-                'version' => 0,
+                'version' => null,
                 'class_path' => Betha::class
             ],
 
@@ -60,7 +60,7 @@ class CitySettingSeeder extends Seeder
                 'url_homolog' => 'http://e-gov.betha.com.br/e-nota-contribuinte-test-ws/nfseWS',
                 'headerversion' => '2.02',
                 'namespace' => '',
-                'version' => 0,
+                'version' => null,
                 'class_path' => Betha::class
             ],
 
@@ -71,7 +71,7 @@ class CitySettingSeeder extends Seeder
                 'url_homolog' => 'http://e-gov.betha.com.br/e-nota-contribuinte-test-ws/nfseWS',
                 'headerversion' => '2.02',
                 'namespace' => '',
-                'version' => 0,
+                'version' => null,
                 'class_path' => Betha::class
             ],
 
@@ -82,7 +82,7 @@ class CitySettingSeeder extends Seeder
                 'url_homolog' => 'http://e-gov.betha.com.br/e-nota-contribuinte-test-ws/nfseWS',
                 'headerversion' => '2.02',
                 'namespace' => '',
-                'version' => 0,
+                'version' => null,
                 'class_path' => Betha::class
             ],
 
@@ -93,7 +93,7 @@ class CitySettingSeeder extends Seeder
                 'url_homolog' => 'http://e-gov.betha.com.br/e-nota-contribuinte-test-ws/nfseWS',
                 'headerversion' => '2.02',
                 'namespace' => '',
-                'version' => 0,
+                'version' => null,
                 'class_path' => Betha::class
             ],
 
@@ -104,7 +104,7 @@ class CitySettingSeeder extends Seeder
                 'url_homolog' => 'http://e-gov.betha.com.br/e-nota-contribuinte-test-ws/nfseWS',
                 'headerversion' => '2.02',
                 'namespace' => '',
-                'version' => 0,
+                'version' => null,
                 'class_path' => Betha::class
             ],
 
@@ -115,7 +115,7 @@ class CitySettingSeeder extends Seeder
                 'url_homolog' => 'https://nfe.sdolivramento.com.br/webservice/index/homologacao',
                 'headerversion' => null,
                 'namespace' => '',
-                'version' => 0,
+                'version' => null,
                 'class_path' => DBSeller::class
             ],
 
@@ -126,7 +126,7 @@ class CitySettingSeeder extends Seeder
                 'url_homolog' => 'https://hml-01-ananindeua-pa.desenvolvecidade.com.br/nfsd/IntegracaoNfsd?wsdl',
                 'headerversion' => null,
                 'namespace' => '',
-                'version' => 0,
+                'version' => null,
                 'class_path' => Desenvolve::class
             ],
 
@@ -137,7 +137,7 @@ class CitySettingSeeder extends Seeder
                 'url_homolog' => 'https://testevaladares.sigiss.com.br/testevaladares/ws/sigiss_ws.php',
                 'headerversion' => null,
                 'namespace' => '',
-                'version' => 0,
+                'version' => null,
                 'class_path' => SigIss::class
             ],
 
@@ -148,7 +148,7 @@ class CitySettingSeeder extends Seeder
                 'url_homolog' => 'https://testemarilia.sigiss.com.br:443/testemarilia/ws/sigiss_ws.php',
                 'headerversion' => null,
                 'namespace' => '',
-                'version' => 0,
+                'version' => null,
                 'class_path' => SigIss::class
             ],
 
@@ -159,7 +159,7 @@ class CitySettingSeeder extends Seeder
                 'url_homolog' => null,
                 'headerversion' => null,
                 'namespace' => '',
-                'version' => 0,
+                'version' => null,
                 'class_path' => SigIss::class
             ],
 
@@ -170,7 +170,7 @@ class CitySettingSeeder extends Seeder
                 'url_homolog' => 'https://testeeiss.barueri.sp.gov.br/nfeservice/wsrps.asmx',
                 'headerversion' => null,
                 'namespace' => '',
-                'version' => 0,
+                'version' => null,
                 'class_path' => null
             ],
 
@@ -181,10 +181,108 @@ class CitySettingSeeder extends Seeder
                 'url_homolog' => 'http://e-gov.betha.com.br/e-nota-contribuinte-test-ws/nfseWS',
                 'headerversion' => '2.02',
                 'namespace' => '',
-                'version' => 0,
+                'version' => null,
                 'class_path' => Betha::class
             ],
 
+            [
+                'city_name' => 'Aracaju',
+                'ibge'=> '2800308',
+                'url_prod' => 'https://aracajuse.webiss.com.br/ws/nfse.asmx',
+                'url_homolog' => '',
+                'headerversion' => '2.02',
+                'namespace' => 'http://schemas.xmlsoap.org/soap/envelope/',
+                'version' => null,
+                'class_path' => WebIss::class
+            ],
+
+            [
+                'city_name' => 'Araguaina',
+                'ibge'=> '1702100',
+                'url_prod' => 'https://araguainato.webiss.com.br/ws/nfse.asmx',
+                'url_homolog' => '',
+                'headerversion' => '2.02',
+                'namespace' => 'http://schemas.xmlsoap.org/soap/envelope/',
+                'version' => null,
+                'class_path' => WebIss::class
+            ],
+
+            [
+                'city_name' => 'Bagé',
+                'ibge'=> '4301602',
+                'url_prod' => 'https://bagers.webiss.com.br/ws/nfse.asmx',
+                'url_homolog' => '',
+                'headerversion' => '2.02',
+                'namespace' => 'http://schemas.xmlsoap.org/soap/envelope/',
+                'version' => null,
+                'class_path' => WebIss::class
+            ],
+
+            [
+                'city_name' => 'Divinópolis',
+                'ibge'=> '3122306',
+                'url_prod' => 'https://ws.nfe-cidades.com.br/ws/div',
+                'url_homolog' => '',
+                'headerversion' => '2.01',
+                'namespace' => 'http://schemas.xmlsoap.org/soap/envelope/',
+                'version' => null,
+                'class_path' => WebIss::class
+            ],
+
+            [
+                'city_name' => 'Gurupi',
+                'ibge'=> '1709500',
+                'url_prod' => 'https://gurupito.webiss.com.br/ws/nfse.asmx',
+                'url_homolog' => '',
+                'headerversion' => '2.02',
+                'namespace' => 'http://schemas.xmlsoap.org/soap/envelope/',
+                'version' => null,
+                'class_path' => WebIss::class
+            ],
+
+            [
+                'city_name' => 'Itabuna',
+                'ibge'=> '2905700',
+                'url_prod' => 'https://itabunaba.webiss.com.br/ws/nfse.asmx',
+                'url_homolog' => '',
+                'headerversion' => '2.02',
+                'namespace' => 'http://schemas.xmlsoap.org/soap/envelope/',
+                'version' => null,
+                'class_path' => WebIss::class
+            ],
+
+            [
+                'city_name' => 'Palmas',
+                'ibge'=> '1721000',
+                'url_prod' => 'https://palmasto.webiss.com.br/ws/nfse.asmx',
+                'url_homolog' => '',
+                'headerversion' => '2.02',
+                'namespace' => 'http://schemas.xmlsoap.org/soap/envelope/',
+                'version' => null,
+                'class_path' => WebIss::class
+            ],
+
+            [
+                'city_name' => 'Mathias Barbosa',
+                'ibge'=> '3140803',
+                'url_prod' => 'http://matiasbarbosamg.nfse-futurize.com.br/webservice/prod',
+                'url_homolog' => '',
+                'headerversion' => '2.02',
+                'namespace' => 'http://schemas.xmlsoap.org/soap/envelope/',
+                'version' => null,
+                'class_path' => WebIss::class
+            ],
+
+            [
+                'city_name' => 'Feira de Santana',
+                'ibge'=> '2910800',
+                'url_prod' => 'https://feiradesantanaba.webiss.com.br/ws/nfse.asmx',
+                'url_homolog' => '',
+                'headerversion' => '2.02',
+                'namespace' => 'http://www.w3.org/2003/05/soap-envelope',
+                'version' => null,
+                'class_path' => WebIss::class
+            ],
         ]);
 
     }

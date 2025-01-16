@@ -10,7 +10,7 @@ use App\Services\Utils\Towns\Interfaces\ExcludeSelectInterface;
 class Exemple implements ExcludeSelectInterface
 {
 
-    protected function recepcionarLoteRps(): void
+    protected function RecepcionarLoteRPS(): void
     {
 
         $arrayData = [

@@ -195,3 +195,14 @@
         'namespace' =>  'http://schemas.xmlsoap.org/soap/envelope/',
         'version' => 0,
     ],
+
+    '2611606' => //Recife
+    [
+        'url' => [
+            'prod' => 'https://www.tinus.com.br/csp/jaboatao/',
+            'homolog' => '',
+        ],
+        'headerVersion' => null,
+        'namespace' =>  '',
+        'version' => 0,
+    ],

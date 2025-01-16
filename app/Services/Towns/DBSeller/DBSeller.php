@@ -16,8 +16,9 @@ class DBSeller extends LinkTownBase implements LinkTownsInterface
 {
 
     protected static $verb = HttpMethod::POST;
-    protected static $operation;
     protected static $headers = [];
+    protected static string|int|array|null $connection;
+    private static SimpleXMLElement $mountMessage;
 
     public function consultarNota(array $data): string|int|array
     {
@@ -37,6 +38,7 @@ class DBSeller extends LinkTownBase implements LinkTownsInterface
     public function __construct($codeIbge)
     {
         parent::__construct($codeIbge);
+        self::$connection = self::Conection(parent::$url, self::$mountMessage->asXML(), static::$headers, self::$verb, false);
     }
 
     public static function CancelarNfse($data): string|int|array
@@ -57,8 +59,7 @@ class DBSeller extends LinkTownBase implements LinkTownsInterface
             return ['errors' => $validator->errors(), 'response' => 422];
         };
 
-        self::$operation = 'CancelarNfse';
-        $dataMsg = parent::composeMessage(self::$operation);
+        $dataMsg = self::composeMessage(__FUNCTION__);
 
         $dataMsg->Numero = $data['Numero'];
         $dataMsg->Cnpj = $data['Cnpj'];
@@ -68,9 +69,9 @@ class DBSeller extends LinkTownBase implements LinkTownsInterface
 
         $dataMsg = self::Sign_XML($dataMsg);
 
-        $mountMessage = self::mountMensage($dataMsg);
+        self::mountMensage($dataMsg);
 
-        return parent::Conection(self::$url, $mountMessage, self::$headers, self::$verb, false);
+        return self::$connection;
     }
 
     public static function ConsultarLoteRps($data): string|int|array
@@ -86,16 +87,16 @@ class DBSeller extends LinkTownBase implements LinkTownsInterface
             return ['errors' => $validator->errors(), 'response' => 422];
         };
 
-        self::$operation = 'ConsultarLoteRps';
-        $dataMsg = parent::composeMessage(self::$operation);
-        $mountMessage = parent::assembleMessage();
+        $dataMsg = self::composeMessage(__FUNCTION__);
 
         $dataMsg->Cnpj = $data['Cnpj'];
         $dataMsg->InscricaoMunicipal = $data['InscricaoMunicipal'];
         $dataMsg->Protocolo = $data['Protocolo'];
         $dataMsg = self::Sign_XML($dataMsg);
 
-        return parent::Conection(self::$url, $mountMessage, self::$headers, self::$verb, false);
+        self::mountMensage($dataMsg);
+
+        return self::$connection;
     }
 
     public static function ConsultarNfse($data): string|int|array
@@ -112,9 +113,7 @@ class DBSeller extends LinkTownBase implements LinkTownsInterface
             return ['errors' => $validator->errors(), 'response' => 422];
         };
 
-        self::$operation = 'ConsultarNfse';
-        $dataMsg = parent::composeMessage(self::$operation);
-        $mountMessage = parent::assembleMessage();
+        $dataMsg = self::composeMessage(__FUNCTION__);
 
         $dataMsg->Cnpj = $data['Cnpj'];
         $dataMsg->InscricaoMunicipal = $data['InscricaoMunicipal'];
@@ -122,7 +121,9 @@ class DBSeller extends LinkTownBase implements LinkTownsInterface
         $dataMsg->DataFinal = $data['DataFinal'];
         $dataMsg = self::Sign_XML($dataMsg);
 
-        return parent::Conection(self::$url, $mountMessage, self::$headers, self::$verb, false);
+        self::mountMensage($dataMsg);
+
+        return self::$connection;
     }
 
     public static function ConsultarNfsePorRps($data): string|int|array
@@ -140,9 +141,7 @@ class DBSeller extends LinkTownBase implements LinkTownsInterface
             return ['errors' => $validator->errors(), 'response' => 422];
         };
 
-        self::$operation = 'ConsultarNfsePorRps';
-        $dataMsg = parent::composeMessage(self::$operation);
-        $mountMessage = parent::assembleMessage();
+        $dataMsg = self::composeMessage(__FUNCTION__);
 
         $dataMsg->Numero = $data['Numero'];
         $dataMsg->Serie = $data['Serie'];
@@ -151,7 +150,9 @@ class DBSeller extends LinkTownBase implements LinkTownsInterface
         $dataMsg->InscricaoMunicipal = $data['InscricaoMunicipal'];
         $dataMsg = self::Sign_XML($dataMsg);
 
-        return parent::Conection(self::$url, $mountMessage, self::$headers, self::$verb, false);
+        self::mountMensage($dataMsg);
+
+        return self::$connection;
     }
 
     public static function ConsultarSituacaoLoteRPS($data): string|int|array
@@ -167,17 +168,15 @@ class DBSeller extends LinkTownBase implements LinkTownsInterface
             return ['errors' => $validator->errors(), 'response' => 422];
         };
 
-        self::$operation = 'ConsultarSituacaoLoteRps';
-        $dataMsg = parent::composeMessage(self::$operation);
-        $mountMessage = parent::assembleMessage();
+        $dataMsg = self::composeMessage(__FUNCTION__);
 
         $dataMsg->Cnpj = $data['Cnpj'];
         $dataMsg->InscricaoMunicipal = $data['InscricaoMunicipal'];
         $dataMsg->Protocolo = $data['Protocolo'];
-
         $dataMsg = self::Sign_XML($dataMsg);
+        self::mountMensage($dataMsg);
 
-        return parent::Conection(self::$url, $mountMessage, self::$headers, self::$verb, false);
+        return self::$connection;
     }
 
     public static function RecepcionarLoteRps($data): string|int|array
@@ -239,10 +238,8 @@ class DBSeller extends LinkTownBase implements LinkTownsInterface
             return ['errors' => $validator->errors(), 'response' => 422];
         };
 
-        self::$operation = 'RecepcionarLoteRps';
-
         $loteRPS = 'LoteRPS';
-        $mountRPS = parent::composeMessage($loteRPS);
+        $mountRPS = self::composeMessage($loteRPS);
         $mountRPS->InfRps->attributes()->id = $data['rps'][0]['infoId'];
         $mountRPS->InfRps->IdentificacaoRps->Numero = $data['rps'][0]['numeroRps'];
         $mountRPS->InfRps->IdentificacaoRps->Serie = $data['rps'][0]['serieRps'];
@@ -288,29 +285,25 @@ class DBSeller extends LinkTownBase implements LinkTownsInterface
         $mountRPS->Tomador->IdentificacaoTomador->Endereco->Cep = $data['rps'][0]['tomador']['cep'];
         $mountRPS->Tomador->IdentificacaoTomador->Contato->Contato = $data['rps'][0]['tomador']['contato'];
         $mountRPS->Tomador->IdentificacaoTomador->Contato->Email = $data['rps'][0]['tomador']['email'];
-        $mountRPS = parent::Sign_XML($mountRPS->asXML());
+        $mountRPS = self::Sign_XML($mountRPS->asXML());
 
-        $dataMsg = parent::composeMessage(self::$operation);
-        $mountMessage = self::mountMensage($dataMsg);
-        $mountMessage = parent::Sign_XML($mountMessage);
+        $dataMsg = self::composeMessage(__FUNCTION__);
+        self::mountMensage($dataMsg);
+        self::$mountMessage = self::Sign_XML(self::$mountMessage);
 
-        $dataMsg->Numero = $data['numeroNF'];
-        $dataMsg = self::Sign_XML($dataMsg);
-
-        return parent::Conection(self::$url, $mountMessage, self::$headers, self::$verb, false);
+        return self::$connection;
     }
 
-    private static function mountMensage(SimpleXMLElement $dataMsg): SimpleXMLElement
+    private static function mountMensage(SimpleXMLElement $dataMsg): void
     {
 
-        $mountMessage = parent::assembleMessage();
+        self::$mountMessage = self::assembleMessage();
 
-        $dadosMsg = $mountMessage->xpath('//xml')[0];
+        $dadosMsg = self::$mountMessage->xpath('//xml')[0];
         //<![CDATA[[DadosMsg]]]>
         $dom = dom_import_simplexml($dadosMsg);
         $fragment = dom_import_simplexml($dataMsg);
         $dom->appendChild($dom->ownerDocument->importNode($fragment, true));
 
-        return $mountMessage;
     }
 }

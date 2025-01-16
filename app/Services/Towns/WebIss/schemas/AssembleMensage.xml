@@ -1,0 +1,10 @@
+<soapenv:Envelope xmlns:soapenv=""
+    xmlns:nfse="http://nfse.abrasf.org.br">
+    <soapenv:Header/>
+    <soapenv:Body>
+        <nfse:[Mount_Mensage]Request>
+            <nfseCabecMsg></nfseCabecMsg>
+            <nfseDadosMsg></nfseDadosMsg>
+        </nfse:[Mount_Mensage]Request>
+    </soapenv:Body>
+</soapenv:Envelope>

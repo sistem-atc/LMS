@@ -1,0 +1,17 @@
+<nfe:Xml_entrada>
+    <nfe:SDT_IMPRESSAO_IN xmlns="NFe">
+        <nfe:Login>
+            <nfe:CodigoUsuario></nfe:CodigoUsuario>
+            <nfe:CodigoContribuinte></nfe:CodigoContribuinte>
+            <nfe:Versao></nfe:Versao>
+        </nfe:Login>
+        <nfe:Nota>
+            <nfe:Competencia_Mes></nfe:Competencia_Mes>
+            <nfe:Competencia_Ano></nfe:Competencia_Ano>
+            <nfe:RPS_Serie></nfe:RPS_Serie>
+            <nfe:RPS_Numero></nfe:RPS_Numero>
+            <nfe:Nota_Serie></nfe:Nota_Serie>
+            <nfe:Nota_Numero></nfe:Nota_Numero>
+        </nfe:Nota>
+    </nfe:SDT_IMPRESSAO_IN>
+</nfe:Xml_entrada>

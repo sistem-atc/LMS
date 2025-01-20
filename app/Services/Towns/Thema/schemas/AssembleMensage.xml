@@ -1,0 +1,10 @@
+<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope"
+    xmlns:ser="http://server.nfse.thema.inf.br">
+    <soap:Header/>
+    <soap:Body>
+        <ser:[Mount_Mensage]>
+            <ser:nrVersaoXml>3</ser:nrVersaoXml>
+            <ser:xml></ser:xml>
+        </ser:[Mount_Mensage]>
+    </soap:Body>
+</soap:Envelope>

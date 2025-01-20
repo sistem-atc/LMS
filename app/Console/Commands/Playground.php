@@ -2,13 +2,10 @@
 
 namespace App\Console\Commands;
 
-use App\Enums\TypeRPS;
-use App\Models\CitySetting;
-use App\Services\Towns\Abaco\Abaco;
-use App\Services\Utils\Towns\Helpers\LinksTowns;
+use DOMDocument;
 use Carbon\Carbon;
+use App\Models\CitySetting;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\App;
 
 class Playground extends Command
 {
@@ -19,16 +16,50 @@ class Playground extends Command
     public function handle(): int
     {
 
+        // MONTAR XML DE FORMA PROGRAMATICA
+        $dom = new DOMDocument('1.0', 'utf-8');
+
+        // Criar o nó raiz com o namespace
+        $envelope = $dom->createElementNS('http://schemas.xmlsoap.org/soap/envelope/', 'soapenv:Envelope');
+        $dom->appendChild($envelope);
+
+        // Definir os namespaces diretamente no nó raiz
+        $envelope->setAttribute('xmlns:soapenv', 'http://schemas.xmlsoap.org/soap/envelope/');
+        $envelope->setAttribute('xmlns:e', 'http://www.e-nfs.com.br');
+
+        // Criar o Header
+        $header = $dom->createElement('soapenv:Header');
+        $envelope->appendChild($header);
+
+        // Criar o Body
+        $body = $dom->createElement('soapenv:Body');
+        $envelope->appendChild($body);
+
+        // Criar o ConsultarNfse.Execute dentro do Body
+        $consultarNfse = $dom->createElement('e:ConsultarNfse.Execute');
+        $body->appendChild($consultarNfse);
+
+        // Adicionar os nós Nfsecabecmsg e Nfsedadosmsg dentro de ConsultarNfse.Execute
+        $consultarNfse->appendChild($dom->createElement('e:Nfsecabecmsg'));
+        $consultarNfse->appendChild($dom->createElement('e:Nfsedadosmsg'));
+
+        dd($dom->saveXML());
+
         $arrayData = [
-            'cnpj' => '18575072000122',
-            'inscricaoMunicipal' => 854776,
-            'dataInicial' => Carbon::now()->format('Y-m-d H:i:s'),
-            'dataFinal' => Carbon::now()->format('Y-m-d H:i:s'),
+            'Prestador' => [
+                'cnpj' => '18575072000122',
+                'inscricaoMunicipal' => 854776,
+            ],
+            'PeriodoEmissao' => [
+                'dataInicial' => Carbon::now()->format('Y-m-d H:i:s'),
+                'dataFinal' => Carbon::now()->format('Y-m-d H:i:s'),
+            ],
         ];
 
         $ibgeCode = '1302603';
         $class = CitySetting::where('ibge', $ibgeCode)->first();
-        $abaco = app($class->class_path, ['codeIbge' => $ibgeCode]);
+
+        $abaco = app($class->class_path, ['configLoader' => $class->toArray()]);
         dd($abaco->ConsultarNfse($arrayData));
 
         return Command::SUCCESS;

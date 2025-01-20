@@ -16,10 +16,10 @@ return new class extends Migration
             $table->string('ibge')->unique();
             $table->string('city_name');
             $table->string('url_prod');
-            $table->string('url_homolog');
+            $table->string('url_homolog')->nullable();
             $table->string('headerversion')->nullable();
             $table->string('namespace')->nullable();
-            $table->string('version')->default(0);
+            $table->string('version')->nullable();
             $table->string('class_path');
             $table->string('username')->nullable();
             $table->string('password')->nullable();

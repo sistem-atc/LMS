@@ -3,20 +3,14 @@
 namespace App\Services\Towns\Dsf;
 
 use SimpleXMLElement;
-use App\Enums\TypeRPS;
 use App\Enums\HttpMethod;
-use Illuminate\Support\Str;
 use App\Services\Utils\Towns\Bases\LinkTownBase;
-use App\Services\Utils\Towns\Interfaces\DevelopInterface;
-use App\Services\Utils\Towns\Interfaces\LinkTownsInterface;
 
-class Dsf extends LinkTownBase implements LinkTownsInterface, DevelopInterface
+class Dsf extends LinkTownBase
 {
 
     protected static $verb = HttpMethod::POST;
-    protected static string|int|array|null $connection;
     private static SimpleXMLElement $mountMessage;
-    protected static $headers;
 
     public static function getHeaders(): array
     {
@@ -40,10 +34,14 @@ class Dsf extends LinkTownBase implements LinkTownsInterface, DevelopInterface
         return self::CancelarNfse($data);
     }
 
-    public function __construct($codeIbge)
+    public function __construct(array $configLoader)
     {
-        parent::__construct($codeIbge);
-        self::$connection = self::Conection(parent::$url, self::$mountMessage->asXML(), static::$headers, self::$verb, false);
+        parent::__construct($configLoader);
+    }
+
+    private static function connection(): string|int|array|null
+    {
+        return self::Conection(parent::$url, self::$mountMessage->asXML(), self::getHeaders(), self::$verb, false);
     }
 
     public static function CancelarNfse($data): string|int|array
@@ -56,7 +54,7 @@ class Dsf extends LinkTownBase implements LinkTownsInterface, DevelopInterface
 
         self::mountMensage($dataMsg, $operation);
 
-        return self::$connection;
+        return self::connection();
     }
 
     public static function CancelarNfseV3($data): string|int|array
@@ -69,7 +67,7 @@ class Dsf extends LinkTownBase implements LinkTownsInterface, DevelopInterface
 
         self::mountMensage($dataMsg, $operation);
 
-        return self::$connection;
+        return self::connection();
     }
 
     public static function ConsultarLoteRps($data): string|int|array
@@ -82,7 +80,7 @@ class Dsf extends LinkTownBase implements LinkTownsInterface, DevelopInterface
 
         self::mountMensage($dataMsg, $operation);
 
-        return self::$connection;
+        return self::connection();
     }
 
     public static function ConsultarLoteRpsV3($data): string|int|array
@@ -95,7 +93,7 @@ class Dsf extends LinkTownBase implements LinkTownsInterface, DevelopInterface
 
         self::mountMensage($dataMsg, $operation);
 
-        return self::$connection;
+        return self::connection();
     }
 
     public static function ConsultarNfsePorRps($data): string|int|array
@@ -108,7 +106,7 @@ class Dsf extends LinkTownBase implements LinkTownsInterface, DevelopInterface
 
         self::mountMensage($dataMsg, $operation);
 
-        return self::$connection;
+        return self::connection();
     }
 
     public static function ConsultarNfsePorRpsV3($data): string|int|array
@@ -125,7 +123,7 @@ class Dsf extends LinkTownBase implements LinkTownsInterface, DevelopInterface
 
         self::mountMensage($dataMsg, $operation);
 
-        return self::$connection;
+        return self::connection();
     }
 
     public static function ConsultarNfse($data): string|int|array
@@ -138,7 +136,7 @@ class Dsf extends LinkTownBase implements LinkTownsInterface, DevelopInterface
 
         self::mountMensage($dataMsg, $operation);
 
-        return self::$connection;
+        return self::connection();
     }
 
     public static function ConsultarNfseV3($data): string|int|array
@@ -154,7 +152,7 @@ class Dsf extends LinkTownBase implements LinkTownsInterface, DevelopInterface
 
         self::mountMensage($dataMsg, $operation);
 
-        return self::$connection;
+        return self::connection();
     }
 
     public static function ConsultarSituacaoLoteRPS($data): string|int|array
@@ -167,7 +165,7 @@ class Dsf extends LinkTownBase implements LinkTownsInterface, DevelopInterface
 
         self::mountMensage($dataMsg, $operation);
 
-        return self::$connection;
+        return self::connection();
     }
 
     public static function ConsultarSituacaoLoteRpsV3($data): string|int|array
@@ -180,7 +178,7 @@ class Dsf extends LinkTownBase implements LinkTownsInterface, DevelopInterface
 
         self::mountMensage($dataMsg, $operation);
 
-        return self::$connection;
+        return self::connection();
     }
 
     public static function RecepcionarLoteRps($data): string|int|array
@@ -193,7 +191,7 @@ class Dsf extends LinkTownBase implements LinkTownsInterface, DevelopInterface
 
         self::mountMensage($dataMsg, $operation);
 
-        return self::$connection;
+        return self::connection();
     }
 
     public static function RecepcionarLoteRpsV3($data): string|int|array
@@ -206,7 +204,7 @@ class Dsf extends LinkTownBase implements LinkTownsInterface, DevelopInterface
 
         self::mountMensage($dataMsg, $operation);
 
-        return self::$connection;
+        return self::connection();
     }
 
     private static function mountMensage(SimpleXMLElement $dataMsg, string $operation): void

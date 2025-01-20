@@ -4,41 +4,49 @@ namespace App\Services\Towns\eSiat;
 
 use SimpleXMLElement;
 use App\Enums\HttpMethod;
-use App\Enums\MotivosCancelamento;
-use App\Services\Utils\Towns\Bases\LinkTownBase;
-use App\Services\Utils\Towns\Interfaces\LinkTownsInterface;
-use App\Services\Utils\Towns\Interfaces\DevelopInterface;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use App\Enums\MotivosCancelamento;
+use Illuminate\Support\Facades\Validator;
+use App\Services\Utils\Towns\Bases\LinkTownBase;
 
-class eSiat extends LinkTownBase implements LinkTownsInterface, DevelopInterface
+class eSiat extends LinkTownBase
 {
 
     protected static $verb = HttpMethod::POST;
-    protected static $operation;
+    private static SimpleXMLElement $mountMessage;
 
-    protected static $headers = [
-        "Content-Type" => "application/soap+xml;charset=utf-8",
-    ];
+
+    public static function getHeaders(): array
+    {
+        return [
+            'Content-Type' => 'application/soap+xml;charset=UTF-8'
+        ];
+    }
 
     public function gerarNota(array $data): string|int|array
     {
-        return '';
+        return self::RecepcionarNFSe($data);
     }
 
     public function consultarNota(array $data): string|int|array
     {
-        return '';
+        return self::RecepcionarConsultaRPS($data);
     }
 
     public function cancelarNota(array $data): string|int|array
     {
-        return '';
+        return self::RecepcionarLoteNotasCanceladas($data);
     }
 
-    public function __construct($codeIbge)
+
+    public function __construct(array $configLoader)
     {
-        parent::__construct($codeIbge);
+        parent::__construct($configLoader);
+    }
+
+    private static function connection(): string|int|array|null
+    {
+        return self::Conection(parent::$url, self::$mountMessage->asXML(), self::getHeaders(), self::$verb, false);
     }
 
     public static function ConsultarTomador($data): string|int|array
@@ -58,8 +66,8 @@ class eSiat extends LinkTownBase implements LinkTownsInterface, DevelopInterface
             return ['errors' => $validator->errors(), 'response' => 422];
         };
 
-        self::$operation = 'ConsultarTomador';
-        $dataMsg = parent::composeMessage(self::$operation, __DIR__);
+        $operation = __FUNCTION__;
+        $dataMsg = parent::composeMessage($operation);
         $codigoCancelamento = 'MC0' . MotivosCancelamento::from($data['motivoCancelamento'])->getLabel();
 
         $dataMsg->Numero = $data['numeroNF'];
@@ -68,138 +76,137 @@ class eSiat extends LinkTownBase implements LinkTownsInterface, DevelopInterface
         $dataMsg->CodigoMunicipio = $data['codigoMunicipio'];
         $dataMsg->CodigoCancelamento = $codigoCancelamento;
 
-        $mountMessage = self::mountMensage($dataMsg);
+        self::mountMensage($dataMsg);
 
-        return parent::Conection(parent::$url, $mountMessage, self::$headers, self::$verb, false);
+        return self::connection();
     }
 
     public static function RecepcionarApuracaoMensalDESIF($data): string|int|array
     {
 
-        self::$operation = 'RecepcionarApuracaoMensalDESIF';
-        $dataMsg = parent::composeMessage(self::$operation, __DIR__);
+        $operation = __FUNCTION__;
+        $dataMsg = parent::composeMessage($operation);
 
         $dataMsg->Numero = $data['numeroNF'];
 
-        $mountMessage = self::mountMensage($dataMsg);
+        self::mountMensage($dataMsg);
 
-        return parent::Conection(self::$url, $mountMessage, self::$headers, self::$verb, false);
+        return self::connection();
     }
 
     public static function RecepcionarConsultaNotaCancelada($data): string|int|array
     {
-        self::$operation = 'RecepcionarConsultaNotaCancelada';
-        $dataMsg = parent::composeMessage(self::$operation, __DIR__);
+        $operation = __FUNCTION__;
+        $dataMsg = parent::composeMessage($operation);
 
         $dataMsg->Numero = $data['numeroNF'];
 
-        $mountMessage = self::mountMensage($dataMsg);
+        self::mountMensage($dataMsg);
 
-        return parent::Conection(self::$url, $mountMessage, self::$headers, self::$verb, false);
+        return self::connection();
     }
 
     public static function RecepcionarConsultaRPS($data): string|int|array
     {
-        self::$operation = 'RecepcionarConsultaRPS';
-        $dataMsg = parent::composeMessage(self::$operation, __DIR__);
+        $operation = __FUNCTION__;
+        $dataMsg = parent::composeMessage($operation);
 
         $dataMsg->Numero = $data['numeroNF'];
 
-        $mountMessage = self::mountMensage($dataMsg);
+        self::mountMensage($dataMsg);
 
-        return parent::Conection(self::$url, $mountMessage, self::$headers, self::$verb, false);
+        return self::connection();
     }
 
     public static function RecepcionarDeclaracaoAdministradoraCartao($data): string|int|array
     {
 
-        self::$operation = 'RecepcionarDeclaracaoAdministradoraCartao';
-        $dataMsg = parent::composeMessage(self::$operation, __DIR__);
+        $operation = __FUNCTION__;
+        $dataMsg = parent::composeMessage($operation);
 
         $dataMsg->Numero = $data['numeroNF'];
 
-        $mountMessage = self::mountMensage($dataMsg);
+        self::mountMensage($dataMsg);
 
-        return parent::Conection(self::$url, $mountMessage, self::$headers, self::$verb, false);
+        return self::connection();
     }
 
     public static function RecepcionarLoteNotasCanceladas($data): string|int|array
     {
-        self::$operation = 'RecepcionarLoteNotasCanceladas';
-        $dataMsg = parent::composeMessage(self::$operation, __DIR__);
+        $operation = __FUNCTION__;
+        $dataMsg = parent::composeMessage($operation);
 
         $dataMsg->Numero = $data['numeroNF'];
 
-        $mountMessage = self::mountMensage($dataMsg);
+        self::mountMensage($dataMsg);
 
-        return parent::Conection(self::$url, $mountMessage, self::$headers, self::$verb, false);
+        return self::connection();
     }
 
     public static function RecepcionarLoteRps($data): string|int|array
     {
 
-        self::$operation = 'recepcionarLoteRps';
-        $dataMsg = parent::composeMessage(self::$operation, __DIR__);
+        $operation = __FUNCTION__;
+        $dataMsg = parent::composeMessage($operation);
 
         $dataMsg->Numero = $data['numeroNF'];
 
-        $mountMessage = self::mountMensage($dataMsg);
+        self::mountMensage($dataMsg);
 
-        return parent::Conection(self::$url, $mountMessage, self::$headers, self::$verb, false);
+        return self::connection();
     }
 
     public static function RecepcionarNFSe($data): string|int|array
     {
 
-        self::$operation = 'RecepcionarNFSe';
-        $dataMsg = parent::composeMessage(self::$operation, __DIR__);
+        $operation = __FUNCTION__;
+        $dataMsg = parent::composeMessage($operation);
 
         $dataMsg->Numero = $data['numeroNF'];
 
-        $mountMessage = self::mountMensage($dataMsg);
+        self::mountMensage($dataMsg);
 
-        return parent::Conection(self::$url, $mountMessage, self::$headers, self::$verb, false);
+        return self::connection();
     }
 
     public static function VerificarExistenciaNota($data): string|int|array
     {
-        self::$operation = 'VerificarExistenciaNota';
-        $dataMsg = parent::composeMessage(self::$operation, __DIR__);
+        $operation = __FUNCTION__;
+        $dataMsg = parent::composeMessage($operation);
 
         $dataMsg->Numero = $data['numeroNF'];
 
-        $mountMessage = self::mountMensage($dataMsg);
+        self::mountMensage($dataMsg);
 
-        return parent::Conection(self::$url, $mountMessage, self::$headers, self::$verb, false);
+        return self::connection();
     }
 
     public static function VersaoInstalada($data): string|int|array
     {
 
-        self::$operation = 'VerificarExistenciaNota';
-        $dataMsg = parent::composeMessage(self::$operation, __DIR__);
+        $operation = __FUNCTION__;
+        $dataMsg = parent::composeMessage($operation);
 
         $dataMsg->Numero = $data['numeroNF'];
 
-        $mountMessage = self::mountMensage($dataMsg);
+        self::mountMensage($dataMsg);
 
-        return parent::Conection(self::$url, $mountMessage, self::$headers, self::$verb, false);
+        return self::connection();
     }
 
-    private static function mountMensage(SimpleXMLElement $dataMsg): SimpleXMLElement
+    private static function mountMensage(SimpleXMLElement $dataMsg): void
     {
 
         //<![CDATA[[DadosMsg]]]>
-        $mountMessage = self::assembleMessage();
+        self::$mountMessage = self::assembleMessage();
 
-        $mountMessage->registerXPathNamespace('soapenv', 'http://schemas.xmlsoap.org/soap/envelope/');
+        self::$mountMessage->registerXPathNamespace('soapenv', 'http://schemas.xmlsoap.org/soap/envelope/');
 
-        $dadosMsg = $mountMessage->xpath('//e:Nfsedadosmsg')[0];
+        $dadosMsg = self::$mountMessage->xpath('//e:Nfsedadosmsg')[0];
         $dom = dom_import_simplexml($dadosMsg);
         $fragment = dom_import_simplexml($dataMsg);
         $dom->appendChild($dom->ownerDocument->createCDATASection($dom->ownerDocument->saveXML($fragment)));
 
-        return $mountMessage;
     }
 
 }

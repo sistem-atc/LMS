@@ -2,29 +2,29 @@
 
 namespace App\Services\Towns\Abaco;
 
-use App\Enums\HttpMethod;
+use Exception;
 use Carbon\Carbon;
 use SimpleXMLElement;
 use App\Enums\TypeRPS;
+use App\Enums\HttpMethod;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Validator;
 use App\Services\Utils\Towns\Bases\LinkTownBase;
-use App\Services\Utils\Towns\Interfaces\LinkTownsInterface;
 
-class Abaco extends LinkTownBase implements LinkTownsInterface
+class Abaco extends LinkTownBase
 {
 
     protected static $verb = HttpMethod::POST;
     private static SimpleXMLElement $headMsg;
-    protected static string|int|array|null $connection;
     private static SimpleXMLElement $mountMessage;
     private static string $endPoint;
-    protected static $headers;
 
     public static function getHeaders(): array
     {
         return [
-            'Content-Type' => 'text/xml;charset=UTF-8'
+            "Content-Type: text/xml;charset=UTF-8",
+            "SOAPAction: http://www.e-nfs.com.braction/ACONSULTARNFSE.Execute",
+            "Content-Length: " . strlen(self::$mountMessage->asXML())
         ];
     }
 
@@ -43,11 +43,15 @@ class Abaco extends LinkTownBase implements LinkTownsInterface
         return 'Metodo cancelarNota inexistente para a prefeitura';
     }
 
-    public function __construct($codeIbge)
+    public function __construct(array $configLoader)
     {
-        parent::__construct($codeIbge);
-        self::$headMsg = self::composeHeader();
-        self::$connection = self::Conection(parent::$url . self::$endPoint, self::$mountMessage->asXML(), static::$headers, self::$verb, false);
+        parent::__construct($configLoader);
+        self::$headMsg = self::composeHeader(parent::$headerVersion);
+    }
+
+    private static function connection(): string|int|array|null
+    {
+        return self::Conection(parent::$url . self::$endPoint, self::$mountMessage->asXML(), self::getHeaders(), self::$verb, false);
     }
 
     public static function RecepcionarLoteRPS(array $data): string|int|array
@@ -112,7 +116,7 @@ class Abaco extends LinkTownBase implements LinkTownsInterface
         self::$endPoint = 'arecepcionarloterps?wsdl';
 
         $loteRPS = 'LoteRPS';
-        $mountRPS = self::composeMessage($loteRPS);
+        $mountRPS = self::composeMessage($loteRPS, self::$version);
         $mountRPS->InfRps->attributes()->id = $data['rps'][0]['infoId'];
         $mountRPS->InfRps->IdentificacaoRps->Numero = $data['rps'][0]['numeroRps'];
         $mountRPS->InfRps->IdentificacaoRps->Serie = $data['rps'][0]['serieRps'];
@@ -161,7 +165,8 @@ class Abaco extends LinkTownBase implements LinkTownsInterface
 
         $mountRPS = self::Sign_XML($mountRPS->asXML());
 
-        $dataMsg = self::composeMessage(__FUNCTION__);
+        $operation = __FUNCTION__;
+        $dataMsg = self::composeMessage($operation);
         $dataMsg->LoteRps['id'] = $data['idLote'];
         $dataMsg->LoteRps->NumeroLote = $data['numeroLote'];
         $dataMsg->LoteRps->Cnpj = $data['cnpj'];
@@ -173,10 +178,10 @@ class Abaco extends LinkTownBase implements LinkTownsInterface
         $fragment = dom_import_simplexml($mountRPS);
         $dom->appendChild($dom->ownerDocument->importNode($fragment, true));
 
-        self::mountMensage($dataMsg);
+        self::mountMensage($dataMsg, $operation, self::getVersion());
         self::$mountMessage = self::Sign_XML(self::$mountMessage);
 
-        return self::$connection;
+        return self::parseXmlToArray(self::connection(), '//ns:Outputxml');
     }
 
     public static function ConsultarSituacaoLoteRPS(array $data): string|int|array
@@ -193,15 +198,16 @@ class Abaco extends LinkTownBase implements LinkTownsInterface
         };
 
         self::$endPoint = 'aconsultarsituacaoloterps?wsdl';
-        $dataMsg = self::composeMessage(__FUNCTION__);
+        $operation = __FUNCTION__;
+        $dataMsg = self::composeMessage($operation);
 
         $dataMsg->Cnpj = $data['cnpj'];
         $dataMsg->InscricaoMunicipal = $data['inscricaoMunicipal'];
         $dataMsg->Protocolo = $data['protocolo'];
 
-        self::mountMensage($dataMsg);
+        self::mountMensage($dataMsg, $operation, self::getVersion());
 
-        return self::$connection;
+        return self::parseXmlToArray(self::connection(), '//ns:Outputxml');
     }
 
     public static function ConsultarNfsePorRps(array $data): string|int|array
@@ -223,7 +229,8 @@ class Abaco extends LinkTownBase implements LinkTownsInterface
         };
 
         self::$endPoint = 'aconsultarnfseporrps?wsdl';
-        $dataMsg = self::composeMessage(__FUNCTION__);
+        $operation = __FUNCTION__;
+        $dataMsg = self::composeMessage($operation);
 
         $dataMsg->Numero = $data['numero_RPS'];
         $dataMsg->Serie = $data['serie_RPS'];
@@ -231,9 +238,9 @@ class Abaco extends LinkTownBase implements LinkTownsInterface
         $dataMsg->Cnpj = $data['cnpj'];
         $dataMsg->InscricaoMunicipal = $data['inscricaoMunicipal'];
 
-        self::mountMensage($dataMsg);
+        self::mountMensage($dataMsg, $operation, self::getVersion());
 
-        return self::$connection;
+        return self::parseXmlToArray(self::connection(), '//ns:Outputxml');
     }
 
     public static function ConsultarLoteRps(array $data): string|int|array
@@ -250,33 +257,35 @@ class Abaco extends LinkTownBase implements LinkTownsInterface
         };
 
         self::$endPoint = 'aconsultarloterps?wsdl';
-        $dataMsg = self::composeMessage(__FUNCTION__);
+        $operation = __FUNCTION__;
+        $dataMsg = self::composeMessage($operation);
 
         $dataMsg->Cnpj = $data['cnpj'];
         $dataMsg->InscricaoMunicipal = $data['inscricaoMunicipal'];
         $dataMsg->Protocolo = $data['protocolo'];
 
-        self::mountMensage($dataMsg);
+        self::mountMensage($dataMsg, $operation, self::getVersion());
 
-        return self::$connection;
+        return self::parseXmlToArray(self::connection(), '//ns:Outputxml');
     }
 
     public static function ConsultarNfse(array $data): string|int|array
     {
 
         $validator = Validator::make($data, [
-            'cnpj' => 'required|max:14',
-            'inscricaoMunicipal' => 'required',
-            'dataInicial' => 'required|date',
-            'dataFinal' => 'required|date',
+            'Prestador.cnpj' => 'required|max:14',
+            'Prestador.inscricaoMunicipal' => 'required',
+            'PeriodoEmissao.dataInicial' => 'required|date',
+            'PeriodoEmissao.dataFinal' => 'required|date',
         ]);
 
         if ($validator->fails()) {
             return ['errors' => $validator->errors(), 'response' => 422];
         };
 
-        self::$endPoint = 'aconsultarnfse?wsdl';
-        $dataMsg = self::composeMessage(__FUNCTION__);
+        self::$endPoint = 'aconsultarnfse';
+        $operation = __FUNCTION__;
+        $dataMsg = self::composeMessage($operation);
 
         if (!isset($data['tomador'])) {
             unset($dataMsg->Tomador);
@@ -292,7 +301,7 @@ class Abaco extends LinkTownBase implements LinkTownsInterface
         }
 
         if (!isset($data['intermediarioServico'])) {
-            unset($xml->IntermediarioServico);
+            unset($dataMsg->IntermediarioServico);
         } else {
             $dataMsg->InscricaoMunicipal = $data['intermediarioServico.inscricaoMunicipal'];
             if (!isset($data['intermediarioServico.cnpj'])) {
@@ -304,34 +313,84 @@ class Abaco extends LinkTownBase implements LinkTownsInterface
             }
         }
 
-        $dataMsg->Cnpj = $data['cnpj'];
-        $dataMsg->InscricaoMunicipal = $data['inscricaoMunicipal'];
-        $dataMsg->DataInicial = Carbon::parse($data['dataInicial'])->format('Y-m-d\TH:i:s');
-        $dataMsg->DataFinal = Carbon::parse($data['dataFinal'])->format('Y-m-d\TH:i:s');
+        $dataMsg->Prestador->Cnpj = $data['Prestador']['cnpj'];
+        $dataMsg->Prestador->InscricaoMunicipal = $data['Prestador']['inscricaoMunicipal'];
+        $dataMsg->PeriodoEmissao->DataInicial = Carbon::parse($data['PeriodoEmissao']['dataInicial'])->format('Y-m-d\TH:i:s');
+        $dataMsg->PeriodoEmissao->DataFinal = Carbon::parse($data['PeriodoEmissao']['dataFinal'])->format('Y-m-d\TH:i:s');
 
-        self::mountMensage($dataMsg);
+        self::mountMensage($dataMsg, $operation, self::getVersion());
 
-        return self::$connection;
+        return self::parseXmlToArray(self::connection(), '//ns:Outputxml');
+
     }
 
-    private static function mountMensage(SimpleXMLElement $dataMsg): void
+    private static function mountMensage(SimpleXMLElement $dataMsg, string $operation, ?string $version): void
     {
 
-        self::$mountMessage = parent::assembleMessage();
+        self::$mountMessage = parent::assembleMessage(replaceOperation: $operation, version: $version);
+
+        $headMsgString = self::removeSpecialChars(htmlspecialchars(self::$headMsg->asXML(), ENT_NOQUOTES, 'UTF-8'));
+        $dataMsgString = self::removeSpecialChars(htmlspecialchars($dataMsg->asXML(), ENT_NOQUOTES, 'UTF-8'));
 
         self::$mountMessage->registerXPathNamespace('e', 'http://www.e-nfs.com.br');
         self::$mountMessage->registerXPathNamespace('soapenv', 'http://schemas.xmlsoap.org/soap/envelope/');
 
         $cabecMsg = self::$mountMessage->xpath('//e:Nfsecabecmsg')[0];
         $dom = dom_import_simplexml($cabecMsg);
-        $fragment = dom_import_simplexml(self::$headMsg);
-        $dom->appendChild($dom->ownerDocument->importNode($fragment, true));
+        $doc = $dom->ownerDocument;
+
+        $textNode = $doc->createTextNode($headMsgString);
+        $dom->appendChild($textNode);
 
         $dadosMsg = self::$mountMessage->xpath('//e:Nfsedadosmsg')[0];
         $dom = dom_import_simplexml($dadosMsg);
-        $fragment = dom_import_simplexml($dataMsg);
-        $dom->appendChild($dom->ownerDocument->importNode($fragment, true));
+        $doc = $dom->ownerDocument;
+
+        $textNode = $doc->createTextNode($dataMsgString);
+        $dom->appendChild($textNode);
 
     }
 
+    private static function removeSpecialChars(string $string): string
+    {
+        return
+            str_replace('"', '&quot;',
+                str_replace("\t", '',
+                    str_replace("\n", '',
+                        str_replace('&lt;?xml version="1.0"?&gt;', '', $string)
+                    )
+                )
+            );
+    }
+
+    public static function parseXmlToArray(string $xmlString, string $xpath, string $namespace = ''): array
+    {
+
+        libxml_use_internal_errors(true);
+        $xml = simplexml_load_string($xmlString);
+
+        if ($xml === false) {
+            $errors = libxml_get_errors();
+                        $errorMessages = [];
+            foreach ($errors as $error) {
+                $errorMessages[] = $error->message;
+            }
+            libxml_clear_errors();
+            throw new Exception("Erro ao carregar o XML: " . implode(", ", $errorMessages));
+        }
+
+        $namespaces = $xml->getNamespaces(true);
+        if (isset($namespaces[$namespace])) {
+            $xml->registerXPathNamespace('ns', $namespaces[$namespace]);
+        }
+
+        $outputXml = $xml->xpath($xpath);
+
+        if (isset($outputXml[0])) {
+            $nestedXml = simplexml_load_string($outputXml[0]);
+            return json_decode(json_encode($nestedXml), true);
+        }
+
+        return [];
+    }
 }

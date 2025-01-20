@@ -1,0 +1,7 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+    xmlns:nfe="NFe">
+    <soapenv:Header/>
+    <soapenv:Body>
+        <nfe:ws_nfe.[Mount_Mensage]></nfe:ws_nfe.[Mount_Mensage]>
+    </soapenv:Body>
+</soapenv:Envelope>

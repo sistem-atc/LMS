@@ -7,10 +7,9 @@ use App\Enums\HttpMethod;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
 use App\Services\Utils\Towns\Bases\LinkTownBase;
-use App\Services\Utils\Towns\Interfaces\DevelopInterface;
 use App\Services\Utils\Towns\Interfaces\LinkTownsInterface;
 
-class Fi1_Fiorilli extends LinkTownBase implements LinkTownsInterface, DevelopInterface
+class Fi1_Fiorilli extends LinkTownBase implements LinkTownsInterface
 {
 
     protected static $verb = HttpMethod::POST;

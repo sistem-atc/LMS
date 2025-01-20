@@ -2,163 +2,190 @@
 
 namespace App\Services\Towns\eCity;
 
+use SimpleXMLElement;
+use App\Enums\HttpMethod;
 use Illuminate\Support\Str;
 use App\Services\Utils\Towns\Bases\LinkTownBase;
-use SimpleXMLElement;
-use App\Services\Utils\Towns\Interfaces\DevelopInterface;
-use App\Services\Utils\Towns\Interfaces\LinkTownsInterface;
 
-class eCity extends LinkTownBase implements LinkTownsInterface, DevelopInterface
+class eCity extends LinkTownBase
 {
 
-    protected static $link;
-    protected static $verb = 'POST';
-    private static $url;
-    private static $headerVersion;
+    protected static $verb = HttpMethod::POST;
+    private static SimpleXMLElement $mountMessage;
 
-    protected static $headers = ['Content-Type' => 'application/soap+xml;charset=UTF-8'];
-
-    public function __construct($codeIbge)
+    public static function getHeaders(): array
     {
-        parent::__construct($codeIbge);
+        return [
+            'Content-Type' => 'application/soap+xml;charset=UTF-8'
+        ];
     }
 
-    public static function CancelarNfse(): string|int
+    public function gerarNota(array $data): string|int|array
     {
-
-        $operacao = 'CancelarNfse';
-        $mountMessage = self::assembleMessage();
-        $dataMsg = parent::composeMessage($operacao);
-        $dataMsg = parent::Sign_XML($dataMsg);
-        $mountMessage = Str::replace('[DadosMsg]', $dataMsg, $mountMessage);
-
-        return parent::Conection(self::$url, $mountMessage, self::$headers, self::$verb, false);
+        return self::GerarNfse($data);
     }
 
-    public static function ConsultarLoteRps(): string|int
+    public function consultarNota(array $data): string|int|array
     {
-
-        $operacao = 'ConsultarLoteRps';
-        $dataMsg = parent::composeMessage($operacao);
-        $mountMessage = self::assembleMessage();
-        $dataMsg = parent::Sign_XML($dataMsg);
-        $mountMessage = Str::replace('[DadosMsg]', $dataMsg, $mountMessage);
-
-        return parent::Conection(self::$url, $mountMessage, self::$headers, self::$verb, false);
+        return self::ConsultarNfseRps($data);
     }
 
-    public static function ConsultarNfseFaixa(
-        string $CNPJ,
-        string $Inscricao_Municipal,
-        string $Nota_Inicial,
-        string $Nota_Final
-    ): string|int {
-
-        $operacao = 'ConsultarNfseFaixa';
-        $dataMsg = parent::composeMessage($operacao);
-        $mountMessage = self::assembleMessage();
-        $dataMsg = Str::replace('[CAMPO_CNPJ]', $CNPJ, $dataMsg);
-        $dataMsg = Str::replace('[CAMPO_INSCRICAO_MUNICIPAL]', $Inscricao_Municipal, $dataMsg);
-        $dataMsg = Str::replace('[CAMPO_NOTA_INICIAL]', $Nota_Inicial, $dataMsg);
-        $dataMsg = Str::replace('[CAMPO_NOTA_FINAL]', $Nota_Final, $dataMsg);
-        $mountMessage = Str::replace('[DadosMsg]', $dataMsg, $mountMessage);
-
-        return parent::Conection(self::$url, $mountMessage, self::$headers, self::$verb, false);
+    public function cancelarNota(array $data): string|int|array
+    {
+        return self::CancelarNfse($data);
     }
 
-    public static function ConsultarNfseRps(): string|int
+    public function __construct(array $configLoader)
+    {
+        parent::__construct($configLoader);
+    }
+
+    private static function connection(): string|int|array|null
+    {
+        return self::Conection(parent::$url, self::$mountMessage->asXML(), self::getHeaders(), self::$verb, false);
+    }
+
+    public static function CancelarNfse(array $data): string|int|array
     {
 
-        $operacao = 'ConsultarNfseRps';
-        $dataMsg = parent::composeMessage($operacao);
-        $mountMessage = self::assembleMessage();
-        $dataMsg = parent::Sign_XML($dataMsg);
-        $mountMessage = Str::replace('[DadosMsg]', $dataMsg, $mountMessage);
+        $operation = __FUNCTION__;
+        $dataMsg = parent::composeMessage($operation);
+        $dataMsg->cnpj = $data['cnpj'];
+        $dataMsg = self::Sign_XML($dataMsg);
 
-        return parent::Conection(self::$url, $mountMessage, self::$headers, self::$verb, false);
+        self::mountMensage($dataMsg, $operation);
+
+        return self::connection();
     }
 
-    public static function ConsultarNfseServicoPrestado(
-        string $CNPJ,
-        string $Inscricao_Municipal,
-        string $Data_Inicial,
-        string $Data_Final,
-        int $Numero_Pagina
-    ): string|int {
-
-        $operacao = 'ConsultarNfseServicoPrestado';
-        $dataMsg = parent::composeMessage($operacao);
-        $mountMessage = self::assembleMessage();
-        $dataMsg = Str::replace("[CAMPO_CNPJ]", $CNPJ, $dataMsg);
-        $dataMsg = Str::replace("[CAMPO_INSCRICAO_MUNICIPAL]", $Inscricao_Municipal, $dataMsg);
-        $dataMsg = Str::replace("[CAMPO_DATA_INICIAL]", date("Ymd", strtotime($Data_Inicial)), $dataMsg);
-        $dataMsg = Str::replace("[CAMPO_DATA_FINAL]", date("Ymd", strtotime($Data_Final)), $dataMsg);
-        $dataMsg = Str::replace("[CAMPO_NUMERO_PAGINA]", $Numero_Pagina, $dataMsg);
-        $mountMessage = Str::replace("[DadosMsg]", $dataMsg, $mountMessage);
-
-        return parent::Conection(self::$url, $mountMessage, self::$headers, self::$verb, false);
-    }
-
-    public static function ConsultarNfseServicoTomado(): string|int
+    public static function ConsultarLoteRps(array $data): string|int|array
     {
 
-        $operacao = 'ConsultarNfseServicoTomado';
-        $dataMsg = parent::composeMessage($operacao);
-        $mountMessage = self::assembleMessage();
-        $dataMsg = parent::Sign_XML($dataMsg);
-        $mountMessage = Str::replace('[DadosMsg]', $dataMsg, $mountMessage);
+        $operation = __FUNCTION__;
+        $dataMsg = parent::composeMessage($operation);
+        $dataMsg->cnpj = $data['cnpj'];
+        $dataMsg = self::Sign_XML($dataMsg);
 
-        return parent::Conection(self::$url, $mountMessage, self::$headers, self::$verb, false);
+        self::mountMensage($dataMsg, $operation);
+
+        return self::connection();
     }
 
-    public static function GerarNfse(): string|int
+    public static function ConsultarNfseFaixa(array $data): string|int|array
     {
 
-        $operacao = 'GerarNfse';
-        $dataMsg = parent::composeMessage($operacao);
-        $mountMessage = self::assembleMessage();
-        $dataMsg = parent::Sign_XML($dataMsg);
-        $mountMessage = Str::replace('[DadosMsg]', $dataMsg, $mountMessage);
+        $operation = __FUNCTION__;
+        $dataMsg = parent::composeMessage($operation);
+        $dataMsg->cnpj = $data['cnpj'];
+        $dataMsg = self::Sign_XML($dataMsg);
 
-        return parent::Conection(self::$url, $mountMessage, self::$headers, self::$verb, false);
+        self::mountMensage($dataMsg, $operation);
+
+        return self::connection();
     }
 
-    public static function RecepcionarLoteRpsSincrono(): string|int
+    public static function ConsultarNfseRps(array $data): string|int|array
     {
 
-        $operacao = 'RecepcionarLoteRpsSincrono';
-        $dataMsg = parent::composeMessage($operacao);
-        $mountMessage = self::assembleMessage();
-        $dataMsg = parent::Sign_XML($dataMsg);
-        $mountMessage = Str::replace('[DadosMsg]', $dataMsg, $mountMessage);
+        $operation = __FUNCTION__;
+        $dataMsg = parent::composeMessage($operation);
+        $dataMsg->cnpj = $data['cnpj'];
+        $dataMsg = self::Sign_XML($dataMsg);
 
-        return parent::Conection(self::$url, $mountMessage, self::$headers, self::$verb, false);
+        self::mountMensage($dataMsg, $operation);
+
+        return self::connection();
     }
 
-    public static function SubstituirNfse(): string|int
+    public static function ConsultarNfseServicoPrestado(array $data): string|int|array
     {
 
-        $operacao = 'SubstituirNfse';
-        $dataMsg = parent::composeMessage($operacao);
-        $mountMessage = self::assembleMessage();
-        $dataMsg = parent::Sign_XML($dataMsg);
-        $mountMessage = Str::replace('[DadosMsg]', $dataMsg, $mountMessage);
+        $operation = __FUNCTION__;
+        $dataMsg = parent::composeMessage($operation);
+        $dataMsg->cnpj = $data['cnpj'];
+        $dataMsg = self::Sign_XML($dataMsg);
 
-        return parent::Conection(self::$url, $mountMessage, self::$headers, self::$verb, false);
+        self::mountMensage($dataMsg, $operation);
+
+        return self::connection();
     }
 
-    private static function assembleMessage(): string
+    public static function ConsultarNfseServicoTomado(array $data): string|int|array
     {
 
-        $assembleMessage = '<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope">';
-        $assembleMessage .= '<soap:Header/>';
-        $assembleMessage .= '<soap:Body>';
-        $assembleMessage .= '<parameters>';
-        $assembleMessage .= '<xml><![CDATA[[DadosMsg]]]></xml>';
-        $assembleMessage .= '</parameters>';
-        $assembleMessage .= '</soap:Body>';
-        $assembleMessage .= '</soap:Envelope>';
+        $operation = __FUNCTION__;
+        $dataMsg = parent::composeMessage($operation);
+        $dataMsg->cnpj = $data['cnpj'];
+        $dataMsg = self::Sign_XML($dataMsg);
 
-        return $assembleMessage;
+        self::mountMensage($dataMsg, $operation);
+
+        return self::connection();
     }
+
+    public static function GerarNfse(array $data): string|int|array
+    {
+
+        $operation = __FUNCTION__;
+        $dataMsg = parent::composeMessage($operation);
+        $dataMsg->cnpj = $data['cnpj'];
+        $dataMsg = self::Sign_XML($dataMsg);
+
+        self::mountMensage($dataMsg, $operation);
+
+        return self::connection();
+    }
+
+    public static function RecepcionarLoteRpsSincrono(array $data): string|int|array
+    {
+
+        $operation = __FUNCTION__;
+        $dataMsg = parent::composeMessage($operation);
+        $dataMsg->cnpj = $data['cnpj'];
+        $dataMsg = self::Sign_XML($dataMsg);
+
+        self::mountMensage($dataMsg, $operation);
+
+        return self::connection();
+    }
+
+    public static function SubstituirNfse(array $data): string|int|array
+    {
+
+        $operation = __FUNCTION__;
+        $dataMsg = parent::composeMessage($operation);
+        $dataMsg->cnpj = $data['cnpj'];
+        $dataMsg = self::Sign_XML($dataMsg);
+
+        self::mountMensage($dataMsg, $operation);
+
+        return self::connection();
+    }
+
+    private static function mountMensage(SimpleXMLElement $dataMsg, string $operation): void
+    {
+        //<![CDATA[[DadosMsg]]]>
+        self::$mountMessage = parent::assembleMessage($operation);
+
+        if (self::getVersion() === null) {
+
+            $dadosMsg = self::$mountMessage->xpath('//nfse:'. $operation)[0];
+
+        } else {
+
+            $cabecMsg = self::composeHeader();
+            $headMsg = self::$mountMessage->xpath('//arg0')[0];
+            $dadosMsg = self::$mountMessage->xpath('//arg1')[0];
+            $dom = dom_import_simplexml($cabecMsg);
+            $fragment = dom_import_simplexml($headMsg);
+            $dom->appendChild($dom->ownerDocument->importNode($fragment, true));
+
+        }
+
+        $dom = dom_import_simplexml($dadosMsg);
+        $fragment = dom_import_simplexml($dataMsg);
+        $dom->appendChild($dom->ownerDocument->importNode($fragment, true));
+
+    }
+
 }

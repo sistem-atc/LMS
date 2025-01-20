@@ -2,14 +2,17 @@
 
 namespace Database\Seeders;
 
-use App\Services\Towns\Abaco\Abaco;
-use App\Services\Towns\Betha\Betha;
-use App\Services\Towns\DBSeller\DBSeller;
-use App\Services\Towns\Desenvolve\Desenvolve;
-use App\Services\Towns\SigIss\SigIss;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use App\Services\Towns\Abaco\Abaco;
+use App\Services\Towns\Betha\Betha;
+use App\Services\Towns\Thema\Thema;
+use App\Services\Towns\Tinus\Tinus;
+use App\Services\Towns\SigIss\SigIss;
 use App\Services\Towns\WebIss\WebIss;
+use App\Services\Towns\DBSeller\DBSeller;
+use App\Services\Towns\Desenvolve\Desenvolve;
+
 class CitySettingSeeder extends Seeder
 {
     /**
@@ -24,7 +27,7 @@ class CitySettingSeeder extends Seeder
                 'city_name' => 'Manaus',
                 'ibge'=> '1302603',
                 'url_prod' => 'https://nfse-prd.manaus.am.gov.br/nfse/servlet/',
-                'url_homolog' => 'https://nfsev-prd.manaus.am.gov.br/nfsev/servlet/hlogin',
+                'url_homolog' => 'https://nfsev-prd.manaus.am.gov.br/nfsev/servlet/',
                 'headerversion' => '2.02',
                 'namespace' => '',
                 'version' => null,
@@ -171,7 +174,7 @@ class CitySettingSeeder extends Seeder
                 'headerversion' => null,
                 'namespace' => '',
                 'version' => null,
-                'class_path' => null
+                'class_path' => Betha::class //Classe temporaria para rodar o seed. Não é a classe correta
             ],
 
             [
@@ -283,6 +286,51 @@ class CitySettingSeeder extends Seeder
                 'version' => null,
                 'class_path' => WebIss::class
             ],
+
+            [
+                'city_name' => 'Recife',
+                'ibge'=> '2611606',
+                'url_prod' => 'https://www.tinus.com.br/csp/jaboatao/',
+                'url_homolog' => '',
+                'headerversion' => null,
+                'namespace' => '',
+                'version' => null,
+                'class_path' => Tinus::class
+            ],
+
+            [
+                'city_name' => 'Passo Fundo',
+                'ibge'=> '4314902',
+                'url_prod' => 'https://nfse.pmpf.rs.gov.br/thema-nfse/services/',
+                'url_homolog' => 'https://hmlnfse.pmpf.rs.gov.br/thema-nfse/services/',
+                'headerversion' => null,
+                'namespace' => '',
+                'version' => null,
+                'class_path' => Thema::class
+            ],
+
+            [
+                'city_name' => 'Lajeado',
+                'ibge'=> '4311403',
+                'url_prod' => 'https://nfse.lajeado.rs.gov.br/thema-nfse/services/',
+                'url_homolog' => 'https://hmlnfse.lajeado.rs.gov.br/thema-nfse/services/',
+                'headerversion' => null,
+                'namespace' => '',
+                'version' => null,
+                'class_path' => Thema::class
+            ],
+
+            [
+                'city_name' => 'Santa Cruz do Sul',
+                'ibge'=> '4316808',
+                'url_prod' => 'https://nfse.santacruz.rs.gov.br/thema-nfse/services/',
+                'url_homolog' => 'https://hmlnfse.santacruz.rs.gov.br/thema-nfse/services/',
+                'headerversion' => null,
+                'namespace' => '',
+                'version' => null,
+                'class_path' => Thema::class
+            ],
+
         ]);
 
     }

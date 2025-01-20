@@ -8,16 +8,12 @@ use App\Enums\HttpMethod;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Validator;
 use App\Services\Utils\Towns\Bases\LinkTownBase;
-use App\Services\Utils\Towns\Interfaces\LinkTownsInterface;
-use App\Services\Utils\Towns\Interfaces\DevelopInterface;
 
-class Desenvolve extends LinkTownBase implements LinkTownsInterface, DevelopInterface
+class Desenvolve extends LinkTownBase
 {
 
     protected static $verb = HttpMethod::POST;
-    protected static string|int|array|null $connection;
     private static SimpleXMLElement $mountMessage;
-    protected static $headers;
 
     public static function getHeaders(): array
     {
@@ -39,10 +35,14 @@ class Desenvolve extends LinkTownBase implements LinkTownsInterface, DevelopInte
         return self::cancelarNfseEnvio($data);
     }
 
-    public function __construct($codeIbge)
+    public function __construct(array $configLoader)
     {
-        parent::__construct($codeIbge);
-        self::$connection = self::Conection(parent::$url, self::$mountMessage->asXML(), static::$headers, self::$verb, false);
+        parent::__construct($configLoader);
+    }
+
+    private static function connection(): string|int|array|null
+    {
+        return self::Conection(parent::$url, self::$mountMessage->asXML(), self::getHeaders(), self::$verb, false);
     }
 
     public static function cancelarNfseEnvio($data): string|int
@@ -73,7 +73,7 @@ class Desenvolve extends LinkTownBase implements LinkTownsInterface, DevelopInte
 
         self::mountMensage($dataMsg);
 
-        return self::$connection;
+        return self::connection();
     }
 
     public static function consultarLoteRpsEnvio($data): string|int
@@ -100,7 +100,7 @@ class Desenvolve extends LinkTownBase implements LinkTownsInterface, DevelopInte
 
         self::mountMensage($dataMsg);
 
-        return self::$connection;
+        return self::connection();
     }
 
     public static function consultarNfseRpsEnvio($data): string|int
@@ -121,7 +121,7 @@ class Desenvolve extends LinkTownBase implements LinkTownsInterface, DevelopInte
 
         self::mountMensage($dataMsg);
 
-        return self::$connection;
+        return self::connection();
     }
 
     public static function consultarNfseServicoTomadoEnvio($data): string|int
@@ -149,7 +149,7 @@ class Desenvolve extends LinkTownBase implements LinkTownsInterface, DevelopInte
 
         self::mountMensage($dataMsg);
 
-        return self::$connection;
+        return self::connection();
     }
 
     public static function enviarLoteRpsEnvio($data): string|int
@@ -177,7 +177,7 @@ class Desenvolve extends LinkTownBase implements LinkTownsInterface, DevelopInte
 
         self::mountMensage($dataMsg);
 
-        return self::$connection;
+        return self::connection();
     }
 
     public static function enviarLoteRpsSincronoEnvio($data): string|int
@@ -205,7 +205,7 @@ class Desenvolve extends LinkTownBase implements LinkTownsInterface, DevelopInte
 
         self::mountMensage($dataMsg);
 
-        return self::$connection;
+        return self::connection();
     }
 
     public static function gerarNfseEnvio($data): string|int
@@ -233,7 +233,7 @@ class Desenvolve extends LinkTownBase implements LinkTownsInterface, DevelopInte
 
         self::mountMensage($dataMsg);
 
-        return self::$connection;
+        return self::connection();
     }
 
     private static function mountMensage(SimpleXMLElement $dataMsg): void

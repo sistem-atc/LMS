@@ -1,0 +1,15 @@
+<nfe:Sdt_cancelanfe>
+    <nfe:Login>
+        <nfe:CodigoUsuario></nfe:CodigoUsuario>
+        <nfe:CodigoContribuinte></nfe:CodigoContribuinte>
+    </nfe:Login>
+    <nfe:Nota>
+        <nfe:SerieNota></nfe:SerieNota>
+        <nfe:NumeroNota></nfe:NumeroNota>
+        <nfe:SerieRPS></nfe:SerieRPS>
+        <nfe:NumeroRps></nfe:NumeroRps>
+        <nfe:ValorNota></nfe:ValorNota>
+        <nfe:MotivoCancelamento></nfe:MotivoCancelamento>
+        <nfe:PodeCancelarGuia></nfe:PodeCancelarGuia>
+    </nfe:Nota>
+</nfe:Sdt_cancelanfe>

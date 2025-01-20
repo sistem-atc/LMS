@@ -1,0 +1,7 @@
+<nfe:Sdt_consultaprotocoloin>
+    <nfe:Protocolo></nfe:Protocolo>
+    <nfe:Login>
+        <nfe:CodigoUsuario></nfe:CodigoUsuario>
+        <nfe:CodigoContribuinte></nfe:CodigoContribuinte>
+    </nfe:Login>
+</nfe:Sdt_consultaprotocoloin>

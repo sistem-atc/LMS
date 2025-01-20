@@ -1,0 +1,14 @@
+<nfe:Consnfserecebida_in>
+    <nfe:Login>
+        <nfe:CodigoUsuario></nfe:CodigoUsuario>
+        <nfe:CodigoContribuinte></nfe:CodigoContribuinte>
+    </nfe:Login>
+    <nfe:Pagina></nfe:Pagina>
+    <nfe:Filtro>
+        <nfe:CpfCnpjPrestador></nfe:CpfCnpjPrestador>
+        <nfe:DtEmissaoDe></nfe:DtEmissaoDe>
+        <nfe:DtEmissaoAte></nfe:DtEmissaoAte>
+        <nfe:NumeroNotaDe></nfe:NumeroNotaDe>
+        <nfe:NumeroNotaAte></nfe:NumeroNotaAte>
+    </nfe:Filtro>
+</nfe:Consnfserecebida_in>

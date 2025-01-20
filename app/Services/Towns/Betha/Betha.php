@@ -9,14 +9,12 @@ use Illuminate\Validation\Rule;
 use App\Enums\MotivosCancelamento;
 use Illuminate\Support\Facades\Validator;
 use App\Services\Utils\Towns\Bases\LinkTownBase;
-use App\Services\Utils\Towns\Interfaces\LinkTownsInterface;
 
-class Betha extends LinkTownBase implements LinkTownsInterface
+class Betha extends LinkTownBase
 {
 
     protected static $verb = HttpMethod::POST;
     private static SimpleXMLElement $headMsg;
-    protected static string|int|array|null $connection;
     private static SimpleXMLElement $mountMessage;
     protected static $headers;
 
@@ -40,11 +38,15 @@ class Betha extends LinkTownBase implements LinkTownsInterface
         return self::CancelarNfse($data);
     }
 
-    public function __construct($codeIbge)
+    public function __construct(array $configLoader)
     {
-        parent::__construct($codeIbge);
+        parent::__construct($configLoader);
         self::$headMsg = self::composeHeader();
-        self::$connection = self::Conection(parent::$url, self::$mountMessage->asXML(), static::$headers, self::$verb, false);
+    }
+
+    private static function connection(): string|int|array|null
+    {
+        return self::Conection(parent::$url, self::$mountMessage->asXML(), self::getHeaders(), self::$verb, false);
     }
 
     public static function CancelarNfse($data): string|int|array
@@ -76,7 +78,7 @@ class Betha extends LinkTownBase implements LinkTownsInterface
 
         self::mountMensage(self::$headMsg, $dataMsg);
 
-        return self::$connection;
+        return self::connection();
     }
 
     public static function ConsultarLoteRps($data): string|int|array
@@ -99,7 +101,7 @@ class Betha extends LinkTownBase implements LinkTownsInterface
 
         self::mountMensage(self::$headMsg, $dataMsg);
 
-        return self::$connection;
+        return self::connection();
     }
 
     public static function ConsultarNfseFaixa($data): string|int|array
@@ -124,7 +126,7 @@ class Betha extends LinkTownBase implements LinkTownsInterface
 
         self::mountMensage(self::$headMsg, $dataMsg);
 
-        return self::$connection;
+        return self::connection();
     }
 
     public static function ConsultarNfsePorRps($data): string|int|array
@@ -155,17 +157,17 @@ class Betha extends LinkTownBase implements LinkTownsInterface
 
         self::mountMensage(self::$headMsg, $dataMsg);
 
-        return self::$connection;
+        return self::connection();
     }
 
     public static function ConsultarNfseServicoPrestado($data): string|int|array
     {
 
         $validator = Validator::make($data, [
-            'cnpj' => 'required',
-            'inscricaoMunicipal' => 'required',
-            'dataInicial' => 'required|date',
-            'dataFinal' => 'required|date',
+            'Prestador.cnpj' => 'required|max:14',
+            'Prestador.inscricaoMunicipal' => 'required',
+            'PeriodoEmissao.dataInicial' => 'required|date',
+            'PeriodoEmissao.dataFinal' => 'required|date',
         ]);
 
         if ($validator->fails()) {
@@ -174,15 +176,15 @@ class Betha extends LinkTownBase implements LinkTownsInterface
 
         $dataMsg = self::composeMessage(__FUNCTION__);
 
-        $dataMsg->Cnpj = $data['cnpj'];
-        $dataMsg->InscricaoMunicipal = $data['inscricaoMunicipal'];
-        $dataMsg->DataInicial = $data['dataInicial'];
-        $dataMsg->DataFinal = $data['dataFinal'];
+        $dataMsg->Prestador->Cnpj = $data['Prestador']['cnpj'];
+        $dataMsg->Prestador->InscricaoMunicipal = $data['Prestador']['inscricaoMunicipal'];
+        $dataMsg->PeriodoEmissao->DataInicial = $data['PeriodoEmissao']['dataInicial'];
+        $dataMsg->PeriodoEmissao->DataFinal = $data['PeriodoEmissao']['dataFinal'];
         $dataMsg->Pagina = $data['pagina'] ?? 1;
 
         self::mountMensage(self::$headMsg, $dataMsg);
 
-        return self::$connection;
+        return self::connection();
     }
 
     public static function ConsultarNfseServicoTomado($data): string|int|array
@@ -232,7 +234,7 @@ class Betha extends LinkTownBase implements LinkTownsInterface
 
         self::mountMensage(self::$headMsg, $dataMsg);
 
-        return self::$connection;
+        return self::connection();
     }
 
     public static function GerarNfse($data): string|int|array
@@ -293,7 +295,7 @@ class Betha extends LinkTownBase implements LinkTownsInterface
 
         self::mountMensage(self::$headMsg, $dataMsg);
 
-        return self::$connection;
+        return self::connection();
     }
 
     public static function RecepcionarLoteRps($data): string|int|array
@@ -322,7 +324,7 @@ class Betha extends LinkTownBase implements LinkTownsInterface
 
         self::mountMensage(self::$headMsg, $dataMsg);
 
-        return self::$connection;
+        return self::connection();
     }
 
     public static function RecepcionarLoteRpsSincrono($data): string|int|array
@@ -351,7 +353,7 @@ class Betha extends LinkTownBase implements LinkTownsInterface
 
         self::mountMensage(self::$headMsg, $dataMsg);
 
-        return self::$connection;
+        return self::connection();
     }
 
     public static function SubstituirNfse($data): string|int|array
@@ -380,7 +382,7 @@ class Betha extends LinkTownBase implements LinkTownsInterface
 
         self::mountMensage(self::$headMsg, $dataMsg);
 
-        return self::$connection;
+        return self::connection();
     }
 
     private static function mountMensage(SimpleXMLElement $headMsg, SimpleXMLElement $dataMsg): void

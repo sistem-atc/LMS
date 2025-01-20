@@ -1,7 +1,7 @@
 <SubstituirNfseEnvio xmlns="http://www.betha.com.br/e-nota-contribuinte-ws">
-    <SubstituicaoNfse Id="1">
+    <SubstituicaoNfse Id="">
         <Pedido>
-            <InfPedidoCancelamento Id="1">
+            <InfPedidoCancelamento Id="">
                 <IdentificacaoNfse>
                     <Numero></Numero>
                     <CpfCnpj>
@@ -14,7 +14,7 @@
             </InfPedidoCancelamento>
         </Pedido>
         <Rps>
-            <InfDeclaracaoPrestacaoServico  Id="lote">
+            <InfDeclaracaoPrestacaoServico Id="">
                 <Rps>
                     <IdentificacaoRps>
                         <Numero></Numero>

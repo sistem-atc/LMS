@@ -76,7 +76,7 @@ class Exemple implements ExcludeSelectInterface
 
         $ibgeCode = '1302603';
         $class = CitySetting::where('ibge', $ibgeCode)->first();
-        $abaco = app($class, ['codeIbge' => $ibgeCode]);
+        $abaco = app($class->class_path, ['configLoader' => $class->toArray()]);
 
         dd($abaco->gerarNota($arrayData));
     }
@@ -91,7 +91,7 @@ class Exemple implements ExcludeSelectInterface
 
         $ibgeCode = '1302603';
         $class = CitySetting::where('ibge', $ibgeCode)->first();
-        $abaco = app($class, ['codeIbge' => $ibgeCode]);
+        $abaco = app($class->class_path, ['configLoader' => $class->toArray()]);
 
         dd($abaco->ConsultarSituacaoLoteRPS($arrayData));
     }
@@ -108,7 +108,7 @@ class Exemple implements ExcludeSelectInterface
 
         $ibgeCode = '1302603';
         $class = CitySetting::where('ibge', $ibgeCode)->first();
-        $abaco = app($class, ['codeIbge' => $ibgeCode]);
+        $abaco = app($class->class_path, ['configLoader' => $class->toArray()]);
 
         dd($abaco->ConsultarNfsePorRps($arrayData));
     }
@@ -123,23 +123,28 @@ class Exemple implements ExcludeSelectInterface
 
         $ibgeCode = '1302603';
         $class = CitySetting::where('ibge', $ibgeCode)->first();
-        $abaco = app($class, ['codeIbge' => $ibgeCode]);
+        $abaco = app($class->class_path, ['configLoader' => $class->toArray()]);
 
         dd($abaco->ConsultarLoteRps($arrayData));
     }
 
     protected function ConsultarNfse(): void
     {
+
         $arrayData = [
-            'cnpj' => '18575072000122',
-            'inscricaoMunicipal' => 854776,
-            'dataInicial' => Carbon::now()->format('Y-m-d H:i:s'),
-            'dataFinal' => Carbon::now()->format('Y-m-d H:i:s'),
+            'Prestador' => [
+                'cnpj' => '18575072000122',
+                'inscricaoMunicipal' => 854776,
+            ],
+            'PeriodoEmissao' => [
+                'dataInicial' => Carbon::now()->format('Y-m-d H:i:s'),
+                'dataFinal' => Carbon::now()->format('Y-m-d H:i:s'),
+            ],
         ];
 
         $ibgeCode = '1302603';
         $class = CitySetting::where('ibge', $ibgeCode)->first();
-        $abaco = app($class, ['codeIbge' => $ibgeCode]);
+        $abaco = app($class->class_path, ['configLoader' => $class->toArray()]);
 
         dd($abaco->ConsultarNfse($arrayData));
     }

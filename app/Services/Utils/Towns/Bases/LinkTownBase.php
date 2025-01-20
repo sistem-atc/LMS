@@ -2,51 +2,36 @@
 
 namespace App\Services\Utils\Towns\Bases;
 
-use ReflectionClass;
-use SimpleXMLElement;
-use App\Models\Branch;
-use App\Enums\HttpMethod;
-use App\Models\CitySetting;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Auth;
-use App\Services\Utils\HttpConnection\Connection;
-use App\Services\Utils\Towns\Helpers\XmlSigner;
+use App\Services\Utils\Towns\Interfaces\LinkTownsInterface;
 
-class LinkTownBase
+abstract class LinkTownBase implements LinkTownsInterface
 {
 
-    protected static $linkTowns;
-    protected static $url;
-    protected static $headerVersion;
-    protected static $codeIbge;
-    protected static $namespace;
-    protected static $version;
-    protected static $username;
-    protected static $password;
+    use SignXml, RequestSender, XmlHandler;
 
-    public function __construct($codeIbge)
+    protected static string $cityName;
+    protected static ?string $url;
+    protected static string $codeIbge;
+    protected static ?string $namespace;
+    protected static ?string $username;
+    protected static ?string $password;
+    protected static ?string $headerVersion;
+    protected static ?string $version;
+
+    public function __construct(array $configLoader)
     {
 
-        $dataTowns = CitySetting::where('ibge', $codeIbge)->first();
+        $config = ConfigLoader::loadConfig($configLoader);
 
-        $urlAmbient = 'url_' . $this->getAmbient();
+        self::$cityName = $config['cityName'];
+        self::$url = $config['url'];
+        self::$codeIbge = $config['codeIbge'];
+        self::$namespace = $config['namespace'];
+        self::$username = $config['username'];
+        self::$password = $config['password'];
+        self::$headerVersion = $config['headerVersion'];
+        self::$version = $config['version'];
 
-        if ($dataTowns === null) {
-            throw new \InvalidArgumentException("Prefeitura Não Configurada.");
-        };
-
-        if ($dataTowns->$urlAmbient === null) {
-            throw new \InvalidArgumentException("Ambiente não configurado.");
-        }
-
-        self::$codeIbge = $codeIbge;
-        self::$username = $dataTowns->username;
-        self::$password = $dataTowns->password;
-        self::$url = $dataTowns->$urlAmbient;
-        self::$headerVersion = $dataTowns->headerversion;
-        self::$namespace = $dataTowns->namespace;
-        self::$version = $dataTowns->version;
     }
 
     protected static function getUsername(): ?string
@@ -79,61 +64,4 @@ class LinkTownBase
         return self::$headerVersion ?? null;
     }
 
-    protected static function composeHeader(): SimpleXMLElement
-    {
-        $basedir = self::getDir();
-        $content = new SimpleXMLElement(file_get_contents($basedir . '/schemas/ComposeHeader.xml'));
-        $content->attributes()->versao = self::getHeaderVersion();
-        $content->versaoDados = self::getHeaderVersion();
-
-        return $content;
-    }
-
-    protected static function composeMessage(string $type): SimpleXMLElement | null
-    {
-        $basedir = self::getDir();
-        return new SimpleXMLElement(file_get_contents($basedir . '/schemas/' . $type . '.xml'));
-    }
-
-    protected static function assembleMessage(string $replaceOperation = null): SimpleXMLElement
-    {
-
-        $baseDir = self::getDir();
-
-        if (self::getVersion() === null) {
-            $content = file_get_contents($baseDir . '/schemas/AssembleMensage.xml');
-        } else {
-            $content = file_get_contents($baseDir . '/schemas/AssembleMensage' . self::getVersion() . '.xml');
-        }
-
-        if (strpos($content, '[Mount_Mensage]') !== false) {
-            $content = Str::replace('[Mount_Mensage]', $replaceOperation, $content);
-        }
-
-        return new SimpleXMLElement($content);
-    }
-
-    private static function getDir(): ?string
-    {
-        $class = get_called_class();
-        $reflection = new ReflectionClass($class);
-
-        return dirname($reflection->getFileName());
-    }
-
-    private function getAmbient(): string
-    {
-        return App::environment('production') == 'production' ? 'prod' : 'homolog';
-    }
-
-    protected static function Sign_XML(string $xmlNoSigned): SimpleXMLElement
-    {
-        $xmlSigner = new XmlSigner(Branch::where('id', '=', Auth::user()->employee->branch['id']));
-        return simplexml_load_string($xmlSigner::Sign_XML($xmlNoSigned));
-    }
-
-    protected static function Conection(string $url, string $Mensage, ?array $headers, ?HttpMethod $verb): string|int|array|null
-    {
-        return Connection::Conexao($url, $Mensage, $headers, $verb);
-    }
 }

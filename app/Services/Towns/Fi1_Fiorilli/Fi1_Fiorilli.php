@@ -7,14 +7,17 @@ use App\Enums\HttpMethod;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
 use App\Services\Utils\Towns\Bases\LinkTownBase;
-use App\Services\Utils\Towns\Interfaces\LinkTownsInterface;
 
-class Fi1_Fiorilli extends LinkTownBase implements LinkTownsInterface
+class Fi1_Fiorilli extends LinkTownBase
 {
 
     protected static $verb = HttpMethod::POST;
-    protected static $operation;
-    protected static $headers = [];
+    private static SimpleXMLElement $mountMessage;
+
+    public static function getHeaders(): array
+    {
+        return [];
+    }
 
     public function consultarNota(array $data): string|int|array
     {
@@ -31,12 +34,17 @@ class Fi1_Fiorilli extends LinkTownBase implements LinkTownsInterface
         return self::CancelarNfse($data);
     }
 
-    public function __construct($codeIbge)
+    public function __construct(array $configLoader)
     {
-        parent::__construct($codeIbge);
+        parent::__construct($configLoader);
     }
 
-    public static function CancelarNfse($data): string | int
+    private static function connection(): string|int|array|null
+    {
+        return self::Conection(parent::$url, self::$mountMessage->asXML(), self::getHeaders(), self::$verb, false);
+    }
+
+    public static function cancelarNfse($data): string|int|array
     {
 
         $validator = Validator::make($data, [
@@ -49,16 +57,15 @@ class Fi1_Fiorilli extends LinkTownBase implements LinkTownsInterface
             return ['errors' => $validator->errors(), 'response' => 422];
         }
 
-        $operacao = 'cancelarNfse';
+        $operacao = __FUNCTION__;
         $dataMsg = parent::composeMessage($operacao);
-        $mountMesage = self::mountMensage($dataMsg, $operacao);
-        $mountMesage = Str::replace("[Username]", parent::getUsername(), $mountMesage);
-        $mountMesage = Str::replace("[Password]", parent::getPassword(), $mountMesage);
 
-        return parent::Conection(parent::$url, $mountMesage, static::$headers, self::$verb, false);
+        self::mountMensage($dataMsg);
+
+        return self::connection();
     }
 
-    public static function ConsultarLoteRps($data): string | int
+    public static function consultarLoteRps($data): string|int|array
     {
 
         $validator = Validator::make($data, [
@@ -71,16 +78,14 @@ class Fi1_Fiorilli extends LinkTownBase implements LinkTownsInterface
             return ['errors' => $validator->errors(), 'response' => 422];
         }
 
-        $operacao = 'consultarLoteRps';
+        $operacao = __FUNCTION__;
         $dataMsg = parent::composeMessage($operacao);
-        $mountMesage = self::mountMensage($dataMsg, $operacao);
-        $mountMesage = Str::replace("[Username]", parent::getUsername(), $mountMesage);
-        $mountMesage = Str::replace("[Password]", parent::getPassword(), $mountMesage);
+        self::mountMensage($dataMsg);
 
-        return parent::Conection(parent::$url, $mountMesage, static::$headers, self::$verb, false);
+        return self::connection();
     }
 
-    public static function consultarNfsePorFaixa($data): string | int
+    public static function consultarNfsePorFaixa($data): string|int|array
     {
 
         $validator = Validator::make($data, [
@@ -93,16 +98,14 @@ class Fi1_Fiorilli extends LinkTownBase implements LinkTownsInterface
             return ['errors' => $validator->errors(), 'response' => 422];
         }
 
-        $operacao = 'consultarNfsePorFaixa';
+        $operacao = __FUNCTION__;
         $dataMsg = parent::composeMessage($operacao);
-        $mountMesage = self::mountMensage($dataMsg, $operacao);
-        $mountMesage = Str::replace("[Username]", parent::getUsername(), $mountMesage);
-        $mountMesage = Str::replace("[Password]", parent::getPassword(), $mountMesage);
+        self::mountMensage($dataMsg);
 
-        return parent::Conection(parent::$url, $mountMesage, static::$headers, self::$verb, false);
+        return self::connection();
     }
 
-    public static function ConsultarNfsePorRps($data): string | int
+    public static function consultarNfsePorRps($data): string|int|array
     {
 
         $validator = Validator::make($data, [
@@ -115,16 +118,14 @@ class Fi1_Fiorilli extends LinkTownBase implements LinkTownsInterface
             return ['errors' => $validator->errors(), 'response' => 422];
         }
 
-        $operacao = 'consultarNfsePorRps';
+        $operacao = __FUNCTION__;
         $dataMsg = parent::composeMessage($operacao);
-        $mountMesage = self::mountMensage($dataMsg, $operacao);
-        $mountMesage = Str::replace("[Username]", parent::getUsername(), $mountMesage);
-        $mountMesage = Str::replace("[Password]", parent::getPassword(), $mountMesage);
+        self::mountMensage($dataMsg);
 
-        return parent::Conection(parent::$url, $mountMesage, static::$headers, self::$verb, false);
+        return self::connection();
     }
 
-    public static function ConsultarNfseServicoPrestado($data): string | int
+    public static function consultarNfseServicoPrestado($data): string|int|array
     {
 
         $validator = Validator::make($data, [
@@ -137,16 +138,14 @@ class Fi1_Fiorilli extends LinkTownBase implements LinkTownsInterface
             return ['errors' => $validator->errors(), 'response' => 422];
         }
 
-        $operacao = 'consultarNfseServicoPrestado';
+        $operacao = __FUNCTION__;
         $dataMsg = parent::composeMessage($operacao);
-        $mountMesage = self::mountMensage($dataMsg, $operacao);
-        $mountMesage = Str::replace("[Username]", parent::getUsername(), $mountMesage);
-        $mountMesage = Str::replace("[Password]", parent::getPassword(), $mountMesage);
+        self::mountMensage($dataMsg);
 
-        return parent::Conection(parent::$url, $mountMesage, static::$headers, self::$verb, false);
+        return self::connection();
     }
 
-    public static function GerarNfse($data): string | int
+    public static function gerarNfse($data): string|int|array
     {
 
         $validator = Validator::make($data, [
@@ -159,16 +158,14 @@ class Fi1_Fiorilli extends LinkTownBase implements LinkTownsInterface
             return ['errors' => $validator->errors(), 'response' => 422];
         }
 
-        $operacao = 'gerarNfse';
+        $operacao = __FUNCTION__;
         $dataMsg = parent::composeMessage($operacao);
-        $mountMesage = self::mountMensage($dataMsg, $operacao);
-        $mountMesage = Str::replace("[Username]", parent::getUsername(), $mountMesage);
-        $mountMesage = Str::replace("[Password]", parent::getPassword(), $mountMesage);
+        self::mountMensage($dataMsg);
 
-        return parent::Conection(parent::$url, $mountMesage, static::$headers, self::$verb, false);
+        return self::connection();
     }
 
-    public static function RecepcionarLoteRps($data): string | int
+    public static function recepcionarLoteRps($data): string|int|array
     {
 
         $validator = Validator::make($data, [
@@ -181,16 +178,14 @@ class Fi1_Fiorilli extends LinkTownBase implements LinkTownsInterface
             return ['errors' => $validator->errors(), 'response' => 422];
         }
 
-        $operacao = 'recepcionarLoteRps';
+        $operacao = __FUNCTION__;
         $dataMsg = parent::composeMessage($operacao);
-        $mountMesage = self::mountMensage($dataMsg, $operacao);
-        $mountMesage = Str::replace("[Username]", parent::getUsername(), $mountMesage);
-        $mountMesage = Str::replace("[Password]", parent::getPassword(), $mountMesage);
+        self::mountMensage($dataMsg);
 
-        return parent::Conection(parent::$url, $mountMesage, static::$headers, self::$verb, false);
+        return self::connection();
     }
 
-    public static function RecepcionarLoteRpsSincrono($data): string | int
+    public static function recepcionarLoteRpsSincrono($data): string|int|array
     {
 
         $validator = Validator::make($data, [
@@ -203,16 +198,14 @@ class Fi1_Fiorilli extends LinkTownBase implements LinkTownsInterface
             return ['errors' => $validator->errors(), 'response' => 422];
         }
 
-        $operacao = 'recepcionarLoteRpsSincrono';
+        $operacao = __FUNCTION__;
         $dataMsg = parent::composeMessage($operacao);
-        $mountMesage = self::mountMensage($dataMsg, $operacao);
-        $mountMesage = Str::replace("[Username]", parent::getUsername(), $mountMesage);
-        $mountMesage = Str::replace("[Password]", parent::getPassword(), $mountMesage);
+        self::mountMensage($dataMsg);
 
-        return parent::Conection(parent::$url, $mountMesage, static::$headers, self::$verb, false);
+        return self::connection();
     }
 
-    public static function SubstituirNfse($data): string | int
+    public static function substituirNfse($data): string|int|array
     {
 
         $validator = Validator::make($data, [
@@ -225,26 +218,25 @@ class Fi1_Fiorilli extends LinkTownBase implements LinkTownsInterface
             return ['errors' => $validator->errors(), 'response' => 422];
         }
 
-        $operacao = 'substituirNfse';
+        $operacao = __FUNCTION__;
         $dataMsg = parent::composeMessage($operacao);
-        $mountMesage = self::mountMensage($dataMsg, $operacao);
-        $mountMesage = Str::replace("[Username]", parent::getUsername(), $mountMesage);
-        $mountMesage = Str::replace("[Password]", parent::getPassword(), $mountMesage);
+        self::mountMensage($dataMsg);
 
-        return parent::Conection(parent::$url, $mountMesage, static::$headers, self::$verb, false);
+        return self::connection();
     }
 
-    private static function mountMensage(SimpleXMLElement $dataMsg, string $operacao): SimpleXMLElement
+    private static function mountMensage(SimpleXMLElement $dataMsg): void
     {
 
-        $mountMessage = parent::assembleMessage();
+        self::$mountMessage = parent::assembleMessage();
 
-        $dadosMsg = $mountMessage->xpath('//ws:' . $operacao)[0];
-        $dom = dom_import_simplexml($dadosMsg);
-        $fragment = dom_import_simplexml($dataMsg);
+        self::$mountMessage = Str::replace("[Username]", parent::getUsername(), self::$mountMessage);
+        self::$mountMessage = Str::replace("[Password]", parent::getPassword(), self::$mountMessage);
+
+        $dom = dom_import_simplexml($dataMsg);
+        $fragment = dom_import_simplexml(self::$mountMessage);
         $dom->appendChild($dom->ownerDocument->importNode($fragment, true));
 
-        return $mountMessage;
     }
 
 }

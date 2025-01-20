@@ -6,6 +6,9 @@ use DOMDocument;
 use Carbon\Carbon;
 use App\Models\CitySetting;
 use Illuminate\Console\Command;
+use App\Services\CnpjWs\CnpjWsService;
+use App\Services\ConsultaCep\ConsultaCep;
+use App\Services\MultiEmbarcador\MultiEmbarcador;
 
 class Playground extends Command
 {
@@ -15,6 +18,14 @@ class Playground extends Command
 
     public function handle(): int
     {
+
+        $functions = [
+            'ConsultaCep' => fn($cep) => ConsultaCep::consultaCEP($cep),
+            'CnpjWs' => fn($cnpj) => CnpjWsService::consultaCNPJ($cnpj),
+            'MultiEmbarcador' => fn($date_Initial, $date_Out, $firstCte = 0) => MultiEmbarcador::BuscarCTes($date_Initial, $date_Out, $firstCte),
+        ];
+
+        dd($functions['ConsultaCep']('1302603'));
 
         // MONTAR XML DE FORMA PROGRAMATICA
         $dom = new DOMDocument('1.0', 'utf-8');

@@ -1,0 +1,10 @@
+<ConsultarNfseEnvio xmlns="http://www.ginfes.com.br/servico_consultar_nfse_envio_v03.xsd">
+    <Prestador>
+        <tipos:Cnpj xmlns:tipos="http://www.ginfes.com.br/tipos_v03.xsd"></tipos:Cnpj>
+        <tipos:InscricaoMunicipal xmlns:tipos="http://www.ginfes.com.br/tipos_v03.xsd"></tipos:InscricaoMunicipal>
+    </Prestador>
+    <PeriodoEmissao>
+        <DataInicial></DataInicial>
+        <DataFinal></DataFinal>
+    </PeriodoEmissao>
+</ConsultarNfseEnvio>

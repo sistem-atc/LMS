@@ -1,0 +1,10 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+    xmlns:prod="http://producao.issfortaleza.com.br">
+    <soapenv:Header/>
+    <soapenv:Body>
+        <prod:[Mount_Mensage]V3>
+            <Cabecalho></Cabecalho>
+            <[Mount_Mensage]Envio></[Mount_Mensage]Envio>
+        </prod:[Mount_Mensage]V3>
+    </soapenv:Body>
+</soapenv:Envelope>

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Services\Utils\CnpjWs;
+namespace App\Services\CnpjWs;
 
-use App\Services\Utils\CnpjWs\Entities\CnpjWs;
+use App\Services\CnpjWs\Entities\CnpjWs;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Http;
 
@@ -23,7 +23,7 @@ class CnpjWsService
     private static function transform(mixed $json): Collection
     {
         return collect($json)
-                ->map(fn ($CnpjWs) => new CnpjWs($json));
+                ->map(fn ($items) => new CnpjWs($items));
     }
 
 }

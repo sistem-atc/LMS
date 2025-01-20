@@ -1,0 +1,12 @@
+<ConsultaNfse>
+    <CnpjCpf></CnpjCpf>
+    <Consulta>
+        <CnpjCpfPrestador></CnpjCpfPrestador>
+        <NumeroNfse></NumeroNfse>
+        <DtInicial></DtInicial>
+        <DtFinal></DtFinal>
+        <NumeroInicial></NumeroInicial>
+        <NumeroFinal></NumeroFinal>
+        <Pagina></Pagina>
+    </Consulta>
+</ConsultaNfse>

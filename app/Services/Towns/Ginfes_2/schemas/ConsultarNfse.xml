@@ -1,0 +1,9 @@
+<ns2:ConsultarNfseEnvio xmlns:ns2="http://www.ginfes.com.br/servico_consultar_nfse_envio_v03.xsd"
+    xmlns="http://www.ginfes.com.br/tipos_v03.xsd"
+    xmlns:ns3="http://www.w3.org/2000/09/xmldsig#">
+    <ns2:Prestador>
+        <Cnpj></Cnpj>
+        <InscricaoMunicipal></InscricaoMunicipal>
+    </ns2:Prestador>
+    <ns2:NumeroNfse></ns2:NumeroNfse>
+</ns2:ConsultarNfseEnvio>

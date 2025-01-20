@@ -1,0 +1,8 @@
+<ConsultaSituacaoLoteAsync>
+    <CnpjCpf></CnpjCpf>
+    <Consulta>
+        <CnpjCpfPrestador></CnpjCpfPrestador>
+        <NumeroLote></NumeroLote>
+        <NumeroProtocolo></NumeroProtocolo>
+    </Consulta>
+</ConsultaSituacaoLoteAsync>

@@ -1,0 +1,11 @@
+<soapenv:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+    xmlns:geis="urn:https://www.geisweb.net.br/producao/cajamar/webservice/GeisWebServiceImpl.php">
+    <soapenv:Header/>
+    <soapenv:Body>
+        <geis:[Mount_Mensage] soapenv:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+            <[Mount_Mensage] xsi:type="xsd:string"></[Mount_Mensage]>
+        </geis:[Mount_Mensage]>
+    </soapenv:Body>
+</soapenv:Envelope>

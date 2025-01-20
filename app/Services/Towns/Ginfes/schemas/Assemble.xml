@@ -1,0 +1,10 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+    xmlns:nfse="http://producao.ginfes.com.br">
+    <soapenv:Header/>
+    <soapenv:Body>
+        <nfse:[Mount_Mensage]>
+            <nfseCabecMsg>[CabecMsg]</nfseCabecMsg>
+            <nfseDadosMsg>[DadosMsg]</nfseDadosMsg>
+        </nfse:[Mount_Mensage]>
+    </soapenv:Body>
+</soapenv:Envelope>

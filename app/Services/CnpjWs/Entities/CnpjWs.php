@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Utils\CnpjWs\Entities;
+namespace App\Services\CnpjWs\Entities;
 
 class CnpjWs
 {

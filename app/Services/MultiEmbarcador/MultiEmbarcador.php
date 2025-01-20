@@ -1,23 +1,22 @@
 <?php
 
-namespace App\Services\Utils\MultiEmbarcador;
+namespace App\Services\MultiEmbarcador;
 
 use App\Models\Customer;
-use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Http;
 
-class MultiEmbarcadorService
+class MultiEmbarcador
 {
 
-    public $clients = [];
+    public static $clients = [];
 
-    public function __construct(){
+    public function __construct(Customer $customer){
 
-        $this->clients = Customer::where('BaseEndpoint', '!=', '')->get()->toArray();
+        self::$clients = $customer->where('BaseEndpoint', '!=', '')->get()->toArray();
 
     }
 
-    public function BuscarCTes(string $date_Initial, string $date_Out, int $firstCte = 0)
+    public static function BuscarCTes(string $date_Initial, string $date_Out, int $firstCte = 0)
     {
         $Endpoint = 'CTe.svc';
         $SendXml = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tem="http://tempuri.org/">' .
@@ -35,11 +34,11 @@ class MultiEmbarcadorService
                         '</soapenv:Body>' .
                     '</soapenv:Envelope>';
 
-        foreach($this->clients as $client){
-            str_replace('TOKEN', $client['Token'], $SendXml);
-            str_replace('DATA_INICIO', $date_Initial, $SendXml);
-            str_replace('DATA_FINAL', $date_Out, $SendXml);
-            str_replace('PRIMEIRO_NUMERO', $firstCte, $SendXml);
+        foreach(self::$clients as $client){
+            $SendXml = str_replace('TOKEN', $client['Token'], $SendXml);
+            $SendXml = str_replace('DATA_INICIO', $date_Initial, $SendXml);
+            $SendXml = str_replace('DATA_FINAL', $date_Out, $SendXml);
+            $SendXml = str_replace('PRIMEIRO_NUMERO', $firstCte, $SendXml);
 
             dd(Http::withBody($SendXml,"text/xml")->post($client['BaseEndpoint'] . $Endpoint));
         };

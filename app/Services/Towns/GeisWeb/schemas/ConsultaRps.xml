@@ -1,0 +1,12 @@
+<ConsultaRps>
+    <CnpjCpf></CnpjCpf>
+    <Consulta>
+        <CnpjCpfPrestador></CnpjCpfPrestador>
+        <NumeroRps></NumeroRps>
+        <DtInicial></DtInicial>
+        <DtFinal></DtFinal>
+        <NumeroInicial></NumeroInicial>
+        <NumeroFinal></NumeroFinal>
+        <Pagina></Pagina>
+    </Consulta>
+</ConsultaRps>

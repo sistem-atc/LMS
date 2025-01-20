@@ -1,0 +1,7 @@
+<p:cabecalho versao="2.00"
+    xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
+    xmlns:p="http://www.giss.com.br/cabecalho-v2_04.xsd"
+    xmlns:p1="http://www.giss.com.br/tipos-v2_04.xsd"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <p:versaoDados>2.00</p:versaoDados>
+</p:cabecalho>

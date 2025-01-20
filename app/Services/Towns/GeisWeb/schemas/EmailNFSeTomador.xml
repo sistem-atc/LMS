@@ -1,0 +1,7 @@
+<EmailNFSeTomador>
+    <CnpjCpf></CnpjCpf>
+    <Envia>
+        <NumeroNfse></NumeroNfse>
+        <EmailTomador></EmailTomador>
+    </Envia>
+</EmailNFSeTomador>

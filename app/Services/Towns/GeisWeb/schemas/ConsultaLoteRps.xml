@@ -1,0 +1,7 @@
+<ConsultaLoteRps>
+    <CnpjCpf></CnpjCpf>
+    <Consulta>
+        <CnpjCpfPrestador></CnpjCpfPrestador>
+        <NumeroLote></NumeroLote>
+    </Consulta>
+</ConsultaLoteRps>

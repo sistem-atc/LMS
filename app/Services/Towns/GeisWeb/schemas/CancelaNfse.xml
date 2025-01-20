@@ -1,0 +1,7 @@
+<CancelaNfse>
+    <CnpjCpf></CnpjCpf>
+    <Cancela>
+        <CnpjCpfPrestador></CnpjCpfPrestador>
+        <NumeroNfse></NumeroNfse>
+    </Cancela>
+</CancelaNfse>

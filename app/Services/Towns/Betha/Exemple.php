@@ -2,12 +2,13 @@
 
 namespace App\Services\Towns\Betha;
 
-use App\Models\CitySetting;
 use Illuminate\Support\Carbon;
 use App\Services\Utils\Towns\Interfaces\ExcludeSelectInterface;
 
 class Exemple implements ExcludeSelectInterface
 {
+
+    const CITY_IBGE = '4112108';
 
     protected function CancelarNfse(): void
     {
@@ -20,9 +21,9 @@ class Exemple implements ExcludeSelectInterface
             'CodigoCancelamento' => '123456',
         ];
 
-        $ibgeCode = '4112108';
-        $class = CitySetting::where('ibge', $ibgeCode)->first();
-        $betha = app($class->class_path, ['configLoader' => $class->toArray()]);
+        $class = config('Towns-List.' . self::CITY_IBGE);
+        $config = config('Towns.' . $class)[self::CITY_IBGE];
+        $betha = $config['class_path']::getInstance($config);
 
         dd($betha->CancelarNfse($arrayData));
 
@@ -37,9 +38,9 @@ class Exemple implements ExcludeSelectInterface
             'Protocolo' => '123456',
         ];
 
-        $ibgeCode = '4112108';
-        $class = CitySetting::where('ibge', $ibgeCode)->first();
-        $betha = app($class->class_path, ['configLoader' => $class->toArray()]);
+        $class = config('Towns-List.' . self::CITY_IBGE);
+        $config = config('Towns.' . $class)[self::CITY_IBGE];
+        $betha = $config['class_path']::getInstance($config);
 
         dd($betha->ConsultarLoteRps($arrayData));
 
@@ -55,9 +56,9 @@ class Exemple implements ExcludeSelectInterface
             'Pagina' => '1',
         ];
 
-        $ibgeCode = '4112108';
-        $class = CitySetting::where('ibge', $ibgeCode)->first();
-        $betha = app($class->class_path, ['configLoader' => $class->toArray()]);
+        $class = config('Towns-List.' . self::CITY_IBGE);
+        $config = config('Towns.' . $class)[self::CITY_IBGE];
+        $betha = $config['class_path']::getInstance($config);
 
         dd($betha->ConsultarNfseFaixa($arrayData));
 
@@ -74,9 +75,9 @@ class Exemple implements ExcludeSelectInterface
             'InscricaoMunicipal' => '1234567890',
         ];
 
-        $ibgeCode = '4112108';
-        $class = CitySetting::where('ibge', $ibgeCode)->first();
-        $betha = app($class->class_path, ['configLoader' => $class->toArray()]);
+        $class = config('Towns-List.' . self::CITY_IBGE);
+        $config = config('Towns.' . $class)[self::CITY_IBGE];
+        $betha = $config['class_path']::getInstance($config);
 
         dd($betha->ConsultarNfsePorRps($arrayData));
 
@@ -93,9 +94,9 @@ class Exemple implements ExcludeSelectInterface
             'Pagina' => '1',
         ];
 
-        $ibgeCode = '4112108';
-        $class = CitySetting::where('ibge', $ibgeCode)->first();
-        $betha = app($class->class_path, ['configLoader' => $class->toArray()]);
+        $class = config('Towns-List.' . self::CITY_IBGE);
+        $config = config('Towns.' . $class)[self::CITY_IBGE];
+        $betha = $config['class_path']::getInstance($config);
 
         dd($betha->ConsultarNfseServicoPrestado($arrayData));
 
@@ -117,9 +118,9 @@ class Exemple implements ExcludeSelectInterface
             'Pagina' => '1',
         ];
 
-        $ibgeCode = '4112108';
-        $class = CitySetting::where('ibge', $ibgeCode)->first();
-        $betha = app($class->class_path, ['configLoader' => $class->toArray()]);
+        $class = config('Towns-List.' . self::CITY_IBGE);
+        $config = config('Towns.' . $class)[self::CITY_IBGE];
+        $betha = $config['class_path']::getInstance($config);
 
         dd($betha->ConsultarNfseServicoTomado($arrayData));
 
@@ -190,9 +191,9 @@ class Exemple implements ExcludeSelectInterface
             ],
         ];
 
-        $ibgeCode = '4112108';
-        $class = CitySetting::where('ibge', $ibgeCode)->first();
-        $betha = app($class->class_path, ['configLoader' => $class->toArray()]);
+        $class = config('Towns-List.' . self::CITY_IBGE);
+        $config = config('Towns.' . $class)[self::CITY_IBGE];
+        $betha = $config['class_path']::getInstance($config);
 
         dd($betha->GerarNfse($arrayData));
 
@@ -270,9 +271,9 @@ class Exemple implements ExcludeSelectInterface
             'InscricaoMunicipal' => '1234567890',
         ];
 
-        $ibgeCode = '4112108';
-        $class = CitySetting::where('ibge', $ibgeCode)->first();
-        $betha = app($class->class_path, ['configLoader' => $class->toArray()]);
+        $class = config('Towns-List.' . self::CITY_IBGE);
+        $config = config('Towns.' . $class)[self::CITY_IBGE];
+        $betha = $config['class_path']::getInstance($config);
 
         dd($betha->RecepcionarLoteRps($arrayData));
 
@@ -350,9 +351,9 @@ class Exemple implements ExcludeSelectInterface
             'InscricaoMunicipal' => '1234567890',
         ];
 
-        $ibgeCode = '4112108';
-        $class = CitySetting::where('ibge', $ibgeCode)->first();
-        $betha = app($class->class_path, ['configLoader' => $class->toArray()]);
+        $class = config('Towns-List.' . self::CITY_IBGE);
+        $config = config('Towns.' . $class)[self::CITY_IBGE];
+        $betha = $config['class_path']::getInstance($config);
 
         dd($betha->RecepcionarLoteRpsSincrono($arrayData));
 
@@ -433,9 +434,9 @@ class Exemple implements ExcludeSelectInterface
 
         ];
 
-        $ibgeCode = '4112108';
-        $class = CitySetting::where('ibge', $ibgeCode)->first();
-        $betha = app($class->class_path, ['configLoader' => $class->toArray()]);
+        $class = config('Towns-List.' . self::CITY_IBGE);
+        $config = config('Towns.' . $class)[self::CITY_IBGE];
+        $betha = $config['class_path']::getInstance($config);
 
         dd($betha->SubstituirNfse($arrayData));
 

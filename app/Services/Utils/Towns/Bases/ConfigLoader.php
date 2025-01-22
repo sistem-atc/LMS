@@ -23,12 +23,12 @@ abstract class ConfigLoader
         return [
             'cityName' => $config['city_name'],
             'codeIbge' => $config['ibge'],
-            'username' => $config['username'],
-            'password' => $config['password'],
+            'username' => $config['username'] ?? null,
+            'password' => $config['password'] ?? null,
             'url' => $config[$urlAmbient],
-            'headerVersion' => $config['headerversion'],
-            'namespace' => $config['namespace'],
-            'version' => $config['version'],
+            'headerVersion' => $config['headerversion'] ?? null,
+            'namespace' => $config['namespace'] ?? null,
+            'version' => $config['version'] ?? null,
         ];
     }
 

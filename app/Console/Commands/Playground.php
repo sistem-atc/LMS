@@ -56,23 +56,6 @@ class Playground extends Command
 
         dd($dom->saveXML());
 
-        $arrayData = [
-            'Prestador' => [
-                'cnpj' => '18575072000122',
-                'inscricaoMunicipal' => 854776,
-            ],
-            'PeriodoEmissao' => [
-                'dataInicial' => Carbon::now()->format('Y-m-d H:i:s'),
-                'dataFinal' => Carbon::now()->format('Y-m-d H:i:s'),
-            ],
-        ];
-
-        $ibgeCode = '1302603';
-        $class = CitySetting::where('ibge', $ibgeCode)->first();
-
-        $abaco = app($class->class_path, ['configLoader' => $class->toArray()]);
-        dd($abaco->ConsultarNfse($arrayData));
-
         return Command::SUCCESS;
     }
 }

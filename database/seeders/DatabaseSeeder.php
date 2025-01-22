@@ -26,6 +26,5 @@ class DatabaseSeeder extends Seeder
         $this->call(PaymentTermSeeder::class);
         $this->call(CustomerSeeder::class);
         $this->call(CodeUfSeeder::class);
-        $this->call(CitySettingSeeder::class);
     }
 }

@@ -17,6 +17,7 @@ abstract class LinkTownBase implements LinkTownsInterface
     protected static ?string $password;
     protected static ?string $headerVersion;
     protected static ?string $version;
+    protected static ?self $instance = null;
 
     public function __construct(array $configLoader)
     {
@@ -32,6 +33,15 @@ abstract class LinkTownBase implements LinkTownsInterface
         self::$headerVersion = $config['headerVersion'];
         self::$version = $config['version'];
 
+    }
+
+    public static function getInstance(array $configLoader): ?self
+    {
+        if (static::$instance === null) {
+            static::$instance = new static($configLoader);
+        }
+
+        return static::$instance;
     }
 
     protected static function getUsername(): ?string

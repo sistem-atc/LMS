@@ -4,11 +4,11 @@ namespace App\Services\Towns\Abaco;
 
 use Carbon\Carbon;
 use App\Enums\TypeRPS;
-use App\Models\CitySetting;
 use App\Services\Utils\Towns\Interfaces\ExcludeSelectInterface;
 
 class Exemple implements ExcludeSelectInterface
 {
+    const CITY_IBGE = '1302603';
 
     protected function RecepcionarLoteRPS(): void
     {
@@ -74,11 +74,11 @@ class Exemple implements ExcludeSelectInterface
             ],
         ];
 
-        $ibgeCode = '1302603';
-        $class = CitySetting::where('ibge', $ibgeCode)->first();
-        $abaco = app($class->class_path, ['configLoader' => $class->toArray()]);
+        $class = config('Towns-List.' . self::CITY_IBGE);
+        $config = config('Towns.' . $class)[self::CITY_IBGE];
+        $abaco = $config['class_path']::getInstance($config);
 
-        dd($abaco->gerarNota($arrayData));
+        dd($abaco->RecepcionarLoteRPS($arrayData));
     }
 
     protected function ConsultarSituacaoLoteRPS(): void
@@ -89,9 +89,9 @@ class Exemple implements ExcludeSelectInterface
             'protocolo' => 123456,
         ];
 
-        $ibgeCode = '1302603';
-        $class = CitySetting::where('ibge', $ibgeCode)->first();
-        $abaco = app($class->class_path, ['configLoader' => $class->toArray()]);
+        $class = config('Towns-List.' . self::CITY_IBGE);
+        $config = config('Towns.' . $class)[self::CITY_IBGE];
+        $abaco = $config['class_path']::getInstance($config);
 
         dd($abaco->ConsultarSituacaoLoteRPS($arrayData));
     }
@@ -106,9 +106,9 @@ class Exemple implements ExcludeSelectInterface
             'tipo_RPS' => TypeRPS::RPS->getLabel(),
         ];
 
-        $ibgeCode = '1302603';
-        $class = CitySetting::where('ibge', $ibgeCode)->first();
-        $abaco = app($class->class_path, ['configLoader' => $class->toArray()]);
+        $class = config('Towns-List.' . self::CITY_IBGE);
+        $config = config('Towns.' . $class)[self::CITY_IBGE];
+        $abaco = $config['class_path']::getInstance($config);
 
         dd($abaco->ConsultarNfsePorRps($arrayData));
     }
@@ -121,9 +121,9 @@ class Exemple implements ExcludeSelectInterface
             'protocolo' => 123456,
         ];
 
-        $ibgeCode = '1302603';
-        $class = CitySetting::where('ibge', $ibgeCode)->first();
-        $abaco = app($class->class_path, ['configLoader' => $class->toArray()]);
+        $class = config('Towns-List.' . self::CITY_IBGE);
+        $config = config('Towns.' . $class)[self::CITY_IBGE];
+        $abaco = $config['class_path']::getInstance($config);
 
         dd($abaco->ConsultarLoteRps($arrayData));
     }
@@ -142,9 +142,9 @@ class Exemple implements ExcludeSelectInterface
             ],
         ];
 
-        $ibgeCode = '1302603';
-        $class = CitySetting::where('ibge', $ibgeCode)->first();
-        $abaco = app($class->class_path, ['configLoader' => $class->toArray()]);
+        $class = config('Towns-List.' . self::CITY_IBGE);
+        $config = config('Towns.' . $class)[self::CITY_IBGE];
+        $abaco = $config['class_path']::getInstance($config);
 
         dd($abaco->ConsultarNfse($arrayData));
     }

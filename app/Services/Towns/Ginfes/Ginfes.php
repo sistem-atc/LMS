@@ -4,7 +4,6 @@ namespace App\Services\Towns\Ginfes;
 
 use SimpleXMLElement;
 use App\Enums\HttpMethod;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
 use App\Services\Utils\Towns\Bases\LinkTownBase;
 
@@ -58,11 +57,11 @@ class Ginfes extends LinkTownBase
             return ['errors' => $validator->errors(), 'response' => 422];
         }
 
-        $operacao = __FUNCTION__;
-        $dataMsg = parent::composeMessage($operacao);
+        $operation = __FUNCTION__;
+        $dataMsg = parent::composeMessage($operation);
         self::mountMensage($dataMsg);
 
-        return self::CancelarNfse($data);
+        return self::connection();
     }
 
     public static function ConsultarLoteRps(array $data): string|int|array
@@ -78,11 +77,11 @@ class Ginfes extends LinkTownBase
             return ['errors' => $validator->errors(), 'response' => 422];
         }
 
-        $operacao = __FUNCTION__;
-        $dataMsg = parent::composeMessage($operacao);
+        $operation = __FUNCTION__;
+        $dataMsg = parent::composeMessage($operation);
         self::mountMensage($dataMsg);
 
-        return self::CancelarNfse($data);
+        return self::connection();
     }
 
     public static function ConsultarNfse(array $data): string|int|array
@@ -99,8 +98,8 @@ class Ginfes extends LinkTownBase
             return ['errors' => $validator->errors(), 'response' => 422];
         }
 
-        $operacao = __FUNCTION__;
-        $dataMsg = parent::composeMessage($operacao);
+        $operation = __FUNCTION__;
+        $dataMsg = parent::composeMessage($operation);
         $dataMsg = self::Sign_XML($dataMsg);
 
         self::mountMensage($dataMsg);
@@ -121,11 +120,11 @@ class Ginfes extends LinkTownBase
             return ['errors' => $validator->errors(), 'response' => 422];
         }
 
-        $operacao = __FUNCTION__;
-        $dataMsg = parent::composeMessage($operacao);
+        $operation = __FUNCTION__;
+        $dataMsg = parent::composeMessage($operation);
         self::mountMensage($dataMsg);
 
-        return self::ConsultarLoteRps($data);
+        return self::connection();
     }
 
     public static function ConsultarSituacaoLoteRps(array $data): string|int|array
@@ -141,11 +140,11 @@ class Ginfes extends LinkTownBase
             return ['errors' => $validator->errors(), 'response' => 422];
         }
 
-        $operacao = __FUNCTION__;
-        $dataMsg = parent::composeMessage($operacao);
+        $operation = __FUNCTION__;
+        $dataMsg = parent::composeMessage($operation);
         self::mountMensage($dataMsg);
 
-        return self::ConsultarLoteRps($data);
+        return self::connection();
     }
 
     public static function RecepcionarLoteRps(array $data): string|int|array
@@ -161,11 +160,11 @@ class Ginfes extends LinkTownBase
             return ['errors' => $validator->errors(), 'response' => 422];
         }
 
-        $operacao = __FUNCTION__;
-        $dataMsg = parent::composeMessage($operacao);
+        $operation = __FUNCTION__;
+        $dataMsg = parent::composeMessage($operation);
         self::mountMensage($dataMsg);
 
-        return self::ConsultarLoteRps($data);
+        return self::connection();
     }
 
     public static function mountMensage(SimpleXMLElement $dataMsg): void

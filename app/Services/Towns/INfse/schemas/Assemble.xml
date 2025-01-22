@@ -1,0 +1,14 @@
+<soapenv:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+    xmlns:nfse="http://nfse.abrasf.org.br/">
+    <soapenv:Header/>
+    <soapenv:Body>
+        <nfse:[Mount_Mensage] soapenv:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+            <parameters xsi:type="nfse:input">
+                <nfseCabecMsg xsi:type="xsd:string"></nfseCabecMsg>
+                <nfseDadosMsg xsi:type="xsd:string"></nfseDadosMsg>
+            </parameters>
+        </nfse:[Mount_Mensage]>
+    </soapenv:Body>
+</soapenv:Envelope>

@@ -9,6 +9,7 @@ use Illuminate\Console\Command;
 use App\Services\CnpjWs\CnpjWsService;
 use App\Services\ConsultaCep\ConsultaCep;
 use App\Services\MultiEmbarcador\MultiEmbarcador;
+use App\Services\Utils\Towns\Factory\TownsFactory;
 
 class Playground extends Command
 {

@@ -3,6 +3,7 @@
 namespace App\Services\Towns\Betha;
 
 use Illuminate\Support\Carbon;
+use App\Services\Utils\Towns\Factory\TownsFactory;
 use App\Services\Utils\Towns\Interfaces\ExcludeSelectInterface;
 
 class Exemple implements ExcludeSelectInterface
@@ -21,9 +22,8 @@ class Exemple implements ExcludeSelectInterface
             'CodigoCancelamento' => '123456',
         ];
 
-        $class = config('Towns-List.' . self::CITY_IBGE);
-        $config = config('Towns.' . $class)[self::CITY_IBGE];
-        $betha = $config['class_path']::getInstance($config);
+
+        $betha = TownsFactory::getInstance(self::CITY_IBGE);
 
         dd($betha->CancelarNfse($arrayData));
 
@@ -38,9 +38,7 @@ class Exemple implements ExcludeSelectInterface
             'Protocolo' => '123456',
         ];
 
-        $class = config('Towns-List.' . self::CITY_IBGE);
-        $config = config('Towns.' . $class)[self::CITY_IBGE];
-        $betha = $config['class_path']::getInstance($config);
+        $betha = TownsFactory::getInstance(self::CITY_IBGE);
 
         dd($betha->ConsultarLoteRps($arrayData));
 
@@ -56,9 +54,7 @@ class Exemple implements ExcludeSelectInterface
             'Pagina' => '1',
         ];
 
-        $class = config('Towns-List.' . self::CITY_IBGE);
-        $config = config('Towns.' . $class)[self::CITY_IBGE];
-        $betha = $config['class_path']::getInstance($config);
+        $betha = TownsFactory::getInstance(self::CITY_IBGE);
 
         dd($betha->ConsultarNfseFaixa($arrayData));
 
@@ -75,9 +71,7 @@ class Exemple implements ExcludeSelectInterface
             'InscricaoMunicipal' => '1234567890',
         ];
 
-        $class = config('Towns-List.' . self::CITY_IBGE);
-        $config = config('Towns.' . $class)[self::CITY_IBGE];
-        $betha = $config['class_path']::getInstance($config);
+        $betha = TownsFactory::getInstance(self::CITY_IBGE);
 
         dd($betha->ConsultarNfsePorRps($arrayData));
 
@@ -94,9 +88,7 @@ class Exemple implements ExcludeSelectInterface
             'Pagina' => '1',
         ];
 
-        $class = config('Towns-List.' . self::CITY_IBGE);
-        $config = config('Towns.' . $class)[self::CITY_IBGE];
-        $betha = $config['class_path']::getInstance($config);
+        $betha = TownsFactory::getInstance(self::CITY_IBGE);
 
         dd($betha->ConsultarNfseServicoPrestado($arrayData));
 
@@ -118,9 +110,7 @@ class Exemple implements ExcludeSelectInterface
             'Pagina' => '1',
         ];
 
-        $class = config('Towns-List.' . self::CITY_IBGE);
-        $config = config('Towns.' . $class)[self::CITY_IBGE];
-        $betha = $config['class_path']::getInstance($config);
+        $betha = TownsFactory::getInstance(self::CITY_IBGE);
 
         dd($betha->ConsultarNfseServicoTomado($arrayData));
 
@@ -191,9 +181,7 @@ class Exemple implements ExcludeSelectInterface
             ],
         ];
 
-        $class = config('Towns-List.' . self::CITY_IBGE);
-        $config = config('Towns.' . $class)[self::CITY_IBGE];
-        $betha = $config['class_path']::getInstance($config);
+        $betha = TownsFactory::getInstance(self::CITY_IBGE);
 
         dd($betha->GerarNfse($arrayData));
 
@@ -271,9 +259,7 @@ class Exemple implements ExcludeSelectInterface
             'InscricaoMunicipal' => '1234567890',
         ];
 
-        $class = config('Towns-List.' . self::CITY_IBGE);
-        $config = config('Towns.' . $class)[self::CITY_IBGE];
-        $betha = $config['class_path']::getInstance($config);
+        $betha = TownsFactory::getInstance(self::CITY_IBGE);
 
         dd($betha->RecepcionarLoteRps($arrayData));
 
@@ -351,9 +337,7 @@ class Exemple implements ExcludeSelectInterface
             'InscricaoMunicipal' => '1234567890',
         ];
 
-        $class = config('Towns-List.' . self::CITY_IBGE);
-        $config = config('Towns.' . $class)[self::CITY_IBGE];
-        $betha = $config['class_path']::getInstance($config);
+        $betha = TownsFactory::getInstance(self::CITY_IBGE);
 
         dd($betha->RecepcionarLoteRpsSincrono($arrayData));
 
@@ -434,9 +418,7 @@ class Exemple implements ExcludeSelectInterface
 
         ];
 
-        $class = config('Towns-List.' . self::CITY_IBGE);
-        $config = config('Towns.' . $class)[self::CITY_IBGE];
-        $betha = $config['class_path']::getInstance($config);
+        $betha = TownsFactory::getInstance(self::CITY_IBGE);
 
         dd($betha->SubstituirNfse($arrayData));
 

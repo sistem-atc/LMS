@@ -4,6 +4,7 @@ namespace App\Services\Towns\Abaco;
 
 use Carbon\Carbon;
 use App\Enums\TypeRPS;
+use App\Services\Utils\Towns\Factory\TownsFactory;
 use App\Services\Utils\Towns\Interfaces\ExcludeSelectInterface;
 
 class Exemple implements ExcludeSelectInterface
@@ -74,9 +75,7 @@ class Exemple implements ExcludeSelectInterface
             ],
         ];
 
-        $class = config('Towns-List.' . self::CITY_IBGE);
-        $config = config('Towns.' . $class)[self::CITY_IBGE];
-        $abaco = $config['class_path']::getInstance($config);
+        $abaco = TownsFactory::getInstance(self::CITY_IBGE);
 
         dd($abaco->RecepcionarLoteRPS($arrayData));
     }
@@ -89,9 +88,7 @@ class Exemple implements ExcludeSelectInterface
             'protocolo' => 123456,
         ];
 
-        $class = config('Towns-List.' . self::CITY_IBGE);
-        $config = config('Towns.' . $class)[self::CITY_IBGE];
-        $abaco = $config['class_path']::getInstance($config);
+        $abaco = TownsFactory::getInstance(self::CITY_IBGE);
 
         dd($abaco->ConsultarSituacaoLoteRPS($arrayData));
     }
@@ -106,9 +103,7 @@ class Exemple implements ExcludeSelectInterface
             'tipo_RPS' => TypeRPS::RPS->getLabel(),
         ];
 
-        $class = config('Towns-List.' . self::CITY_IBGE);
-        $config = config('Towns.' . $class)[self::CITY_IBGE];
-        $abaco = $config['class_path']::getInstance($config);
+        $abaco = TownsFactory::getInstance(self::CITY_IBGE);
 
         dd($abaco->ConsultarNfsePorRps($arrayData));
     }
@@ -121,9 +116,7 @@ class Exemple implements ExcludeSelectInterface
             'protocolo' => 123456,
         ];
 
-        $class = config('Towns-List.' . self::CITY_IBGE);
-        $config = config('Towns.' . $class)[self::CITY_IBGE];
-        $abaco = $config['class_path']::getInstance($config);
+        $abaco = TownsFactory::getInstance(self::CITY_IBGE);
 
         dd($abaco->ConsultarLoteRps($arrayData));
     }
@@ -142,9 +135,7 @@ class Exemple implements ExcludeSelectInterface
             ],
         ];
 
-        $class = config('Towns-List.' . self::CITY_IBGE);
-        $config = config('Towns.' . $class)[self::CITY_IBGE];
-        $abaco = $config['class_path']::getInstance($config);
+        $abaco = TownsFactory::getInstance(self::CITY_IBGE);
 
         dd($abaco->ConsultarNfse($arrayData));
     }

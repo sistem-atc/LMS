@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Lot;
 use App\Models\CodeUf;
 use App\Models\Customer;
 use Illuminate\Support\Facades\Schema;
@@ -42,7 +43,7 @@ return new class extends Migration
             $table->string('pesoB')->nullable();
             $table->longText('infAdic')->nullable();
             $table->string('chNFe')->unique();
-            $table->foreignId('lot_id')->nullable()->constrained()->onDelete('cascade');
+            $table->foreignIdFor(Lot::class, 'lot_id')->nullable()->constrained()->onDelete('cascade');
             $table->text('xml');
             $table->blameable();
             $table->timestamps();

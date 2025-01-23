@@ -78,4 +78,9 @@ class DocumentFiscalCustomer extends Model implements HasAllowedFields, HasAllow
     {
         return $this->belongsTo(CodeUf::class);
     }
+
+    public function lot(): BelongsTo
+    {
+        return $this->belongsTo(Lot::class);
+    }
 }

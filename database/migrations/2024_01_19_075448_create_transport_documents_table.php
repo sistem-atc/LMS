@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Lot;
 use App\Models\Route;
 use App\Models\Branch;
 use App\Models\Customer;
@@ -15,7 +16,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('ctes', function (Blueprint $table) {
+        Schema::create('transport_documents', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Branch::class, 'branch_emission_id')->constrained()->cascadeOnDelete();
             $table->string('number');
@@ -29,8 +30,8 @@ return new class extends Migration
             $table->float('shipping_value');
             $table->float('tax_amount');
             $table->float('total_value');
-            $table->string('type_transportation'); //Gerar tipos de transporte Aereo, Terrestre, etc
-            $table->string('type_document'); //CT-e, CT-e-OS, RPS-t, RPS-s, etc
+            $table->string('type_transportation');
+            $table->string('type_document');
             $table->foreignIdFor(Branch::class, 'origin_branch_id');
             $table->foreignIdFor(Branch::class, 'recipient_branch_id');
             $table->foreignIdFor(Branch::class, 'calculation_branch_id');
@@ -40,7 +41,7 @@ return new class extends Migration
             $table->string('shipping_table_order');
             $table->string('shipping_type');
             $table->dateTime('delivery_date_prevision')->nullable();
-            $table->string('lot')->nullable();
+            $table->foreignIdFor(Lot::class, 'lot_id')->nullable()->constrained()->onDelete('cascade');
             $table->date('delivery_date')->nullable();
             $table->date('delivery_time_real')->nullable();
             $table->boolean('doct_blocked');
@@ -50,14 +51,17 @@ return new class extends Migration
             $table->foreignIdFor(Customer::class, 'debtor_customer_id');
             $table->foreignIdFor(Customer::class, 'customer_calculation_id');
             $table->foreignIdFor(Route::class, 'delivery_route_id');
-            $table->string('role_fiscal')->nullable(); // Fazer um foreingn key para a tabela de regras fiscais
+            $table->string('role_fiscal')->nullable();
             $table->string('cte_situation')->nullable();
             $table->string('cte_key')->nullable();
-            $table->string('last_sefaz_return_id')->nullable(); // Criar uma tabela para guardar os retornos do sefaz e associar a este campo somente o ultimo retorno evento
+            $table->string('last_sefaz_return_id')->nullable();
             $table->string('cte_protocol')->nullable();
             $table->string('cte_sefaz_return')->nullable();
-            $table->string('ambient_sefaz')->nullable(); // Homologado, Produção, etc Ambiente da sefaz que foi enviado o documento
-            $table->string('cotation_id')->nullable(); // Criar uma tabela para guardar as cotações e associar a este campo somente a cotação do documento
+            $table->string('ambient_sefaz')->nullable();
+            $table->string('number_nfse')->nullable();
+            $table->string('verification_code')->nullable();
+            $table->date('emission_date_nfse')->nullable();
+            $table->string('cotation_id')->nullable();
             $table->string('bill')->nullable();
             $table->foreignIdFor(Costcenter::class)->nullable();
             $table->blameable();
@@ -71,6 +75,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('ctes');
+        Schema::dropIfExists('transport_documents');
     }
 };

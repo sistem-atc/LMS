@@ -3,12 +3,14 @@
 namespace App\Models;
 
 use App\Traits\Blameable;
+use App\Enums\TypeTransportationEnum;
 use Illuminate\Database\Eloquent\Model;
+use App\Enums\TypeDocumentTransportEnum;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Cte extends Model
+class TransportDocument extends Model
 {
     use HasFactory;
     use SoftDeletes;
@@ -58,9 +60,27 @@ class Cte extends Model
         'cotation_id',
         'bill',
         'cost_center_id',
+        'number_nfse',
+        'verification_code',
+        'emission_date_nfse',
     ];
 
-    public function branch(): BelongsTo
+    protected $casts = [
+        'type_document' => TypeDocumentTransportEnum::class,
+        'type_transportation' => TypeTransportationEnum::class,
+    ];
+
+    public function branch_emission(): BelongsTo
+    {
+        return $this->BelongsTo(Branch::class);
+    }
+
+    public function origin_branch(): BelongsTo
+    {
+        return $this->BelongsTo(Branch::class);
+    }
+
+    public function recipient_branch(): BelongsTo
     {
         return $this->BelongsTo(Branch::class);
     }
@@ -104,4 +124,23 @@ class Cte extends Model
     {
         return $this->belongsTo(Costcenter::class);
     }
+
+    public function calculation_branch(): BelongsTo
+    {
+        return $this->belongsTo(Branch::class);
+    }
+
+    public function debit_branch(): BelongsTo
+    {
+        return $this->belongsTo(Branch::class);
+    }
+
+    public function lot(): BelongsTo
+    {
+        return $this->belongsTo(Lot::class);
+    }
+
+    //$table->string('role_fiscal')->nullable(); // Fazer um foreingn key para a tabela de regras fiscais
+    //$table->string('last_sefaz_return_id')->nullable(); // Criar uma tabela para guardar os retornos do sefaz e associar a este campo somente o ultimo retorno evento
+    //$table->string('cotation_id')->nullable(); // Criar uma tabela para guardar as cotações e associar a este campo somente a cotação do documento
 }

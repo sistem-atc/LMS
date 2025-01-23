@@ -88,7 +88,7 @@ trait Blameable
     }
 
 
-    public function retoretor() {
+    public function restorer() {
         $userModel = Config::get('blameable.models.user', User::class);
         return $this->belongsTo($userModel, 'restored_by', 'id');
     }

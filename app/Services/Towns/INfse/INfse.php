@@ -242,7 +242,6 @@ class INfse extends LinkTownBase
 
     public static function mountMensage(SimpleXMLElement $dataMsg): void
     {
-
         self::$mountMessage = parent::assembleMessage();
 
         $dom = dom_import_simplexml($dataMsg);

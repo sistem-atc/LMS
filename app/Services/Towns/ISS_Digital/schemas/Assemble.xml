@@ -1,0 +1,11 @@
+<soapenv:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+    xmlns:proc="http://proces.wsnfe2.dsfnet.com.br">
+    <soapenv:Header/>
+    <soapenv:Body>
+        <proc:[Mount_Mensage] soapenv:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+            <mensagemXml xsi:type="xsd:string"></mensagemXml>
+        </proc:[Mount_Mensage]>
+    </soapenv:Body>
+</soapenv:Envelope>

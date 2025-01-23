@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\User;
 use App\Models\CodeUf;
 use App\Models\Customer;
 use Illuminate\Support\Facades\Schema;

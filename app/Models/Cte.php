@@ -5,7 +5,6 @@ namespace App\Models;
 use App\Traits\Blameable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -16,28 +15,32 @@ class Cte extends Model
     use Blameable;
 
     protected $fillable = [
-        'branche_id',
+        'branch_emission_id',
+        'number',
         'serie',
         'emission_date',
-        'weight',
-        'weight_m3',
-        'weight_charged',
-        'm3',
+        'total_volumes',
+        'total_weight',
+        'total_weight_m3',
+        'total_weight_charged',
+        'total_m3',
         'shipping_value',
         'tax_amount',
         'total_value',
         'type_transportation',
-        'lot',
+        'type_document',
         'origin_branche_id',
         'recipient_branche_id',
         'calculation_branche_id',
         'debit_branche_id',
+        'insurance_contract',
         'shipping_table',
         'shipping_table_order',
         'shipping_type',
-        'insurance',
-        'insurance_contract',
-        'delivery_time',
+        'delivery_date_prevision',
+        'lot',
+        'delivery_date',
+        'delivery_time_real',
         'doct_blocked',
         'sender_customer_id',
         'recipient_customer_id',
@@ -45,13 +48,16 @@ class Cte extends Model
         'debtor_customer_id',
         'customer_calculation_id',
         'delivery_route_id',
-        'delivery_date',
-        'cte_protocol',
-        'cte_key',
+        'role_fiscal',
         'cte_situation',
+        'cte_key',
+        'last_sefaz_return_id',
+        'cte_protocol',
         'cte_sefaz_return',
-        'cost_center_id',
+        'ambient_sefaz',
+        'cotation_id',
         'bill',
+        'cost_center_id',
     ];
 
     public function branch(): BelongsTo

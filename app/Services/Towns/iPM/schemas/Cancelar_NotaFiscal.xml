@@ -1,0 +1,13 @@
+<nfse>
+    <nf>
+        <numero></numero>
+        <serie_nfse></serie_nfse>
+        <situacao></situacao>
+        <observacao></observacao>
+    </nf>
+    <prestador>
+        <cpfcnpj></cpfcnpj>
+        <cidade></cidade>
+    </prestador>
+</nfse>
+<observacao></observacao>

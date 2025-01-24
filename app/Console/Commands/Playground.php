@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use DOMDocument;
 use Carbon\Carbon;
+use App\Enums\TypeRPS;
 use App\Models\CitySetting;
 use Illuminate\Console\Command;
 use App\Services\CnpjWs\CnpjWsService;
@@ -14,7 +15,7 @@ use App\Services\Utils\Towns\Factory\TownsFactory;
 class Playground extends Command
 {
     protected $signature = 'play';
-
+    const CITY_IBGE = '1302603';
     protected $description = 'Playground Command';
 
     public function handle(): int

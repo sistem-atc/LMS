@@ -1,0 +1,23 @@
+<?php
+
+namespace App\Services\Towns\Etransparencia\Methods;
+
+trait CONSULTANOTASPROTOCOLO
+{
+
+    private static string $operation;
+
+    public static function CONSULTANOTASPROTOCOLO($data): string|int|array
+    {
+        self::$operation = __FUNCTION__;
+        $dataMsg = parent::composeMessage(self::$operation);
+        $dataMsg->CodigoUsuario = $data['codigoUsuario'];
+        $dataMsg->CodigoContribuinte = $data['codigoContribuinte'];
+        $dataMsg->NumeroProtocolo = $data['numeroProtocolo'];
+
+        self::mountMensage($dataMsg);
+
+        return self::connection();
+    }
+
+}

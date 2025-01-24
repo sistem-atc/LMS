@@ -1,0 +1,10 @@
+<ConsultarRpsServicoPrestadoEnvio>
+    <ccm></ccm>
+    <cnpj></cnpj>
+    <cpf></cpf>
+    <senha></senha>
+    <numero_rps></numero_rps>
+    <dia_rps></dia_rps>
+    <mes_rps></mes_rps>
+    <ano_rps></ano_rps>
+</ConsultarRpsServicoPrestadoEnvio>

@@ -4,11 +4,14 @@ namespace App\Services\Towns\iPM;
 
 use SimpleXMLElement;
 use App\Enums\HttpMethod;
-use Illuminate\Support\Facades\Validator;
 use App\Services\Utils\Towns\Bases\LinkTownBase;
 
 class iPM extends LinkTownBase
 {
+
+    use Methods\Cancelar_NotaFiscal,
+        Methods\Consulta_NotaFiscal,
+        Methods\Emitir_NotaFiscal;
 
     public static string $username;
     public static string $password;
@@ -48,81 +51,6 @@ class iPM extends LinkTownBase
     private static function connection(): string|int|array|null
     {
         return self::Conection(parent::$url, self::$mountMessage->asXML(), self::getHeaders(), self::$verb, false);
-    }
-
-    public static function Consulta_NotaFiscal(array $data): string|int|array
-    {
-
-        $validator = Validator::make($data, [
-            'numero_nota' => 'required|string',
-            'serie_nfse' => 'required|string',
-            'cadastro' => 'required|string',
-        ]);
-
-        if ($validator->fails()) {
-            return ['errors' => $validator->errors(), 'response' => 422];
-        }
-
-        $operation = __FUNCTION__;
-
-        $dataMsg = parent::composeMessage($operation);
-        $dataMsg->numero_nota = $data['numero_nota'];
-        $dataMsg->serie_nfse = $data['serie_nfse'];
-        $dataMsg->cadastro = $data['cadastro'];
-
-        self::mountMensage($dataMsg);
-
-        return self::connection();
-    }
-
-    public static function Cancelar_NotaFiscal(array $data): string|int|array
-    {
-
-        $validator = Validator::make($data, [
-            'numero_nota' => 'required|string',
-            'serie_nfse' => 'required|string',
-            'cadastro' => 'required|string',
-        ]);
-
-        if ($validator->fails()) {
-            return ['errors' => $validator->errors(), 'response' => 422];
-        }
-
-        $operation = __FUNCTION__;
-
-        $dataMsg = parent::composeMessage($operation);
-        $dataMsg->numero_nota = $data['numero_nota'];
-        $dataMsg->serie_nfse = $data['serie_nfse'];
-        $dataMsg->cadastro = $data['cadastro'];
-
-        self::mountMensage($dataMsg);
-
-        return self::connection();
-    }
-
-    public static function Emitir_NotaFiscal(array $data): string|int|array
-    {
-
-        $validator = Validator::make($data, [
-            'numero_nota' => 'required|string',
-            'serie_nfse' => 'required|string',
-            'cadastro' => 'required|string',
-        ]);
-
-        if ($validator->fails()) {
-            return ['errors' => $validator->errors(), 'response' => 422];
-        }
-
-        $operation = __FUNCTION__;
-
-        $dataMsg = parent::composeMessage($operation);
-        $dataMsg->numero_nota = $data['numero_nota'];
-        $dataMsg->serie_nfse = $data['serie_nfse'];
-        $dataMsg->cadastro = $data['cadastro'];
-
-        self::mountMensage($dataMsg);
-
-        return self::connection();
     }
 
     private static function generateRandomString($length, $rString, $rInteger): string

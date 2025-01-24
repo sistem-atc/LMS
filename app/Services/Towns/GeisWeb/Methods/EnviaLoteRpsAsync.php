@@ -1,0 +1,34 @@
+<?php
+
+namespace App\Services\Towns\GeisWeb\Methods;
+
+use Illuminate\Support\Facades\Validator;
+
+trait enviaLoteRpsAsync
+{
+
+    private static string $operation;
+
+    public static function EnviaLoteRpsAsync($data): string|int|array
+    {
+
+        $validator = Validator::make($data, [
+            'cnpj' => 'required',
+            'numeroNF' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return ['errors' => $validator->errors(), 'response' => 422];
+        }
+
+        self::$operation = __FUNCTION__;
+        $dataMsg = parent::composeMessage(self::$operation);
+        $dataMsg->CnpjCpf = $data['cnpj'];
+        $dataMsg->NumeroLote = $data['numeroLote'];
+
+        self::mountMensage($dataMsg);
+
+        return self::connection();
+    }
+
+}

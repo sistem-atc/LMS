@@ -9,6 +9,19 @@ use App\Services\Utils\Towns\Bases\LinkTownBase;
 class Dsf extends LinkTownBase
 {
 
+    use Methods\CancelarNfse,
+        Methods\CancelarNfseV3,
+        Methods\RecepcionarLoteRps,
+        Methods\RecepcionarLoteRpsV3,
+        Methods\ConsultarNfse,
+        Methods\ConsultarNfsePorRps,
+        Methods\ConsultarNfsePorRpsV3,
+        Methods\ConsultarNfseV3,
+        Methods\ConsultarSituacaoLoteRPS,
+        Methods\ConsultarSituacaoLoteRpsV3,
+        Methods\RecepcionarLoteRps,
+        Methods\RecepcionarLoteRpsV3;
+
     protected static $verb = HttpMethod::POST;
     private static SimpleXMLElement $mountMessage;
 
@@ -42,169 +55,6 @@ class Dsf extends LinkTownBase
     private static function connection(): string|int|array|null
     {
         return self::Conection(parent::$url, self::$mountMessage->asXML(), self::getHeaders(), self::$verb, false);
-    }
-
-    public static function CancelarNfse($data): string|int|array
-    {
-
-        $operation = __FUNCTION__;
-        $dataMsg = self::composeMessage($operation);
-        $dataMsg->cnpj = $data['cnpj'];
-        $dataMsg = self::Sign_XML($dataMsg);
-
-        self::mountMensage($dataMsg, $operation);
-
-        return self::connection();
-    }
-
-    public static function CancelarNfseV3($data): string|int|array
-    {
-
-        $operation = __FUNCTION__;
-        $dataMsg = self::composeMessage($operation);
-        $dataMsg->cnpj = $data['cnpj'];
-        $dataMsg = self::Sign_XML($dataMsg);
-
-        self::mountMensage($dataMsg, $operation);
-
-        return self::connection();
-    }
-
-    public static function ConsultarLoteRps($data): string|int|array
-    {
-
-        $operation = __FUNCTION__;
-        $dataMsg = self::composeMessage($operation);
-        $dataMsg->cnpj = $data['cnpj'];
-        $dataMsg = self::Sign_XML($dataMsg);
-
-        self::mountMensage($dataMsg, $operation);
-
-        return self::connection();
-    }
-
-    public static function ConsultarLoteRpsV3($data): string|int|array
-    {
-
-        $operation = __FUNCTION__;
-        $dataMsg = self::composeMessage($operation);
-        $dataMsg->cnpj = $data['cnpj'];
-        $dataMsg = self::Sign_XML($dataMsg);
-
-        self::mountMensage($dataMsg, $operation);
-
-        return self::connection();
-    }
-
-    public static function ConsultarNfsePorRps($data): string|int|array
-    {
-
-        $operation = __FUNCTION__;
-        $dataMsg = self::composeMessage($operation);
-        $dataMsg->cnpj = $data['cnpj'];
-        $dataMsg = self::Sign_XML($dataMsg);
-
-        self::mountMensage($dataMsg, $operation);
-
-        return self::connection();
-    }
-
-    public static function ConsultarNfsePorRpsV3($data): string|int|array
-    {
-
-        $operation = __FUNCTION__;
-        $dataMsg = self::composeMessage($operation);
-        $dataMsg->cnpj = $data['cnpj'];
-        $dataMsg->numeroRps = $data['numeroRps'];
-        $dataMsg->serieRps = $data['serieRps'];
-        $dataMsg->tipoRps = $data['tipoRps'];
-        $dataMsg->inscricaoMunicipal = $data['inscricaoMunicipal'];
-        $dataMsg = self::Sign_XML($dataMsg);
-
-        self::mountMensage($dataMsg, $operation);
-
-        return self::connection();
-    }
-
-    public static function ConsultarNfse($data): string|int|array
-    {
-
-        $operation = __FUNCTION__;
-        $dataMsg = self::composeMessage($operation);
-        $dataMsg->cnpj = $data['cnpj'];
-        $dataMsg = self::Sign_XML($dataMsg);
-
-        self::mountMensage($dataMsg, $operation);
-
-        return self::connection();
-    }
-
-    public static function ConsultarNfseV3($data): string|int|array
-    {
-
-        $operation = __FUNCTION__;
-        $dataMsg = self::composeMessage($operation);
-        $dataMsg->cnpj = $data['cnpj'];
-        $dataMsg->inscricaoMunicipal = $data['inscricaoMunicipal'];
-        $dataMsg->dataInicial = date("Ymd", strtotime($data['dataInicial']));
-        $dataMsg->dataFinal = date("Ymd", strtotime($data['dataFinal']));
-        $dataMsg = self::Sign_XML($dataMsg);
-
-        self::mountMensage($dataMsg, $operation);
-
-        return self::connection();
-    }
-
-    public static function ConsultarSituacaoLoteRPS($data): string|int|array
-    {
-
-        $operation = __FUNCTION__;
-        $dataMsg = self::composeMessage($operation);
-        $dataMsg->cnpj = $data['cnpj'];
-        $dataMsg = self::Sign_XML($dataMsg);
-
-        self::mountMensage($dataMsg, $operation);
-
-        return self::connection();
-    }
-
-    public static function ConsultarSituacaoLoteRpsV3($data): string|int|array
-    {
-
-        $operation = __FUNCTION__;
-        $dataMsg = self::composeMessage($operation);
-        $dataMsg->cnpj = $data['cnpj'];
-        $dataMsg = self::Sign_XML($dataMsg);
-
-        self::mountMensage($dataMsg, $operation);
-
-        return self::connection();
-    }
-
-    public static function RecepcionarLoteRps($data): string|int|array
-    {
-
-        $operation = __FUNCTION__;
-        $dataMsg = self::composeMessage($operation);
-        $dataMsg->cnpj = $data['cnpj'];
-        $dataMsg = self::Sign_XML($dataMsg);
-
-        self::mountMensage($dataMsg, $operation);
-
-        return self::connection();
-    }
-
-    public static function RecepcionarLoteRpsV3($data): string|int|array
-    {
-
-        $operation = __FUNCTION__;
-        $dataMsg = self::composeMessage($operation);
-        $dataMsg->cnpj = $data['cnpj'];
-        $dataMsg = self::Sign_XML($dataMsg);
-
-        self::mountMensage($dataMsg, $operation);
-
-        return self::connection();
     }
 
     private static function mountMensage(SimpleXMLElement $dataMsg, string $operation): void

@@ -5,11 +5,20 @@ namespace App\Services\Towns\Fi1_Fiorilli;
 use SimpleXMLElement;
 use App\Enums\HttpMethod;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Validator;
 use App\Services\Utils\Towns\Bases\LinkTownBase;
 
 class Fi1_Fiorilli extends LinkTownBase
 {
+
+    use Methods\cancelarNfse,
+        Methods\consultarLoteRps,
+        Methods\consultarNfsePorFaixa,
+        Methods\consultarNfsePorRps,
+        Methods\consultarNfseServicoPrestado,
+        Methods\gerarNfse,
+        Methods\recepcionarLoteRps,
+        Methods\recepcionarLoteRpsSincrono,
+        Methods\substituirNfse;
 
     protected static $verb = HttpMethod::POST;
     private static SimpleXMLElement $mountMessage;
@@ -42,187 +51,6 @@ class Fi1_Fiorilli extends LinkTownBase
     private static function connection(): string|int|array|null
     {
         return self::Conection(parent::$url, self::$mountMessage->asXML(), self::getHeaders(), self::$verb, false);
-    }
-
-    public static function cancelarNfse($data): string|int|array
-    {
-
-        $validator = Validator::make($data, [
-            'username' => 'required',
-            'password' => 'required',
-            'numeroNF' => 'required',
-        ]);
-
-        if ($validator->fails()) {
-            return ['errors' => $validator->errors(), 'response' => 422];
-        }
-
-        $operacao = __FUNCTION__;
-        $dataMsg = parent::composeMessage($operacao);
-
-        self::mountMensage($dataMsg);
-
-        return self::connection();
-    }
-
-    public static function consultarLoteRps($data): string|int|array
-    {
-
-        $validator = Validator::make($data, [
-            'username' => 'required',
-            'password' => 'required',
-            'numeroNF' => 'required',
-        ]);
-
-        if ($validator->fails()) {
-            return ['errors' => $validator->errors(), 'response' => 422];
-        }
-
-        $operacao = __FUNCTION__;
-        $dataMsg = parent::composeMessage($operacao);
-        self::mountMensage($dataMsg);
-
-        return self::connection();
-    }
-
-    public static function consultarNfsePorFaixa($data): string|int|array
-    {
-
-        $validator = Validator::make($data, [
-            'username' => 'required',
-            'password' => 'required',
-            'numeroNF' => 'required',
-        ]);
-
-        if ($validator->fails()) {
-            return ['errors' => $validator->errors(), 'response' => 422];
-        }
-
-        $operacao = __FUNCTION__;
-        $dataMsg = parent::composeMessage($operacao);
-        self::mountMensage($dataMsg);
-
-        return self::connection();
-    }
-
-    public static function consultarNfsePorRps($data): string|int|array
-    {
-
-        $validator = Validator::make($data, [
-            'username' => 'required',
-            'password' => 'required',
-            'numeroNF' => 'required',
-        ]);
-
-        if ($validator->fails()) {
-            return ['errors' => $validator->errors(), 'response' => 422];
-        }
-
-        $operacao = __FUNCTION__;
-        $dataMsg = parent::composeMessage($operacao);
-        self::mountMensage($dataMsg);
-
-        return self::connection();
-    }
-
-    public static function consultarNfseServicoPrestado($data): string|int|array
-    {
-
-        $validator = Validator::make($data, [
-            'username' => 'required',
-            'password' => 'required',
-            'numeroNF' => 'required',
-        ]);
-
-        if ($validator->fails()) {
-            return ['errors' => $validator->errors(), 'response' => 422];
-        }
-
-        $operacao = __FUNCTION__;
-        $dataMsg = parent::composeMessage($operacao);
-        self::mountMensage($dataMsg);
-
-        return self::connection();
-    }
-
-    public static function gerarNfse($data): string|int|array
-    {
-
-        $validator = Validator::make($data, [
-            'username' => 'required',
-            'password' => 'required',
-            'numeroNF' => 'required',
-        ]);
-
-        if ($validator->fails()) {
-            return ['errors' => $validator->errors(), 'response' => 422];
-        }
-
-        $operacao = __FUNCTION__;
-        $dataMsg = parent::composeMessage($operacao);
-        self::mountMensage($dataMsg);
-
-        return self::connection();
-    }
-
-    public static function recepcionarLoteRps($data): string|int|array
-    {
-
-        $validator = Validator::make($data, [
-            'username' => 'required',
-            'password' => 'required',
-            'numeroNF' => 'required',
-        ]);
-
-        if ($validator->fails()) {
-            return ['errors' => $validator->errors(), 'response' => 422];
-        }
-
-        $operacao = __FUNCTION__;
-        $dataMsg = parent::composeMessage($operacao);
-        self::mountMensage($dataMsg);
-
-        return self::connection();
-    }
-
-    public static function recepcionarLoteRpsSincrono($data): string|int|array
-    {
-
-        $validator = Validator::make($data, [
-            'username' => 'required',
-            'password' => 'required',
-            'numeroNF' => 'required',
-        ]);
-
-        if ($validator->fails()) {
-            return ['errors' => $validator->errors(), 'response' => 422];
-        }
-
-        $operacao = __FUNCTION__;
-        $dataMsg = parent::composeMessage($operacao);
-        self::mountMensage($dataMsg);
-
-        return self::connection();
-    }
-
-    public static function substituirNfse($data): string|int|array
-    {
-
-        $validator = Validator::make($data, [
-            'username' => 'required',
-            'password' => 'required',
-            'numeroNF' => 'required',
-        ]);
-
-        if ($validator->fails()) {
-            return ['errors' => $validator->errors(), 'response' => 422];
-        }
-
-        $operacao = __FUNCTION__;
-        $dataMsg = parent::composeMessage($operacao);
-        self::mountMensage($dataMsg);
-
-        return self::connection();
     }
 
     private static function mountMensage(SimpleXMLElement $dataMsg): void

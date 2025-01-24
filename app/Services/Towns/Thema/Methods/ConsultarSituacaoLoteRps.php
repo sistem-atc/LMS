@@ -1,0 +1,26 @@
+<?php
+
+namespace App\Services\Towns\Thema\Methods;
+
+trait ConsultarSituacaoLoteRps
+{
+
+    private static string $operation;
+    private static string $endpoint;
+
+    public static function ConsultarSituacaoLoteRps(array $data): string|int|array
+    {
+
+        self::$endpoint = "NFSEconsulta.NFSEconsultaHttpSoap12Endpoint/";
+        self::$operation = __FUNCTION__;
+
+        $dataMsg = self::composeMessage(self::$operation);
+        $dataMsg = self::Sign_XML($dataMsg);
+
+        self::mountMensage($dataMsg);
+
+        return self::connection();
+    }
+
+}
+

@@ -1,0 +1,10 @@
+Compor_MensagemXML = "<ConsultarDadosCadastraisEnvio xmlns=""http://www.abrasf.org.br/nfse.xsd"">
+    <Pedido>
+        <Prestador>"
+            Compor_MensagemXML = Compor_MensagemXML & "<CpfCnpj>
+            <Cnpj>[CAMPO_CNPJ]</Cnpj>
+        </CpfCnpj>
+        <InscricaoMunicipal>[CAMPO_INSCRICAO_MUNICIPAL]</InscricaoMunicipal>"
+            Compor_MensagemXML = Compor_MensagemXML & "</Prestador>
+</Pedido>
+</ConsultarDadosCadastraisEnvio>"

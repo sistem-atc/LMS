@@ -1,0 +1,9 @@
+<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope"
+    xmlns:nfd="http://www.issnetonline.com.br/webservice/nfd">
+    <soap:Header/>
+    <soap:Body>
+        <nfd:[Mount_Mensage]>
+            <nfd:xml></nfd:xml>
+        </nfd:[Mount_Mensage]>
+    </soap:Body>
+</soap:Envelope>

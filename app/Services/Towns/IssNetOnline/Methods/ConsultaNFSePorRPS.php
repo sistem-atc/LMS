@@ -1,21 +1,18 @@
 <?php
 
-namespace App\Services\Towns\GeisWeb\Methods;
+namespace App\Services\Towns\IssNetOnline\Methods;
 
 use Illuminate\Support\Facades\Validator;
 
-trait ConsultaSituacaoLoteAsync
+trait ConsultaNFSePorRPS
 {
 
     private static string $operation;
 
-    public static function ConsultaSituacaoLoteAsync($data): string|int|array
+    public static function ConsultaNFSePorRPS(array $data): string|int|array
     {
 
         $validator = Validator::make($data, [
-            'cnpj' => 'required',
-            'numeroLote' => 'required',
-            'numeroProtocolo' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -24,9 +21,8 @@ trait ConsultaSituacaoLoteAsync
 
         self::$operation = __FUNCTION__;
         $dataMsg = parent::composeMessage(self::$operation);
-        $dataMsg->cnpj = $data['cnpj'];
-        $dataMsg->NumeroLote = $data['numeroLote'];
-        $dataMsg->NumeroProtocolo = $data['numeroProtocolo'];
+
+        $dataMsg = self::Sign_XML($dataMsg->asXML());
 
         self::mountMensage($dataMsg);
 

@@ -4,7 +4,7 @@ namespace App\Services\Towns\GeisWeb\Methods;
 
 use Illuminate\Support\Facades\Validator;
 
-trait consultaNfse
+trait ConsultaNfse
 {
 
     private static string $operation;

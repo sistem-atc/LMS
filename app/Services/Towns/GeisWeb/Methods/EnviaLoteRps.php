@@ -4,7 +4,7 @@ namespace App\Services\Towns\GeisWeb\Methods;
 
 use Illuminate\Support\Facades\Validator;
 
-trait enviaLoteRps
+trait EnviaLoteRps
 {
 
     private static string $operation;

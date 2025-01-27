@@ -1,0 +1,15 @@
+Compor_MensagemXML = "<CancelarNfseEnvio xmlns=""http://www.abrasf.org.br/nfse.xsd"">
+    <Pedido>
+        <InfPedidoCancelamento Id=""[CAMPO_ID_CANCELAMENTO]"">
+            <IdentificacaoNfse>"
+            Compor_MensagemXML = Compor_MensagemXML & "<Numero>[CAMPO_NUMERO_NOTA]</Numero>
+                <CpfCnpj>
+                    <Cnpj>[CAMPO_CNPJ]</Cnpj>
+                </CpfCnpj>"
+            Compor_MensagemXML = Compor_MensagemXML & "<InscricaoMunicipal>[CAMPO_INSCRICAO_MUNICIPAL]</InscricaoMunicipal>
+                <CodigoMunicipio>[CAMPO_CODIGO_MUNICIPIO]</CodigoMunicipio>"
+            Compor_MensagemXML = Compor_MensagemXML & "</IdentificacaoNfse>
+            <CodigoCancelamento>[CAMPO_CODIGO_CANCELAMENTO]</CodigoCancelamento>"
+            Compor_MensagemXML = Compor_MensagemXML & "</InfPedidoCancelamento>
+    </Pedido>
+</CancelarNfseEnvio>"

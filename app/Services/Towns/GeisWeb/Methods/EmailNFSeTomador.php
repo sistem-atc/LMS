@@ -4,7 +4,7 @@ namespace App\Services\Towns\GeisWeb\Methods;
 
 use Illuminate\Support\Facades\Validator;
 
-trait emailNFSeTomador
+trait EmailNFSeTomador
 {
 
     private static string $operation;

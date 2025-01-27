@@ -1,0 +1,27 @@
+Compor_MensagemXML = Compor_MensagemXML & "<ConsultarNfseServicoTomadoEnvio xmlns=""http://www.abrasf.org.br/nfse.xsd"">
+    <Pedido>
+        <Consulente>
+            <CpfCnpj>"
+            Compor_MensagemXML = Compor_MensagemXML & "<Cnpj>[CAMPO_CNPJ]</Cnpj>
+            </CpfCnpj>
+            <InscricaoMunicipal>[CAMPO_INSCRICAO_MUNICIPAL]</InscricaoMunicipal>"
+            Compor_MensagemXML = Compor_MensagemXML & "</Consulente>
+        <PeriodoEmissao>
+            <DataInicial>[CAMPO_DATA_INICIAL]</DataInicial>
+            <DataFinal>[CAMPO_DATA_FINAL]</DataFinal>"
+            Compor_MensagemXML = Compor_MensagemXML & "</PeriodoEmissao>
+        <Prestador>
+            <CpfCnpj>
+                <Cnpj>[CAMPO_CNPJ_PRESTADOR]</Cnpj>
+            </CpfCnpj>"
+            Compor_MensagemXML = Compor_MensagemXML & "<InscricaoMunicipal>[CAMPO_INSCRICAO_MUNICIPAL_PRESTADOR]</InscricaoMunicipal>
+        </Prestador>
+        <Tomador>"
+            Compor_MensagemXML = Compor_MensagemXML & "<CpfCnpj>
+            <Cnpj>[CAMPO_CNPJ]</Cnpj>
+        </CpfCnpj>
+        <InscricaoMunicipal>[CAMPO_INSCRICAO_MUNICIPAL]</InscricaoMunicipal>"
+            Compor_MensagemXML = Compor_MensagemXML & "</Tomador>
+    <Pagina>[CAMPO_NUMERO_PAGINA]</Pagina>
+</Pedido>
+</ConsultarNfseServicoTomadoEnvio>"

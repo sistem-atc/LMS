@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ConsultarUrlVisualizacaoNfseEnvio xmlns="http://www.issnetonline.com.br/webserviceabrasf/vsd/servico_consultar_url_visualizacao_nfse_envio.xsd"
+    xmlns:tc="http://www.issnetonline.com.br/webserviceabrasf/vsd/tipos_complexos.xsd">
+    <Prestador>
+        <tc:CpfCnpj>
+            <tc:Cnpj></tc:Cnpj>
+        </tc:CpfCnpj>
+        <tc:InscricaoMunicipal></tc:InscricaoMunicipal>
+    </Prestador>
+    <Numero></Numero>
+    <CodigoTributacaoMunicipio></CodigoTributacaoMunicipio>
+</ConsultarUrlVisualizacaoNfseEnvio>

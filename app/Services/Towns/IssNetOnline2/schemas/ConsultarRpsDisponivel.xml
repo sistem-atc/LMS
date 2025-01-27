@@ -1,0 +1,16 @@
+Compor_MensagemXML = "<ConsultarRpsDisponivelEnvio xmlns=""http://www.abrasf.org.br/nfse.xsd"">
+    <Pedido>
+        <Prestador>
+            <CpfCnpj>"
+            Compor_MensagemXML = Compor_MensagemXML & "<Cnpj>[CAMPO_CNPJ]</Cnpj>
+            </CpfCnpj>
+            <InscricaoMunicipal>[CAMPO_INSCRICAO_MUNICIPAL]</InscricaoMunicipal>"
+            Compor_MensagemXML = Compor_MensagemXML & "</Prestador>
+        <IdentificacaoRps>
+            <Numero>[CAMPO_NUMERO_RPS]</Numero>
+            <Serie>[CAMPO_SERIE_RPS]</Serie>"
+            Compor_MensagemXML = Compor_MensagemXML & "<Tipo>[CAMPO_TIPO_RPS]</Tipo>
+        </IdentificacaoRps>
+        <Pagina>[CAMPO_NUMERO_PAGINA]</Pagina>
+    </Pedido>
+</ConsultarRpsDisponivelEnvio>"

@@ -1,0 +1,10 @@
+Message_Assemble = "<soapenv:Envelope xmlns:soapenv=""http://schemas.xmlsoap.org/soap/envelope/""
+    xmlns:nfse=""http://nfse.abrasf.org.br"">"
+    Message_Assemble = Message_Assemble & "<soapenv:Header/>
+<soapenv:Body>
+    <nfse:[Mount_Mensage]>"
+    Message_Assemble = Message_Assemble & "<nfseCabecMsg>[CabecMsg]</nfseCabecMsg>
+        <nfseDadosMsg>[DadosMsg]</nfseDadosMsg>"
+    Message_Assemble = Message_Assemble & "</nfse:[Mount_Mensage]>
+</soapenv:Body>
+</soapenv:Envelope>"

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ConsultarDadosCadastraisEnvio xmlns:tc="http://www.issnetonline.com.br/webserviceabrasf/vsd/tipos_complexos.xsd"
+    xmlns:ts="http://www.issnetonline.com.br/webserviceabrasf/vsd/tipos_simples.xsd"
+    xmlns="http://www.issnetonline.com.br/webserviceabrasf/vsd/servico_consultar_dados_cadastrais_envio.xsd">
+    <Prestador>
+        <tc:CpfCnpj>
+            <tc:Cnpj></tc:Cnpj>
+        </tc:CpfCnpj>
+        <tc:InscricaoMunicipal></tc:InscricaoMunicipal>
+    </Prestador>
+</ConsultarDadosCadastraisEnvio>

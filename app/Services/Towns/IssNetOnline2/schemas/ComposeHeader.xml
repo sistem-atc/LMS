@@ -1,0 +1,3 @@
+Compor_CabecalhoXML = "<cabecalho xmlns=""http://www.abrasf.org.br/nfse.xsd"" versao=""2.04"">
+    <versaoDados>2.04</versaoDados>
+</cabecalho>"

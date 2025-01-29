@@ -21,7 +21,7 @@ return new class extends Migration
             $table->foreignIdFor(Nature::class)->constrained();
             $table->foreignIdFor(Bank::class)->constrained();
             $table->foreignIdFor(Customer::class)->constrained();
-            $table->json('cte_id')->nullable();
+            $table->json('transport_document_id')->nullable();
             $table->date('emission_date');
             $table->date('due_date');
             $table->float('total_value');

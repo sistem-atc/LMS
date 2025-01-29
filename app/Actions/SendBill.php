@@ -2,6 +2,7 @@
 
 namespace App\Actions;
 
+use App\Models\Bill;
 use App\Services\Banks\BanksGateway\BanksStrategy;
 use App\Services\Banks\BanksGateway\Contracts\BanksInterface;
 

@@ -40,7 +40,7 @@ class Bill extends Model
     ];
 
     protected $casts = [
-        'cte_id' => 'array',
+        'transport_document_id' => 'array',
     ];
 
     public function bank(): BelongsTo
@@ -68,9 +68,9 @@ class Bill extends Model
         return $this->BelongsTo(Nature::class);
     }
 
-    public function ctes(): BelongsToMany
+    public function transportDocument(): BelongsToMany
     {
-        return $this->BelongsToMany(Cte::class);
+        return $this->BelongsToMany(TransportDocument::class);
     }
 
 }

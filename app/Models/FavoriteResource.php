@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\Auth;
 
 class FavoriteResource extends Model
 {
@@ -19,7 +20,7 @@ class FavoriteResource extends Model
     public static function isFavorite($className): bool
     {
         return FavoriteResource::where([
-            'user_id' => auth()->id(),
+            'user_id' => Auth::user()->id,
             'name' => $className,
         ])->exists();
     }
@@ -29,7 +30,7 @@ class FavoriteResource extends Model
 
         if (FavoriteResource::isFavorite($className)) {
             FavoriteResource::where([
-                'user_id' => auth()->id(),
+                'user_id' => Auth::user()->id,
                 'name' => $className,
             ])->delete();
 
@@ -37,7 +38,7 @@ class FavoriteResource extends Model
         }
 
         FavoriteResource::create([
-            'user_id' => auth()->id(),
+            'user_id' => Auth::user()->id,
             'name' => $className,
         ]);
 

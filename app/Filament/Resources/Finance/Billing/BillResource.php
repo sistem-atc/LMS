@@ -79,21 +79,21 @@ class BillResource extends Resource
                         ]),
                     Wizard\Step::make('Ctes a faturar')
                         ->schema([
-                            CheckboxList::make('cte_id')->label('Escolha os CTe a serem faturados')
-                                ->noSearchResultsMessage('Sem Ctes pendentes de faturamento')
-                                ->searchPrompt('Pesquisando Cte a serem faturados')
+                            CheckboxList::make('transport_document_id')->label('Escolha os Documentos a serem faturados')
+                                ->noSearchResultsMessage('Sem documentos pendentes de faturamento')
+                                ->searchPrompt('Pesquisando Documentos a serem faturados')
                                 ->bulkToggleable()
                                 ->options(
                                     fn(Get $get): ?Collection =>
-                                    DB::table('ctes')
-                                        ->join('branches', 'ctes.branch_id', '=', 'branches.id')
+                                    DB::table('transport_documents')
+                                        ->join('branches', 'transport_documents.branch_id', '=', 'branches.id')
                                         ->select(DB::raw("
-                                            concat('Origem: ', branches.abbreviation, ' | ', 'Numero do CT-e: ', ctes.id,
-                                            ' | ', 'Serie: ', ctes.serie, ' | ', 'Valor Total: ', format(ctes.total_value, 2, 'de_DE')) as id,
-                                            ctes.id as cte"))
-                                        ->where('ctes.debtor_customer_id', '=', $get('customer_id'))
-                                        ->where('ctes.doct_blocked', '=', '0')
-                                        ->where('ctes.bill', '=', '')
+                                            concat('Origem: ', branches.abbreviation, ' | ', 'Numero do CT-e: ', transport_documents.id,
+                                            ' | ', 'Serie: ', transport_documents.serie, ' | ', 'Valor Total: ', format(transport_documents.total_value, 2, 'de_DE')) as id,
+                                            transport_documents.id as cte"))
+                                        ->where('transport_documents.debtor_customer_id', '=', $get('customer_id'))
+                                        ->where('transport_documents.doct_blocked', '=', '0')
+                                        ->where('transport_documents.bill', '=', '')
                                         ->get()->pluck('id', 'cte'),
                                 )
                                 ->live(),

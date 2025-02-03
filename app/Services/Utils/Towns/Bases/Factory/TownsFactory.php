@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Utils\Towns\Factory;
+namespace App\Services\Utils\Towns\Bases\Factory;
 
 class TownsFactory
 {

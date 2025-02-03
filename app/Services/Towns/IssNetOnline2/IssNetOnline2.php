@@ -2,9 +2,10 @@
 
 namespace App\Services\Towns\IssNetOnline2;
 
+use Exception;
+use SimpleXMLElement;
 use App\Enums\HttpMethod;
 use App\Services\Utils\Towns\Bases\LinkTownBase;
-use SimpleXMLElement;
 
 class IssNetOnline2 extends LinkTownBase
 {
@@ -32,17 +33,22 @@ class IssNetOnline2 extends LinkTownBase
 
     public function gerarNota(array $data): string|int|array
     {
-        return self::($data);
+        return self::RecepcionarLoteRps($data);
     }
 
     public function cancelarNota(array $data): string|int|array
     {
-        return self::($data);
+        return self::CancelarNfse($data);
     }
 
     public function consultarNota(array $data): string|int|array
     {
-        return self::($data);
+        return self::ConsultarNfse($data);
+    }
+
+    public function substituirNota(array $data): string|int|array
+    {
+        return throw new Exception('Método não implementado', 501);
     }
 
     public function __construct(array $configLoader)

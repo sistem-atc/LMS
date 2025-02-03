@@ -2,6 +2,7 @@
 
 namespace App\Services\Towns\GeisWeb;
 
+use Exception;
 use SimpleXMLElement;
 use App\Enums\HttpMethod;
 use App\Services\Utils\Towns\Bases\LinkTownBase;
@@ -42,6 +43,11 @@ class GeisWeb extends LinkTownBase
     public function cancelarNota(array $data): string|int|array
     {
         return self::CancelaNfse($data);
+    }
+
+    public function substituirNota(array $data): string|int|array
+    {
+        return throw new Exception('Método não implementado', 501);
     }
 
     public function __construct(array $configLoader)

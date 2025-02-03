@@ -2,7 +2,6 @@
 
 namespace App\Services\Utils\Towns\Bases;
 
-use Override;
 use App\Services\Utils\Towns\Interfaces\LinkTownsInterface;
 
 abstract class LinkTownBase implements LinkTownsInterface

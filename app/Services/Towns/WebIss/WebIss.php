@@ -44,6 +44,11 @@ class WebIss extends LinkTownBase
         return self::CancelarNfse($data);
     }
 
+    public function substituirNota(array $data): string|int|array
+    {
+        return self::SubstituirNfse($data);
+    }
+
     public function __construct($codeIbge)
     {
         parent::__construct($codeIbge);

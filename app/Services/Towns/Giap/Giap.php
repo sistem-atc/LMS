@@ -2,6 +2,7 @@
 
 namespace App\Services\Towns\Giap;
 
+use Exception;
 use SimpleXMLElement;
 use App\Enums\HttpMethod;
 use Illuminate\Support\Facades\Validator;
@@ -40,6 +41,11 @@ class Giap extends LinkTownBase
     public function cancelarNota(array $data): string|int|array
     {
         return self::cancela($data);
+    }
+
+    public function substituirNota(array $data): string|int|array
+    {
+        return throw new Exception('Método não implementado', 501);
     }
 
     public function __construct(array $configLoader)

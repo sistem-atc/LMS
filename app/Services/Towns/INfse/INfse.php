@@ -45,6 +45,11 @@ class INfse extends LinkTownBase
         return self::CancelarNfse($data);
     }
 
+    public function substituirNota(array $data): string|int|array
+    {
+        return self::SubstituirNfse($data);
+    }
+
     public function __construct(array $configLoader)
     {
         parent::__construct($configLoader);

@@ -43,6 +43,11 @@ class Fi1_Fiorilli extends LinkTownBase
         return self::CancelarNfse($data);
     }
 
+    public function substituirNota(array $data): string|int|array
+    {
+        return self::substituirNfse($data);
+    }
+
     public function __construct(array $configLoader)
     {
         parent::__construct($configLoader);

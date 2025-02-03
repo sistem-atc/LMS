@@ -2,9 +2,11 @@
 
 namespace App\Services\Towns\Tinus;
 
+use Exception;
 use SimpleXMLElement;
 use App\Enums\HttpMethod;
 use App\Services\Utils\Towns\Bases\LinkTownBase;
+
 class Tinus extends LinkTownBase
 {
 
@@ -38,6 +40,11 @@ class Tinus extends LinkTownBase
     public function cancelarNota(array $data): string|int|array
     {
         return self::CancelarNfse($data);
+    }
+
+    public function substituirNota(array $data): string|int|array
+    {
+        return throw new Exception('Método não implementado', 501);
     }
 
     public function __construct($codeIbge)

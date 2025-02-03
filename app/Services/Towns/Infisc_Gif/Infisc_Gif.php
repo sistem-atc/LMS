@@ -2,6 +2,7 @@
 
 namespace App\Services\Towns\Infisc_Gif;
 
+use Exception;
 use SimpleXMLElement;
 use App\Enums\HttpMethod;
 use App\Services\Utils\Towns\Bases\LinkTownBase;
@@ -49,6 +50,11 @@ class Infisc_Gif extends LinkTownBase
     public function cancelarNota(array $data): string|int|array
     {
         return self::cancelarNotaFiscal($data);
+    }
+
+    public function substituirNota(array $data): string|int|array
+    {
+        return throw new Exception('Método não implementado', 501);
     }
 
     public function __construct(array $configLoader)

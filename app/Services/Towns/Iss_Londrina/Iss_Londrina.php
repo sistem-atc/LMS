@@ -2,6 +2,7 @@
 
 namespace App\Services\Towns\Iss_Londrina;
 
+use Exception;
 use SimpleXMLElement;
 use App\Enums\HttpMethod;
 use App\Services\Utils\Towns\Bases\LinkTownBase;
@@ -39,6 +40,11 @@ class Iss_Londrina extends LinkTownBase
     public function consultarNota(array $data): string|int|array
     {
         return self::ConsultarNfseServicoPrestado($data);
+    }
+
+    public function substituirNota(array $data): string|int|array
+    {
+        return throw new Exception('Método não implementado', 501);
     }
 
     public function __construct(array $configLoader)

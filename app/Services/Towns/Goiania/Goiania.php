@@ -2,6 +2,7 @@
 
 namespace App\Services\Towns\Goiania;
 
+use Exception;
 use SimpleXMLElement;
 use App\Enums\HttpMethod;
 use App\Services\Utils\Towns\Bases\LinkTownBase;
@@ -32,7 +33,12 @@ class Goiania extends LinkTownBase
 
     public function cancelarNota(array $data): string|int|array
     {
-        return 'Metodo não implementado';
+        return throw new Exception('Método não implementado', 501);
+    }
+
+    public function substituirNota(array $data): string|int|array
+    {
+        return throw new Exception('Método não implementado', 501);
     }
 
     public function __construct(array $configLoader)

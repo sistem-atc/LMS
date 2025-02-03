@@ -40,7 +40,12 @@ class Abaco extends LinkTownBase
 
     public function cancelarNota(array $data): string|int|array
     {
-        return 'Metodo cancelarNota inexistente para a prefeitura';
+        return throw new Exception('Método não implementado', 501);
+    }
+
+    public function substituirNota(array $data): string|int|array
+    {
+        return throw new Exception('Método não implementado', 501);
     }
 
     public function __construct(array $configLoader)

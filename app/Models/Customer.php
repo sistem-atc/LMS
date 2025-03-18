@@ -9,21 +9,51 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Sanctum\HasApiTokens;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class Customer extends Model
+class Customer extends Model implements Auditable
 {
     use Blameable;
     use HasApiTokens;
     use HasFactory;
     use SoftDeletes;
+    use \OwenIt\Auditing\Auditable;
 
     protected $fillable = [
-        'cpf_or_cnpj', 'company_name', 'type_person', 'fantasy_name', 'postal_code', 'street',
-        'complement', 'number', 'district', 'city', 'state', 'ibge', 'gia', 'ddd', 'siafi',
-        'region', 'branche_id', 'nature_id', 'phone_number', 'cellphone', 'vendor_id', 'payment_term',
-        'bank_standard_id', 'priority', 'risc', 'municipal_registration', 'state_registration',
-        'mail_operational', 'mail_financial', 'BaseEndpoint', 'token_multisoftware', 'group_customer_id',
-        'token_api', 'complete',
+        'cpf_or_cnpj',
+        'company_name',
+        'type_person',
+        'fantasy_name',
+        'postal_code',
+        'street',
+        'complement',
+        'number',
+        'district',
+        'city',
+        'state',
+        'ibge',
+        'gia',
+        'ddd',
+        'siafi',
+        'region',
+        'branche_id',
+        'nature_id',
+        'phone_number',
+        'cellphone',
+        'vendor_id',
+        'payment_term',
+        'bank_standard_id',
+        'priority',
+        'risc',
+        'municipal_registration',
+        'state_registration',
+        'mail_operational',
+        'mail_financial',
+        'BaseEndpoint',
+        'token_multisoftware',
+        'group_customer_id',
+        'token_api',
+        'complete',
     ];
 
     protected $casts = [

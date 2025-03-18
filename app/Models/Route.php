@@ -7,12 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class Route extends Model
+class Route extends Model implements Auditable
 {
     use HasFactory;
     use SoftDeletes;
     use Blameable;
+    use \OwenIt\Auditing\Auditable;
 
     protected $fillable = [
         'name',

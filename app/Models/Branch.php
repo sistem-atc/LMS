@@ -9,13 +9,15 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class Branch extends Model
+class Branch extends Model implements Auditable
 {
     use HasFactory;
     use HasRoles;
     use SoftDeletes;
     use Blameable;
+    use \OwenIt\Auditing\Auditable;
 
     protected $fillable = [
         'abbreviation',

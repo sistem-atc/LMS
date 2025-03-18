@@ -9,12 +9,14 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class Bill extends Model
+class Bill extends Model implements Auditable
 {
     use HasFactory;
     use SoftDeletes;
     use Blameable;
+    use \OwenIt\Auditing\Auditable;
 
     protected $fillable = [
         'nature_id',
@@ -72,5 +74,4 @@ class Bill extends Model
     {
         return $this->BelongsToMany(TransportDocument::class);
     }
-
 }

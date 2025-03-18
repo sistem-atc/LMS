@@ -9,12 +9,14 @@ use App\Enums\TypeDocumentTransportEnum;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class TransportDocument extends Model
+class TransportDocument extends Model implements Auditable
 {
     use HasFactory;
     use SoftDeletes;
     use Blameable;
+    use \OwenIt\Auditing\Auditable;
 
     protected $fillable = [
         'branch_emission_id',

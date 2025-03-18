@@ -4,7 +4,7 @@ namespace App\Services\Towns\Abaco;
 
 use Carbon\Carbon;
 use App\Enums\TypeRPS;
-use App\Services\Utils\Towns\Factory\TownsFactory;
+use App\Services\Utils\Towns\Bases\Factory\TownsFactory;
 use App\Services\Utils\Towns\Interfaces\ExcludeSelectInterface;
 
 class Exemple implements ExcludeSelectInterface
@@ -75,9 +75,9 @@ class Exemple implements ExcludeSelectInterface
             ],
         ];
 
-        $abaco = TownsFactory::getInstance(self::CITY_IBGE);
+        $town = TownsFactory::getInstance(self::CITY_IBGE);
 
-        dd($abaco->RecepcionarLoteRPS($arrayData));
+        dd($town->RecepcionarLoteRPS($arrayData));
     }
 
     protected function ConsultarSituacaoLoteRPS(): void
@@ -103,9 +103,9 @@ class Exemple implements ExcludeSelectInterface
             'tipo_RPS' => TypeRPS::RPS->getLabel(),
         ];
 
-        $abaco = TownsFactory::getInstance(self::CITY_IBGE);
+        $town = TownsFactory::getInstance(self::CITY_IBGE);
 
-        dd($abaco->ConsultarNfsePorRps($arrayData));
+        dd($town->ConsultarNfsePorRps($arrayData));
     }
 
     protected function ConsultarLoteRps(): void
@@ -116,9 +116,9 @@ class Exemple implements ExcludeSelectInterface
             'protocolo' => 123456,
         ];
 
-        $abaco = TownsFactory::getInstance(self::CITY_IBGE);
+        $town = TownsFactory::getInstance(self::CITY_IBGE);
 
-        dd($abaco->ConsultarLoteRps($arrayData));
+        dd($town->ConsultarLoteRps($arrayData));
     }
 
     protected function ConsultarNfse(): void
@@ -135,8 +135,8 @@ class Exemple implements ExcludeSelectInterface
             ],
         ];
 
-        $abaco = TownsFactory::getInstance(self::CITY_IBGE);
+        $town = TownsFactory::getInstance(self::CITY_IBGE);
 
-        dd($abaco->ConsultarNfse($arrayData));
+        dd($town->ConsultarNfse($arrayData));
     }
 }

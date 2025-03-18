@@ -2,13 +2,13 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Hooks\ConfigRenderHook;
+use App\Filament\Hooks\FavoriteRenderHook;
 use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Navigation\MenuItem;
 use Filament\Support\Colors\Color;
-use Illuminate\Contracts\View\View;
-use Illuminate\Support\Facades\Auth;
 use Rupadana\ApiService\ApiServicePlugin;
 use Filament\Http\Middleware\Authenticate;
 use Illuminate\Session\Middleware\StartSession;
@@ -22,8 +22,6 @@ use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use App\Filament\Resources\Settings\User\UserResource\Pages\EditProfile;
-use Filament\View\PanelsRenderHook;
-use Illuminate\Support\Facades\Blade;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -49,31 +47,8 @@ class AdminPanelProvider extends PanelProvider
                 'primary' => Color::hex('#117865'),
                 'info' => Color::Amber,
             ])
-            ->renderHook(
-                PanelsRenderHook::GLOBAL_SEARCH_BEFORE,
-                function (): View {
-                    session(null)->has('DateBase') ?
-                        $DateBase = session(null)->get('DateBase') :
-                        $DateBase = today()->format('d/m/Y');
-
-                    if (is_null(Auth::user()->employee->branch)) {
-                        $branchelooged = 'NULL';
-                    } else {
-                        !is_null(Auth::user()->branch_logged) ?
-                            $branchelooged = Auth::user()->branch_logged['abbreviation'] :
-                            $branchelooged = Auth::user()->employee->branch['abbreviation'];
-                    }
-
-                    return view(
-                        'filament.resources.pages.branchelogged',
-                        [
-                            'branchelooged' => $branchelooged,
-                            'datebase' => $DateBase,
-                        ]
-                    );
-                }
-            )
-            ->renderHook(PanelsRenderHook::TOPBAR_START, fn(): string => Blade::render('@livewire(\'topbar.favorite-resources\')'))
+            ->renderHook(ConfigRenderHook::getPosition(), fn() => ConfigRenderHook::getView())
+            ->renderHook(FavoriteRenderHook::getPosition(), fn() => FavoriteRenderHook::getView())
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([

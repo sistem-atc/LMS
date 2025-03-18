@@ -9,17 +9,34 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use OwenIt\Auditing\Contracts\Auditable;
 
 #[ObservedBy([EmployeeObserver::class])]
-class Employee extends Model
+class Employee extends Model implements Auditable
 {
     use HasFactory;
     use SoftDeletes;
     use Blameable;
+    use \OwenIt\Auditing\Auditable;
 
     protected $fillable = [
-        'user_id', 'branch_id', 'name', 'cpf', 'personalmail', 'postal_code', 'street', 'complement',
-        'number', 'district', 'city', 'state', 'ibge', 'gia', 'ddd', 'siafi', 'is_active'
+        'user_id',
+        'branch_id',
+        'name',
+        'cpf',
+        'personalmail',
+        'postal_code',
+        'street',
+        'complement',
+        'number',
+        'district',
+        'city',
+        'state',
+        'ibge',
+        'gia',
+        'ddd',
+        'siafi',
+        'is_active'
     ];
 
     protected $casts = [

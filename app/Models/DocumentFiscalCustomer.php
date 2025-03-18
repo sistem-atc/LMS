@@ -8,14 +8,16 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use OwenIt\Auditing\Contracts\Auditable;
 use Rupadana\ApiService\Contracts\HasAllowedFields;
 use Rupadana\ApiService\Contracts\HasAllowedFilters;
 
-class DocumentFiscalCustomer extends Model implements HasAllowedFields, HasAllowedFilters
+class DocumentFiscalCustomer extends Model implements HasAllowedFields, HasAllowedFilters, Auditable
 {
     use HasFactory;
     use SoftDeletes;
     use Blameable;
+    use \OwenIt\Auditing\Auditable;
 
     public static function getAllowedFields(): array
     {

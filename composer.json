@@ -18,7 +18,7 @@
         "filament/filament": "^3.2",
         "filament/tables": "^3.2",
         "guzzlehttp/guzzle": "^7.8",
-        "laravel/framework": "^11.0",
+        "laravel/framework": "^12.3",
         "laravel/horizon": "^5.29",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",

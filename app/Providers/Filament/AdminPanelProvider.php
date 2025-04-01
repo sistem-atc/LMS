@@ -2,14 +2,13 @@
 
 namespace App\Providers\Filament;
 
-use App\Filament\Hooks\ConfigRenderHook;
-use App\Filament\Hooks\FavoriteRenderHook;
+use App\Filament\Colors\MyColors;
 use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
-use Filament\Navigation\MenuItem;
-use Filament\Support\Colors\Color;
-use Rupadana\ApiService\ApiServicePlugin;
+use App\Filament\MenuItems\MenuItems;
+use App\Filament\Hooks\ConfigRenderHook;
+use App\Filament\Hooks\FavoriteRenderHook;
 use Filament\Http\Middleware\Authenticate;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Cookie\Middleware\EncryptCookies;
@@ -22,6 +21,8 @@ use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use App\Filament\Resources\Settings\User\UserResource\Pages\EditProfile;
+use App\Http\ControlLoginResponse;
+use Filament\Http\Responses\Auth\LoginResponse;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -29,6 +30,7 @@ class AdminPanelProvider extends PanelProvider
     public function panel(Panel $panel): Panel
     {
         return $panel
+            ->bootUsing(fn() => app()->bind(LoginResponse::class, ControlLoginResponse::class))
             ->default()
             ->brandName('LMS')
             ->brandLogo(asset('images/W-LogoLMS.png'))
@@ -36,17 +38,14 @@ class AdminPanelProvider extends PanelProvider
             ->brandLogoHeight('3.5rem')
             ->favicon(asset('images/favicon.ico'))
             ->sidebarFullyCollapsibleOnDesktop()
-            ->id('lms')
-            ->path('lms')
+            ->id('admin')
+            ->path('admin')
             ->login()
             ->databaseNotifications()
             ->profile(EditProfile::class, false)
-            ->userMenuItems($this->useMenuItems())
+            ->userMenuItems(MenuItems::useMenuItems())
             ->plugins($this->usePlugins())
-            ->colors([
-                'primary' => Color::hex('#117865'),
-                'info' => Color::Amber,
-            ])
+            ->colors(MyColors::getColors())
             ->renderHook(ConfigRenderHook::getPosition(), fn() => ConfigRenderHook::getView())
             ->renderHook(FavoriteRenderHook::getPosition(), fn() => FavoriteRenderHook::getView())
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
@@ -64,20 +63,9 @@ class AdminPanelProvider extends PanelProvider
             ]);
     }
 
-    private function useMenuItems(): array
-    {
-        return [
-            MenuItem::make()
-                ->label('Alterar Dados de Acesso')
-                ->icon('carbon-branch')
-                ->url('/lms/alter-branch'),
-        ];
-    }
-
     private function usePlugins(): array
     {
         return [
-            ApiServicePlugin::make(),
             FilamentShieldPlugin::make()
         ];
     }

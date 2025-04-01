@@ -2,13 +2,12 @@
 
 namespace App\Filament\Pages;
 
-use App\Enums\TypeBranchEnum;
 use App\Models\User;
 use App\Models\Branch;
 use Filament\Forms\Form;
 use Filament\Pages\Page;
 use Filament\Actions\Action;
-use Filament\Pages\Dashboard;
+use App\Enums\TypeBranchEnum;
 use Filament\Facades\Filament;
 use Filament\Support\Colors\Color;
 use Filament\Forms\Components\Grid;
@@ -22,23 +21,32 @@ use Filament\Notifications\Notification;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Concerns\InteractsWithForms;
 use BezhanSalleh\FilamentShield\Traits\HasPageShield;
+use Filament\Panel;
 
-class AlterBranch extends Page implements HasForms
+class Settings extends Page implements HasForms
 {
 
     use InteractsWithForms, HasPageShield;
 
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
-    protected static bool $shouldRegisterNavigation = false;
     public ?array $data = [];
-    protected static string $view = 'filament.pages.alter-branch';
+    protected static string $view = 'filament.pages.settings';
+    protected static bool $shouldRegisterNavigation = false;
     protected ?string $heading = 'Alterar Dados de Acesso';
+    protected static ?string $slug = 'settings';
+    protected static Panel $currentModule;
 
     public function mount(): void
     {
+
+        Session()->has('dateBase') ?
+            $datebase = session()->get('dateBase') :
+            $datebase = today()->format('d/m/Y');
+
         $this->form->fill([
-            'branch_logged_id' => Auth::user()->branch_logged->id,
-            'DateBase' => session(null)->get('DateBase'),
+            'branch_logged_id' => Filament::auth()->user()->branch_logged->id,
+            'dateBase' => $datebase,
+            'module' => Filament::getCurrentPanel()->getId(),
         ]);
     }
 
@@ -52,6 +60,7 @@ class AlterBranch extends Page implements HasForms
                             ->schema([
                                 $this->getBrancheLoggedComponent(),
                                 $this->getDatebaseComponent(),
+                                $this->getModuleComponent(),
                             ])->columns(2),
                     ])->columns(2)
 
@@ -61,7 +70,22 @@ class AlterBranch extends Page implements HasForms
 
     protected function getRedirectUrl()
     {
-        return redirect()->to(Dashboard::getUrl());
+        return redirect()->to(static::$currentModule->getUrl());
+    }
+
+    protected function getModuleComponent(): Component
+    {
+
+        $modules = collect(Filament::getPanels())
+            ->mapWithKeys(
+                fn($panel) => [$panel->getId() => ucfirst($panel->getId())]
+            );
+
+        return
+            Select::make('module')
+            ->label('Módulo')
+            ->required()
+            ->options($modules);
     }
 
     protected function getBrancheLoggedComponent(): Component
@@ -72,7 +96,7 @@ class AlterBranch extends Page implements HasForms
             ->label('Filial Logada')
             ->required()
             ->options(
-                fn() => Auth::user()->employee->branch['type_branch'] === TypeBranchEnum::MATRIZ
+                fn() => Filament::auth()->user()->employee->branch['type_branch'] === TypeBranchEnum::MATRIZ
                     ? Branch::all()->pluck('abbreviation', 'id')->toArray()
                     : Branch::where('id', '=', Auth::user()->employee->branch['id'])
                     ->pluck('abbreviation', 'id')->toArray()
@@ -82,7 +106,7 @@ class AlterBranch extends Page implements HasForms
     protected function getDatebaseComponent(): Component
     {
         return
-            DatePicker::make('DateBase')
+            DatePicker::make('dateBase')
             ->label('Data Base')
             ->format('d/m/Y');
     }
@@ -101,9 +125,18 @@ class AlterBranch extends Page implements HasForms
     {
 
         try {
+
             $data = $this->form->getState();
-            User::where('id', Filament::auth()->user()->id)->update(['branch_logged_id' => $data['branch_logged_id'],]);
-            session(null)->put('DateBase', $data['DateBase']);
+
+            static::$currentModule = Filament::getPanel($data['module']);
+
+            User::where('id', Filament::auth()->user()->id)
+                ->update([
+                    'branch_logged_id' => $data['branch_logged_id'],
+                    'remember_last_module' => $data['module'],
+                ]);
+
+            session()->put('dateBase', $data['dateBase']);
 
             Notification::make()
                 ->success()
@@ -112,15 +145,21 @@ class AlterBranch extends Page implements HasForms
                 ->title('Dados Alterados com sucesso!')
                 ->send();
         } catch (Halt $exception) {
+
             Notification::make()
                 ->warning()
                 ->color('warning')
                 ->duration(3000)
-                ->title('Erro ao alterar Filial')
+                ->title('Erro ao alterar dados')
                 ->body($exception)
                 ->send();
         }
 
         self::getRedirectUrl();
+    }
+
+    public static function canAccess(): bool
+    {
+        return true;
     }
 }

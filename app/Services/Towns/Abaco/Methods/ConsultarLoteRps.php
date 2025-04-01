@@ -9,6 +9,7 @@ trait ConsultarLoteRps
 
     private static string $endPoint;
     private static string $operation;
+
     public static function ConsultarLoteRps(array $data): string|int|array
     {
 
@@ -34,5 +35,4 @@ trait ConsultarLoteRps
 
         return self::parseXmlToArray(self::connection(), '//ns:Outputxml');
     }
-
 }

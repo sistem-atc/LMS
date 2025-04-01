@@ -1,5 +1,10 @@
 @WIP
 
+    Criando os novos paineis para separar as funcionalidades
+    Criar um Select no hook de AlterBranch para selecionar o painel a ser logado
+    Incluir como default o primeiro painel da lista que o usuario tenha autorização
+    Abrir o hook AlterBranch como modal
+
     Next Town IssNetOnline
 
     Ajustar as configurações do speed =>

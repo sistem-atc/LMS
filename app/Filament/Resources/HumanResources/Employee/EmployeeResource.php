@@ -72,7 +72,8 @@ class EmployeeResource extends Resource
                 TextColumn::make('personalmail')
                     ->label('Email Pessoal'),
                 TextColumn::make('user.email')
-                    ->label('Email Corporativo'),
+                    ->label('Email Corporativo')
+                    ->copyable(),
                 TextColumn::make('branch.abbreviation')
                     ->label('Filial'),
                 IconColumn::make('is_active')

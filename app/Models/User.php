@@ -41,7 +41,8 @@ class User extends Authenticatable implements FilamentUser, HasName
         'name',
         'email',
         'branche_logged_id',
-        'is_active'
+        'is_active',
+        'remember_last_module',
     ];
 
     /**

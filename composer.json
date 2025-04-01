@@ -30,7 +30,6 @@
         "nfephp-org/sped-nfe": "^5.1",
         "owen-it/laravel-auditing": "^14.0",
         "robrichards/xmlseclibs": "^3.1",
-        "rupadana/filament-api-service": "^3.1",
         "spatie/laravel-permission": "^6.4",
         "stancl/tenancy": "^3.8"
     },

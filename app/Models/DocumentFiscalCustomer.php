@@ -9,10 +9,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use OwenIt\Auditing\Contracts\Auditable;
-use Rupadana\ApiService\Contracts\HasAllowedFields;
-use Rupadana\ApiService\Contracts\HasAllowedFilters;
 
-class DocumentFiscalCustomer extends Model implements HasAllowedFields, HasAllowedFilters, Auditable
+class DocumentFiscalCustomer extends Model implements Auditable
 {
     use HasFactory;
     use SoftDeletes;

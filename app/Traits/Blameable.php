@@ -42,53 +42,63 @@ trait Blameable
         }
     }
 
-    public static function checkBlameableColumns() {
+    public static function checkBlameableColumns()
+    {
         $table = (new static)->getTable();
         $createdByAttribute = Config::get('blameable.column_names.createdByAttribute', 'created_by');
         $updatedByAttribute = Config::get('blameable.column_names.updatedByAttribute', 'updated_by');
         $deletedByAttribute = Config::get('blameable.column_names.deletedByAttribute', 'deleted_by');
         $restoredByAttribute = Config::get('blameable.column_names.restoredByAttribute', 'restored_by');
-        if (!Schema::hasColumn($table, $createdByAttribute)
+        if (
+            !Schema::hasColumn($table, $createdByAttribute)
             && !Schema::hasColumn($table, $updatedByAttribute)
             && !Schema::hasColumn($table, $deletedByAttribute)
-            && !Schema::hasColumn($table, $restoredByAttribute)) {
+            && !Schema::hasColumn($table, $restoredByAttribute)
+        ) {
             //
         }
     }
 
-    public static function addBlameableColumns() {
+    public static function addBlameableColumns()
+    {
         $table = (new static)->getTable();
         $createdByAttribute = Config::get('blameable.column_names.createdByAttribute', 'created_by');
         $updatedByAttribute = Config::get('blameable.column_names.updatedByAttribute', 'updated_by');
         $deletedByAttribute = Config::get('blameable.column_names.deletedByAttribute', 'deleted_by');
         $restoredByAttribute = Config::get('blameable.column_names.restoredByAttribute', 'restored_by');
-        if (!Schema::hasColumn($table, $createdByAttribute)
+        if (
+            !Schema::hasColumn($table, $createdByAttribute)
             && !Schema::hasColumn($table, $updatedByAttribute)
             && !Schema::hasColumn($table, $deletedByAttribute)
-            && !Schema::hasColumn($table, $restoredByAttribute)) {
+            && !Schema::hasColumn($table, $restoredByAttribute)
+        ) {
             Schema::table($table, function (Blueprint $table) {
                 $table->blameable();
             });
         }
     }
 
-    public function creator() {
+    public function creator()
+    {
         $userModel = Config::get('blameable.models.user', User::class);
         return $this->belongsTo($userModel, 'created_by', 'id');
     }
 
-    public function editor() {
+    public function editor()
+    {
         $userModel = Config::get('blameable.models.user', User::class);
         return $this->belongsTo($userModel, 'updated_by', 'id');
     }
 
-    public function deletor() {
+    public function deletor()
+    {
         $userModel = Config::get('blameable.models.user', User::class);
         return $this->belongsTo($userModel, 'deleted_by', 'id');
     }
 
 
-    public function restorer() {
+    public function restorer()
+    {
         $userModel = Config::get('blameable.models.user', User::class);
         return $this->belongsTo($userModel, 'restored_by', 'id');
     }

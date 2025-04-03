@@ -15,7 +15,7 @@ class BillPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('view_any_finance::billing::bill');
+        return $user->can('view_any_app::modules::finance::billing::bill');
     }
 
     /**
@@ -23,7 +23,7 @@ class BillPolicy
      */
     public function view(User $user, Bill $bill): bool
     {
-        return $user->can('view_finance::billing::bill');
+        return $user->can('view_app::modules::finance::billing::bill');
     }
 
     /**
@@ -31,7 +31,7 @@ class BillPolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('create_finance::billing::bill');
+        return $user->can('create_app::modules::finance::billing::bill');
     }
 
     /**
@@ -39,7 +39,7 @@ class BillPolicy
      */
     public function update(User $user, Bill $bill): bool
     {
-        return $user->can('update_finance::billing::bill');
+        return $user->can('update_app::modules::finance::billing::bill');
     }
 
     /**
@@ -47,7 +47,7 @@ class BillPolicy
      */
     public function delete(User $user, Bill $bill): bool
     {
-        return $user->can('delete_finance::billing::bill');
+        return $user->can('delete_app::modules::finance::billing::bill');
     }
 
     /**
@@ -55,7 +55,7 @@ class BillPolicy
      */
     public function deleteAny(User $user): bool
     {
-        return $user->can('delete_any_finance::billing::bill');
+        return $user->can('delete_any_app::modules::finance::billing::bill');
     }
 
     /**
@@ -63,7 +63,7 @@ class BillPolicy
      */
     public function forceDelete(User $user, Bill $bill): bool
     {
-        return $user->can('force_delete_finance::billing::bill');
+        return $user->can('force_delete_app::modules::finance::billing::bill');
     }
 
     /**
@@ -71,7 +71,7 @@ class BillPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_finance::billing::bill');
+        return $user->can('force_delete_any_app::modules::finance::billing::bill');
     }
 
     /**
@@ -79,7 +79,7 @@ class BillPolicy
      */
     public function restore(User $user, Bill $bill): bool
     {
-        return $user->can('restore_finance::billing::bill');
+        return $user->can('restore_app::modules::finance::billing::bill');
     }
 
     /**
@@ -87,7 +87,7 @@ class BillPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('restore_any_finance::billing::bill');
+        return $user->can('restore_any_app::modules::finance::billing::bill');
     }
 
     /**
@@ -95,7 +95,7 @@ class BillPolicy
      */
     public function replicate(User $user, Bill $bill): bool
     {
-        return $user->can('replicate_finance::billing::bill');
+        return $user->can('replicate_app::modules::finance::billing::bill');
     }
 
     /**
@@ -103,6 +103,6 @@ class BillPolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('reorder_finance::billing::bill');
+        return $user->can('reorder_app::modules::finance::billing::bill');
     }
 }

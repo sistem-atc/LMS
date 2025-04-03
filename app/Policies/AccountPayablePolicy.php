@@ -15,7 +15,7 @@ class AccountPayablePolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('view_any_finance::account::payable::account::payable');
+        return $user->can('view_any_app::modules::finance::account::payable::account::payable');
     }
 
     /**
@@ -23,7 +23,7 @@ class AccountPayablePolicy
      */
     public function view(User $user, AccountPayable $accountPayable): bool
     {
-        return $user->can('view_finance::account::payable::account::payable');
+        return $user->can('view_app::modules::finance::account::payable::account::payable');
     }
 
     /**
@@ -31,7 +31,7 @@ class AccountPayablePolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('create_finance::account::payable::account::payable');
+        return $user->can('create_app::modules::finance::account::payable::account::payable');
     }
 
     /**
@@ -39,7 +39,7 @@ class AccountPayablePolicy
      */
     public function update(User $user, AccountPayable $accountPayable): bool
     {
-        return $user->can('update_finance::account::payable::account::payable');
+        return $user->can('update_app::modules::finance::account::payable::account::payable');
     }
 
     /**
@@ -47,7 +47,7 @@ class AccountPayablePolicy
      */
     public function delete(User $user, AccountPayable $accountPayable): bool
     {
-        return $user->can('delete_finance::account::payable::account::payable');
+        return $user->can('delete_app::modules::finance::account::payable::account::payable');
     }
 
     /**
@@ -55,7 +55,7 @@ class AccountPayablePolicy
      */
     public function deleteAny(User $user): bool
     {
-        return $user->can('delete_any_finance::account::payable::account::payable');
+        return $user->can('delete_any_app::modules::finance::account::payable::account::payable');
     }
 
     /**
@@ -63,7 +63,7 @@ class AccountPayablePolicy
      */
     public function forceDelete(User $user, AccountPayable $accountPayable): bool
     {
-        return $user->can('force_delete_finance::account::payable::account::payable');
+        return $user->can('force_delete_app::modules::finance::account::payable::account::payable');
     }
 
     /**
@@ -71,7 +71,7 @@ class AccountPayablePolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_finance::account::payable::account::payable');
+        return $user->can('force_delete_any_app::modules::finance::account::payable::account::payable');
     }
 
     /**
@@ -79,7 +79,7 @@ class AccountPayablePolicy
      */
     public function restore(User $user, AccountPayable $accountPayable): bool
     {
-        return $user->can('restore_finance::account::payable::account::payable');
+        return $user->can('restore_app::modules::finance::account::payable::account::payable');
     }
 
     /**
@@ -87,7 +87,7 @@ class AccountPayablePolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('restore_any_finance::account::payable::account::payable');
+        return $user->can('restore_any_app::modules::finance::account::payable::account::payable');
     }
 
     /**
@@ -95,7 +95,7 @@ class AccountPayablePolicy
      */
     public function replicate(User $user, AccountPayable $accountPayable): bool
     {
-        return $user->can('replicate_finance::account::payable::account::payable');
+        return $user->can('replicate_app::modules::finance::account::payable::account::payable');
     }
 
     /**
@@ -103,6 +103,6 @@ class AccountPayablePolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('reorder_finance::account::payable::account::payable');
+        return $user->can('reorder_app::modules::finance::account::payable::account::payable');
     }
 }

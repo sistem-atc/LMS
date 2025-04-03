@@ -2,25 +2,24 @@
 
 namespace App\Providers\Filament;
 
+use Filament\Panel;
+use Filament\Pages;
+use Filament\Widgets;
+use Filament\PanelProvider;
 use App\Filament\Colors\MyColors;
-use App\Filament\Hooks\ConfigRenderHook;
-use App\Filament\Hooks\FavoriteRenderHook;
 use App\Filament\MenuItems\MenuItems;
-use App\Filament\Resources\Settings\User\UserResource\Pages\EditProfile;
+use App\Http\Middleware\ValidatePanelAccess;
 use Filament\Http\Middleware\Authenticate;
+use Illuminate\Session\Middleware\StartSession;
+use Illuminate\Cookie\Middleware\EncryptCookies;
 use Filament\Http\Middleware\AuthenticateSession;
+use Illuminate\Routing\Middleware\SubstituteBindings;
+use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
-use Filament\Pages;
-use Filament\Panel;
-use Filament\PanelProvider;
-use Filament\Widgets;
-use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
-use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
-use Illuminate\Routing\Middleware\SubstituteBindings;
-use Illuminate\Session\Middleware\StartSession;
-use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
+use App\Modules\Admin\Settings\User\UserResource\Pages\EditProfile;
 
 class TmsPanelProvider extends PanelProvider
 {
@@ -30,13 +29,10 @@ class TmsPanelProvider extends PanelProvider
         return $panel
             ->id('tms')
             ->path('tms')
-            ->brandName('LMS')
             ->userMenuItems(MenuItems::useMenuItems())
             ->profile(EditProfile::class, false)
             ->colors(MyColors::getColors())
-            ->renderHook(ConfigRenderHook::getPosition(), fn() => ConfigRenderHook::getView())
-            ->renderHook(FavoriteRenderHook::getPosition(), fn() => FavoriteRenderHook::getView())
-            ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
+            ->discoverResources(in: app_path('Modules/Tms'), for: 'App\\Modules\\Tms')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
                 Pages\Dashboard::class,
@@ -56,10 +52,9 @@ class TmsPanelProvider extends PanelProvider
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
+                ValidatePanelAccess::class,
             ])
-            ->plugins([
-                \BezhanSalleh\FilamentShield\FilamentShieldPlugin::make(),
-            ])
+            ->plugins([])
             ->authMiddleware([
                 Authenticate::class,
             ]);

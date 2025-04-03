@@ -15,7 +15,7 @@ class SituationPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('view_any_settings::situation::situation');
+        return $user->can('view_any_app::modules::admin::settings::situation::situation');
     }
 
     /**
@@ -23,7 +23,7 @@ class SituationPolicy
      */
     public function view(User $user, Situation $situation): bool
     {
-        return $user->can('view_settings::situation::situation');
+        return $user->can('view_app::modules::admin::settings::situation::situation');
     }
 
     /**
@@ -31,7 +31,7 @@ class SituationPolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('create_settings::situation::situation');
+        return $user->can('create_app::modules::admin::settings::situation::situation');
     }
 
     /**
@@ -39,7 +39,7 @@ class SituationPolicy
      */
     public function update(User $user, Situation $situation): bool
     {
-        return $user->can('update_settings::situation::situation');
+        return $user->can('update_app::modules::admin::settings::situation::situation');
     }
 
     /**
@@ -47,7 +47,7 @@ class SituationPolicy
      */
     public function delete(User $user, Situation $situation): bool
     {
-        return $user->can('delete_settings::situation::situation');
+        return $user->can('delete_app::modules::admin::settings::situation::situation');
     }
 
     /**
@@ -55,7 +55,7 @@ class SituationPolicy
      */
     public function deleteAny(User $user): bool
     {
-        return $user->can('delete_any_settings::situation::situation');
+        return $user->can('delete_any_app::modules::admin::settings::situation::situation');
     }
 
     /**
@@ -63,7 +63,7 @@ class SituationPolicy
      */
     public function forceDelete(User $user, Situation $situation): bool
     {
-        return $user->can('force_delete_settings::situation::situation');
+        return $user->can('force_delete_app::modules::admin::settings::situation::situation');
     }
 
     /**
@@ -71,7 +71,7 @@ class SituationPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_settings::situation::situation');
+        return $user->can('force_delete_any_app::modules::admin::settings::situation::situation');
     }
 
     /**
@@ -79,7 +79,7 @@ class SituationPolicy
      */
     public function restore(User $user, Situation $situation): bool
     {
-        return $user->can('restore_settings::situation::situation');
+        return $user->can('restore_app::modules::admin::settings::situation::situation');
     }
 
     /**
@@ -87,7 +87,7 @@ class SituationPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('restore_any_settings::situation::situation');
+        return $user->can('restore_any_app::modules::admin::settings::situation::situation');
     }
 
     /**
@@ -95,7 +95,7 @@ class SituationPolicy
      */
     public function replicate(User $user, Situation $situation): bool
     {
-        return $user->can('replicate_settings::situation::situation');
+        return $user->can('replicate_app::modules::admin::settings::situation::situation');
     }
 
     /**
@@ -103,6 +103,6 @@ class SituationPolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('reorder_settings::situation::situation');
+        return $user->can('reorder_app::modules::admin::settings::situation::situation');
     }
 }

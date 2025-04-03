@@ -15,7 +15,7 @@ class ShippingCollectionPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('view_any_finance::shipping::collection::shipping::collection');
+        return $user->can('view_any_app::modules::finance::shipping::collection::shipping::collection');
     }
 
     /**
@@ -23,7 +23,7 @@ class ShippingCollectionPolicy
      */
     public function view(User $user, ShippingCollection $shippingCollection): bool
     {
-        return $user->can('view_finance::shipping::collection::shipping::collection');
+        return $user->can('view_app::modules::finance::shipping::collection::shipping::collection');
     }
 
     /**
@@ -31,7 +31,7 @@ class ShippingCollectionPolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('create_finance::shipping::collection::shipping::collection');
+        return $user->can('create_app::modules::finance::shipping::collection::shipping::collection');
     }
 
     /**
@@ -39,7 +39,7 @@ class ShippingCollectionPolicy
      */
     public function update(User $user, ShippingCollection $shippingCollection): bool
     {
-        return $user->can('update_finance::shipping::collection::shipping::collection');
+        return $user->can('update_app::modules::finance::shipping::collection::shipping::collection');
     }
 
     /**
@@ -47,7 +47,7 @@ class ShippingCollectionPolicy
      */
     public function delete(User $user, ShippingCollection $shippingCollection): bool
     {
-        return $user->can('delete_finance::shipping::collection::shipping::collection');
+        return $user->can('delete_app::modules::finance::shipping::collection::shipping::collection');
     }
 
     /**
@@ -55,7 +55,7 @@ class ShippingCollectionPolicy
      */
     public function deleteAny(User $user): bool
     {
-        return $user->can('delete_any_finance::shipping::collection::shipping::collection');
+        return $user->can('delete_any_app::modules::finance::shipping::collection::shipping::collection');
     }
 
     /**
@@ -63,7 +63,7 @@ class ShippingCollectionPolicy
      */
     public function forceDelete(User $user, ShippingCollection $shippingCollection): bool
     {
-        return $user->can('force_delete_finance::shipping::collection::shipping::collection');
+        return $user->can('force_delete_app::modules::finance::shipping::collection::shipping::collection');
     }
 
     /**
@@ -71,7 +71,7 @@ class ShippingCollectionPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_finance::shipping::collection::shipping::collection');
+        return $user->can('force_delete_any_app::modules::finance::shipping::collection::shipping::collection');
     }
 
     /**
@@ -79,7 +79,7 @@ class ShippingCollectionPolicy
      */
     public function restore(User $user, ShippingCollection $shippingCollection): bool
     {
-        return $user->can('restore_finance::shipping::collection::shipping::collection');
+        return $user->can('restore_app::modules::finance::shipping::collection::shipping::collection');
     }
 
     /**
@@ -87,7 +87,7 @@ class ShippingCollectionPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('restore_any_finance::shipping::collection::shipping::collection');
+        return $user->can('restore_any_app::modules::finance::shipping::collection::shipping::collection');
     }
 
     /**
@@ -95,7 +95,7 @@ class ShippingCollectionPolicy
      */
     public function replicate(User $user, ShippingCollection $shippingCollection): bool
     {
-        return $user->can('replicate_finance::shipping::collection::shipping::collection');
+        return $user->can('replicate_app::modules::finance::shipping::collection::shipping::collection');
     }
 
     /**
@@ -103,6 +103,6 @@ class ShippingCollectionPolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('reorder_finance::shipping::collection::shipping::collection');
+        return $user->can('reorder_app::modules::finance::shipping::collection::shipping::collection');
     }
 }

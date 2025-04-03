@@ -15,7 +15,7 @@ class MultiSoftwarePolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('view_any_operational::multi::software::multi::software');
+        return $user->can('view_any_app::modules::tms::multi::software::multi::software');
     }
 
     /**
@@ -23,7 +23,7 @@ class MultiSoftwarePolicy
      */
     public function view(User $user, MultiSoftware $multiSoftware): bool
     {
-        return $user->can('view_operational::multi::software::multi::software');
+        return $user->can('view_app::modules::tms::multi::software::multi::software');
     }
 
     /**
@@ -31,7 +31,7 @@ class MultiSoftwarePolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('create_operational::multi::software::multi::software');
+        return $user->can('create_app::modules::tms::multi::software::multi::software');
     }
 
     /**
@@ -39,7 +39,7 @@ class MultiSoftwarePolicy
      */
     public function update(User $user, MultiSoftware $multiSoftware): bool
     {
-        return $user->can('update_operational::multi::software::multi::software');
+        return $user->can('update_app::modules::tms::multi::software::multi::software');
     }
 
     /**
@@ -47,7 +47,7 @@ class MultiSoftwarePolicy
      */
     public function delete(User $user, MultiSoftware $multiSoftware): bool
     {
-        return $user->can('delete_operational::multi::software::multi::software');
+        return $user->can('delete_app::modules::tms::multi::software::multi::software');
     }
 
     /**
@@ -55,7 +55,7 @@ class MultiSoftwarePolicy
      */
     public function deleteAny(User $user): bool
     {
-        return $user->can('delete_any_operational::multi::software::multi::software');
+        return $user->can('delete_any_app::modules::tms::multi::software::multi::software');
     }
 
     /**
@@ -63,7 +63,7 @@ class MultiSoftwarePolicy
      */
     public function forceDelete(User $user, MultiSoftware $multiSoftware): bool
     {
-        return $user->can('force_delete_operational::multi::software::multi::software');
+        return $user->can('force_delete_app::modules::tms::multi::software::multi::software');
     }
 
     /**
@@ -71,7 +71,7 @@ class MultiSoftwarePolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_operational::multi::software::multi::software');
+        return $user->can('force_delete_any_app::modules::tms::multi::software::multi::software');
     }
 
     /**
@@ -79,7 +79,7 @@ class MultiSoftwarePolicy
      */
     public function restore(User $user, MultiSoftware $multiSoftware): bool
     {
-        return $user->can('restore_operational::multi::software::multi::software');
+        return $user->can('restore_app::modules::tms::multi::software::multi::software');
     }
 
     /**
@@ -87,7 +87,7 @@ class MultiSoftwarePolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('restore_any_operational::multi::software::multi::software');
+        return $user->can('restore_any_app::modules::tms::multi::software::multi::software');
     }
 
     /**
@@ -95,7 +95,7 @@ class MultiSoftwarePolicy
      */
     public function replicate(User $user, MultiSoftware $multiSoftware): bool
     {
-        return $user->can('replicate_operational::multi::software::multi::software');
+        return $user->can('replicate_app::modules::tms::multi::software::multi::software');
     }
 
     /**
@@ -103,6 +103,6 @@ class MultiSoftwarePolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('reorder_operational::multi::software::multi::software');
+        return $user->can('reorder_app::modules::tms::multi::software::multi::software');
     }
 }

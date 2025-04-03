@@ -15,7 +15,7 @@ class CostcenterPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('view_any_register::costcenter::costcenter');
+        return $user->can('view_any_app::modules::register::costcenter::costcenter');
     }
 
     /**
@@ -23,7 +23,7 @@ class CostcenterPolicy
      */
     public function view(User $user, Costcenter $costcenter): bool
     {
-        return $user->can('view_register::costcenter::costcenter');
+        return $user->can('view_app::modules::register::costcenter::costcenter');
     }
 
     /**
@@ -31,7 +31,7 @@ class CostcenterPolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('create_register::costcenter::costcenter');
+        return $user->can('create_app::modules::register::costcenter::costcenter');
     }
 
     /**
@@ -39,7 +39,7 @@ class CostcenterPolicy
      */
     public function update(User $user, Costcenter $costcenter): bool
     {
-        return $user->can('update_register::costcenter::costcenter');
+        return $user->can('update_app::modules::register::costcenter::costcenter');
     }
 
     /**
@@ -47,7 +47,7 @@ class CostcenterPolicy
      */
     public function delete(User $user, Costcenter $costcenter): bool
     {
-        return $user->can('delete_register::costcenter::costcenter');
+        return $user->can('delete_app::modules::register::costcenter::costcenter');
     }
 
     /**
@@ -55,7 +55,7 @@ class CostcenterPolicy
      */
     public function deleteAny(User $user): bool
     {
-        return $user->can('delete_any_register::costcenter::costcenter');
+        return $user->can('delete_any_app::modules::register::costcenter::costcenter');
     }
 
     /**
@@ -63,7 +63,7 @@ class CostcenterPolicy
      */
     public function forceDelete(User $user, Costcenter $costcenter): bool
     {
-        return $user->can('force_delete_register::costcenter::costcenter');
+        return $user->can('force_delete_app::modules::register::costcenter::costcenter');
     }
 
     /**
@@ -71,7 +71,7 @@ class CostcenterPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_register::costcenter::costcenter');
+        return $user->can('force_delete_any_app::modules::register::costcenter::costcenter');
     }
 
     /**
@@ -79,7 +79,7 @@ class CostcenterPolicy
      */
     public function restore(User $user, Costcenter $costcenter): bool
     {
-        return $user->can('restore_register::costcenter::costcenter');
+        return $user->can('restore_app::modules::register::costcenter::costcenter');
     }
 
     /**
@@ -87,7 +87,7 @@ class CostcenterPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('restore_any_register::costcenter::costcenter');
+        return $user->can('restore_any_app::modules::register::costcenter::costcenter');
     }
 
     /**
@@ -95,7 +95,7 @@ class CostcenterPolicy
      */
     public function replicate(User $user, Costcenter $costcenter): bool
     {
-        return $user->can('replicate_register::costcenter::costcenter');
+        return $user->can('replicate_app::modules::register::costcenter::costcenter');
     }
 
     /**
@@ -103,6 +103,6 @@ class CostcenterPolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('reorder_register::costcenter::costcenter');
+        return $user->can('reorder_app::modules::register::costcenter::costcenter');
     }
 }

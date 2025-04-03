@@ -15,7 +15,7 @@ class AccountingPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('view_any_finance::accounting::accounting');
+        return $user->can('view_any_app::modules::finance::accounting::accounting');
     }
 
     /**
@@ -23,7 +23,7 @@ class AccountingPolicy
      */
     public function view(User $user, Accounting $accounting): bool
     {
-        return $user->can('view_finance::accounting::accounting');
+        return $user->can('view_app::modules::finance::accounting::accounting');
     }
 
     /**
@@ -31,7 +31,7 @@ class AccountingPolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('create_finance::accounting::accounting');
+        return $user->can('create_app::modules::finance::accounting::accounting');
     }
 
     /**
@@ -39,7 +39,7 @@ class AccountingPolicy
      */
     public function update(User $user, Accounting $accounting): bool
     {
-        return $user->can('update_finance::accounting::accounting');
+        return $user->can('update_app::modules::finance::accounting::accounting');
     }
 
     /**
@@ -47,7 +47,7 @@ class AccountingPolicy
      */
     public function delete(User $user, Accounting $accounting): bool
     {
-        return $user->can('delete_finance::accounting::accounting');
+        return $user->can('delete_app::modules::finance::accounting::accounting');
     }
 
     /**
@@ -55,7 +55,7 @@ class AccountingPolicy
      */
     public function deleteAny(User $user): bool
     {
-        return $user->can('delete_any_finance::accounting::accounting');
+        return $user->can('delete_any_app::modules::finance::accounting::accounting');
     }
 
     /**
@@ -63,7 +63,7 @@ class AccountingPolicy
      */
     public function forceDelete(User $user, Accounting $accounting): bool
     {
-        return $user->can('force_delete_finance::accounting::accounting');
+        return $user->can('force_delete_app::modules::finance::accounting::accounting');
     }
 
     /**
@@ -71,7 +71,7 @@ class AccountingPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_finance::accounting::accounting');
+        return $user->can('force_delete_any_app::modules::finance::accounting::accounting');
     }
 
     /**
@@ -79,7 +79,7 @@ class AccountingPolicy
      */
     public function restore(User $user, Accounting $accounting): bool
     {
-        return $user->can('restore_finance::accounting::accounting');
+        return $user->can('restore_app::modules::finance::accounting::accounting');
     }
 
     /**
@@ -87,7 +87,7 @@ class AccountingPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('restore_any_finance::accounting::accounting');
+        return $user->can('restore_any_app::modules::finance::accounting::accounting');
     }
 
     /**
@@ -95,7 +95,7 @@ class AccountingPolicy
      */
     public function replicate(User $user, Accounting $accounting): bool
     {
-        return $user->can('replicate_finance::accounting::accounting');
+        return $user->can('replicate_app::modules::finance::accounting::accounting');
     }
 
     /**
@@ -103,6 +103,6 @@ class AccountingPolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('reorder_finance::accounting::accounting');
+        return $user->can('reorder_app::modules::finance::accounting::accounting');
     }
 }

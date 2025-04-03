@@ -11,6 +11,10 @@
 |
 */
 
+use App\Http\Middleware\ValidatePanelAccess;
+use Illuminate\Foundation\Configuration\Middleware;
+use Livewire\Attributes\Validate;
+
 $app = new Illuminate\Foundation\Application(
     $_ENV['APP_BASE_PATH'] ?? dirname(__DIR__)
 );

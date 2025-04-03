@@ -15,7 +15,7 @@ class TransportDocumentPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('view_any_operational::transport::document::transport::document');
+        return $user->can('view_any_app::modules::tms::transport::document::transport::document');
     }
 
     /**
@@ -23,7 +23,7 @@ class TransportDocumentPolicy
      */
     public function view(User $user, TransportDocument $transportDocument): bool
     {
-        return $user->can('view_operational::transport::document::transport::document');
+        return $user->can('view_app::modules::tms::transport::document::transport::document');
     }
 
     /**
@@ -31,7 +31,7 @@ class TransportDocumentPolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('create_operational::transport::document::transport::document');
+        return $user->can('create_app::modules::tms::transport::document::transport::document');
     }
 
     /**
@@ -39,7 +39,7 @@ class TransportDocumentPolicy
      */
     public function update(User $user, TransportDocument $transportDocument): bool
     {
-        return $user->can('update_operational::transport::document::transport::document');
+        return $user->can('update_app::modules::tms::transport::document::transport::document');
     }
 
     /**
@@ -47,7 +47,7 @@ class TransportDocumentPolicy
      */
     public function delete(User $user, TransportDocument $transportDocument): bool
     {
-        return $user->can('delete_operational::transport::document::transport::document');
+        return $user->can('delete_app::modules::tms::transport::document::transport::document');
     }
 
     /**
@@ -55,7 +55,7 @@ class TransportDocumentPolicy
      */
     public function deleteAny(User $user): bool
     {
-        return $user->can('delete_any_operational::transport::document::transport::document');
+        return $user->can('delete_any_app::modules::tms::transport::document::transport::document');
     }
 
     /**
@@ -63,7 +63,7 @@ class TransportDocumentPolicy
      */
     public function forceDelete(User $user, TransportDocument $transportDocument): bool
     {
-        return $user->can('force_delete_operational::transport::document::transport::document');
+        return $user->can('force_delete_app::modules::tms::transport::document::transport::document');
     }
 
     /**
@@ -71,7 +71,7 @@ class TransportDocumentPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_operational::transport::document::transport::document');
+        return $user->can('force_delete_any_app::modules::tms::transport::document::transport::document');
     }
 
     /**
@@ -79,7 +79,7 @@ class TransportDocumentPolicy
      */
     public function restore(User $user, TransportDocument $transportDocument): bool
     {
-        return $user->can('restore_operational::transport::document::transport::document');
+        return $user->can('restore_app::modules::tms::transport::document::transport::document');
     }
 
     /**
@@ -87,7 +87,7 @@ class TransportDocumentPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('restore_any_operational::transport::document::transport::document');
+        return $user->can('restore_any_app::modules::tms::transport::document::transport::document');
     }
 
     /**
@@ -95,7 +95,7 @@ class TransportDocumentPolicy
      */
     public function replicate(User $user, TransportDocument $transportDocument): bool
     {
-        return $user->can('replicate_operational::transport::document::transport::document');
+        return $user->can('replicate_app::modules::tms::transport::document::transport::document');
     }
 
     /**
@@ -103,6 +103,6 @@ class TransportDocumentPolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('reorder_operational::transport::document::transport::document');
+        return $user->can('reorder_app::modules::tms::transport::document::transport::document');
     }
 }

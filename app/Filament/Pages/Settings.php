@@ -2,6 +2,8 @@
 
 namespace App\Filament\Pages;
 
+use Filament\Panel;
+use ReflectionClass;
 use App\Models\User;
 use App\Models\Branch;
 use Filament\Forms\Form;
@@ -12,6 +14,7 @@ use Filament\Facades\Filament;
 use Filament\Support\Colors\Color;
 use Filament\Forms\Components\Grid;
 use Illuminate\Support\Facades\Auth;
+use App\Filament\MenuItems\MenuItems;
 use Filament\Forms\Components\Select;
 use Filament\Support\Exceptions\Halt;
 use Filament\Forms\Components\Section;
@@ -21,7 +24,6 @@ use Filament\Notifications\Notification;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Concerns\InteractsWithForms;
 use BezhanSalleh\FilamentShield\Traits\HasPageShield;
-use Filament\Panel;
 
 class Settings extends Page implements HasForms
 {
@@ -75,17 +77,11 @@ class Settings extends Page implements HasForms
 
     protected function getModuleComponent(): Component
     {
-
-        $modules = collect(Filament::getPanels())
-            ->mapWithKeys(
-                fn($panel) => [$panel->getId() => ucfirst($panel->getId())]
-            );
-
         return
             Select::make('module')
             ->label('Módulo')
             ->required()
-            ->options($modules);
+            ->options(MenuItems::getPanelsAvaliables());
     }
 
     protected function getBrancheLoggedComponent(): Component

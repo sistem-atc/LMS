@@ -2,13 +2,12 @@
 
 namespace App\Providers\Filament;
 
-use App\Filament\Colors\MyColors;
 use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
+use App\Filament\Colors\MyColors;
 use App\Filament\MenuItems\MenuItems;
-use App\Filament\Hooks\ConfigRenderHook;
-use App\Filament\Hooks\FavoriteRenderHook;
+use App\Http\Middleware\ValidatePanelAccess;
 use Filament\Http\Middleware\Authenticate;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Cookie\Middleware\EncryptCookies;
@@ -20,9 +19,7 @@ use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
-use App\Filament\Resources\Settings\User\UserResource\Pages\EditProfile;
-use App\Http\ControlLoginResponse;
-use Filament\Http\Responses\Auth\LoginResponse;
+use App\Modules\Admin\Settings\User\UserResource\Pages\EditProfile;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -30,25 +27,14 @@ class AdminPanelProvider extends PanelProvider
     public function panel(Panel $panel): Panel
     {
         return $panel
-            ->bootUsing(fn() => app()->bind(LoginResponse::class, ControlLoginResponse::class))
-            ->default()
-            ->brandName('LMS')
-            ->brandLogo(asset('images/W-LogoLMS.png'))
-            ->darkModeBrandLogo(asset('images/D-LogoLMS.png'))
-            ->brandLogoHeight('3.5rem')
-            ->favicon(asset('images/favicon.ico'))
-            ->sidebarFullyCollapsibleOnDesktop()
             ->id('admin')
             ->path('admin')
-            ->login()
             ->databaseNotifications()
             ->profile(EditProfile::class, false)
             ->userMenuItems(MenuItems::useMenuItems())
             ->plugins($this->usePlugins())
             ->colors(MyColors::getColors())
-            ->renderHook(ConfigRenderHook::getPosition(), fn() => ConfigRenderHook::getView())
-            ->renderHook(FavoriteRenderHook::getPosition(), fn() => FavoriteRenderHook::getView())
-            ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
+            ->discoverResources(in: app_path('Modules/Admin'), for: 'App\\Modules\\Admin')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
                 Pages\Dashboard::class,
@@ -82,6 +68,7 @@ class AdminPanelProvider extends PanelProvider
             SubstituteBindings::class,
             DisableBladeIconComponents::class,
             DispatchServingFilamentEvent::class,
+            ValidatePanelAccess::class,
         ];
     }
 }

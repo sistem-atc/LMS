@@ -15,7 +15,7 @@ class CustomerPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('view_any_register::customer::customer');
+        return $user->can('view_any_app::modules::register::customer::customer');
     }
 
     /**
@@ -23,7 +23,7 @@ class CustomerPolicy
      */
     public function view(User $user, Customer $customer): bool
     {
-        return $user->can('view_register::customer::customer');
+        return $user->can('view_app::modules::register::customer::customer');
     }
 
     /**
@@ -31,7 +31,7 @@ class CustomerPolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('create_register::customer::customer');
+        return $user->can('create_app::modules::register::customer::customer');
     }
 
     /**
@@ -39,7 +39,7 @@ class CustomerPolicy
      */
     public function update(User $user, Customer $customer): bool
     {
-        return $user->can('update_register::customer::customer');
+        return $user->can('update_app::modules::register::customer::customer');
     }
 
     /**
@@ -47,7 +47,7 @@ class CustomerPolicy
      */
     public function delete(User $user, Customer $customer): bool
     {
-        return $user->can('delete_register::customer::customer');
+        return $user->can('delete_app::modules::register::customer::customer');
     }
 
     /**
@@ -55,7 +55,7 @@ class CustomerPolicy
      */
     public function deleteAny(User $user): bool
     {
-        return $user->can('delete_any_register::customer::customer');
+        return $user->can('delete_any_app::modules::register::customer::customer');
     }
 
     /**
@@ -63,7 +63,7 @@ class CustomerPolicy
      */
     public function forceDelete(User $user, Customer $customer): bool
     {
-        return $user->can('force_delete_register::customer::customer');
+        return $user->can('force_delete_app::modules::register::customer::customer');
     }
 
     /**
@@ -71,7 +71,7 @@ class CustomerPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_register::customer::customer');
+        return $user->can('force_delete_any_app::modules::register::customer::customer');
     }
 
     /**
@@ -79,7 +79,7 @@ class CustomerPolicy
      */
     public function restore(User $user, Customer $customer): bool
     {
-        return $user->can('restore_register::customer::customer');
+        return $user->can('restore_app::modules::register::customer::customer');
     }
 
     /**
@@ -87,7 +87,7 @@ class CustomerPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('restore_any_register::customer::customer');
+        return $user->can('restore_any_app::modules::register::customer::customer');
     }
 
     /**
@@ -95,7 +95,7 @@ class CustomerPolicy
      */
     public function replicate(User $user, Customer $customer): bool
     {
-        return $user->can('replicate_register::customer::customer');
+        return $user->can('replicate_app::modules::register::customer::customer');
     }
 
     /**
@@ -103,6 +103,6 @@ class CustomerPolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('reorder_register::customer::customer');
+        return $user->can('reorder_app::modules::register::customer::customer');
     }
 }

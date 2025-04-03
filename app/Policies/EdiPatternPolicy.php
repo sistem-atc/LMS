@@ -15,7 +15,7 @@ class EdiPatternPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('view_any_settings::edi::pattern::edi::pattern');
+        return $user->can('view_any_app::modules::admin::settings::edi::pattern::edi::pattern');
     }
 
     /**
@@ -23,7 +23,7 @@ class EdiPatternPolicy
      */
     public function view(User $user, EdiPattern $ediPattern): bool
     {
-        return $user->can('view_settings::edi::pattern::edi::pattern');
+        return $user->can('view_app::modules::admin::settings::edi::pattern::edi::pattern');
     }
 
     /**
@@ -31,7 +31,7 @@ class EdiPatternPolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('create_settings::edi::pattern::edi::pattern');
+        return $user->can('create_app::modules::admin::settings::edi::pattern::edi::pattern');
     }
 
     /**
@@ -39,7 +39,7 @@ class EdiPatternPolicy
      */
     public function update(User $user, EdiPattern $ediPattern): bool
     {
-        return $user->can('update_settings::edi::pattern::edi::pattern');
+        return $user->can('update_app::modules::admin::settings::edi::pattern::edi::pattern');
     }
 
     /**
@@ -47,7 +47,7 @@ class EdiPatternPolicy
      */
     public function delete(User $user, EdiPattern $ediPattern): bool
     {
-        return $user->can('delete_settings::edi::pattern::edi::pattern');
+        return $user->can('delete_app::modules::admin::settings::edi::pattern::edi::pattern');
     }
 
     /**
@@ -55,7 +55,7 @@ class EdiPatternPolicy
      */
     public function deleteAny(User $user): bool
     {
-        return $user->can('delete_any_settings::edi::pattern::edi::pattern');
+        return $user->can('delete_any_app::modules::admin::settings::edi::pattern::edi::pattern');
     }
 
     /**
@@ -63,7 +63,7 @@ class EdiPatternPolicy
      */
     public function forceDelete(User $user, EdiPattern $ediPattern): bool
     {
-        return $user->can('force_delete_settings::edi::pattern::edi::pattern');
+        return $user->can('force_delete_app::modules::admin::settings::edi::pattern::edi::pattern');
     }
 
     /**
@@ -71,7 +71,7 @@ class EdiPatternPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_settings::edi::pattern::edi::pattern');
+        return $user->can('force_delete_any_app::modules::admin::settings::edi::pattern::edi::pattern');
     }
 
     /**
@@ -79,7 +79,7 @@ class EdiPatternPolicy
      */
     public function restore(User $user, EdiPattern $ediPattern): bool
     {
-        return $user->can('restore_settings::edi::pattern::edi::pattern');
+        return $user->can('restore_app::modules::admin::settings::edi::pattern::edi::pattern');
     }
 
     /**
@@ -87,7 +87,7 @@ class EdiPatternPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('restore_any_settings::edi::pattern::edi::pattern');
+        return $user->can('restore_any_app::modules::admin::settings::edi::pattern::edi::pattern');
     }
 
     /**
@@ -95,7 +95,7 @@ class EdiPatternPolicy
      */
     public function replicate(User $user, EdiPattern $ediPattern): bool
     {
-        return $user->can('replicate_settings::edi::pattern::edi::pattern');
+        return $user->can('replicate_app::modules::admin::settings::edi::pattern::edi::pattern');
     }
 
     /**
@@ -103,6 +103,6 @@ class EdiPatternPolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('reorder_settings::edi::pattern::edi::pattern');
+        return $user->can('reorder_app::modules::admin::settings::edi::pattern::edi::pattern');
     }
 }

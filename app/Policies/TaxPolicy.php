@@ -15,7 +15,7 @@ class TaxPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('view_any_finance::tax::tax');
+        return $user->can('view_any_app::modules::finance::tax::tax');
     }
 
     /**
@@ -23,7 +23,7 @@ class TaxPolicy
      */
     public function view(User $user, Tax $tax): bool
     {
-        return $user->can('view_finance::tax::tax');
+        return $user->can('view_app::modules::finance::tax::tax');
     }
 
     /**
@@ -31,7 +31,7 @@ class TaxPolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('create_finance::tax::tax');
+        return $user->can('create_app::modules::finance::tax::tax');
     }
 
     /**
@@ -39,7 +39,7 @@ class TaxPolicy
      */
     public function update(User $user, Tax $tax): bool
     {
-        return $user->can('update_finance::tax::tax');
+        return $user->can('update_app::modules::finance::tax::tax');
     }
 
     /**
@@ -47,7 +47,7 @@ class TaxPolicy
      */
     public function delete(User $user, Tax $tax): bool
     {
-        return $user->can('delete_finance::tax::tax');
+        return $user->can('delete_app::modules::finance::tax::tax');
     }
 
     /**
@@ -55,7 +55,7 @@ class TaxPolicy
      */
     public function deleteAny(User $user): bool
     {
-        return $user->can('delete_any_finance::tax::tax');
+        return $user->can('delete_any_app::modules::finance::tax::tax');
     }
 
     /**
@@ -63,7 +63,7 @@ class TaxPolicy
      */
     public function forceDelete(User $user, Tax $tax): bool
     {
-        return $user->can('force_delete_finance::tax::tax');
+        return $user->can('force_delete_app::modules::finance::tax::tax');
     }
 
     /**
@@ -71,7 +71,7 @@ class TaxPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_finance::tax::tax');
+        return $user->can('force_delete_any_app::modules::finance::tax::tax');
     }
 
     /**
@@ -79,7 +79,7 @@ class TaxPolicy
      */
     public function restore(User $user, Tax $tax): bool
     {
-        return $user->can('restore_finance::tax::tax');
+        return $user->can('restore_app::modules::finance::tax::tax');
     }
 
     /**
@@ -87,7 +87,7 @@ class TaxPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('restore_any_finance::tax::tax');
+        return $user->can('restore_any_app::modules::finance::tax::tax');
     }
 
     /**
@@ -95,7 +95,7 @@ class TaxPolicy
      */
     public function replicate(User $user, Tax $tax): bool
     {
-        return $user->can('replicate_finance::tax::tax');
+        return $user->can('replicate_app::modules::finance::tax::tax');
     }
 
     /**
@@ -103,6 +103,6 @@ class TaxPolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('reorder_finance::tax::tax');
+        return $user->can('reorder_app::modules::finance::tax::tax');
     }
 }

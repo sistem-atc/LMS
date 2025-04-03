@@ -15,7 +15,7 @@ class RoutePolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('view_any_register::route::route');
+        return $user->can('view_any_app::modules::register::route::route');
     }
 
     /**
@@ -23,7 +23,7 @@ class RoutePolicy
      */
     public function view(User $user, Route $route): bool
     {
-        return $user->can('view_register::route::route');
+        return $user->can('view_app::modules::register::route::route');
     }
 
     /**
@@ -31,7 +31,7 @@ class RoutePolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('create_register::route::route');
+        return $user->can('create_app::modules::register::route::route');
     }
 
     /**
@@ -39,7 +39,7 @@ class RoutePolicy
      */
     public function update(User $user, Route $route): bool
     {
-        return $user->can('update_register::route::route');
+        return $user->can('update_app::modules::register::route::route');
     }
 
     /**
@@ -47,7 +47,7 @@ class RoutePolicy
      */
     public function delete(User $user, Route $route): bool
     {
-        return $user->can('delete_register::route::route');
+        return $user->can('delete_app::modules::register::route::route');
     }
 
     /**
@@ -55,7 +55,7 @@ class RoutePolicy
      */
     public function deleteAny(User $user): bool
     {
-        return $user->can('delete_any_register::route::route');
+        return $user->can('delete_any_app::modules::register::route::route');
     }
 
     /**
@@ -63,7 +63,7 @@ class RoutePolicy
      */
     public function forceDelete(User $user, Route $route): bool
     {
-        return $user->can('force_delete_register::route::route');
+        return $user->can('force_delete_app::modules::register::route::route');
     }
 
     /**
@@ -71,7 +71,7 @@ class RoutePolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_register::route::route');
+        return $user->can('force_delete_any_app::modules::register::route::route');
     }
 
     /**
@@ -79,7 +79,7 @@ class RoutePolicy
      */
     public function restore(User $user, Route $route): bool
     {
-        return $user->can('restore_register::route::route');
+        return $user->can('restore_app::modules::register::route::route');
     }
 
     /**
@@ -87,7 +87,7 @@ class RoutePolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('restore_any_register::route::route');
+        return $user->can('restore_any_app::modules::register::route::route');
     }
 
     /**
@@ -95,7 +95,7 @@ class RoutePolicy
      */
     public function replicate(User $user, Route $route): bool
     {
-        return $user->can('replicate_register::route::route');
+        return $user->can('replicate_app::modules::register::route::route');
     }
 
     /**
@@ -103,6 +103,6 @@ class RoutePolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('reorder_register::route::route');
+        return $user->can('reorder_app::modules::register::route::route');
     }
 }

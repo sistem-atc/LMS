@@ -27,6 +27,7 @@ class TmsPanelProvider extends PanelProvider
     public function panel(Panel $panel): Panel
     {
         return $panel
+            ->topNavigation()
             ->id('tms')
             ->path('tms')
             ->userMenuItems(MenuItems::useMenuItems())
@@ -37,7 +38,7 @@ class TmsPanelProvider extends PanelProvider
             ->pages([
                 Pages\Dashboard::class,
             ])
-            ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
+            ->discoverWidgets(in: app_path('Modules/Tms/Widgets'), for: 'App\\Modules\\Tms\\Widgets')
             ->widgets([
                 Widgets\AccountWidget::class,
                 Widgets\FilamentInfoWidget::class,

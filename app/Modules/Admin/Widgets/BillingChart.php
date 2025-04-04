@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Widgets;
+namespace App\Modules\Admin\Widgets;
 
 use Filament\Support\RawJs;
 use Filament\Widgets\ChartWidget;

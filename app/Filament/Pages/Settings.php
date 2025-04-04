@@ -3,7 +3,6 @@
 namespace App\Filament\Pages;
 
 use Filament\Panel;
-use ReflectionClass;
 use App\Models\User;
 use App\Models\Branch;
 use Filament\Forms\Form;
@@ -41,12 +40,14 @@ class Settings extends Page implements HasForms
     public function mount(): void
     {
 
+        $branch_logged = Filament::auth()->user()->branch_logged;
+
         Session()->has('dateBase') ?
             $datebase = session()->get('dateBase') :
             $datebase = today()->format('d/m/Y');
 
         $this->form->fill([
-            'branch_logged_id' => Filament::auth()->user()->branch_logged->id,
+            'branch_logged_id' => $branch_logged ? $branch_logged->id : null,
             'dateBase' => $datebase,
             'module' => Filament::getCurrentPanel()->getId(),
         ]);
@@ -92,7 +93,7 @@ class Settings extends Page implements HasForms
             ->label('Filial Logada')
             ->required()
             ->options(
-                fn() => Filament::auth()->user()->employee->branch['type_branch'] === TypeBranchEnum::MATRIZ
+                fn() => Filament::auth()->user()->hasRole('super_admin')
                     ? Branch::all()->pluck('abbreviation', 'id')->toArray()
                     : Branch::where('id', '=', Auth::user()->employee->branch['id'])
                     ->pluck('abbreviation', 'id')->toArray()

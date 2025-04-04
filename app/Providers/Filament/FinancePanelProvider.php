@@ -26,6 +26,7 @@ class FinancePanelProvider extends PanelProvider
     public function panel(Panel $panel): Panel
     {
         return $panel
+            ->topNavigation()
             ->id('finance')
             ->path('finance')
             ->userMenuItems(MenuItems::useMenuItems())
@@ -36,7 +37,7 @@ class FinancePanelProvider extends PanelProvider
             ->pages([
                 Pages\Dashboard::class,
             ])
-            ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
+            ->discoverWidgets(in: app_path('Modules/Finance/Widgets'), for: 'App\\Modules\\Finance\\Widgets')
             ->widgets([
                 Widgets\AccountWidget::class,
                 Widgets\FilamentInfoWidget::class,

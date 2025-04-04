@@ -27,6 +27,7 @@ class RegisterPanelProvider extends PanelProvider
     public function panel(Panel $panel): Panel
     {
         return $panel
+            ->topNavigation()
             ->id('register')
             ->path('register')
             ->userMenuItems(MenuItems::useMenuItems())
@@ -37,7 +38,7 @@ class RegisterPanelProvider extends PanelProvider
             ->pages([
                 Pages\Dashboard::class,
             ])
-            ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
+            ->discoverWidgets(in: app_path('Modules/Register/Widgets'), for: 'App\\Modules\\Register\\Widgets')
             ->widgets([
                 Widgets\AccountWidget::class,
                 Widgets\FilamentInfoWidget::class,

@@ -26,6 +26,7 @@ class HumanResourcesPanelProvider extends PanelProvider
     public function panel(Panel $panel): Panel
     {
         return $panel
+            ->topNavigation()
             ->id('humanResources')
             ->path('humanResources')
             ->userMenuItems(MenuItems::useMenuItems())
@@ -36,7 +37,7 @@ class HumanResourcesPanelProvider extends PanelProvider
             ->pages([
                 Pages\Dashboard::class,
             ])
-            ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
+            ->discoverWidgets(in: app_path('Modules/HumanResources/Widgets'), for: 'App\\Modules\\HumanResources\\Widgets')
             ->widgets([
                 Widgets\AccountWidget::class,
                 Widgets\FilamentInfoWidget::class,

@@ -27,6 +27,7 @@ class AdminPanelProvider extends PanelProvider
     public function panel(Panel $panel): Panel
     {
         return $panel
+            ->topNavigation()
             ->id('admin')
             ->path('admin')
             ->databaseNotifications()
@@ -39,9 +40,8 @@ class AdminPanelProvider extends PanelProvider
             ->pages([
                 Pages\Dashboard::class,
             ])
-            ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
+            ->discoverWidgets(in: app_path('Modules/Admin/Widgets'), for: 'App\\Modules\\Admin\\Widgets')
             ->widgets([])
-            ->viteTheme('resources/css/filament/lms/theme.css')
             ->font('Nunito')
             ->middleware($this->useMiddleware())
             ->authMiddleware([

@@ -44,5 +44,11 @@ class LoginPanelProvider extends PanelProvider implements ExcludeSelectInterface
             ->authMiddleware([
                 Authenticate::class,
             ]);
+
+    }
+
+    public static function canAccess(): bool
+    {
+        return false;
     }
 }

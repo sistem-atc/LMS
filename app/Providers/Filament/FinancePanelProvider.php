@@ -29,6 +29,7 @@ class FinancePanelProvider extends PanelProvider
             ->topNavigation()
             ->id('finance')
             ->path('finance')
+            ->databaseNotifications()
             ->userMenuItems(MenuItems::useMenuItems())
             ->profile(EditProfile::class, false)
             ->colors(MyColors::getColors())

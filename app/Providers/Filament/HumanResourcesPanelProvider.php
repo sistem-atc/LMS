@@ -30,6 +30,7 @@ class HumanResourcesPanelProvider extends PanelProvider
             ->id('humanResources')
             ->path('humanResources')
             ->userMenuItems(MenuItems::useMenuItems())
+            ->databaseNotifications()
             ->profile(EditProfile::class, false)
             ->colors(MyColors::getColors())
             ->discoverResources(in: app_path('Modules/HumanResources'), for: 'App\\Modules\\HumanResources')

@@ -30,6 +30,7 @@ class TmsPanelProvider extends PanelProvider
             ->topNavigation()
             ->id('tms')
             ->path('tms')
+            ->databaseNotifications()
             ->userMenuItems(MenuItems::useMenuItems())
             ->profile(EditProfile::class, false)
             ->colors(MyColors::getColors())

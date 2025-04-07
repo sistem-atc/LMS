@@ -12,6 +12,7 @@ trait CancelarNfse
 
     private static SimpleXMLElement $headMsg;
     private static string $operation;
+
     public static function CancelarNfse($data): string|int|array
     {
 

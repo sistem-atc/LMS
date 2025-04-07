@@ -2,30 +2,40 @@
 
 namespace App\Services\Towns\IssNetOnline2\Methods;
 
+use Illuminate\Support\Facades\Validator;
+
 trait CancelarNfse
 {
 
-    Public Function CancelarNfse(ByVal CNPJ As String, ByVal Inscricao_Municipal As String, ByVal Numero_Nota As String, _
-                             ByVal Motivo_Cancelamento As Type_Cancelamento, ByVal Used_Companny As String) As Variant
+    private static string $operation;
 
-    Dim Mount_Mensage As String, Operacao As String, DadosMsg As String, CabecMsg As String
-    Dim ID_Sequencial As String
+    public static function CancelarNfse(array $data): string|int|array
+    {
 
-    Operacao = "CancelarNfse": CabecMsg = Compor_CabecalhoXML(Versao_Cabecalho)
-    DadosMsg = Compor_MensagemXML(Operacao): Mount_Mensage = Message_Assemble
+        $validator = Validator::make($data, [
+            'id_cancelamento' => 'required|integer',
+            'inscricao_municipal' => 'required|string',
+            'codigo_cidade' => 'required|string',
+            'codigo_cancelamento' => 'required|string',
+            'used_companny' => 'required|string',
+        ]);
 
-    DadosMsg = Replace(DadosMsg, "[CAMPO_ID_CANCELAMENTO]", ID_Sequencial)
-    DadosMsg = Replace(DadosMsg, "[CAMPO_NUMERO_NOTA]", Numero_Nota)
-    DadosMsg = Replace(DadosMsg, "[CAMPO_CNPJ]", CNPJ)
-    DadosMsg = Replace(DadosMsg, "[CAMPO_INSCRICAO_MUNICIPAL]", Inscricao_Municipal)
-    DadosMsg = Replace(DadosMsg, "[CAMPO_CODIGO_MUNICIPIO]", This.Codigo_Cidade)
-    DadosMsg = Replace(DadosMsg, "[CAMPO_CODIGO_CANCELAMENTO]", Motivo_Cancelamento)
-    DadosMsg = Sign_XML(DadosMsg, Used_Companny)
-    Mount_Mensage = Replace(Mount_Mensage, "[CabecMsg]", CabecMsg)
-    Mount_Mensage = Replace(Mount_Mensage, "[Mount_Mensage]", Operacao)
-    Mount_Mensage = Replace(Mount_Mensage, "[DadosMsg]", DadosMsg)
+        if ($validator->fails()) {
+            return ['errors' => $validator->errors(), 'response' => 422];
+        }
 
-    CancelarNfse = Conection(Prefeitura_Utilizada, Mount_Mensage, Used_Companny, Operacao)
+        self::$operation = __FUNCTION__;
+        $dataMsg = parent::composeMessage(self::$operation);
+        $dataMsg->id_cancelamento = $data['id_cancelamento'];
+        $dataMsg->inscricao_municipal = $data['inscricao_municipal'];
+        $dataMsg->codigo_cidade = $data['codigo_cidade'];
+        $dataMsg->codigo_cancelamento = $data['codigo_cancelamento'];
+        $dataMsg->used_companny = $data['used_companny'];
 
-End Function
+        self::mountMensage($dataMsg);
+
+        return self::connection();
+
+
+    }
 }

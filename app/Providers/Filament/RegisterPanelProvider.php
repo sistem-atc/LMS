@@ -31,6 +31,7 @@ class RegisterPanelProvider extends PanelProvider
             ->id('register')
             ->path('register')
             ->userMenuItems(MenuItems::useMenuItems())
+            ->databaseNotifications()
             ->profile(EditProfile::class, false)
             ->colors(MyColors::getColors())
             ->discoverResources(in: app_path('Modules/Register'), for: 'App\\Modules\\Register')

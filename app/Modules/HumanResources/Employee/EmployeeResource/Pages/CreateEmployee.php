@@ -2,9 +2,10 @@
 
 namespace App\Modules\HumanResources\Employee\EmployeeResource\Pages;
 
-use App\Modules\HumanResources\Employee\EmployeeResource;
 use App\Models\User;
+use Filament\Notifications\Notification;
 use Filament\Resources\Pages\CreateRecord;
+use App\Modules\HumanResources\Employee\EmployeeResource;
 
 class CreateEmployee extends CreateRecord
 {
@@ -22,10 +23,19 @@ class CreateEmployee extends CreateRecord
             'email' => $contructmail,
             'branch_logged_id' => $data['branch_id'],
             'password' => config('domain.defaultPass'),
-            'is_active' => true,
+            'is_active' => false,
         ]);
 
         $data['user_id'] = $newUser->id;
+
+        $admins = User::role('super_admin')->get();
+
+        foreach ($admins as $admin) {
+            Notification::make()
+                ->title('Novo usuário criado')
+                ->body('Um novo usuário foi criado com o e-mail: ' . $contructmail . 'Favor incluir a regra e ativar o usuario!')
+                ->sendTo($admin);
+        }
 
         return $data;
     }

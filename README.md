@@ -1,5 +1,9 @@
 @WIP
 
+    Cadastrar os novos logins com o usuario inativo
+    Mandar um notification para a base do Admin informando que existe um novo funcionario para associação de rules
+
+
     Criando os novos paineis para separar as funcionalidades
     Criar um Select no hook de AlterBranch para selecionar o painel a ser logado
     Incluir como default o primeiro painel da lista que o usuario tenha autorização

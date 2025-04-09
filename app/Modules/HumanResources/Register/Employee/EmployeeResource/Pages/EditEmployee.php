@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Modules\HumanResources\Employee\EmployeeResource\Pages;
+namespace App\Modules\HumanResources\Register\Employee\EmployeeResource\Pages;
 
 use Filament\Actions;
 use Filament\Actions\ActionGroup;
 use Filament\Support\Enums\ActionSize;
 use Filament\Resources\Pages\EditRecord;
-use App\Modules\HumanResources\Employee\EmployeeResource;
+use App\Modules\HumanResources\Register\Employee\EmployeeResource;
 use App\Models\User;
 
 class EditEmployee extends EditRecord

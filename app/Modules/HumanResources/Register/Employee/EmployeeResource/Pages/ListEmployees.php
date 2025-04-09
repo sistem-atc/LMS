@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Modules\HumanResources\Employee\EmployeeResource\Pages;
+namespace App\Modules\HumanResources\Register\Employee\EmployeeResource\Pages;
 
 use App\Actions\FilamentActions\FavoriteResourceAction;
-use App\Modules\HumanResources\Employee\EmployeeResource;
+use App\Modules\HumanResources\Register\Employee\EmployeeResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 

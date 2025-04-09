@@ -2,7 +2,6 @@
 
 namespace App\Http;
 
-use Aws\Ses\SesClient;
 use Filament\Facades\Filament;
 use Filament\Http\Responses\Auth\Contracts\LoginResponse as Responsable;
 use Filament\Notifications\Notification;

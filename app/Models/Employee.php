@@ -57,7 +57,12 @@ class Employee extends Model implements Auditable
     public function name(): Attribute
     {
         return Attribute::make(
-            set: fn ($value) => iconv($value, 'UTF-8', 'ACCII/TRANSLIT'),
+            set: fn ($value) =>
+                iconv(
+                    'UTF-8',
+                    'ASCII//TRANSLIT//IGNORE',
+                    mb_convert_encoding($value, 'UTF-8', 'auto')
+                ),
         );
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Laravel\Horizon\Horizon;
 use Filament\Facades\Filament;
 use App\Http\ControlLogoutResponse;
 use Illuminate\Support\Facades\App;
@@ -42,5 +43,6 @@ class AppServiceProvider extends ServiceProvider
         Filament::serving(
             fn() => app()->bind(LogoutResponse::class, ControlLogoutResponse::class)
         );
+
     }
 }

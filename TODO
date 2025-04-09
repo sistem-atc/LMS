@@ -1,0 +1,53 @@
+FLUXO DE ADMISSÃO DE FUNCIONÁRIOS
+## Descrição do Fluxo
+
+1. Abertura do Processo de Admissão
+    Solicitação de nova contratação (gerente requisita via sistema)
+    Aprovação da vaga (diretoria ou financeiro)
+2. Coleta de Documentos do Candidato
+    Documentos pessoais (RG, CPF, CNH, etc.)
+    Comprovante de residência
+    Título de eleitor
+    Carteira de trabalho (CTPS)
+    PIS/NIT
+    Certificados (quando aplicável)
+    Foto 3x4
+    Documentação de dependentes (para IR e benefícios)
+3. Cadastro no ERP
+    Dados pessoais
+        Nome completo
+        Data de nascimento
+        Sexo
+        Nacionalidade
+        Estado civil
+    Dados de contato
+        Endereço completo
+        Telefones
+        E-mail
+    Dados profissionais
+        Cargo
+        Setor/departamento
+        Salário
+        Jornada de trabalho
+        Tipo de contratação (CLT, estagiário, PJ, etc.)
+        Data de admissão
+    Dados bancários (para folha de pagamento)
+    Dados para benefícios (vale-transporte, vale-refeição, plano de saúde)
+4. Integrações com Outros Módulos
+    Geração automática de contrato
+    Cadastro na folha de pagamento
+    Integração com ponto eletrônico
+    Ativação de e-mail corporativo e acessos ao sistema
+    Registro no eSocial (caso obrigatório)
+5. Validação e Aprovação
+    Revisão por analista de RH
+    Aprovação final do gestor
+6. Emissão de Documentos
+    Contrato de trabalho
+    Termo de confidencialidade (se necessário)
+    Ficha de registro
+    Protocolo de entrega de documentos
+7. Finalização
+    Envio de boas-vindas e integração (onboarding)
+    Registro do funcionário como ativo no sistema
+    Notificação para TI, Facilities e demais setores

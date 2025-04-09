@@ -7,8 +7,9 @@ use Filament\Panel;
 use Filament\PanelProvider;
 use App\Filament\Colors\MyColors;
 use App\Filament\MenuItems\MenuItems;
-use App\Http\Middleware\ValidatePanelAccess;
 use Filament\Http\Middleware\Authenticate;
+use App\Modules\Admin\Pages\HorizonMonitor;
+use App\Http\Middleware\ValidatePanelAccess;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
@@ -39,6 +40,7 @@ class AdminPanelProvider extends PanelProvider
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
                 Pages\Dashboard::class,
+                HorizonMonitor::class,
             ])
             ->discoverWidgets(in: app_path('Modules/Admin/Widgets'), for: 'App\\Modules\\Admin\\Widgets')
             ->widgets([])

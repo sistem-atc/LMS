@@ -4,6 +4,8 @@ namespace App\Modules\Finance\Billing\BillResource\Pages;
 
 use App\Models\Customer;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class SuportFunctions
@@ -45,7 +47,7 @@ class SuportFunctions
 
     public static function CalculateDuoDate($state, $get): string
     {
-        $payment = Customer::find($state);
+        $payment = Customer::find($state)->first();
         $currentDate = Carbon::createFromFormat('Y-m-d', $get('emission_date'));
         $newDate = $currentDate->addDay((int) $payment->payment_term->term);
 
@@ -91,4 +93,22 @@ class SuportFunctions
 
         return date('d-m-Y', strtotime($newDate));
     }
+
+    public static function SelectDocumentsBilling(string $customer): ?Collection
+    {
+        return
+            DB::table('transport_documents')
+                ->join('branches', 'transport_documents.branch_id', '=', 'branches.id')
+                ->select(
+                    DB::raw("concat('Origem: ', branches.abbreviation, ' | ', 'Numero do CT-e: ', transport_documents.id,
+                            ' | ', 'Serie: ', transport_documents.serie, ' | ', 'Valor Total: ', format(transport_documents.total_value, 2, 'de_DE')) as id,
+                            transport_documents.id as cte")
+                )
+                ->where('transport_documents.debtor_customer_id', '=', $customer)
+                ->where('transport_documents.doct_blocked', '=', '0')
+                ->where('transport_documents.bill', '=', '')
+                ->get()
+                ->pluck('id', 'cte');
+    }
+
 }

@@ -10,5 +10,7 @@ interface BankInterface
     public function baixarBoleto(array $data): object;
     public function incluirDesconto(array $data): object;
     public function alterarVecimento(array $data): object;
+    public function makeOurNumber(array $data): string;
+    public function makeBarCode(array $data): string;
 
 }

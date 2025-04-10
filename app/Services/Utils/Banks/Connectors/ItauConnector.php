@@ -28,6 +28,16 @@ class ItauConnector extends BankConnector
 
     }
 
+    public function makeOurNumber(array $data): string
+    {
+        return rand(1000000000, 9999999999);;
+    }
+
+    public function makeBarCode(array $data): string
+    {
+        return '1234567890123456789012345678901234567890';
+    }
+
     public function gerarBoleto(array $data): object
     {
         return self::transform(self::gerar($data));

@@ -9,7 +9,6 @@ use Filament\Forms\Set;
 use Filament\Forms\Form;
 use App\Models\Situation;
 use Filament\Tables\Table;
-use App\Models\ReceivingType;
 use Filament\Resources\Resource;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -42,132 +41,15 @@ class BillResource extends Resource
                 Wizard::make([
                     Wizard\Step::make('Dados Fatura')
                         ->columns(2)
-                        ->schema([
-                            Select::make('customer_id')
-                                ->label('Cliente')
-                                ->searchable()
-                                ->getSearchResultsUsing(
-                                    fn(string $search): array =>
-                                    DB::table('customers')
-                                        ->select(DB::raw("concat(cpf_or_cnpj, ' ', company_name) as name, id"))
-                                        ->where('cpf_or_cnpj', 'like', "%{$search}%")
-                                        ->orWhere('company_name', 'like', "%{$search}%")
-                                        ->limit(50)->pluck('name', 'id')->toArray()
-                                )
-                                ->reactive()
-                                ->afterStateUpdated(
-                                    function ($state, Set $set, Get $get) {
-                                        if (blank($state)) return;
-                                        $set('bank_id', Customer::where($get('customer_id'))->bank()->id);
-                                        $duoDate = SuportFunctions::CalculateDuoDate($state, $get);
-                                        $set('due_date', $duoDate);
-                                    }
-                                ),
-                            DatePicker::make('emission_date')
-                                ->label('Data de Emissão')
-                                ->default(date('d-m-Y H:i:s', strtotime(now()))),
-                            DatePicker::make('due_date')
-                                ->label('Data de Vencimento')
-                                ->placeholder('dd/mm/aaaa'),
-                            TextInput::make('historic')
-                                ->label('Historico'),
-                            Select::make('situation_id')
-                                ->label('Situação')
-                                ->searchable()
-                                ->relationship('situation', 'name')
-                                ->options(json_decode(Situation::all()->pluck('name', 'id')->toJson(), true)),
-                        ]),
+                        ->schema(static::getDataBilling()),
                     Wizard\Step::make('Ctes a faturar')
-                        ->schema([
-                            CheckboxList::make('transport_document_id')->label('Escolha os Documentos a serem faturados')
-                                ->noSearchResultsMessage('Sem documentos pendentes de faturamento')
-                                ->searchPrompt('Pesquisando Documentos a serem faturados')
-                                ->bulkToggleable()
-                                ->options(
-                                    fn(Get $get): ?Collection =>
-                                    DB::table('transport_documents')
-                                        ->join('branches', 'transport_documents.branch_id', '=', 'branches.id')
-                                        ->select(DB::raw("
-                                            concat('Origem: ', branches.abbreviation, ' | ', 'Numero do CT-e: ', transport_documents.id,
-                                            ' | ', 'Serie: ', transport_documents.serie, ' | ', 'Valor Total: ', format(transport_documents.total_value, 2, 'de_DE')) as id,
-                                            transport_documents.id as cte"))
-                                        ->where('transport_documents.debtor_customer_id', '=', $get('customer_id'))
-                                        ->where('transport_documents.doct_blocked', '=', '0')
-                                        ->where('transport_documents.bill', '=', '')
-                                        ->get()->pluck('id', 'cte'),
-                                )
-                                ->live(),
-                        ]),
+                        ->schema(static::getDataDocuments()),
                     Wizard\Step::make('Dados Complementares')
                         ->columns(2)
-                        ->schema([
-                            Select::make('nature_id')
-                                ->label('Natureza')
-                                ->native(false)
-                                ->searchable()
-                                ->preload()
-                                ->relationship('nature', 'name'),
-                            Select::make('bank_id')
-                                ->label('Banco')
-                                ->native(false)
-                                ->searchable()
-                                ->preload()
-                                ->relationship('bank', 'nome_banco'),
-                            Money::make('total_value')
-                                ->disabled()
-                                ->label('Valor Total'),
-                            Money::make('discount_value')
-                                ->label('Desconto'),
-                            Money::make('liquid_value')
-                                ->disabled()
-                                ->label('Valor Liquido'),
-                            Money::make('irrf_base')
-                                ->disabled()
-                                ->label('Base IRRF'),
-                            TextInput::make('irrf_tax')
-                                ->disabled()
-                                ->label('Taxa IRRF')
-                                ->numeric()
-                                ->inputMode('decimal'),
-                            Money::make('irrf_value')
-                                ->disabled()
-                                ->label('Valor IRRF'),
-                            Money::make('iss_base')
-                                ->disabled()
-                                ->label('Base ISS'),
-                            TextInput::make('iss_tax')
-                                ->disabled()
-                                ->label('Taxa ISS')
-                                ->numeric()
-                                ->inputMode('decimal'),
-                            Money::make('iss_value')
-                                ->disabled()
-                                ->label('Valor ISS'),
-                            Money::make('fine')
-                                ->disabled()
-                                ->label('Juros'),
-                            Money::make('interests')
-                                ->disabled()
-                                ->label('Multa'),
-                        ]),
+                        ->schema(static::getComplementData()),
                     Wizard\Step::make('Informações')
                         ->columns(2)
-                        ->schema([
-                            TextInput::make('boleto_number')
-                                ->disabled()
-                                ->label('Numero do Boleto'),
-                            TextInput::make('barr_code')
-                                ->disabled()
-                                ->label('Codigo de Barras'),
-                            DatePicker::make('writeoff_date')
-                                ->label('Data de Baixa'),
-                            Select::make('receiving_type_id')
-                                ->label('Tipo de Recebimento')
-                                ->searchable()
-                                ->preload()
-                                ->relationship('receiving_type', 'name')
-                                ->options(ReceivingType::all()->pluck('name', 'id')),
-                        ]),
+                        ->schema(static::getInformations()),
                 ])->columnSpanFull(),
             ]);
     }
@@ -219,5 +101,129 @@ class BillResource extends Resource
             ->withoutGlobalScopes([
                 SoftDeletingScope::class,
             ]);
+    }
+
+    public static function getDataBilling(): array
+    {
+        return [
+            Select::make('customer_id')
+                ->label('Cliente')
+                ->searchable()
+                ->getSearchResultsUsing(
+                    fn(string $search): array =>
+                    DB::table('customers')
+                        ->select(DB::raw("concat(cpf_or_cnpj, ' ', company_name) as name, id"))
+                        ->where('cpf_or_cnpj', 'like', "%{$search}%")
+                        ->orWhere('company_name', 'like', "%{$search}%")
+                        ->limit(50)->pluck('name', 'id')->toArray()
+                )
+                ->reactive()
+                ->afterStateUpdated(
+                    function ($state, Set $set, Get $get) {
+                        if (blank($state)) return;
+                        $set('bank_id', Customer::where($get('customer_id'))->bank()->id);
+                        $duoDate = SuportFunctions::CalculateDuoDate($state, $get);
+                        $set('due_date', $duoDate);
+                    }
+                ),
+            DatePicker::make('emission_date')
+                ->label('Data de Emissão')
+                ->default(date('d-m-Y H:i:s', strtotime(now()))),
+            DatePicker::make('due_date')
+                ->label('Data de Vencimento')
+                ->placeholder('dd/mm/aaaa'),
+            TextInput::make('historic')
+                ->label('Historico'),
+            Select::make('situation_id')
+                ->label('Situação')
+                ->searchable()
+                ->relationship('situation', 'name')
+                ->options(json_decode(Situation::all()->pluck('name', 'id')->toJson(), true)),
+        ];
+    }
+
+    public static function getDataDocuments(): array
+    {
+        return [
+            CheckboxList::make('transport_document_id')
+                ->label('Escolha os Documentos a serem faturados')
+                ->noSearchResultsMessage('Sem documentos pendentes de faturamento')
+                ->searchPrompt('Pesquisando Documentos a serem faturados')
+                ->bulkToggleable()
+                ->options(fn(Get $get): ?Collection => SuportFunctions::SelectDocumentsBilling($get('customer_id')))
+                ->live(),
+        ];
+    }
+
+    public static function getComplementData(): array
+    {
+        return [
+            Select::make('nature_id')
+                ->label('Natureza')
+                ->native(false)
+                ->searchable()
+                ->preload()
+                ->relationship('nature', 'name'),
+            Select::make('bank_id')
+                ->label('Banco')
+                ->native(false)
+                ->searchable()
+                ->preload()
+                ->relationship('bank', 'nome_banco'),
+            Money::make('total_value')
+                ->disabled()
+                ->label('Valor Total'),
+            Money::make('discount_value')
+                ->label('Desconto'),
+            Money::make('liquid_value')
+                ->disabled()
+                ->label('Valor Liquido'),
+            Money::make('irrf_base')
+                ->disabled()
+                ->label('Base IRRF'),
+            TextInput::make('irrf_tax')
+                ->disabled()
+                ->label('Taxa IRRF')
+                ->numeric()
+                ->inputMode('decimal'),
+            Money::make('irrf_value')
+                ->disabled()
+                ->label('Valor IRRF'),
+            Money::make('iss_base')
+                ->disabled()
+                ->label('Base ISS'),
+            TextInput::make('iss_tax')
+                ->disabled()
+                ->label('Taxa ISS')
+                ->numeric()
+                ->inputMode('decimal'),
+            Money::make('iss_value')
+                ->disabled()
+                ->label('Valor ISS'),
+            Money::make('fine')
+                ->disabled()
+                ->label('Juros'),
+            Money::make('interests')
+                ->disabled()
+                ->label('Multa'),
+        ];
+    }
+
+    public static function getInformations(): array
+    {
+        return [
+            TextInput::make('boleto_number')
+                ->disabled()
+                ->label('Numero do Boleto'),
+            TextInput::make('barr_code')
+                ->disabled()
+                ->label('Codigo de Barras'),
+            DatePicker::make('writeoff_date')
+                ->disabled()
+                ->label('Data de Baixa'),
+            Select::make('receiving_type_id')
+                ->disabled()
+                ->label('Tipo de Recebimento'),
+        ];
     }
 }

@@ -12,9 +12,13 @@ use OwenIt\Auditing\Contracts\Auditable;
 
 class Bank extends Model implements Auditable
 {
+    /** @use HasFactory<\Database\Factories\BankFactory> */
     use HasFactory;
+
     use SoftDeletes;
+
     use Blameable;
+
     use \OwenIt\Auditing\Auditable;
 
     protected $fillable = [

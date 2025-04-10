@@ -23,11 +23,12 @@ use Illuminate\View\Middleware\ShareErrorsFromSession;
 
 class FinancePanelProvider extends PanelProvider
 {
+
     public function panel(Panel $panel): Panel
     {
         return $panel
             ->topNavigation()
-            ->id('finance')
+            ->id('Financeiro')
             ->path('finance')
             ->databaseNotifications()
             ->userMenuItems(MenuItems::useMenuItems())

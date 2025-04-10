@@ -18,6 +18,9 @@ class DatabaseSeeder extends Seeder
         $this->call(VendorSeeder::class);
         $this->call(CostCenterSeeder::class);
         $this->call(RouteSeeder::class);
+        $this->call(DepartamentSeeder::class);
+        $this->call(PositionSeeder::class);
+        $this->call(HealthPlanSeeder::class);
         $this->call(UserSeeder::class);
         $this->call(SituationSeeder::class);
         $this->call(PaymentTermSeeder::class);

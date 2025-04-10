@@ -29,7 +29,7 @@ class AdminPanelProvider extends PanelProvider
     {
         return $panel
             ->topNavigation()
-            ->id('admin')
+            ->id('Administracao')
             ->path('admin')
             ->databaseNotifications()
             ->profile(EditProfile::class, false)

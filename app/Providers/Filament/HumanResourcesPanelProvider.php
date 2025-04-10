@@ -23,11 +23,12 @@ use Illuminate\View\Middleware\ShareErrorsFromSession;
 
 class HumanResourcesPanelProvider extends PanelProvider
 {
+
     public function panel(Panel $panel): Panel
     {
         return $panel
             ->topNavigation()
-            ->id('humanResources')
+            ->id('Recursos Humanos')
             ->path('humanResources')
             ->userMenuItems(MenuItems::useMenuItems())
             ->databaseNotifications()
@@ -60,4 +61,5 @@ class HumanResourcesPanelProvider extends PanelProvider
                 Authenticate::class,
             ]);
     }
+
 }

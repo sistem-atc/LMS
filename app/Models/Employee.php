@@ -54,6 +54,21 @@ class Employee extends Model implements Auditable
         return $this->BelongsTo(Branch::class);
     }
 
+    public function position(): BelongsTo
+    {
+        return $this->belongsTo(Position::class);
+    }
+
+    public function departament(): BelongsTo
+    {
+        return $this->belongsTo(Departament::class);
+    }
+
+    public function healthPlan(): BelongsTo
+    {
+        return $this->belongsTo(HealthPlan::class);
+    }
+
     public function name(): Attribute
     {
         return Attribute::make(

@@ -28,7 +28,7 @@ class RegisterPanelProvider extends PanelProvider
     {
         return $panel
             ->topNavigation()
-            ->id('register')
+            ->id('Cadastro')
             ->path('register')
             ->userMenuItems(MenuItems::useMenuItems())
             ->databaseNotifications()

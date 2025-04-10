@@ -13,10 +13,15 @@ use OwenIt\Auditing\Contracts\Auditable;
 
 class Branch extends Model implements Auditable
 {
+    /** @use HasFactory<\Database\Factories\BranchFactory> */
     use HasFactory;
+
     use HasRoles;
+
     use SoftDeletes;
+
     use Blameable;
+
     use \OwenIt\Auditing\Auditable;
 
     protected $fillable = [

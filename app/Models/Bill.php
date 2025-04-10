@@ -13,9 +13,13 @@ use OwenIt\Auditing\Contracts\Auditable;
 
 class Bill extends Model implements Auditable
 {
+    /** @use HasFactory<\Database\Factories\BillFactory> */
     use HasFactory;
+
     use SoftDeletes;
+
     use Blameable;
+
     use \OwenIt\Auditing\Auditable;
 
     protected $fillable = [

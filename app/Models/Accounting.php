@@ -10,8 +10,13 @@ use OwenIt\Auditing\Contracts\Auditable;
 
 class Accounting extends Model implements Auditable
 {
+    /** @use HasFactory<\Database\Factories\AccountingFactory> */
     use HasFactory;
+
     use SoftDeletes;
+
     use Blameable;
+
     use \OwenIt\Auditing\Auditable;
+
 }

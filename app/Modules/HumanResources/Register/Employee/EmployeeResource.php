@@ -29,7 +29,7 @@ class EmployeeResource extends Resource
 {
     protected static ?string $model = Employee::class;
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-    protected static ?string $navigationGroup = 'Recursos Humanos';
+    protected static ?string $navigationGroup = 'Cadastros';
     protected static ?string $navigationLabel = 'Funcionários';
     protected static ?string $recordTitleAttribute = 'name';
     protected static ?string $modelLabel = 'Funcionário';
@@ -102,7 +102,7 @@ class EmployeeResource extends Resource
     protected static function getBasicEmployee(): array
     {
         return [
-            Grid::make(2)->schema([
+            Grid::make(3)->schema([
                 TextInput::make('name')
                     ->label('Nome Completo')
                     ->required()
@@ -247,10 +247,14 @@ class EmployeeResource extends Resource
     {
         return [
             Grid::make(2)->schema([
-                Select::make('cargo_id')
-                    ->relationship('cargo', 'nome')->required(),
-                Select::make('departamento_id')
-                    ->relationship('departamento', 'nome')->required(),
+                Select::make('position_id')
+                    ->label('Cargo')
+                    ->relationship('position', 'name')
+                    ->required(),
+                Select::make('departament_id')
+                    ->label('Departamento')
+                    ->relationship('departament', 'name')
+                    ->required(),
                 TextInput::make('salary')
                     ->label('Salário')
                     ->numeric()
@@ -323,13 +327,12 @@ class EmployeeResource extends Resource
                         'individual' => 'Individual',
                         'family' => 'Familiar',
                     ]),
-                Select::make('health_plan_company_id')
+                Select::make('health_plan_id')
                     ->label('Plano de Saúde da Empresa')
-                    ->relationship('healthPlanCompany', 'name')
+                    ->relationship('healthPlan', 'name')
                     ->preload()
                     ->searchable()
-                    ->placeholder('Selecione um plano de saúde')
-                    ->visible(fn (Closure $get) => $get('health_plan_company') === true),
+                    ->placeholder('Selecione um plano de saúde'),
             ])
         ];
     }

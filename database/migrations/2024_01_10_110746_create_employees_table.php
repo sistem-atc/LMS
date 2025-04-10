@@ -2,6 +2,9 @@
 
 use App\Models\User;
 use App\Models\Branch;
+use App\Models\Position;
+use App\Models\HealthPlan;
+use App\Models\Departament;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -48,8 +51,8 @@ return new class extends Migration
             $table->boolean('is_active')->default(true);
             $table->string('phone');
             $table->string('personalmail')->unique();
-            $table->string('cargo'); //Relacionamento com tabela de cargos
-            $table->string('departamento')->nullable(); //Relacionamento com tabela de departamentos
+            $table->foreignIdFor(Position::class);
+            $table->foreignIdFor(Departament::class);
             $table->float('salary');
             $table->date('admission_date');
             $table->string('contract_type');
@@ -67,9 +70,8 @@ return new class extends Migration
             $table->boolean('life_insurance')->default(false);
             $table->boolean('private_pension')->default(false);
             $table->boolean('health_plan')->default(false);
-            $table->boolean('health_plan')->default(false);
-            $table->boolean('health_plan_type')->default(false);
-            $table->boolean('health_plan_company_id')->default(false); //Relacionamento com tabela de planos de saúde
+            $table->string('health_plan_type')->nullable();
+            $table->foreignIdFor(HealthPlan::class, )->nullable();
             $table->string('social_security_regime');
             $table->blameable();
             $table->timestamps();

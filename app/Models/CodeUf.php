@@ -12,9 +12,13 @@ use OwenIt\Auditing\Contracts\Auditable;
 
 class CodeUf extends Model implements Auditable
 {
+    /** @use HasFactory<\Database\Factories\CodeUfFactory> */
     use HasFactory;
+
     use SoftDeletes;
+
     use Blameable;
+
     use \OwenIt\Auditing\Auditable;
 
     protected $fillable = [

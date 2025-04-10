@@ -2,9 +2,10 @@
 
 namespace App\Services\Banks\Itau\Methods;
 
+use App\Services\Utils\Banks\Logs\Logging;
+
 trait ConsultarBoleto
 {
-
     private static string $endPoint;
 
     public static function consulta(array $data): array
@@ -18,9 +19,12 @@ trait ConsultarBoleto
             '&codigo_carteira=' . parent::$carteira . '&nosso_numero=' .
             data_get($data, 'boleto_number', '');
 
-        return parent::$http->get(self::$endPoint)
-            ->throw()
-            ->toArray();
+            return tap(
+                 parent::$http->path(self::$endPoint)
+                    ->throw()
+                    ->toArray(),
+                fn ($response) => Logging::logResponse($response, 'itau')
+        );
 
     }
 

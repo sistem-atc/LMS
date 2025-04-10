@@ -51,3 +51,38 @@ FLUXO DE ADMISSÃO DE FUNCIONÁRIOS
     Envio de boas-vindas e integração (onboarding)
     Registro do funcionário como ativo no sistema
     Notificação para TI, Facilities e demais setores
+
+AJUSTES NO PAINEL
+## Melhorias
+
+1. Abrir o hook AlterBranch como modal
+
+
+INTERFACES DE PREFEITURAS A AJUSTAR
+## Alem de ajustar as classes todas tem que ser testadas
+
+1. Next Town IssNetOnline
+
+MODULO DE EMISSÃO DE DOCUMENTOS
+## Modulo TMS
+
+1. Ajustar as configurações do speed =>
+    Validar a melhor forma de passar os parametros para dentro do config.
+2. Notas Fiscais dos clientes =>
+    Terminar de construir a API
+Começar a importação de NOTFIS
+    Abstrair as classes para usar os mesmos metodos para rotina manual e automatica
+
+3. Lotes de Notas Fiscais =>
+    Tela de resumo do Wizard para conferencia antes de gerar o CT-e
+    Gerar um CT-e para cada lote
+    Calcular valores a partir da tabela (Criar model e rotinas)
+    Calcular impostos a partir das regras fiscais (Criar Rotinas)
+    Criar a rotina de trasmição do CT-e para a SEFAZ
+        - Considerar validação do status SEFAZ partindo do estado do CT-e
+        - Resolver o problema da leitura do certificado
+        - Incluir no config o ambiente a ser utilizado de acordo com o ambiente do .env
+        - Validar o campo do banco para guardar o protocolo
+    Criar um job que roda automaticamente as criações de lote de acordo com as configurações de cada cliente
+        - Validar como incluir as configurações
+        - Implementar no banco de dados as alterações

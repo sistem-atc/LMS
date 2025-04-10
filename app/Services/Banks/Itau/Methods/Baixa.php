@@ -2,6 +2,8 @@
 
 namespace App\Services\Banks\Itau\Methods;
 
+use App\Services\Utils\Banks\Logs\Logging;
+
 trait Baixa
 {
 
@@ -12,9 +14,12 @@ trait Baixa
 
         self::$endPoint = '/boletos/' . $data['id_boleto'] . '/baixa';
 
-        return parent::$http->path(self::$endPoint)
-            ->throw()
-            ->toArray();
+        return tap(
+            parent::$http->path(self::$endPoint)
+                ->throw()
+                ->toArray(),
+            fn ($response) => Logging::logResponse($response, 'itau')
+    );
 
     }
 

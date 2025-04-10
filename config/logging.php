@@ -51,6 +51,12 @@ return [
     |
     */
 
+    'bank' => [
+        'driver' => ['single'],
+        'path' => storage_path('logs/banks.log'),
+        'level' => env('info'),
+    ],
+
     'channels' => [
         'stack' => [
             'driver' => 'stack',

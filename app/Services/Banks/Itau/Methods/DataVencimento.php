@@ -2,6 +2,8 @@
 
 namespace App\Services\Banks\Itau\Methods;
 
+use App\Services\Utils\Banks\Logs\Logging;
+
 trait DataVencimento
 {
 
@@ -18,9 +20,12 @@ trait DataVencimento
             ]
         );
 
-        return parent::$http->path(self::$endPoint, $message)
-            ->throw()
-            ->toArray();
+        return tap(
+            parent::$http->path(self::$endPoint, $message)
+                ->throw()
+                ->toArray(),
+            fn ($response) => Logging::logResponse($response, 'itau')
+    );
     }
 
 }

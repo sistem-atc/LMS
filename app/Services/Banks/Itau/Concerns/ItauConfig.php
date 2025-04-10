@@ -5,6 +5,7 @@ namespace App\Services\Banks\Itau\Concerns;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
+use App\Services\Utils\Banks\Logs\Logging;
 use Illuminate\Http\Client\PendingRequest;
 use App\Services\Banks\Itau\Concerns\GetTokenItau;
 
@@ -13,10 +14,10 @@ trait ItauConfig
 
     private static array $data = [];
 
-    public function __construct(protected ?PendingRequest $http = null, $modelBank = null)
+    public function bootItauConfig($modelBank = null)
     {
 
-        $this->data = [
+        static::$data = [
             'urlToken' => config('itau-billings.' . static::getAmbient() . '.urlToken'),
             'url' => config('itau-billings.' . static::getAmbient() . '.url'),
             'client_id' => config('itau-billings.' . static::getAmbient() . '.client_id'),
@@ -27,7 +28,15 @@ trait ItauConfig
 
         GetTokenItau::refreshToken(static::$data);
 
-        $this->http = Http::withHeaders(static::headers())->baseUrl(static::$data['url']);
+        parent::$http =
+            Http::withHeaders(static::headers())
+                ->withToken(cache('token'))
+                ->baseUrl(static::$data['url'])
+                ->tap(function (PendingRequest $request) {
+                    $request->beforeSending(
+                        fn ($request, $options) => Logging::logRequest($request, $options, 'itau')
+                    );
+                });
 
     }
 
@@ -39,7 +48,6 @@ trait ItauConfig
     private static function headers(): array
     {
         return [
-            'Authorization' => 'Bearer ' . cache('token'),
             'x-itau-apikey' => static::$data['client_secret'],
             'x-itau-correlationID' => static::$data['client_id'],
             'x-itau-flowID' => Str::uuid(),

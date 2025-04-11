@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Services\Utils\Banks\Factory;
+namespace App\Factories;
 
 use ReflectionClass;
 use InvalidArgumentException;
-use Illuminate\Database\Eloquent\Model;
-use App\Services\Utils\Banks\Interface\BankInterface;
+use App\Interface\BankInterface;
 
 class BankFactory
 {

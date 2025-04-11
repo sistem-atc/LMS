@@ -43,7 +43,7 @@ class BillResource extends Resource
                         ->columns(2)
                         ->schema(static::getDataBilling()),
                     Wizard\Step::make('Ctes a faturar')
-                        ->schema(static::getDataDocuments()),
+                        ->schema(fn(Get $get) => static::getDataDocuments($get('customer_id'))),
                     Wizard\Step::make('Dados Complementares')
                         ->columns(2)
                         ->schema(static::getComplementData()),
@@ -121,7 +121,7 @@ class BillResource extends Resource
                 ->afterStateUpdated(
                     function ($state, Set $set, Get $get) {
                         if (blank($state)) return;
-                        $set('bank_id', Customer::where($get('customer_id'))->bank()->id);
+                        $set('bank_id', Customer::where('id',    '=', $get('customer_id'))->first()->bank_id);
                         $duoDate = SuportFunctions::CalculateDuoDate($state, $get);
                         $set('due_date', $duoDate);
                     }
@@ -142,16 +142,28 @@ class BillResource extends Resource
         ];
     }
 
-    public static function getDataDocuments(): array
+    public static function getDataDocuments(?int $customer): array
     {
+
+        $documents = SuportFunctions::SelectDocumentsBilling($customer);
+
         return [
             CheckboxList::make('transport_document_id')
-                ->label('Escolha os Documentos a serem faturados')
-                ->noSearchResultsMessage('Sem documentos pendentes de faturamento')
-                ->searchPrompt('Pesquisando Documentos a serem faturados')
+                ->label(
+                    is_null($documents)
+                    ? 'Documentos a faturar'
+                    : 'Nenhum documento encontrado'
+                )
                 ->bulkToggleable()
-                ->options(fn(Get $get): ?Collection => SuportFunctions::SelectDocumentsBilling($get('customer_id')))
-                ->live(),
+                ->options($documents)
+                ->live()
+                ->required()
+                ->rule('array|min:1')
+                ->validationMessages([
+                    'required' => 'Você deve selecionar pelo menos um documento.',
+                    'array' => 'A seleção de documentos deve ser uma lista.',
+                    'min' => 'Selecione pelo menos um documento para faturar.',
+                ]),
         ];
     }
 
@@ -174,7 +186,8 @@ class BillResource extends Resource
                 ->disabled()
                 ->label('Valor Total'),
             Money::make('discount_value')
-                ->label('Desconto'),
+                ->label('Desconto')
+                ->disabled(fn (string $context): bool => $context === 'create'),
             Money::make('liquid_value')
                 ->disabled()
                 ->label('Valor Liquido'),

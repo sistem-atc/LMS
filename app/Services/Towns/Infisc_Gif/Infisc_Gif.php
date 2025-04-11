@@ -5,7 +5,7 @@ namespace App\Services\Towns\Infisc_Gif;
 use Exception;
 use SimpleXMLElement;
 use App\Enums\HttpMethod;
-use App\Services\Utils\Towns\Bases\LinkTownBase;
+use App\Bases\LinkTownBase;
 
 class Infisc_Gif extends LinkTownBase
 {

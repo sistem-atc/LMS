@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Services\Utils\Towns\Bases;
+namespace App\Traits;
 
-use App\Services\Utils\HttpConnection\Connection;
 use App\Enums\HttpMethod;
+use App\Utils\Connection;
 
 trait RequestSender
 {

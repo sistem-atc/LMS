@@ -2,7 +2,8 @@
 
 namespace App\Services\Towns\Ginfes;
 
-use App\Services\Utils\Towns\Interfaces\ExcludeSelectInterface;
+use App\Interfaces\ExcludeSelectInterface;
+
 
 class Exemple implements ExcludeSelectInterface {}
 

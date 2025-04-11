@@ -1,13 +1,19 @@
 <?php
 
-namespace App\Services\Utils\Towns\Bases;
+namespace App\Bases;
 
-use App\Services\Utils\Towns\Interfaces\LinkTownsInterface;
+use App\Traits\SignXml;
+use App\Traits\XmlHandler;
+use App\loaders\ConfigLoader;
+use App\Traits\RequestSender;
+use App\Interfaces\LinkTownsInterface;
 
 abstract class LinkTownBase implements LinkTownsInterface
 {
 
-    use SignXml, RequestSender, XmlHandler;
+    use SignXml;
+    use RequestSender;
+    use XmlHandler;
 
     protected static string $cityName;
     protected static ?string $url;

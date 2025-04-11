@@ -1,19 +1,19 @@
 <?php
 
-namespace App\Services\Utils\Banks\Logs;
+namespace App\Logs;
 
 use Illuminate\Support\Facades\Log;
 
 class Logging
 {
 
-    public static function logRequest($request, array $options, string $bank)
+    public static function logRequest($request, string $module, string $channel)
     {
 
         $headers = self::sanitizeHeaders($request->getHeaders());
 
-        Log::channel('banks')->info(
-            '>>Envio de dados para o banco' . $bank,
+        Log::channel($channel)->info(
+            '>>Envio de dados ' . $module,
             [
                 'url' => $request->getUri(),
                 'method' => $request->getMethod(),
@@ -23,13 +23,13 @@ class Logging
         );
     }
 
-    public static function logResponse($response, string $bank)
+    public static function logResponse($response, string $module, string $channel)
     {
 
         $headers = self::sanitizeHeaders($response->getHeaders());
 
-        Log::channel('banks')->info(
-            '<<Resposta do banco ' . $bank,
+        Log::channel($channel)->info(
+            '<<Resposta ' . $module,
             [
                 'status' => $response->status(),
                 'headers' => $headers,

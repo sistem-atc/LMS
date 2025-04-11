@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Utils\Towns\Bases;
+namespace App\Traits;
 
 use SimpleXMLElement;
 use Illuminate\Support\Str;
@@ -9,7 +9,7 @@ use App\Services\Utils\Towns\Helpers\DirectoryHelper;
 trait XmlHandler
 {
 
-    protected static function assembleMessage(string $replaceOperation = null, string $version = null): SimpleXMLElement
+    protected static function assembleMessage(string $replaceOperation = '', string $version = ''): SimpleXMLElement
     {
 
         $baseDir = DirectoryHelper::getDir();
@@ -25,7 +25,7 @@ trait XmlHandler
         return new SimpleXMLElement($content);
     }
 
-    protected static function composeHeader(string $headerVersion = null): SimpleXMLElement
+    protected static function composeHeader(string $headerVersion = ''): SimpleXMLElement
     {
 
         $basedir = DirectoryHelper::getDir();

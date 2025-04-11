@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Services\Banks\Itau\Concerns;
+namespace App\Services\Banks\Itau\Methods;
 
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 
-class GetTokenItau
+trait Token
 {
 
     public static function refreshToken($data): void

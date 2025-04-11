@@ -2,9 +2,9 @@
 
 namespace App\Services\Towns\Betha;
 
-use App\Enums\HttpMethod;
 use SimpleXMLElement;
-use App\Services\Utils\Towns\Bases\LinkTownBase;
+use App\Enums\HttpMethod;
+use App\Bases\LinkTownBase;
 
 class Betha extends LinkTownBase
 {

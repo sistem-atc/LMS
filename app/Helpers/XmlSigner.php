@@ -38,7 +38,7 @@ class XmlSigner
         $key->loadKey(
             static::$pathCerticate,
             true,
-            static::$passCertificate,
+            false,
         );
 
         $signature->sign($key);

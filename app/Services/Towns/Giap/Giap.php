@@ -5,8 +5,7 @@ namespace App\Services\Towns\Giap;
 use Exception;
 use SimpleXMLElement;
 use App\Enums\HttpMethod;
-use Illuminate\Support\Facades\Validator;
-use App\Services\Utils\Towns\Bases\LinkTownBase;
+use App\Bases\LinkTownBase;
 
 class Giap extends LinkTownBase
 {

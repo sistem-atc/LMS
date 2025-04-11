@@ -4,7 +4,7 @@ namespace App\Services\Utils\Towns\Helpers;
 
 use ReflectionClass;
 use Illuminate\Support\Facades\File;
-use App\Services\Utils\Towns\Interfaces\ExcludeSelectInterface;
+use App\Interfaces\ExcludeSelectInterface;
 
 class GetClassTowns
 {

@@ -4,7 +4,7 @@ namespace App\Services\Towns\INfse;
 
 use SimpleXMLElement;
 use App\Enums\HttpMethod;
-use App\Services\Utils\Towns\Bases\LinkTownBase;
+use App\Bases\LinkTownBase;
 
 class INfse extends LinkTownBase
 {

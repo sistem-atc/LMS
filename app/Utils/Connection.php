@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Services\Utils\HttpConnection;
+namespace App\Utils;
 
 use Exception;
 use App\Enums\HttpMethod;
-use Illuminate\Support\Facades\Http;
 
 class Connection
 {

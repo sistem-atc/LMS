@@ -2,7 +2,7 @@
 
 namespace App\Services\Banks\Itau\Methods;
 
-use App\Services\Utils\Banks\Logs\Logging;
+use App\Logs\Logging;
 
 trait ConsultarBoleto
 {
@@ -23,7 +23,7 @@ trait ConsultarBoleto
                  parent::$http->path(self::$endPoint)
                     ->throw()
                     ->toArray(),
-                fn ($response) => Logging::logResponse($response, 'itau')
+                fn ($response) => Logging::logResponse($response, 'itau', 'bank')
         );
 
     }

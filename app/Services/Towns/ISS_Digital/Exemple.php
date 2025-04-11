@@ -2,6 +2,7 @@
 
 namespace App\Services\Towns\ISS_Digital;
 
-use App\Services\Utils\Towns\Interfaces\ExcludeSelectInterface;
+use App\Interfaces\ExcludeSelectInterface;
+
 
 class Exemple implements ExcludeSelectInterface {}

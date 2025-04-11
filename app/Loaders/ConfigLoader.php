@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Utils\Towns\Bases;
+namespace App\loaders;
 
 use App\Services\Utils\Towns\Helpers\EnvironmentHelper;
 

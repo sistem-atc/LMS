@@ -5,7 +5,7 @@ namespace App\Services\Towns\Ginfes;
 use Exception;
 use SimpleXMLElement;
 use App\Enums\HttpMethod;
-use App\Services\Utils\Towns\Bases\LinkTownBase;
+use App\Bases\LinkTownBase;
 
 class Ginfes extends LinkTownBase
 {

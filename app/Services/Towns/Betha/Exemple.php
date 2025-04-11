@@ -3,8 +3,8 @@
 namespace App\Services\Towns\Betha;
 
 use Illuminate\Support\Carbon;
-use App\Services\Utils\Towns\Factory\TownsFactory;
-use App\Services\Utils\Towns\Interfaces\ExcludeSelectInterface;
+use App\Factories\TownsFactory;
+use App\Interfaces\ExcludeSelectInterface;
 
 class Exemple implements ExcludeSelectInterface
 {

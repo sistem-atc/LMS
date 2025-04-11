@@ -94,11 +94,16 @@ class SuportFunctions
         return date('d-m-Y', strtotime($newDate));
     }
 
-    public static function SelectDocumentsBilling(string $customer): ?Collection
+    public static function SelectDocumentsBilling(?string $customer): ?Collection
     {
+
+        if (empty($customer)) {
+            return null;
+        }
+
         return
             DB::table('transport_documents')
-                ->join('branches', 'transport_documents.branch_id', '=', 'branches.id')
+                ->join('branches', 'transport_documents.debit_branch_id', '=', 'branches.id')
                 ->select(
                     DB::raw("concat('Origem: ', branches.abbreviation, ' | ', 'Numero do CT-e: ', transport_documents.id,
                             ' | ', 'Serie: ', transport_documents.serie, ' | ', 'Valor Total: ', format(transport_documents.total_value, 2, 'de_DE')) as id,

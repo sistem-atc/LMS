@@ -2,7 +2,7 @@
 
 namespace App\Services\Banks\Itau\Methods;
 
-use App\Services\Utils\Banks\Logs\Logging;
+use App\Logs\Logging;
 
 trait Pagador
 {
@@ -44,7 +44,7 @@ trait Pagador
             parent::$http->path(self::$endPoint, $message)
                 ->throw()
                 ->toArray(),
-            fn ($response) => Logging::logResponse($response, 'itau')
+            fn ($response) => Logging::logResponse($response, 'itau', 'bank')
     );
 
     }

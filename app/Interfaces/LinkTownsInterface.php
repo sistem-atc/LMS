@@ -1,8 +1,6 @@
 <?php
 
-namespace App\Services\Utils\Towns\Interfaces;
-
-use SimpleXMLElement;
+namespace App\Interfaces;
 
 interface LinkTownsInterface
 {

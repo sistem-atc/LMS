@@ -2,9 +2,9 @@
 
 namespace App\Services\Utils\Banks\Connectors;
 
+use App\Interface\BankInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Client\PendingRequest;
-use App\Services\Utils\Banks\Interface\BankInterface;
 
 abstract class BankConnector implements BankInterface
 {

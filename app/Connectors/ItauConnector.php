@@ -2,12 +2,12 @@
 
 namespace App\Services\Utils\Banks\Connectors;
 
+use App\Loaders\ItauConfig;
 use Illuminate\Support\Collection;
 use App\Services\Banks\Itau\Entities\Itau;
 use App\Services\Banks\Itau\Methods\Baixa;
 use App\Services\Banks\Itau\Methods\Desconto;
 use App\Services\Banks\Itau\Methods\GeraBoleto;
-use App\Services\Banks\Itau\Concerns\ItauConfig;
 use App\Services\Banks\Itau\Methods\DataVencimento;
 use App\Services\Banks\Itau\Methods\ConsultarBoleto;
 use App\Services\Utils\Banks\Connectors\BankConnector;

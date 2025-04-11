@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Services\Banks\Itau\Concerns;
+namespace App\Loaders;
 
+use App\Logs\Logging;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
-use App\Services\Utils\Banks\Logs\Logging;
+use App\Services\Banks\Itau\Methods\Token;
 use Illuminate\Http\Client\PendingRequest;
-use App\Services\Banks\Itau\Concerns\GetTokenItau;
 
 trait ItauConfig
 {
@@ -26,7 +26,7 @@ trait ItauConfig
             'path_key' => $modelBank->path_key,
         ];
 
-        GetTokenItau::refreshToken(static::$data);
+        Token::refreshToken(static::$data);
 
         parent::$http =
             Http::withHeaders(static::headers())

@@ -5,7 +5,7 @@ namespace App\Services\Towns\iPM;
 use Exception;
 use SimpleXMLElement;
 use App\Enums\HttpMethod;
-use App\Services\Utils\Towns\Bases\LinkTownBase;
+use App\Bases\LinkTownBase;
 
 class iPM extends LinkTownBase
 {
@@ -14,8 +14,8 @@ class iPM extends LinkTownBase
         Methods\Consulta_NotaFiscal,
         Methods\Emitir_NotaFiscal;
 
-    public static string $username;
-    public static string $password;
+    //public static string $username;
+    //public static string $password;
     protected static $verb = HttpMethod::POST;
     private static SimpleXMLElement $mountMessage;
     private static string $boundary;
@@ -88,7 +88,7 @@ class iPM extends LinkTownBase
                     $dataMsg->asXML() . '\n' .
                     '--' . self::$boundary . '--' . '\n';
 
-        self::$mountMessage = $assemble;
+        //self::$mountMessage = $assemble;
 
     }
 

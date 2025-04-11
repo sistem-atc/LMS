@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Utils\Towns\Bases;
+namespace App\Traits;
 
 use SimpleXMLElement;
 use App\Models\Branch;

@@ -4,8 +4,8 @@ namespace App\Services\Towns\Abaco;
 
 use Carbon\Carbon;
 use App\Enums\TypeRPS;
-use App\Services\Utils\Towns\Bases\Factory\TownsFactory;
-use App\Services\Utils\Towns\Interfaces\ExcludeSelectInterface;
+use App\Factories\TownsFactory;
+use App\Interfaces\ExcludeSelectInterface;
 
 class Exemple implements ExcludeSelectInterface
 {

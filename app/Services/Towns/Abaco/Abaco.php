@@ -5,7 +5,7 @@ namespace App\Services\Towns\Abaco;
 use Exception;
 use SimpleXMLElement;
 use App\Enums\HttpMethod;
-use App\Services\Utils\Towns\Bases\LinkTownBase;
+use App\Bases\LinkTownBase;
 
 class Abaco extends LinkTownBase
 {
@@ -56,7 +56,7 @@ class Abaco extends LinkTownBase
 
     private static function connection(): string|int|array|null
     {
-        return self::Conection(parent::$url . self::$endPoint, self::$mountMessage->asXML(), self::getHeaders(), self::$verb, false);
+        return self::Conection(parent::$url . self::$endPoint, self::$mountMessage->asXML(), self::getHeaders(), self::$verb);
     }
 
     private static function mountMensage(SimpleXMLElement $dataMsg, string $operation, ?string $version): void

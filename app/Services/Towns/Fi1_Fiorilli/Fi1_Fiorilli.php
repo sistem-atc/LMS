@@ -4,8 +4,8 @@ namespace App\Services\Towns\Fi1_Fiorilli;
 
 use SimpleXMLElement;
 use App\Enums\HttpMethod;
+use App\Bases\LinkTownBase;
 use Illuminate\Support\Str;
-use App\Services\Utils\Towns\Bases\LinkTownBase;
 
 class Fi1_Fiorilli extends LinkTownBase
 {
@@ -63,8 +63,8 @@ class Fi1_Fiorilli extends LinkTownBase
 
         self::$mountMessage = parent::assembleMessage();
 
-        self::$mountMessage = Str::replace("[Username]", parent::getUsername(), self::$mountMessage);
-        self::$mountMessage = Str::replace("[Password]", parent::getPassword(), self::$mountMessage);
+        //self::$mountMessage = Str::replace("[Username]", parent::getUsername(), self::$mountMessage);
+        //self::$mountMessage = Str::replace("[Password]", parent::getPassword(), self::$mountMessage);
 
         $dom = dom_import_simplexml($dataMsg);
         $fragment = dom_import_simplexml(self::$mountMessage);

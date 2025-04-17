@@ -8,7 +8,6 @@ use App\Models\Branch;
 use Filament\Forms\Form;
 use Filament\Pages\Page;
 use Filament\Actions\Action;
-use App\Enums\TypeBranchEnum;
 use Filament\Facades\Filament;
 use Filament\Support\Colors\Color;
 use Filament\Forms\Components\Grid;
@@ -80,9 +79,9 @@ class Settings extends Page implements HasForms
     {
         return
             Select::make('module')
-            ->label('Módulo')
-            ->required()
-            ->options(MenuItems::getPanelsAvaliables());
+                ->label('Módulo')
+                ->required()
+                ->options(MenuItems::getPanelsAvaliables());
     }
 
     protected function getBrancheLoggedComponent(): Component
@@ -90,22 +89,22 @@ class Settings extends Page implements HasForms
 
         return
             Select::make('branch_logged_id')
-            ->label('Filial Logada')
-            ->required()
-            ->options(
-                fn() => Filament::auth()->user()->hasRole('super_admin')
+                ->label('Filial Logada')
+                ->required()
+                ->options(
+                    fn() => Filament::auth()->user()->hasRole('super_admin')
                     ? Branch::all()->pluck('abbreviation', 'id')->toArray()
                     : Branch::where('id', '=', Auth::user()->employee->branch['id'])
-                    ->pluck('abbreviation', 'id')->toArray()
-            );
+                        ->pluck('abbreviation', 'id')->toArray()
+                );
     }
 
     protected function getDatebaseComponent(): Component
     {
         return
             DatePicker::make('dateBase')
-            ->label('Data Base')
-            ->format('d/m/Y');
+                ->label('Data Base')
+                ->format('d/m/Y');
     }
 
     protected function getFormActions(): array

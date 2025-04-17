@@ -3,15 +3,16 @@
 namespace App\Http;
 
 use Filament\Facades\Filament;
-use Filament\Http\Responses\Auth\Contracts\LoginResponse as Responsable;
-use Filament\Notifications\Notification;
 use Illuminate\Http\RedirectResponse;
+use Filament\Notifications\Notification;
 use Livewire\Features\SupportRedirects\Redirector;
+use Spatie\Permission\Exceptions\PermissionDoesNotExist;
+use Filament\Http\Responses\Auth\Contracts\LoginResponse as Responsable;
 
 
 class ControlLoginResponse implements Responsable
 {
-    public function toResponse($request): RedirectResponse | Redirector
+    public function toResponse($request): RedirectResponse|Redirector
     {
 
         if ($request->user()->remember_last_module) {
@@ -19,13 +20,24 @@ class ControlLoginResponse implements Responsable
             $redirect = Filament::getPanel($module)->getUrl();
 
             return redirect()->intended($redirect);
-        };
+        }
 
-        foreach (Filament::getPanels() as $panel){
-            if ($panel->getId() <> 'login'){
-                if(Filament::auth()->user()->hasPermissionTo($panel->getId())){
-                    $getPanel = $panel;
-                    break;
+        foreach (Filament::getPanels() as $panel) {
+            if ($panel->getId() <> 'login') {
+                try {
+                    if (Filament::auth()->user()->hasPermissionTo($panel->getId())) {
+                        $getPanel = $panel;
+                        break;
+                    }
+                } catch (PermissionDoesNotExist $e) {
+
+                    logger()->warning("Permissão '{$panel->getId()}' não existe para o usuário'.");
+                    Filament::auth()->logout();
+                    session()->invalidate();
+                    session()->regenerateToken();
+
+                    return redirect()->to('/login');
+
                 }
             }
         }
@@ -37,11 +49,6 @@ class ControlLoginResponse implements Responsable
         Filament::auth()->logout();
         session()->invalidate();
         session()->regenerateToken();
-
-        Notification::make()
-            ->title('Usuario não parametrizado')
-            ->body('Favor acionar o time de TI')
-            ->send();
 
         return redirect()->intended('/login');
     }

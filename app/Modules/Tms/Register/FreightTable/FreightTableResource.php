@@ -3,22 +3,22 @@
 namespace App\Modules\Tms\Register\FreightTable;
 
 use Filament\Tables;
+use App\Models\Route;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use App\Models\FreightTable;
 use Filament\Resources\Resource;
+use Filament\Forms\Components\Grid;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Toggle;
+use Filament\Forms\Components\Repeater;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\DatePicker;
 use Illuminate\Database\Eloquent\Builder;
+use Leandrocfe\FilamentPtbrFormFields\Money;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Modules\Tms\Register\FreightTable\FreightTableResource\Pages;
-use App\Models\CodeUf;
-use Filament\Forms\Components\DatePicker;
-use Filament\Forms\Components\Grid;
-use Filament\Forms\Components\Repeater;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Toggle;
-use Filament\Tables\Columns\TextColumn;
-use Leandrocfe\FilamentPtbrFormFields\Money;
 
 class FreightTableResource extends Resource
 {
@@ -59,13 +59,9 @@ class FreightTableResource extends Resource
                             ->cloneable()
                             ->columns(6)
                             ->schema([
-                                Select::make('origin_uf')
-                                    ->label('Filial Origem')
-                                    ->options(CodeUf::all()->pluck('federation_unit', 'id'))
-                                    ->required(),
-                                Select::make('destination_uf')
-                                    ->label('Filial Destino')
-                                    ->options(CodeUf::all()->pluck('federation_unit', 'id'))
+                                Select::make('route_id')
+                                    ->label('Rota')
+                                    ->options(Route::all()->pluck('name', 'id'))
                                     ->required(),
                                 TextInput::make('minimum_weight')
                                     ->label('Peso Minimo')

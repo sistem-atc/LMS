@@ -2,22 +2,22 @@
 
 namespace App\Modules\Admin\Shield\Role;
 
-use App\Filament\MenuItems\MenuItems;
-use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
-use BezhanSalleh\FilamentShield\Facades\FilamentShield;
-use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
-use BezhanSalleh\FilamentShield\Forms\ShieldSelectAllToggle;
-use App\Modules\Admin\Shield\Role\RoleResource\Pages;
-use BezhanSalleh\FilamentShield\Support\Utils;
 use Filament\Forms;
-use Filament\Forms\Components\Component;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
+use Filament\Resources\Resource;
+use Illuminate\Support\HtmlString;
+use App\Filament\MenuItems\MenuItems;
+use Illuminate\Database\Eloquent\Model;
+use Filament\Forms\Components\Component;
+use BezhanSalleh\FilamentShield\Support\Utils;
+use App\Modules\Admin\Shield\Role\RoleResource\Pages;
+use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
+use BezhanSalleh\FilamentShield\Facades\FilamentShield;
+use BezhanSalleh\FilamentShield\Forms\ShieldSelectAllToggle;
+use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
 
 class RoleResource extends Resource implements HasShieldPermissions
 {
@@ -207,8 +207,8 @@ class RoleResource extends Resource implements HasShieldPermissions
             ->map(function ($entity) {
                 $sectionLabel = strval(
                     static::shield()->hasLocalizedPermissionLabels()
-                        ? FilamentShield::getLocalizedResourceLabel($entity['fqcn'])
-                        : $entity['model']
+                    ? FilamentShield::getLocalizedResourceLabel($entity['fqcn'])
+                    : $entity['model']
                 );
 
                 return Forms\Components\Section::make($sectionLabel)
@@ -308,14 +308,14 @@ class RoleResource extends Resource implements HasShieldPermissions
         return static::shield()->hasSimpleResourcePermissionView()
             ? static::getTabFormComponentForSimpleResourcePermissionsView()
             : Forms\Components\Tabs\Tab::make('resources')
-            ->label(__('filament-shield::filament-shield.resources'))
-            ->visible(fn(): bool => (bool) Utils::isResourceEntityEnabled())
-            ->badge(static::getResourceTabBadgeCount())
-            ->schema([
-                Forms\Components\Grid::make()
-                    ->schema(static::getResourceEntitiesSchema())
-                    ->columns(static::shield()->getGridColumns()),
-            ]);
+                ->label(__('filament-shield::filament-shield.resources'))
+                ->visible(fn(): bool => (bool) Utils::isResourceEntityEnabled())
+                ->badge(static::getResourceTabBadgeCount())
+                ->schema([
+                    Forms\Components\Grid::make()
+                        ->schema(static::getResourceEntitiesSchema())
+                        ->columns(static::shield()->getGridColumns()),
+                ]);
     }
 
     public static function getCheckBoxListComponentForResource(array $entity): Component
@@ -409,7 +409,7 @@ class RoleResource extends Resource implements HasShieldPermissions
                     record: $record
                 )
             )
-            ->dehydrated(fn($state) => ! blank($state))
+            ->dehydrated(fn($state) => !blank($state))
             ->bulkToggleable()
             ->gridDirection('row')
             ->columns(static::shield()->getCheckboxListColumns())

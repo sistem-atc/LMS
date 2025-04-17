@@ -20,6 +20,10 @@ class ValidatePanelAccess
 
         $user = Filament::auth()->user();
 
+        if (Filament::getCurrentPanel()?->getId() === 'login') {
+            return $next($request);
+        }
+
         if ($user->hasPermissionTo(Filament::getCurrentPanel()->getId())) {
             return $next($request);
         }

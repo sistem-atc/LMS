@@ -127,8 +127,7 @@ class EmployeeResource extends Resource
                     ->label('CPF')
                     ->required(),
                 Document::make('cnh')
-                    ->label('CNH')
-                    ->required(),
+                    ->label('CNH'),
                 Document::make('pis')
                     ->label('PIS')
                     ->required(),
@@ -139,14 +138,11 @@ class EmployeeResource extends Resource
                     ->label('UF do RG')
                     ->required(),
                 TextInput::make('eleitor_title')
-                    ->label('Título de Eleitor')
-                    ->required(),
+                    ->label('Título de Eleitor'),
                 TextInput::make('eleitoral_zone')
-                    ->label('Zona Eleitoral')
-                    ->required(),
+                    ->label('Zona Eleitoral'),
                 TextInput::make('selector_section')
-                    ->label('Seção Eleitoral')
-                    ->required(),
+                    ->label('Seção Eleitoral'),
                 DatePicker::make('birth_date')
                     ->label('Data de Nascimento')
                     ->required(),

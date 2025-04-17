@@ -5,6 +5,7 @@ namespace App\Providers\Filament;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Pages\Dashboard;
+use App\Filament\Pages\Settings;
 use App\Filament\Colors\MyColors;
 use App\Filament\MenuItems\MenuItems;
 use App\Interfaces\ExcludeSelectInterface;
@@ -12,7 +13,6 @@ use Filament\Http\Middleware\Authenticate;
 use App\Http\Middleware\ValidatePanelAccess;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Cookie\Middleware\EncryptCookies;
-use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
@@ -34,8 +34,10 @@ abstract class BasePanelProvider extends PanelProvider implements ExcludeSelectI
             ->userMenuItems(MenuItems::useMenuItems())
             ->plugins($this->usePlugins())
             ->colors(MyColors::getColors())
-            ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
-            ->pages([Dashboard::class,])
+            ->pages([
+                Dashboard::class,
+                Settings::class,
+            ])
             ->font('Nunito')
             ->middleware($this->useMiddleware())
             ->authMiddleware([
@@ -45,9 +47,7 @@ abstract class BasePanelProvider extends PanelProvider implements ExcludeSelectI
 
     private function usePlugins(): array
     {
-        return [
-            FilamentShieldPlugin::make()
-        ];
+        return [];
     }
 
     private function useMiddleware(): array
@@ -64,6 +64,7 @@ abstract class BasePanelProvider extends PanelProvider implements ExcludeSelectI
             DispatchServingFilamentEvent::class,
             ValidatePanelAccess::class,
         ];
+
     }
 
 }

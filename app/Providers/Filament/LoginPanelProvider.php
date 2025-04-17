@@ -11,12 +11,22 @@ class LoginPanelProvider extends BasePanelProvider implements ExcludeSelectInter
 {
     public function panel(Panel $panel): Panel
     {
-        return $panel
-            ->bootUsing(fn() => app()->bind(LoginResponse::class, ControlLoginResponse::class))
+
+        $panel = $panel
             ->default()
             ->id('login')
             ->path('')
-            ->login();
+            ->login()
+            ->bootUsing(
+                fn() =>
+                app()->bind(
+                    LoginResponse::class,
+                    ControlLoginResponse::class
+                )
+            );
+
+        return $this->baseConfig($panel);
+
     }
 
     public static function canAccess(): bool

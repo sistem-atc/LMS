@@ -13,7 +13,7 @@ class ListTransportDocuments extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make()->label('Incluir Documento'),
+            //Actions\CreateAction::make()->label('Incluir Documento'),
         ];
     }
 }

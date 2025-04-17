@@ -4,8 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -13,6 +12,14 @@ return new class extends Migration
     {
         Schema::create('taxes', function (Blueprint $table) {
             $table->id();
+            $table->string('code')->unique();
+            $table->string('name');
+            $table->text('description')->nullable();
+            $table->string('regime_type')->nullable();
+            $table->string('calc_mode')->default('%');
+            $table->decimal('value', 10, 4)->default(0);
+            $table->string('account_code')->nullable();
+            $table->boolean('active')->default(true);
             $table->blameable();
             $table->timestamps();
             $table->softDeletes();

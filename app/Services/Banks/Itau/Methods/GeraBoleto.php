@@ -2,16 +2,14 @@
 
 namespace App\Services\Banks\Itau\Methods;
 
-use App\Logs\Logging;
-
 trait GeraBoleto
 {
 
-    private static string $endPoint;
+    private string $endPoint;
 
-    public static function gerar(array $data): array
+    public function gerar(array $data): array
     {
-        self::$endPoint = '/boletos';
+        $this->endPoint = '/boletos';
 
         $message = json_encode(
             [
@@ -74,12 +72,8 @@ trait GeraBoleto
             ]
         );
 
-        return tap(
-            parent::$http->path(self::$endPoint, $message)
-                ->throw()
-                ->toArray(),
-            fn ($response) => Logging::logResponse($response, 'itau', 'bank')
-    );
+        return parent::$request->path($this->endPoint, $message);
+
     }
 
 }

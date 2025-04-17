@@ -5,7 +5,7 @@ namespace App\Services\Banks\Itau;
 use App\Models\Bank;
 use App\Models\Bill;
 use App\Models\Customer;
-use App\Services\Utils\Banks\Factory\BankFactory;
+use App\Factories\BankFactory;
 
 class Exemple
 {
@@ -17,7 +17,7 @@ class Exemple
             'customer' => Customer::find(1)->first(),
             'billing' => Bill::find(1)->first(),
         ];
-        $bank = BankFactory::make(341, $data);
+        $bank = BankFactory::make($data);
         $response = $bank->consultarBoleto(
             [
                 'boleto_number' => '12345678901234567890123456789012345678901234',

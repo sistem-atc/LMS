@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Utils\Towns\Helpers;
+namespace App\Helpers;
 
 use DOMDocument;
 use App\Models\Branch;

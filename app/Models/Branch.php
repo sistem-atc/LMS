@@ -24,30 +24,6 @@ class Branch extends Model implements Auditable
 
     use \OwenIt\Auditing\Auditable;
 
-    protected $fillable = [
-        'abbreviation',
-        'name',
-        'cnpj',
-        'type_branche',
-        'branch_matriz',
-        'municipal_registration',
-        'state_registration',
-        'postal_code',
-        'street',
-        'complement',
-        'number',
-        'district',
-        'city',
-        'state',
-        'ibge',
-        'gia',
-        'ddd',
-        'siafi',
-        'certificatePFX',
-        'password_certificate',
-        'phantasy_name',
-    ];
-
     protected $casts = [
         'type_branch' => TypeBranchEnum::class,
     ];

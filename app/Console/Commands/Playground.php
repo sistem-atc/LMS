@@ -11,7 +11,6 @@ class Playground extends Command
 
     public function handle(): int
     {
-
         return Command::SUCCESS;
     }
 }

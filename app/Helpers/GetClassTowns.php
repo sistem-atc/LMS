@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Utils\Towns\Helpers;
+namespace App\Helpers;
 
 use ReflectionClass;
 use Illuminate\Support\Facades\File;

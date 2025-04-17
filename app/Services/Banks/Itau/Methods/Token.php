@@ -8,12 +8,12 @@ use Illuminate\Support\Facades\Storage;
 trait Token
 {
 
-    public static function refreshToken($data): void
+    public function refreshToken($data): void
     {
 
         $token = Cache::get('token');
 
-        if (!$token){
+        if (!$token) {
 
             $body = 'grant_type=client_credentials&client_id=' . $data['client_id'] . '&client_secret=' . $data['client_secret'];
 
@@ -42,7 +42,8 @@ trait Token
             $explode_id = json_decode($response, true);
             $token = cache::put('token', $explode_id['access_token'], $explode_id['expires_in']);
 
-        };
+        }
+        ;
 
     }
 }

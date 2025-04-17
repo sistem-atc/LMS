@@ -9,8 +9,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -42,7 +41,6 @@ return new class extends Migration
             $table->string('shipping_type');
             $table->dateTime('delivery_date_prevision')->nullable();
             $table->foreignIdFor(Lot::class, 'lot_id')->nullable()->constrained()->onDelete('cascade');
-            $table->date('delivery_date')->nullable();
             $table->date('delivery_time_real')->nullable();
             $table->boolean('doct_blocked');
             $table->foreignIdFor(Customer::class, 'sender_customer_id');

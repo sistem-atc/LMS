@@ -205,9 +205,9 @@ class DocumentFiscalCustomerResource extends Resource
     {
         return [
             'index' => Pages\ListDocumentFiscalCustomers::route('/'),
-            'create' => Pages\CreateDocumentFiscalCustomer::route('/create'),
+            //'create' => Pages\CreateDocumentFiscalCustomer::route('/create'),
             'view' => Pages\ViewDocumentFiscalCustomer::route('/{record}'),
-            'edit' => Pages\EditDocumentFiscalCustomer::route('/{record}/edit'),
+            //'edit' => Pages\EditDocumentFiscalCustomer::route('/{record}/edit'),
         ];
     }
 

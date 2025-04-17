@@ -16,6 +16,8 @@ class SuportFunctions
 {
     public static function generate(Model $record): Notification
     {
+        dd($record);
+
         $allDocuments = DocumentFiscalCustomer::where('lot_id', $record->id)->get();
 
         if ($record->status == LotEnum::DIGITAÇÃO->getLabel()) {
@@ -30,12 +32,15 @@ class SuportFunctions
 
             $cteNumber = TransportDocument::create([
                 'branch_id' => $record['branche_id'],
+                'number',
                 'serie' => 904, //Definir modo para parametrizar a serie por filial ou por modo de emissão
                 'emission_date' => Carbon::now(),
-                'weight' => $allDocuments->sum('pesoB'),
-                'weight_m3' => $allDocuments->sum('pesoB'),
-                'weight_charged' => $allDocuments->sum('pesoB'),
-                'm3' => $allDocuments->sum('pesoB'),
+                'total_weight' => $allDocuments->sum('pesoB'),
+                'total_weight_m3' => $allDocuments->sum('pesoB'),
+                'total_weight_charged' => $allDocuments->sum('pesoB'),
+                'total_m3' => $allDocuments->sum('pesoB'),
+                'total_volumes',
+                'type_document',
                 'shipping_value',
                 'tax_amount',
                 'total_value',
@@ -48,18 +53,29 @@ class SuportFunctions
                 'shipping_table',
                 'shipping_table_order',
                 'shipping_type',
-                'insurance',
                 'insurance_contract',
-                'delivery_time',
+                'delivery_date_prevision',
                 'doct_blocked' => false,
                 'sender_customer_id' => $allDocuments->first()['sender_customer_id'],
                 'recipient_customer_id' => $allDocuments->first()['recipient_customer_id'],
+                'consignee_customer_id',
                 'debtor_customer_id' => $allDocuments->first()['sender_customer_id'], //Se modFrete = 0 então sender, contratio recipient
                 'customer_calculation_id' => $allDocuments->first()['sender_customer_id'],
                 'delivery_route_id',
-                'delivery_date',
+                'delivery_time_real',
                 'cte_key',
                 'cost_center_id',
+                'role_fiscal',
+                'cte_situation',
+                'last_sefaz_return_id',
+                'cte_protocol',
+                'cte_sefaz_return',
+                'ambient_sefaz',
+                'number_nfse',
+                'verification_code',
+                'emission_date_nfse',
+                'cotation_id',
+                'bill',
             ]);
 
             $record->status = LotEnum::CALCULADO;
@@ -96,7 +112,8 @@ class SuportFunctions
             $doc = DocumentFiscalCustomer::where('id', $item)->first();
             $subTotal = $doc['vNF'];
             $total += $subTotal;
-        };
+        }
+        ;
 
         return $total;
     }
@@ -110,7 +127,8 @@ class SuportFunctions
             $doc = DocumentFiscalCustomer::where('id', $item)->first();
             $subTotal = $doc['pesoB'];
             $weightTotal += $subTotal;
-        };
+        }
+        ;
         //Criar Regra para calcular de acordo com a tabela, ou em caso de ausencia na tabela frete cheio
         return $weightTotal * 0.3;
     }
@@ -124,7 +142,8 @@ class SuportFunctions
             $doc = DocumentFiscalCustomer::where('id', $item)->first();
             $subTotal = $doc['pesoB'];
             $weightTotal += $subTotal;
-        };
+        }
+        ;
 
         return $weightTotal;
     }
@@ -136,7 +155,8 @@ class SuportFunctions
 
         foreach ($items as $key => $item) {
             $qtd += 1;
-        };
+        }
+        ;
 
         return $qtd;
     }
@@ -145,7 +165,7 @@ class SuportFunctions
     {
 
         if ($operation == 'view') {
-            if (! is_null($record)) {
+            if (!is_null($record)) {
                 if ($record->exists) {
                     return DocumentFiscalCustomer::where('lot_id', '=', $record->id)
                         ->get()
@@ -154,7 +174,7 @@ class SuportFunctions
             }
         }
 
-        if (! is_null($record)) {
+        if (!is_null($record)) {
             if ($record->exists) {
                 return DocumentFiscalCustomer::where('lot_id', '=', $record->id)
                     ->orWhere('lot_id', null)
@@ -170,7 +190,7 @@ class SuportFunctions
 
     public static function defaultOptionsCheckBoxList(?Lot $record): ?Collection
     {
-        if (! is_null($record)) {
+        if (!is_null($record)) {
             if ($record->exists) {
                 return $record->documentFiscalCustomer->pluck('id')->toArray();
             }

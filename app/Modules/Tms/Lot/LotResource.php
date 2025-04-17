@@ -48,8 +48,8 @@ class LotResource extends Resource
                                 ->preload()
                                 ->options(
                                     fn() => Filament::auth()->user()->branch_logged['type_branche'] === 'Matriz'
-                                        ? Branch::all()->pluck('abbreviation', 'id')->toArray()
-                                        : Branch::where('id', '=', Filament::auth()->user()->branch_logged['id'])
+                                    ? Branch::all()->pluck('abbreviation', 'id')->toArray()
+                                    : Branch::where('id', '=', Filament::auth()->user()->branch_logged['id'])
                                         ->pluck('abbreviation', 'id')->toArray()
                                 ),
                             TextInput::make('collection_request')
@@ -132,15 +132,16 @@ class LotResource extends Resource
                         ->label('Estornar Lote')
                         ->accessSelectedRecords()
                         ->requiresConfirmation()
-                        ->icon('tabler-alert-square-rounded-filled')
-                        ->modalIcon('tabler-alert-square-rounded-filled')
+                        ->icon('heroicon-o-exclamation-triangle')
+                        ->modalIcon('heroicon-o-exclamation-triangle')
                         ->color('danger')
                         ->modalHeading('Estornar lote')
                         ->modalDescription('Lote só poderá ser estornado caso não tenha um CT-e vinculado.')
                         ->modalSubmitActionLabel('Sim, estornar!')
                         ->action(function (Model $record) {
                             Pages\SuportFunctions::reverse($record);
-                        }),
+                        })
+                        ->disabled(true),
                 ])->iconButton(),
             ])
             ->bulkActions([

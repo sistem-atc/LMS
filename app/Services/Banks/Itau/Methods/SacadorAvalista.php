@@ -2,17 +2,15 @@
 
 namespace App\Services\Banks\Itau\Methods;
 
-use App\Logs\Logging;
-
 trait SacadorAvalista
 {
 
-    private static string $endPoint;
+    private string $endPoint;
 
-    public static function alterarSacadorAvalista(array $data): array
+    public function alterarSacadorAvalista(array $data): array
     {
 
-        self::$endPoint = '/boletos/' . $data['id_boleto'] . '/sacador_avalista';
+        $this->endPoint = '/boletos/' . $data['id_boleto'] . '/sacador_avalista';
 
         $message = json_encode(
             [
@@ -35,12 +33,7 @@ trait SacadorAvalista
             ]
         );
 
-        return tap(
-            parent::$http->path(self::$endPoint, $message)
-                ->throw()
-                ->toArray(),
-            fn ($response) => Logging::logResponse($response, 'itau', 'bank')
-    );
+        return parent::$http->path(self::$endPoint, $message);
 
     }
 

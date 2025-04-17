@@ -15,7 +15,7 @@ class GroupCustomerPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('view_any_app::modules::register::group::customer::group::customer');
+        return $user->can('view_any_app::modules::finance::register::group::customer::group::customer');
     }
 
     /**
@@ -23,7 +23,7 @@ class GroupCustomerPolicy
      */
     public function view(User $user, GroupCustomer $groupCustomer): bool
     {
-        return $user->can('view_app::modules::register::group::customer::group::customer');
+        return $user->can('view_app::modules::finance::register::group::customer::group::customer');
     }
 
     /**
@@ -31,7 +31,7 @@ class GroupCustomerPolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('create_app::modules::register::group::customer::group::customer');
+        return $user->can('create_app::modules::finance::register::group::customer::group::customer');
     }
 
     /**
@@ -39,7 +39,7 @@ class GroupCustomerPolicy
      */
     public function update(User $user, GroupCustomer $groupCustomer): bool
     {
-        return $user->can('update_app::modules::register::group::customer::group::customer');
+        return $user->can('update_app::modules::finance::register::group::customer::group::customer');
     }
 
     /**
@@ -47,7 +47,7 @@ class GroupCustomerPolicy
      */
     public function delete(User $user, GroupCustomer $groupCustomer): bool
     {
-        return $user->can('delete_app::modules::register::group::customer::group::customer');
+        return $user->can('delete_app::modules::finance::register::group::customer::group::customer');
     }
 
     /**
@@ -55,7 +55,7 @@ class GroupCustomerPolicy
      */
     public function deleteAny(User $user): bool
     {
-        return $user->can('delete_any_app::modules::register::group::customer::group::customer');
+        return $user->can('delete_any_app::modules::finance::register::group::customer::group::customer');
     }
 
     /**
@@ -63,7 +63,7 @@ class GroupCustomerPolicy
      */
     public function forceDelete(User $user, GroupCustomer $groupCustomer): bool
     {
-        return $user->can('force_delete_app::modules::register::group::customer::group::customer');
+        return $user->can('force_delete_app::modules::finance::register::group::customer::group::customer');
     }
 
     /**
@@ -71,7 +71,7 @@ class GroupCustomerPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_app::modules::register::group::customer::group::customer');
+        return $user->can('force_delete_any_app::modules::finance::register::group::customer::group::customer');
     }
 
     /**
@@ -79,7 +79,7 @@ class GroupCustomerPolicy
      */
     public function restore(User $user, GroupCustomer $groupCustomer): bool
     {
-        return $user->can('restore_app::modules::register::group::customer::group::customer');
+        return $user->can('restore_app::modules::finance::register::group::customer::group::customer');
     }
 
     /**
@@ -87,7 +87,7 @@ class GroupCustomerPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('restore_any_app::modules::register::group::customer::group::customer');
+        return $user->can('restore_any_app::modules::finance::register::group::customer::group::customer');
     }
 
     /**
@@ -95,7 +95,7 @@ class GroupCustomerPolicy
      */
     public function replicate(User $user, GroupCustomer $groupCustomer): bool
     {
-        return $user->can('replicate_app::modules::register::group::customer::group::customer');
+        return $user->can('replicate_app::modules::finance::register::group::customer::group::customer');
     }
 
     /**
@@ -103,6 +103,6 @@ class GroupCustomerPolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('reorder_app::modules::register::group::customer::group::customer');
+        return $user->can('reorder_app::modules::finance::register::group::customer::group::customer');
     }
 }

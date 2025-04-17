@@ -15,7 +15,7 @@ class NaturePolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('view_any_app::modules::register::nature::nature');
+        return $user->can('view_any_app::modules::accounting::register::nature::nature');
     }
 
     /**
@@ -23,7 +23,7 @@ class NaturePolicy
      */
     public function view(User $user, Nature $nature): bool
     {
-        return $user->can('view_app::modules::register::nature::nature');
+        return $user->can('view_app::modules::accounting::register::nature::nature');
     }
 
     /**
@@ -31,7 +31,7 @@ class NaturePolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('create_app::modules::register::nature::nature');
+        return $user->can('create_app::modules::accounting::register::nature::nature');
     }
 
     /**
@@ -39,7 +39,7 @@ class NaturePolicy
      */
     public function update(User $user, Nature $nature): bool
     {
-        return $user->can('update_app::modules::register::nature::nature');
+        return $user->can('update_app::modules::accounting::register::nature::nature');
     }
 
     /**
@@ -47,7 +47,7 @@ class NaturePolicy
      */
     public function delete(User $user, Nature $nature): bool
     {
-        return $user->can('delete_app::modules::register::nature::nature');
+        return $user->can('delete_app::modules::accounting::register::nature::nature');
     }
 
     /**
@@ -55,7 +55,7 @@ class NaturePolicy
      */
     public function deleteAny(User $user): bool
     {
-        return $user->can('delete_any_app::modules::register::nature::nature');
+        return $user->can('delete_any_app::modules::accounting::register::nature::nature');
     }
 
     /**
@@ -63,7 +63,7 @@ class NaturePolicy
      */
     public function forceDelete(User $user, Nature $nature): bool
     {
-        return $user->can('force_delete_app::modules::register::nature::nature');
+        return $user->can('force_delete_app::modules::accounting::register::nature::nature');
     }
 
     /**
@@ -71,7 +71,7 @@ class NaturePolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_app::modules::register::nature::nature');
+        return $user->can('force_delete_any_app::modules::accounting::register::nature::nature');
     }
 
     /**
@@ -79,7 +79,7 @@ class NaturePolicy
      */
     public function restore(User $user, Nature $nature): bool
     {
-        return $user->can('restore_app::modules::register::nature::nature');
+        return $user->can('restore_app::modules::accounting::register::nature::nature');
     }
 
     /**
@@ -87,7 +87,7 @@ class NaturePolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('restore_any_app::modules::register::nature::nature');
+        return $user->can('restore_any_app::modules::accounting::register::nature::nature');
     }
 
     /**
@@ -95,7 +95,7 @@ class NaturePolicy
      */
     public function replicate(User $user, Nature $nature): bool
     {
-        return $user->can('replicate_app::modules::register::nature::nature');
+        return $user->can('replicate_app::modules::accounting::register::nature::nature');
     }
 
     /**
@@ -103,6 +103,6 @@ class NaturePolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('reorder_app::modules::register::nature::nature');
+        return $user->can('reorder_app::modules::accounting::register::nature::nature');
     }
 }

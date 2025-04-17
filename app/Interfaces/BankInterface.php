@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Interface;
+namespace App\Interfaces;
 
 interface BankInterface
 {
@@ -12,5 +12,6 @@ interface BankInterface
     public function alterarVecimento(array $data): object;
     public function makeOurNumber(array $data): string;
     public function makeBarCode(array $data): string;
+    public function getHeaders(): array;
 
 }

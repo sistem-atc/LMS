@@ -45,10 +45,9 @@ class SuportFunctions
 
     public static function ImportXml(array $data): Notification
     {
-
         foreach ($data['attachment'] as $xml) {
 
-            if (! file_exists(Storage::path($xml))) {
+            if (!file_exists(Storage::path($xml))) {
                 self::$msg[] = 'Erro ao abrir o XML: ' . $xml;
                 goto nextfile;
             }
@@ -79,13 +78,12 @@ class SuportFunctions
                 goto nextfile;
             }
 
-            self::StoreDocumentFiscalCustomer($xmlarray, $xmlString);
+            self::StoreDocumentFiscalCustomer($xmlarray, Storage::path($xml));
 
             self::$msg[] = 'Importado XML Chave: ' . Arr::get($xmlarray, 'protNFe.infProt.chNFe');
 
             nextfile:
 
-            Storage::delete($xml);
         }
 
         $mountnotify = Notification::make()
@@ -98,7 +96,7 @@ class SuportFunctions
         return $mountnotify;
     }
 
-    public static function StoreDocumentFiscalCustomer(array $data, string $xmlString): void
+    public static function StoreDocumentFiscalCustomer(array $data, string $pathxml): void
     {
 
         $storeData = [
@@ -129,7 +127,7 @@ class SuportFunctions
             'pesoB' => Arr::get($data, 'NFe.infNFe.transp.vol.pesoB'),
             'infAdic' => Arr::get($data, 'NFe.infNFe.infAdic.infAdFisco'),
             'chNFe' => Arr::get($data, 'protNFe.infProt.chNFe'),
-            'xml' => $xmlString,
+            'xml' => $pathxml,
         ];
 
         DocumentFiscalCustomer::create($storeData);
@@ -141,7 +139,7 @@ class SuportFunctions
         $uppercase = ucfirst($key);
         $dataCep = ConsultaCep::consultaCEP(Arr::get($xmlArray, "NFe.infNFe.{$key}.ender{$uppercase}.CEP"));
 
-        if (! Arr::has($dataCep, 'error')) {
+        if (!isset($dataCep->error)) {
 
             $fantasyname = Arr::get($xmlArray, "NFe.infNFe.{$key}.xFant") ? Arr::get($xmlArray, "NFe.infNFe.{$key}.xFant") : Arr::get($xmlArray, "NFe.infNFe.{$key}.xNome");
             $typePerson = strlen(Arr::get($xmlArray, "NFe.infNFe.{$key}.CNPJ")) === 14 ? 'J' : 'F';
@@ -153,16 +151,16 @@ class SuportFunctions
                 'type_person' => Arr::get($xmlArray, "NFe.infNFe.{$key}.CNPJ"),
                 'fantasy_name' => $fantasyname,
                 'postal_code' => Arr::get($xmlArray, "NFe.infNFe.{$key}.ender{$uppercase}.CEP"),
-                'street' => $dataCep['logradouro'],
-                'complement' => $dataCep['complemento'],
+                'street' => $dataCep->logradouro,
+                'complement' => $dataCep->complemento,
                 'number' => Arr::get($xmlArray, "NFe.infNFe.{$key}.ender{$uppercase}.nro"),
-                'district' => $dataCep['bairro'],
-                'city' => $dataCep['localidade'],
-                'state' => $dataCep['uf'],
-                'ibge' => $dataCep['ibge'],
-                'gia' => $dataCep['gia'],
-                'ddd' => $dataCep['ddd'],
-                'siafi' => $dataCep['siafi'],
+                'district' => $dataCep->bairro,
+                'city' => $dataCep->localidade,
+                'state' => $dataCep->uf,
+                'ibge' => $dataCep->ibge,
+                'gia' => $dataCep->gia,
+                'ddd' => $dataCep->ddd,
+                'siafi' => $dataCep->siafi,
                 'phone_number' => static::formatPhone(Arr::get($xmlArray, "NFe.infNFe.{$key}.ender{$uppercase}.fone")),
                 'state_registration' => Arr::get($xmlArray, "NFe.infNFe.{$key}.IE"),
                 'complete' => false,

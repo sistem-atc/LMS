@@ -5,40 +5,17 @@ FLUXO DE ADMISSÃO DE FUNCIONÁRIOS
     Solicitação de nova contratação (gerente requisita via sistema)
     Aprovação da vaga (diretoria ou financeiro)
 2. Coleta de Documentos do Candidato
-    Documentos pessoais (RG, CPF, CNH, etc.)
-    Comprovante de residência
-    Título de eleitor
-    Carteira de trabalho (CTPS)
-    PIS/NIT
-    Certificados (quando aplicável)
-    Foto 3x4
-    Documentação de dependentes (para IR e benefícios)
+    Comprovante de residência => Incluir os anexos
+    Foto 3x4 => Incluir Upload de Foto
+    Documentação de dependentes (para IR e benefícios) => Validar onde colocar
 3. Cadastro no ERP
-    Dados pessoais
-        Nome completo
-        Data de nascimento
-        Sexo
-        Nacionalidade
-        Estado civil
-    Dados de contato
-        Endereço completo
-        Telefones
-        E-mail
-    Dados profissionais
-        Cargo
-        Setor/departamento
-        Salário
-        Jornada de trabalho
-        Tipo de contratação (CLT, estagiário, PJ, etc.)
-        Data de admissão
-    Dados bancários (para folha de pagamento)
-    Dados para benefícios (vale-transporte, vale-refeição, plano de saúde)
+    Dados bancários (para folha de pagamento) => Melhorar
 4. Integrações com Outros Módulos
     Geração automática de contrato
     Cadastro na folha de pagamento
     Integração com ponto eletrônico
-    Ativação de e-mail corporativo e acessos ao sistema
-    Registro no eSocial (caso obrigatório)
+    Ativação de e-mail corporativo e acessos ao sistema => Validar Notificação ao panel Admin
+    Registro no eSocial (caso obrigatório) => Iniciar a construção da passagem de parametros
 5. Validação e Aprovação
     Revisão por analista de RH
     Aprovação final do gestor
@@ -50,7 +27,6 @@ FLUXO DE ADMISSÃO DE FUNCIONÁRIOS
 7. Finalização
     Envio de boas-vindas e integração (onboarding)
     Registro do funcionário como ativo no sistema
-    Notificação para TI, Facilities e demais setores
 
 AJUSTES NO PAINEL
 ## Melhorias

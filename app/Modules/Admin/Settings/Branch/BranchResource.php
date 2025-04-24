@@ -141,6 +141,11 @@ class BranchResource extends Resource
                         Hidden::make('ddd'),
                         Hidden::make('siafi'),
                     ])->columns(3),
+                Section::make()
+                    ->schema([
+                        TextInput::make('serieRPS')->label('Serie RPS'),
+                        TextInput::make('serieCTe')->label('Serie CT-e')
+                    ]),
             ]);
     }
 

@@ -149,7 +149,7 @@ class DocumentFiscalCustomerResource extends Resource
                             ->columnSpanFull(),
                         FileUpload::make('xml')
                             ->label('Arquivo XML')
-                            ->storeFiles(false)
+                            ->directory('xml_import')
                             ->minFiles(1)
                             ->maxFiles(1)
                     ]),

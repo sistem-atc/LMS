@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Modules\Tms\Register\FreightTable;
+namespace App\Modules\Sales\Register\FreightTable;
 
 use Filament\Tables;
 use App\Models\Route;
@@ -18,7 +18,7 @@ use Filament\Forms\Components\DatePicker;
 use Illuminate\Database\Eloquent\Builder;
 use Leandrocfe\FilamentPtbrFormFields\Money;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Modules\Tms\Register\FreightTable\FreightTableResource\Pages;
+use App\Modules\Sales\Register\FreightTable\FreightTableResource\Pages;
 
 class FreightTableResource extends Resource
 {

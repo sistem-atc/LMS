@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Modules\Tms\Register\FreightTable\FreightTableResource\Pages;
+namespace App\Modules\Sales\Register\FreightTable\FreightTableResource\Pages;
 
 use Filament\Resources\Pages\CreateRecord;
-use App\Modules\Tms\Register\FreightTable\FreightTableResource;
+use App\Modules\Sales\Register\FreightTable\FreightTableResource;
 
 class CreateFreightTable extends CreateRecord
 {

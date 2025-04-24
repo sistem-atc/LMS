@@ -3,13 +3,14 @@
 namespace App\Models;
 
 use App\Traits\Blameable;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Model;
 use OwenIt\Auditing\Contracts\Auditable;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Customer extends Model implements Auditable
 {
@@ -103,5 +104,10 @@ class Customer extends Model implements Auditable
     public function document_fiscal_customer(): HasMany
     {
         return $this->HasMany(DocumentFiscalCustomer::class);
+    }
+
+    public function freight_table(): BelongsTo
+    {
+        return $this->BelongsTo(FreightTable::class);
     }
 }

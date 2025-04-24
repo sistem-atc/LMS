@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Modules\Tms\Register\FreightTable\FreightTableResource\Pages;
+namespace App\Modules\Sales\Register\FreightTable\FreightTableResource\Pages;
 
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
-use App\Modules\Tms\Register\FreightTable\FreightTableResource;
+use App\Modules\Sales\Register\FreightTable\FreightTableResource;
 
 class EditFreightTable extends EditRecord
 {

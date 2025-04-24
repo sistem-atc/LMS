@@ -48,6 +48,7 @@ class CustomerFactory extends Factory
             'mail_operational' => fake()->freeEmail(),
             'mail_financial' => fake()->safeEmail(),
             'group_customer_id' => fake()->numberBetween(1, 50),
+            'freight_table_id' => FreightTableFactory::factory(),
             'complete' => fake()->boolean(),
         ];
     }

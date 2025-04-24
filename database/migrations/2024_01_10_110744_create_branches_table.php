@@ -5,8 +5,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -33,6 +32,8 @@ return new class extends Migration
             $table->string('gia')->nullable();
             $table->string('ddd')->nullable();
             $table->string('siafi')->nullable();
+            $table->string('serieRPS')->nullable();
+            $table->string('serieCTe')->nullable();
             $table->string('certificatePFX')->nullable();
             $table->string('password_certificate')->nullable();
             $table->blameable();

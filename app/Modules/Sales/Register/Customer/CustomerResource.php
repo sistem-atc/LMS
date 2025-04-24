@@ -95,6 +95,14 @@ class CustomerResource extends Resource
                     TextInput::make('fantasy_name')
                         ->label('Nome Fantasia'),
                 ])->columns(2),
+            Section::make('')
+                ->schema([
+                    Select::make('freight_table_id')
+                        ->label('Tabela de Frete')
+                        ->searchable()
+                        ->preload()
+                        ->relationship('freight_table', 'name'),
+                ]),
         ];
     }
 
@@ -123,12 +131,15 @@ class CustomerResource extends Resource
                                     'siafi' => 'siafi',
                                 ]
                             ),
-                        TextInput::make('complement')->label('Complemento'),
+                        TextInput::make('complement')
+                            ->label('Complemento'),
                     ])->columns(2),
                     Grid::make('')
                         ->schema([
-                            TextInput::make('street')->label('Rua'),
-                            TextInput::make('number')->label('Número'),
+                            TextInput::make('street')
+                                ->label('Rua'),
+                            TextInput::make('number')
+                                ->label('Número'),
                         ])->columns(2),
                     TextInput::make('district')->label('Bairro'),
                     TextInput::make('city')->label('Cidade'),

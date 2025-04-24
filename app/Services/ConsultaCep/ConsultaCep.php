@@ -3,37 +3,54 @@
 namespace App\Services\ConsultaCep;
 
 use Exception;
-use Illuminate\Http\Client\Pool;
-use Illuminate\Support\Collection;
+use GuzzleHttp\Promise\Utils;
 use Illuminate\Support\Facades\Http;
 use App\Services\ConsultaCep\Entities\MapCep;
 
 class ConsultaCep
 {
 
-    public static function consultaCEP($cep): object
+    public static function consultaCEP($cep): MapCep
     {
+
+        $clients = [
+            'viacep' => 'https://viacep.com.br/ws/' . $cep . '/json/',
+            'brasilaberto' => 'https://api.brasilaberto.com/v1/zipcode/' . $cep,
+            'opencep' => 'https://opencep.com.br/v1/' . $cep,
+            'brasilapi' => 'https://brasilapi.com.br/api/cep/v2/' . $cep,
+            'apicep' => 'https://cdn.apicep.com/file/apicep/' . substr_replace($cep, '-', 5, 0) . '.json',
+        ];
+
         try {
-            return
-                self::transform(
-                    Http::pool(fn (Pool $pool) => [
-                        $pool->as('viacep')->get('viacep.com.br/ws/' . $cep . '/json/'),
-                        $pool->as('brasilaberto')->get('api.brasilaberto.com/v1/zipcode/' . $cep),
-                        $pool->as('opencep')->get('opencep.com.br/v1/' . $cep),
-                        $pool->as('brasilapi')->get('brasilapi.com.br/api/cep/v2/' . $cep),
-                        $pool->as('apicep')->get('cdn.apicep.com/file/apicep/' . substr_replace($cep, '-', 5, 0) . '.json'),
-                    ])
-                );
+            $promises = [];
+            foreach ($clients as $name => $url) {
+                $promises[$name] = Http::async()->get($url);
+            }
+
+            $response = Utils::any($promises)->wait();
+
+            foreach ($promises as $name => $promise) {
+                if ($promise->getState() === 'fulfilled') {
+                    $successfulResponse = $promise->wait();
+                    if ($successfulResponse->successful()) {
+                        return self::transform($successfulResponse->json());
+                    }
+                }
+            }
         } catch (Exception $e) {
-            return (object) [
+            return self::transform([
                 'error' => 'Erro ao consultar o CEP: ' . $e->getMessage(),
-            ];
+            ]);
         }
+
+        return self::transform([
+            'error' => 'Consulta não efetuada.',
+        ]);
+
     }
 
-    private static function transform(mixed $json): Collection
+    private static function transform(mixed $json): MapCep
     {
-        return collect($json)
-                ->map(fn ($items) => new MapCep($items));
+        return new MapCep($json);
     }
 }

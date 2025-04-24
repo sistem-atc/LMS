@@ -15,7 +15,7 @@ class BranchSeeder extends Seeder
     {
 
         Branch::create([
-            'abbreviation' => '01001',
+            'abbreviation' => 'SAO',
             'name' => 'G2L LOGISTICA S.A',
             'phantasy_name' => 'G2L LOGISTICA S.A',
             'cnpj' => '29081265000143',
@@ -33,6 +33,8 @@ class BranchSeeder extends Seeder
             'gia' => '2069',
             'ddd' => '11',
             'siafi' => '6213',
+            'serieRPS' => 'A',
+            'serieCTe' => '1',
         ]);
 
         Branch::factory()->count(1)->create();

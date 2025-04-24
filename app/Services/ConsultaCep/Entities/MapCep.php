@@ -5,22 +5,24 @@ namespace App\Services\ConsultaCep\Entities;
 class MapCep
 {
 
+    public ?string $error;
     public ?string $cep;
     public ?string $logradouro;
     public ?string $complemento;
     public ?string $unidade;
     public ?string $bairro;
-    public ?array $localidade;
-    public ?array $uf;
-    public ?array $estado;
-    public ?array $regiao;
-    public ?array $ibge;
-    public ?array $gia;
-    public ?array $ddd;
-    public ?array $siafi;
+    public ?string $localidade;
+    public ?string $uf;
+    public ?string $estado;
+    public ?string $regiao;
+    public ?string $ibge;
+    public ?string $gia;
+    public ?string $ddd;
+    public ?string $siafi;
 
-    public function __construct(array $data)
+    public function __construct($data)
     {
+        $this->error = data_get($data, 'error');
         $this->cep = data_get($data, 'cep');
         $this->logradouro = data_get($data, 'logradouro');
         $this->complemento = data_get($data, 'complemento');

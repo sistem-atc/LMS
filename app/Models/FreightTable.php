@@ -2,11 +2,14 @@
 
 namespace App\Models;
 
+use App\Models\Customer;
 use App\Traits\Blameable;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use OwenIt\Auditing\Contracts\Auditable;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class FreightTable extends Model implements Auditable
 {
@@ -27,4 +30,9 @@ class FreightTable extends Model implements Auditable
         'routes' => 'array',
         'is_active' => 'boolean',
     ];
+
+    public function customer(): HasMany
+    {
+        return $this->HasMany(Customer::class);
+    }
 }

@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Modules\Tms\Register\FreightTable\FreightTableResource\Pages;
+namespace App\Modules\Sales\Register\FreightTable\FreightTableResource\Pages;
 
 use App\Actions\FilamentActions\FavoriteResourceAction;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
-use App\Modules\Tms\Register\FreightTable\FreightTableResource;
+use App\Modules\Sales\Register\FreightTable\FreightTableResource;
 
 class ListFreightTables extends ListRecords
 {

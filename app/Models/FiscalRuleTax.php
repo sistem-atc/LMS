@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class FiscalRuleTax extends Model
 {
-    /** @use HasFactory<\Database\Factories\FiscalRUleTaxesFactory> */
+    /** @use HasFactory<\Database\Factories\FiscalRuleTaxFactory> */
     use HasFactory;
 
     protected $casts = [

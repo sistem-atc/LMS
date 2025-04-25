@@ -3,11 +3,11 @@
 namespace Database\Factories;
 
 use App\Models\FiscalRule;
-use App\Models\FiscalRuleTaxes;
+use App\Models\FiscalRuleTax;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<FiscalRuleTaxes>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<FiscalRuleTax>
  */
 class FiscalRuleTaxFactory extends Factory
 {

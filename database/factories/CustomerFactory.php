@@ -2,8 +2,9 @@
 
 namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
+use App\Models\FreightTable;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Customer>
@@ -48,7 +49,7 @@ class CustomerFactory extends Factory
             'mail_operational' => fake()->freeEmail(),
             'mail_financial' => fake()->safeEmail(),
             'group_customer_id' => fake()->numberBetween(1, 50),
-            'freight_table_id' => FreightTableFactory::factory(),
+            'freight_table_id' => FreightTable::factory(),
             'complete' => fake()->boolean(),
         ];
     }

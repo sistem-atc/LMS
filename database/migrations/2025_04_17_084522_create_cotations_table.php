@@ -27,7 +27,9 @@ return new class extends Migration {
             $table->decimal('base_km', 10, 2)->nullable();
             $table->decimal('price_per_km', 10, 2)->nullable();
             $table->string('mode')->default('simulation');
+            $table->blameable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

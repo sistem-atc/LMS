@@ -2,16 +2,16 @@
 
 namespace Database\Seeders;
 
-use App\Models\FreightTable;
+use App\Models\Driver;
 use Illuminate\Database\Seeder;
 
-class FreightTableSeeder extends Seeder
+class DriverSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        FreightTable::factory(5)->create();
+        Driver::factory(10)->create();
     }
 }

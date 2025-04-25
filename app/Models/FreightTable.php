@@ -8,21 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 use OwenIt\Auditing\Contracts\Auditable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class FreightTable extends Model implements Auditable
 {
-    use HasFactory, SoftDeletes, Blameable;
+    use HasFactory;
+    use SoftDeletes;
+    use Blameable;
     use \OwenIt\Auditing\Auditable;
-
-    protected $fillable = [
-        'name',
-        'start_date',
-        'end_date',
-        'routes',
-        'is_active',
-    ];
 
     protected $casts = [
         'start_date' => 'date',

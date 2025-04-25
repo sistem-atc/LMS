@@ -54,7 +54,13 @@ return [
     'bank' => [
         'driver' => ['single'],
         'path' => storage_path('logs/banks.log'),
-        'level' => env('info'),
+        'level' => 'info',
+    ],
+
+    'xml' => [
+        'driver' => 'single',
+        'path' => storage_path('logs/clear_xml.log'),
+        'level' => 'info',
     ],
 
     'channels' => [
@@ -95,7 +101,7 @@ return [
             'handler_with' => [
                 'host' => env('PAPERTRAIL_URL'),
                 'port' => env('PAPERTRAIL_PORT'),
-                'connectionString' => 'tls://'.env('PAPERTRAIL_URL').':'.env('PAPERTRAIL_PORT'),
+                'connectionString' => 'tls://' . env('PAPERTRAIL_URL') . ':' . env('PAPERTRAIL_PORT'),
             ],
             'processors' => [PsrLogMessageProcessor::class],
         ],

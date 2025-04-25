@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Modules\Tms\Vehicle\VehicleResource\Pages;
+namespace App\Modules\Tms\Register\Vehicle\VehicleResource\Pages;
 
-use App\Modules\Tms\Vehicle\VehicleResource;
+use App\Modules\Tms\Register\Vehicle\VehicleResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 

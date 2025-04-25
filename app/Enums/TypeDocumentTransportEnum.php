@@ -10,6 +10,7 @@ enum TypeDocumentTransportEnum: int
     case RPS_s = 4;
     case CT_e_Devolucao = 5;
     case CT_e_Subtituição = 6;
+    case CUPOM = 7;
 
     public function getLabel(): int
     {
@@ -20,6 +21,7 @@ enum TypeDocumentTransportEnum: int
             self::RPS_s => 4,
             self::CT_e_Devolucao => 5,
             self::CT_e_Subtituição => 6,
+            self::CUPOM => 7,
         };
     }
 }

@@ -1,16 +1,21 @@
 <?php
 
-namespace App\Modules\Tms\Driver;
+namespace App\Modules\Tms\Register\Driver;
 
-use App\Modules\Tms\Driver\DriverResource\Pages;
-use App\Models\Driver;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use App\Models\Driver;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use App\Enums\DriverStatus;
+use App\Enums\LicenseCategory;
+use Filament\Resources\Resource;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\DatePicker;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Modules\Tms\Register\Driver\DriverResource\Pages;
 
 class DriverResource extends Resource
 {
@@ -22,29 +27,41 @@ class DriverResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
+                TextInput::make('name')
+                    ->label('Nome')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('cpf')
+                TextInput::make('cpf')
+                    ->label('CPF')
                     ->required()
                     ->maxLength(14),
-                Forms\Components\TextInput::make('rg')
+                TextInput::make('rg')
+                    ->label('RG')
                     ->maxLength(255),
-                Forms\Components\DatePicker::make('birth_date'),
-                Forms\Components\TextInput::make('license_number')
+                DatePicker::make('birth_date')
+                    ->label('Data de Nascimento'),
+                TextInput::make('license_number')
+                    ->label('Carteira de Motorista')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('license_category')
+                Select::make('license_category')
+                    ->label('Categoria')
+                    ->options(LicenseCategory::class)
                     ->required(),
-                Forms\Components\DatePicker::make('license_expires_at')
+                DatePicker::make('license_expires_at')
+                    ->label('Data de Validade')
                     ->required(),
-                Forms\Components\TextInput::make('phone')
+                TextInput::make('phone')
+                    ->label('Telefone')
                     ->tel()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('email')
+                TextInput::make('email')
+                    ->label('Email')
                     ->email()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('status')
+                Select::make('status')
+                    ->label('Status')
+                    ->options(DriverStatus::class)
                     ->required(),
             ]);
     }

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Modules\Tms\Driver\DriverResource\Pages;
+namespace App\Modules\Tms\Register\Driver\DriverResource\Pages;
 
-use App\Modules\Tms\Driver\DriverResource;
+use App\Modules\Tms\Register\Driver\DriverResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 

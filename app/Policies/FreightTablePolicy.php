@@ -15,7 +15,7 @@ class FreightTablePolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('view_any_app::modules::tms::register::freight::table::freight::table');
+        return $user->can('view_any_app::modules::sales::register::freight::table::freight::table');
     }
 
     /**
@@ -23,7 +23,7 @@ class FreightTablePolicy
      */
     public function view(User $user, FreightTable $freightTable): bool
     {
-        return $user->can('view_app::modules::tms::register::freight::table::freight::table');
+        return $user->can('view_app::modules::sales::register::freight::table::freight::table');
     }
 
     /**
@@ -31,7 +31,7 @@ class FreightTablePolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('create_app::modules::tms::register::freight::table::freight::table');
+        return $user->can('create_app::modules::sales::register::freight::table::freight::table');
     }
 
     /**
@@ -39,7 +39,7 @@ class FreightTablePolicy
      */
     public function update(User $user, FreightTable $freightTable): bool
     {
-        return $user->can('update_app::modules::tms::register::freight::table::freight::table');
+        return $user->can('update_app::modules::sales::register::freight::table::freight::table');
     }
 
     /**
@@ -47,7 +47,7 @@ class FreightTablePolicy
      */
     public function delete(User $user, FreightTable $freightTable): bool
     {
-        return $user->can('delete_app::modules::tms::register::freight::table::freight::table');
+        return $user->can('delete_app::modules::sales::register::freight::table::freight::table');
     }
 
     /**
@@ -55,7 +55,7 @@ class FreightTablePolicy
      */
     public function deleteAny(User $user): bool
     {
-        return $user->can('delete_any_app::modules::tms::register::freight::table::freight::table');
+        return $user->can('delete_any_app::modules::sales::register::freight::table::freight::table');
     }
 
     /**
@@ -63,7 +63,7 @@ class FreightTablePolicy
      */
     public function forceDelete(User $user, FreightTable $freightTable): bool
     {
-        return $user->can('force_delete_app::modules::tms::register::freight::table::freight::table');
+        return $user->can('force_delete_app::modules::sales::register::freight::table::freight::table');
     }
 
     /**
@@ -71,7 +71,7 @@ class FreightTablePolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_app::modules::tms::register::freight::table::freight::table');
+        return $user->can('force_delete_any_app::modules::sales::register::freight::table::freight::table');
     }
 
     /**
@@ -79,7 +79,7 @@ class FreightTablePolicy
      */
     public function restore(User $user, FreightTable $freightTable): bool
     {
-        return $user->can('restore_app::modules::tms::register::freight::table::freight::table');
+        return $user->can('restore_app::modules::sales::register::freight::table::freight::table');
     }
 
     /**
@@ -87,7 +87,7 @@ class FreightTablePolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('restore_any_app::modules::tms::register::freight::table::freight::table');
+        return $user->can('restore_any_app::modules::sales::register::freight::table::freight::table');
     }
 
     /**
@@ -95,7 +95,7 @@ class FreightTablePolicy
      */
     public function replicate(User $user, FreightTable $freightTable): bool
     {
-        return $user->can('replicate_app::modules::tms::register::freight::table::freight::table');
+        return $user->can('replicate_app::modules::sales::register::freight::table::freight::table');
     }
 
     /**
@@ -103,6 +103,6 @@ class FreightTablePolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('reorder_app::modules::tms::register::freight::table::freight::table');
+        return $user->can('reorder_app::modules::sales::register::freight::table::freight::table');
     }
 }

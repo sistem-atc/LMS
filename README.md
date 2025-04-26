@@ -1,6 +1,6 @@
 @Before Migrate:fresh
 
-    sudo php artisan cache:clear
+    php artisan cache:clear
     php artisan shield:generate --all
     php artisan optimize:clear
 

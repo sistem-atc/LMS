@@ -17,14 +17,19 @@ class ValidatePanelAccess
      */
     public function handle(Request $request, Closure $next): Response
     {
+        $currentPanel = Filament::getCurrentPanel();
 
-        $user = Filament::auth()->user();
-
-        if (Filament::getCurrentPanel()?->getId() === 'login') {
+        if (!$currentPanel) {
             return $next($request);
         }
 
-        if ($user->hasPermissionTo(Filament::getCurrentPanel()->getId())) {
+        $user = Filament::auth()->user();
+
+        if ($currentPanel->isDefault() || $currentPanel->getId() === 'login') {
+            return $next($request);
+        }
+
+        if ($user && $user->hasPermissionTo($currentPanel->getId())) {
             return $next($request);
         }
 

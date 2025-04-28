@@ -17,24 +17,38 @@ class ControlLoginResponse implements Responsable
 
         if ($request->user()->remember_last_module) {
             $module = $request->user()->remember_last_module;
-            $redirect = Filament::getPanel($module)->getUrl();
+            $panel = Filament::getPanel($module);
 
-            return redirect()->intended($redirect);
+            if ($panel && !$panel->isDefault()) {
+
+                Filament::setCurrentPanel($panel);
+                $redirect = $panel->getUrl();
+                return redirect()->intended($redirect);
+            }
+
+            $request->user()->update(['remember_last_module' => null]);
+
         }
 
         foreach (Filament::getPanels() as $panel) {
-            if ($panel->getId() <> 'login') {
+            if (!$panel->isDefault()) {
                 try {
                     if (Filament::auth()->user()->hasPermissionTo($panel->getId())) {
-                        $getPanel = $panel;
-                        break;
+                        Filament::setCurrentPanel($panel);
+                        return redirect()->intended($panel->getUrl());
                     }
-                } catch (PermissionDoesNotExist $e) {
+                } catch (PermissionDoesNotExist) {
 
-                    logger()->warning("Permissão '{$panel->getId()}' não existe para o usuário'.");
                     Filament::auth()->logout();
                     session()->invalidate();
                     session()->regenerateToken();
+
+                    Notification::make()
+                        ->title("Acesso Negado")
+                        ->body("Permissão '{$panel->getId()}' não existe para o usuário'.")
+                        ->danger()
+                        ->persistent()
+                        ->send();
 
                     return redirect()->to('/login');
 
@@ -42,13 +56,16 @@ class ControlLoginResponse implements Responsable
             }
         }
 
-        if ($getPanel) {
-            return redirect()->intended($getPanel->getUrl());
-        }
-
         Filament::auth()->logout();
         session()->invalidate();
         session()->regenerateToken();
+
+        Notification::make()
+            ->title("Usuario não configurado")
+            ->body('Seu usuário não foi configurado para acesso ao sistema. Favor entrar em contato com o time de TI.')
+            ->danger()
+            ->persistent()
+            ->send();
 
         return redirect()->intended('/login');
     }

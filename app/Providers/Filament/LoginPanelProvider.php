@@ -13,9 +13,8 @@ class LoginPanelProvider extends BasePanelProvider implements ExcludeSelectInter
     {
 
         $panel = $panel
-            ->default()
             ->id('login')
-            ->path('/login')
+            ->default()
             ->login()
             ->bootUsing(
                 fn() =>

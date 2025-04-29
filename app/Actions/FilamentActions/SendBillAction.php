@@ -7,7 +7,7 @@ use App\Models\Bill;
 use App\Models\Customer;
 use Filament\Actions\Action;
 use Illuminate\Database\Eloquent\Model;
-use App\Services\Utils\Banks\Factory\BankFactory;
+use App\Services\Banks\Factories\BankFactory;
 
 class SendBillAction extends Action
 {
@@ -25,7 +25,7 @@ class SendBillAction extends Action
             'billing' => $data,
         ];
 
-        $bank = BankFactory::make(bankCode: $bank->codigo, constructorArgs: $data);
+        $bank = BankFactory::make(constructorArgs: $data);
 
         Bill::update([
             'boleto_number' => $bank->makeOurNumber($data),

@@ -5,12 +5,12 @@ namespace App\Services\ConsultaCep;
 use Exception;
 use GuzzleHttp\Promise\Utils;
 use Illuminate\Support\Facades\Http;
-use App\Services\ConsultaCep\Entities\MapCep;
+use App\Services\ConsultaCep\DTO\CepDTO;
 
 class ConsultaCep
 {
 
-    public static function consultaCEP($cep): MapCep
+    public static function consultaCEP($cep): CepDTO
     {
 
         $clients = [
@@ -49,8 +49,8 @@ class ConsultaCep
 
     }
 
-    private static function transform(mixed $json): MapCep
+    private static function transform(mixed $json): CepDTO
     {
-        return new MapCep($json);
+        return new CepDTO($json);
     }
 }

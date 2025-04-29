@@ -12,7 +12,7 @@ use App\Services\Banks\Factories\BankFactory;
 class SendBillAction extends Action
 {
 
-    public static function execute(?Model $data)
+    public static function execute(?Model $data): never
     {
         dd($data);
 
@@ -25,7 +25,7 @@ class SendBillAction extends Action
             'billing' => $data,
         ];
 
-        $bank = BankFactory::make(constructorArgs: $data);
+        $bank = BankFactory::make($data);
 
         Bill::update([
             'boleto_number' => $bank->makeOurNumber($data),

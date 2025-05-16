@@ -3,28 +3,26 @@
 namespace App\Services\Banks\Banks\Itau;
 
 use Illuminate\Support\Str;
-use App\Interfaces\BankInterface;
 use Illuminate\Support\Collection;
 use App\Services\Banks\DTO\BankDTO;
 use Illuminate\Support\Facades\Storage;
 use App\Interfaces\TokenResolverInterface;
-use App\Utils\Services\HttpRequestService;
 use Illuminate\Http\Client\PendingRequest;
+use App\Services\Banks\Template\BankTemplate;
 use App\Services\Banks\Banks\Itau\Methods\Baixa;
 use App\Services\Banks\Banks\Itau\Methods\Desconto;
 use App\Services\Banks\Banks\Itau\Methods\GeraBoleto;
 use App\Services\Banks\Banks\Itau\Methods\DataVencimento;
 use App\Services\Banks\Banks\Itau\Methods\ConsultarBoleto;
-use App\Services\Banks\Banks\Itau\TokenResolver\TokenResolver;
 
-class Itau implements BankInterface
+class Itau extends BankTemplate
 {
-    private string $id_beneficiario;
-    private string $carteira;
-    private array $data;
-    private HttpRequestService $request;
-    private PendingRequest $pendingRequest;
+    protected string $id_beneficiario;
+    protected string $carteira;
+    protected array $data;
     protected string $token;
+    protected TokenResolverInterface $resolver;
+    protected PendingRequest $pendingRequest;
 
     use ConsultarBoleto;
     use GeraBoleto;
@@ -32,17 +30,15 @@ class Itau implements BankInterface
     use Desconto;
     use DataVencimento;
 
-    public function __construct(
-        protected TokenResolverInterface $resolver,
-        protected HttpRequestService $http,
-        protected array $config
-    ) {
+    public function __construct(TokenResolverInterface $resolver, protected array $config)
+    {
+        $this->resolver = $resolver;
+        parent::__construct(config: $config);
         $this->initialize();
     }
 
     private function initialize(): void
     {
-        $this->resolver = new TokenResolver($this->config, $this->http);
         $this->token = $this->resolver->getToken();
         $this->data = $this->config;
         $this->id_beneficiario = $this->config['agencia'] . $this->config['conta'] . $this->config['conta_dv'];
@@ -52,7 +48,7 @@ class Itau implements BankInterface
 
     protected function configureHttp(): PendingRequest
     {
-        return $this->http
+        return $this->makeHttpClient()
             ->setHeaders($this->getHeaders())
             ->setBaseUrl($this->config['base_url'])
             ->setToken($this->token)

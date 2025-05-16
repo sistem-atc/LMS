@@ -1,34 +1,30 @@
 <?php
 
-namespace App\Serivces\Towns\Connectors;
+namespace App\Services\Towns\Template;
 
 use App\Traits\SignXml;
 use App\Traits\XmlHandler;
 use App\Traits\RequestSender;
 use App\Interfaces\LinkTownsInterface;
 
-abstract class LinkTownsConnector implements LinkTownsInterface
+abstract class TownTemplate implements LinkTownsInterface
 {
 
     use SignXml;
     use RequestSender;
     use XmlHandler;
 
-    protected static string $cityName;
-    protected static ?string $url;
-    protected static string $codeIbge;
-    protected static ?string $namespace;
-    protected static ?string $username;
-    protected static ?string $password;
-    protected static ?string $headerVersion;
-    protected static ?string $version;
-    protected static ?self $instance = null;
+    protected string $cityName;
+    protected ?string $url;
+    protected string $codeIbge;
+    protected ?string $namespace;
+    protected ?string $username;
+    protected ?string $password;
+    protected ?string $headerVersion;
+    protected ?string $version;
 
-    public function __construct(array $configLoader)
+    public function __construct(array $config)
     {
-
-        /*$config = TownsLoader::make($configLoader);
-
         self::$cityName = $config['cityName'];
         self::$url = $config['url'];
         self::$codeIbge = $config['codeIbge'];
@@ -36,17 +32,7 @@ abstract class LinkTownsConnector implements LinkTownsInterface
         self::$username = $config['username'];
         self::$password = $config['password'];
         self::$headerVersion = $config['headerVersion'];
-        self::$version = $config['version'];*/
-
-    }
-
-    public static function getInstance(array $configLoader): ?self
-    {
-        if (static::$instance === null) {
-            static::$instance = new static($configLoader);
-        }
-
-        return static::$instance;
+        self::$version = $config['version'];
     }
 
     protected static function getUsername(): ?string

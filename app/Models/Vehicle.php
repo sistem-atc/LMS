@@ -7,6 +7,7 @@ use App\Enums\VehicleType;
 use App\Enums\VehicleStatus;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Vehicle extends Model
@@ -21,4 +22,9 @@ class Vehicle extends Model
         'type' => VehicleType::class,
         'status' => VehicleStatus::class,
     ];
+
+    public function travel(): HasMany
+    {
+        return $this->hasMany(Travel::class);
+    }
 }

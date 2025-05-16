@@ -13,11 +13,11 @@ trait ConsultarBoleto
             throw new \Exception('O campo boleto_number é obrigatório');
         }
 
-        $this->endPoint = '/boletos?id_beneficiario=' . parent::$id_beneficiario .
-            '&codigo_carteira=' . parent::$carteira . '&nosso_numero=' .
+        $this->endPoint = '/boletos?id_beneficiario=' . $this->id_beneficiario .
+            '&codigo_carteira=' . $this->carteira . '&nosso_numero=' .
             data_get($data, 'boleto_number', '');
 
-        return $this->pendingRequest->path(self::$endPoint);
+        return $this->pendingRequest->patch(self::$endPoint)->json()();
 
     }
 

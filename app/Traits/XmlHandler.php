@@ -4,7 +4,7 @@ namespace App\Traits;
 
 use SimpleXMLElement;
 use Illuminate\Support\Str;
-use App\Services\Utils\Towns\Helpers\DirectoryHelper;
+use App\Helpers\DirectoryHelper;
 
 trait XmlHandler
 {
@@ -36,7 +36,7 @@ trait XmlHandler
         return $content;
     }
 
-    protected static function composeMessage(string $type): SimpleXMLElement | null
+    protected static function composeMessage(string $type): SimpleXMLElement|null
     {
         $basedir = DirectoryHelper::getDir();
         return new SimpleXMLElement(file_get_contents($basedir . '/schemas/' . $type . '.xml'));

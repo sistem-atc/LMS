@@ -177,6 +177,8 @@ return [
         App\Providers\Filament\TaxPanelProvider::class,
         App\Providers\Filament\AccountingPanelProvider::class,
         App\Providers\Filament\SalesPanelProvider::class,
+        App\Providers\Filament\LegalPanelProvider::class,
+        App\Providers\Filament\SupplyPanelProvider::class,
         App\Providers\RouteServiceProvider::class,
         Spatie\Permission\PermissionServiceProvider::class,
         App\Providers\TenancyServiceProvider::class,

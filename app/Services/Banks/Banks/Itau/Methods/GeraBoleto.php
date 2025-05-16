@@ -15,7 +15,7 @@ trait GeraBoleto
             [
                 'data' => [
                     'beneficiario' => [
-                        'id_beneficiario' => parent::$id_beneficiario,
+                        'id_beneficiario' => $this->id_beneficiario,
                     ],
                     'dado_boleto' => [
                         'pagador' => [
@@ -48,7 +48,7 @@ trait GeraBoleto
                         'descricao_instrumento_cobranca' => 'boleto',
                         'forma_envio' => 'impressao',
                         'tipo_boleto' => 'a vista',
-                        'codigo_carteira' => parent::$carteira,
+                        'codigo_carteira' => $this->carteira,
                         'dados_individuais_boleto' => [
                             [
                                 'data_vencimento' => $data['vencimento'],
@@ -67,12 +67,12 @@ trait GeraBoleto
                         'texto_seu_numero' => '{{NUMERO_FATURA}}',
                     ],
                     'etapa_processo_boleto' => 'validacao',
-                    'codigo_operador' => parent::$id_beneficiario,
+                    'codigo_operador' => $this->id_beneficiario,
                 ],
             ]
         );
 
-        return $this->pendingRequest->path($this->endPoint, $message);
+        return $this->pendingRequest->patch($this->endPoint, $message)->json();
 
     }
 

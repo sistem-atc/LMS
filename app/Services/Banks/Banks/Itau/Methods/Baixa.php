@@ -12,7 +12,7 @@ trait Baixa
 
         $this->endPoint = '/boletos/' . $data['id_boleto'] . '/baixa';
 
-        return $this->pendingRequest->path(self::$endPoint);
+        return $this->pendingRequest->patch(self::$endPoint)->json();
 
     }
 

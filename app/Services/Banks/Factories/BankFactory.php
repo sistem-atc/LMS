@@ -4,6 +4,7 @@ namespace App\Services\Banks\Factories;
 
 use InvalidArgumentException;
 use App\Interfaces\BankInterface;
+use App\Helpers\EnvironmentHelper;
 use Illuminate\Contracts\Container\BindingResolutionException;
 
 class BankFactory
@@ -22,15 +23,13 @@ class BankFactory
             throw new InvalidArgumentException("A classe {$class} não é um conector válido");
         }
 
-        // Coleta a configuração genérica com base no banco e ambiente
-        $env = $args['env'] ?? app()->environment();
+        $env = EnvironmentHelper::getAmbient();
         $bankConfig = config("banks.{$bankCode}.{$env}");
 
         if (!$bankConfig || !is_array($bankConfig)) {
             throw new InvalidArgumentException("Configurações não encontradas para o banco {$bankCode} no ambiente {$env}");
         }
 
-        // Merge com dados dinâmicos vindos do args (como certificados e conta)
         $config = array_merge($bankConfig, [
             'path_crt' => $args['path_crt'] ?? null,
             'path_key' => $args['path_key'] ?? null,
@@ -43,7 +42,6 @@ class BankFactory
         try {
             return app()->make($class, [
                 'resolver' => null,
-                'http' => app(\App\Utils\Services\HttpRequestService::class),
                 'config' => $config,
             ]);
         } catch (BindingResolutionException $e) {

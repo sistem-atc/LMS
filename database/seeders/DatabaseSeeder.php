@@ -19,6 +19,8 @@ class DatabaseSeeder extends Seeder
         $this->call(VendorSeeder::class);
         $this->call(CostCenterSeeder::class);
         $this->call(RouteSeeder::class);
+        $this->call(GroupServiceSeeder::class);
+        $this->call(GroupProductSeeder::class);
         $this->call(DepartamentSeeder::class);
         $this->call(PositionSeeder::class);
         $this->call(HealthPlanSeeder::class);
@@ -27,5 +29,8 @@ class DatabaseSeeder extends Seeder
         $this->call(PaymentTermSeeder::class);
         $this->call(CustomerSeeder::class);
         $this->call(CodeUfSeeder::class);
+        $this->call(SupplierSeeder::class);
+        $this->call(ProductSeeder::class);
+        $this->call(ServiceSeeder::class);
     }
 }

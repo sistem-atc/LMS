@@ -21,7 +21,7 @@ trait Desconto
             ]
         );
 
-        return $this->pendingRequest->path(self::$endPoint, $message);
+        return $this->pendingRequest->patch(self::$endPoint, $message)->json();
 
     }
 

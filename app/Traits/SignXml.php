@@ -4,8 +4,8 @@ namespace App\Traits;
 
 use SimpleXMLElement;
 use App\Models\Branch;
+use App\Helpers\XmlSigner;
 use Illuminate\Support\Facades\Auth;
-use App\Services\Utils\Towns\Helpers\XmlSigner;
 
 trait SignXml
 {

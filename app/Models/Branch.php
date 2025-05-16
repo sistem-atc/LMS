@@ -42,4 +42,9 @@ class Branch extends Model implements Auditable
     {
         return $this->hasMany(Branch::class);
     }
+
+    public function travel(): HasMany
+    {
+        return $this->hasMany(Travel::class);
+    }
 }

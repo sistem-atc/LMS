@@ -4,11 +4,18 @@ namespace App\Services\Towns\Systems\Abaco;
 
 use Exception;
 use SimpleXMLElement;
+use App\Traits\SignXml;
 use App\Enums\HttpMethod;
-use App\Bases\LinkTownBase;
+use App\Traits\XmlHandler;
+use App\Traits\RequestSender;
+use App\Interfaces\LinkTownsInterface;
 
-class Abaco extends LinkTownBase
+class Abaco implements LinkTownsInterface
 {
+
+    use SignXml;
+    use RequestSender;
+    use XmlHandler;
 
     use Methods\ConsultarLoteRps,
         Methods\ConsultarNfse,
@@ -18,6 +25,13 @@ class Abaco extends LinkTownBase
 
     protected static $verb = HttpMethod::POST;
     private static SimpleXMLElement $headMsg;
+    private static array $config;
+
+    public function __construct(array $config)
+    {
+        self::$headMsg = self::composeHeader($config['headerVersion']);
+        self::$config = $config;
+    }
 
     public static function getHeaders(): array
     {
@@ -48,21 +62,20 @@ class Abaco extends LinkTownBase
         return throw new Exception('Método não implementado', 501);
     }
 
-    public function __construct(array $configLoader)
-    {
-        parent::__construct($configLoader);
-        self::$headMsg = self::composeHeader(parent::$headerVersion);
-    }
-
     private static function connection(): string|int|array|null
     {
-        return self::Conection(parent::$url . self::$endPoint, self::$mountMessage->asXML(), self::getHeaders(), self::$verb);
+        return self::Conection(
+            self::$config['url'] . self::$endPoint,
+            self::$mountMessage->asXML(),
+            self::getHeaders(),
+            self::$verb
+        );
     }
 
     private static function mountMensage(SimpleXMLElement $dataMsg, string $operation, ?string $version): void
     {
 
-        self::$mountMessage = parent::assembleMessage(replaceOperation: $operation, version: $version);
+        //self::$mountMessage = parent::assembleMessage(replaceOperation: $operation, version: $version);
 
         $headMsgString = self::removeSpecialChars(htmlspecialchars(self::$headMsg->asXML(), ENT_NOQUOTES, 'UTF-8'));
         $dataMsgString = self::removeSpecialChars(htmlspecialchars($dataMsg->asXML(), ENT_NOQUOTES, 'UTF-8'));

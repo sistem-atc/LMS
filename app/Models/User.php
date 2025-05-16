@@ -86,4 +86,9 @@ class User extends Authenticatable implements FilamentUser, HasName
         return $this->hasMany(FavoriteResource::class);
     }
 
+    public function travel(): HasMany
+    {
+        return $this->hasMany(Travel::class);
+    }
+
 }

@@ -22,7 +22,7 @@
         "vite": "^6.3.5"
     },
     "dependencies": {
-        "@headlessui/react": "^2.2.2",
+        "@headlessui/react": "^2.2.3",
         "@inertiajs/inertia": "^0.11.1",
         "@inertiajs/react": "^2.0.9",
         "@radix-ui/react-avatar": "^1.1.9",

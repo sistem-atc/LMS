@@ -3,14 +3,10 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 
-class HealthPlan extends Model
+class HealthPlan extends BaseModel
 {
     /** @use HasFactory<\Database\Factories\HealthPlanFactory> */
     use HasFactory;
 
-    protected $fillable = [
-        'name',
-    ];
 }

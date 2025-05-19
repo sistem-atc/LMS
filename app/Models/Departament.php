@@ -3,14 +3,10 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 
-class Departament extends Model
+class Departament extends BaseModel
 {
     /** @use HasFactory<\Database\Factories\DepartamentFactory> */
     use HasFactory;
 
-    protected $fillable = [
-        'name',
-    ];
 }

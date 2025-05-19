@@ -14,7 +14,9 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->foreignId('travel_id')->constrained()->cascadeOnDelete();
+            $table->blameable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

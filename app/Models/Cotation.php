@@ -3,20 +3,14 @@
 namespace App\Models;
 
 use App\Models\Branch;
-use App\Traits\Blameable;
 use App\Enums\CotationMode;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Cotation extends Model
+class Cotation extends BaseModel
 {
     /** @use HasFactory<\Database\Factories\CotationFactory> */
     use HasFactory;
-    use Blameable;
-    use SoftDeletes;
-    use \OwenIt\Auditing\Auditable;
 
     protected $casts = [
         'quoted_at' => 'datetime',

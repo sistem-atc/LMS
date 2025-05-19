@@ -2,21 +2,15 @@
 
 namespace App\Models;
 
-use App\Traits\Blameable;
 use App\Enums\TypeTransportationEnum;
-use Illuminate\Database\Eloquent\Model;
 use App\Enums\TypeDocumentTransportEnum;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use OwenIt\Auditing\Contracts\Auditable;
 
-class TransportDocument extends Model implements Auditable
+class TransportDocument extends BaseModel
 {
+    /** @use HasFactory<\Database\Factories\TransportDocumentFactory> */
     use HasFactory;
-    use SoftDeletes;
-    use Blameable;
-    use \OwenIt\Auditing\Auditable;
 
     protected $casts = [
         'type_document' => TypeDocumentTransportEnum::class,

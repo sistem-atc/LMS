@@ -3,19 +3,13 @@
 namespace App\Models;
 
 use App\Models\Customer;
-use App\Traits\Blameable;
-use Illuminate\Database\Eloquent\Model;
-use OwenIt\Auditing\Contracts\Auditable;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class FreightTable extends Model implements Auditable
+class FreightTable extends BaseModel
 {
+    /** @use HasFactory<\Database\Factories\FreightTableFactory> */
     use HasFactory;
-    use SoftDeletes;
-    use Blameable;
-    use \OwenIt\Auditing\Auditable;
 
     protected $casts = [
         'start_date' => 'date',

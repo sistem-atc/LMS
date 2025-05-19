@@ -2,60 +2,18 @@
 
 namespace App\Models;
 
-use App\Traits\Blameable;
 use Laravel\Sanctum\HasApiTokens;
-use Illuminate\Database\Eloquent\Model;
-use OwenIt\Auditing\Contracts\Auditable;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Customer extends Model implements Auditable
+class Customer extends BaseModel
 {
-    use Blameable;
-    use HasApiTokens;
-    use HasFactory;
-    use SoftDeletes;
-    use \OwenIt\Auditing\Auditable;
 
-    protected $fillable = [
-        'cpf_or_cnpj',
-        'company_name',
-        'type_person',
-        'fantasy_name',
-        'postal_code',
-        'street',
-        'complement',
-        'number',
-        'district',
-        'city',
-        'state',
-        'ibge',
-        'gia',
-        'ddd',
-        'siafi',
-        'region',
-        'branche_id',
-        'nature_id',
-        'phone_number',
-        'cellphone',
-        'vendor_id',
-        'payment_term',
-        'bank_standard_id',
-        'priority',
-        'risc',
-        'municipal_registration',
-        'state_registration',
-        'mail_operational',
-        'mail_financial',
-        'BaseEndpoint',
-        'token_multisoftware',
-        'group_customer_id',
-        'token_api',
-        'complete',
-    ];
+    /** @use HasFactory<\Database\Factories\CustomerFactory> */
+    use HasFactory;
+
+    use HasApiTokens;
 
     protected $casts = [
         'complete' => 'boolean',

@@ -3,10 +3,9 @@
 namespace App\Models;
 
 use App\Enums\RegimeType;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class FiscalRule extends Model
+class FiscalRule extends BaseModel
 {
     /** @use HasFactory<\Database\Factories\FiscalRuleFactory> */
     use HasFactory;

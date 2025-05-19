@@ -3,9 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 
-class Contract extends Model
+class Contract extends BaseModel
 {
     /** @use HasFactory<\Database\Factories\ContractFactory> */
     use HasFactory;

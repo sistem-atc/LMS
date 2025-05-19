@@ -5,7 +5,7 @@ namespace App\Services\Towns\SystemPro\Methods;
 class ConsultarNfseFaixa
 {
 
-    Public Function ConsultarNfseFaixa(ByVal CNPJ As String, ByVal Inscricao_Municipal As String, ByVal Nota_Inicial As String, _
+    /*Public Function ConsultarNfseFaixa(ByVal CNPJ As String, ByVal Inscricao_Municipal As String, ByVal Nota_Inicial As String, _
                                    ByVal Nota_Final As String, ByVal Used_Companny As String) As Variant
 
     Dim Mount_Mensage As String, Operacao As String, CabecMsg As String, DadosMsg As String
@@ -24,6 +24,6 @@ class ConsultarNfseFaixa
 
     ConsultarNfseFaixa = Conection(Prefeitura_Utilizada, Mount_Mensage, Used_Companny)
 
-End Function
+End Function*/
 
 }

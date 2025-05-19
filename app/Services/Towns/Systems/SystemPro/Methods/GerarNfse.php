@@ -5,7 +5,7 @@ namespace App\Services\Towns\SystemPro\Methods;
 class GerarNfse
 {
 
-    Public Function GerarNfse(ByVal Used_Companny As String) As Variant
+    /*Public Function GerarNfse(ByVal Used_Companny As String) As Variant
 
     Dim Mount_Mensage As String, Operacao As String, CabecMsg As String, DadosMsg As String
 
@@ -19,6 +19,6 @@ class GerarNfse
 
     GerarNfse = Conection(Prefeitura_Utilizada, Mount_Mensage, Used_Companny)
 
-End Function
+End Function*/
 
 }

@@ -5,7 +5,7 @@ namespace App\Services\Towns\IssNetOnline2\Methods;
 trait ConsultarUrlNfse
 {
 
-    Public Function ConsultarUrlNfse(ByVal CNPJ As String, ByVal Inscricao_Municipal As String, ByVal Data_Inicial As Date, _
+    /*Public Function ConsultarUrlNfse(ByVal CNPJ As String, ByVal Inscricao_Municipal As String, ByVal Data_Inicial As Date, _
                                  ByVal Data_Final As Date, ByVal Used_Companny As String, Optional ByVal Numero_Pagina As Long = 1) As Variant
 
     Dim Mount_Mensage As String, Operacao As String, DadosMsg As String, CabecMsg As String
@@ -25,6 +25,6 @@ trait ConsultarUrlNfse
 
     ConsultarUrlNfse = Conection(Prefeitura_Utilizada, Mount_Mensage, Used_Companny, Operacao)
 
-End Function
+End Function*/
 
 }

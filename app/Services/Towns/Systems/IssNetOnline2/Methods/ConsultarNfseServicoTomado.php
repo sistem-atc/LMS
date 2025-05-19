@@ -5,7 +5,7 @@ namespace App\Services\Towns\IssNetOnline2\Methods;
 trait ConsultarNfseServicoTomado
 {
 
-    Public Function ConsultarNfseServicoTomado(ByVal CNPJ As String, ByVal Inscricao_Municipal As String, ByVal Data_Inicial As Date, _
+    /*Public Function ConsultarNfseServicoTomado(ByVal CNPJ As String, ByVal Inscricao_Municipal As String, ByVal Data_Inicial As Date, _
                                            ByVal Data_Final As Date, ByVal CNPJ_Prestador As String, ByVal Inscricao_Municipal_Prestador As String, _
                                            ByVal Used_Companny As String, Optional ByVal Numero_Pagina As Long = 1) As Variant
 
@@ -28,6 +28,6 @@ trait ConsultarNfseServicoTomado
 
     ConsultarNfseServicoTomado = Conection(Prefeitura_Utilizada, Mount_Mensage, Used_Companny, Operacao)
 
-End Function
+End Function*/
 
 }

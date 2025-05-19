@@ -5,7 +5,7 @@ namespace App\Services\Towns\IssNetOnline2\Methods;
 trait RecepcionarLoteRps
 {
 
-    Public Function RecepcionarLoteRps(ByVal Used_Companny As String) As Variant
+    /*Public Function RecepcionarLoteRps(ByVal Used_Companny As String) As Variant
 
     Dim Mount_Mensage As String, Operacao As String, DadosMsg As String, CabecMsg As String
 
@@ -20,6 +20,6 @@ trait RecepcionarLoteRps
 
     RecepcionarLoteRps = Conection(Prefeitura_Utilizada, Mount_Mensage, Used_Companny, Operacao)
 
-End Function
+End Function*/
 
 }

@@ -5,7 +5,7 @@ namespace App\Services\Towns\IssNetOnline2\Methods;
 trait ConsultarNfsePorFaixa
 {
 
-    Public Function ConsultarNfsePorFaixa(ByVal CNPJ As String, ByVal Inscricao_Municipal As String, ByVal Nota_Inicial As String, _
+    /*Public Function ConsultarNfsePorFaixa(ByVal CNPJ As String, ByVal Inscricao_Municipal As String, ByVal Nota_Inicial As String, _
                                       ByVal Nota_Final As String, ByVal Used_Companny As String, Optional ByVal Numero_Pagina As Long = 1) As Variant
 
     Dim Mount_Mensage As String, Operacao As String, DadosMsg As String, CabecMsg As String
@@ -25,6 +25,6 @@ trait ConsultarNfsePorFaixa
 
     consultarNfsePorFaixa = Conection(Prefeitura_Utilizada, Mount_Mensage, Used_Companny, Operacao)
 
-End Function
+End Function*/
 
 }

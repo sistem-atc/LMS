@@ -5,7 +5,7 @@ namespace App\Services\Towns\IssNetOnline2\Methods;
 trait ConsultarRpsDisponivel
 {
 
-    Public Function ConsultarRpsDisponivel(ByVal CNPJ As String, ByVal Inscricao_Municipal As String, ByVal Numero_RPS As String, _
+    /*Public Function ConsultarRpsDisponivel(ByVal CNPJ As String, ByVal Inscricao_Municipal As String, ByVal Numero_RPS As String, _
                                        ByVal Serie_RPS As String, ByVal Tipo_RPS As TypeRPS, ByVal Used_Companny As String, _
                                        Optional ByVal Numero_Pagina As Long = 1) As Variant
 
@@ -27,6 +27,6 @@ trait ConsultarRpsDisponivel
 
     ConsultarRpsDisponivel = Conection(Prefeitura_Utilizada, Mount_Mensage, Used_Companny, Operacao)
 
-End Function
+End Function*/
 
 }

@@ -4,9 +4,9 @@ namespace App\Services\Towns\Betha;
 
 use SimpleXMLElement;
 use App\Enums\HttpMethod;
-use App\Bases\LinkTownBase;
+use App\Services\Towns\Template\TownTemplate;
 
-class Betha extends LinkTownBase
+class Betha extends TownTemplate
 {
 
     use Methods\CancelarNfse,
@@ -22,7 +22,7 @@ class Betha extends LinkTownBase
     private static SimpleXMLElement $mountMessage;
     protected static $headers;
 
-    public static function getHeaders(): array
+    public function getHeaders(): array
     {
         return [];
     }
@@ -53,9 +53,15 @@ class Betha extends LinkTownBase
         self::$headMsg = self::composeHeader();
     }
 
-    private static function connection(): string|int|array|null
+    private function connection(): string|int|array|null
     {
-        return self::Conection(parent::$url, self::$mountMessage->asXML(), self::getHeaders(), self::$verb, false);
+        return self::Conection(
+            null,
+            parent::$url,
+            self::$mountMessage->asXML(),
+            $this->getHeaders(),
+            self::$verb
+        );
     }
 
     private static function mountMensage(SimpleXMLElement $headMsg, SimpleXMLElement $dataMsg): void

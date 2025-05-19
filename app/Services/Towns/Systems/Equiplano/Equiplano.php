@@ -5,9 +5,9 @@ namespace App\Services\Towns\Equiplano;
 use Exception;
 use SimpleXMLElement;
 use App\Enums\HttpMethod;
-use App\Bases\LinkTownBase;
+use App\Services\Towns\Template\TownTemplate;
 
-class Equiplano extends LinkTownBase
+class Equiplano extends TownTemplate
 {
 
     use Methods\esCancelarNfse,
@@ -53,7 +53,13 @@ class Equiplano extends LinkTownBase
 
     private static function connection(): string|int|array|null
     {
-        return parent::Conection(parent::$url, self::$mountMessage->asXML(), static::getHeaders(), self::$verb, false);
+        return parent::Conection(
+            null,
+            parent::$url,
+            self::$mountMessage->asXML(),
+            static::getHeaders(),
+            self::$verb
+        );
     }
 
     private static function mountMensage(?SimpleXMLElement $dataMsg, string $operation): void

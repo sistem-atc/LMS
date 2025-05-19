@@ -5,9 +5,9 @@ namespace App\Services\Towns\Dsf;
 use Exception;
 use SimpleXMLElement;
 use App\Enums\HttpMethod;
-use App\Bases\LinkTownBase;
+use App\Services\Towns\Template\TownTemplate;
 
-class Dsf extends LinkTownBase
+class Dsf extends TownTemplate
 {
 
     use Methods\CancelarNfse,
@@ -60,7 +60,13 @@ class Dsf extends LinkTownBase
 
     private static function connection(): string|int|array|null
     {
-        return self::Conection(parent::$url, self::$mountMessage->asXML(), self::getHeaders(), self::$verb, false);
+        return self::Conection(
+            null,
+            parent::$url,
+            self::$mountMessage->asXML(),
+            self::getHeaders(),
+            self::$verb
+        );
     }
 
     private static function mountMensage(SimpleXMLElement $dataMsg, string $operation): void
@@ -69,7 +75,7 @@ class Dsf extends LinkTownBase
 
         if (self::getVersion() === null) {
 
-            $dadosMsg = self::$mountMessage->xpath('//nfse:'. $operation)[0];
+            $dadosMsg = self::$mountMessage->xpath('//nfse:' . $operation)[0];
 
         } else {
 

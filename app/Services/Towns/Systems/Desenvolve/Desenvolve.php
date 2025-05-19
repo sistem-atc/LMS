@@ -5,9 +5,9 @@ namespace App\Services\Towns\Desenvolve;
 use Exception;
 use SimpleXMLElement;
 use App\Enums\HttpMethod;
-use App\Bases\LinkTownBase;
+use App\Services\Towns\Template\TownTemplate;
 
-class Desenvolve extends LinkTownBase
+class Desenvolve extends TownTemplate
 {
 
     use Methods\CancelarNfseEnvio,
@@ -53,7 +53,13 @@ class Desenvolve extends LinkTownBase
 
     private static function connection(): string|int|array|null
     {
-        return self::Conection(parent::$url, self::$mountMessage->asXML(), self::getHeaders(), self::$verb, false);
+        return self::Conection(
+            null,
+            parent::$url,
+            self::$mountMessage->asXML(),
+            self::getHeaders(),
+            self::$verb
+        );
     }
 
     private static function mountMensage(SimpleXMLElement $dataMsg): void

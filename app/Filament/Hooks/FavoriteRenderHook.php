@@ -10,7 +10,7 @@ class FavoriteRenderHook
 
     public static function getPosition(): string
     {
-        return PanelsRenderHook::TOPBAR_START;
+        return PanelsRenderHook::USER_MENU_BEFORE;
     }
 
     public static function getView(): string

@@ -8,9 +8,9 @@ use App\Traits\SignXml;
 use App\Enums\HttpMethod;
 use App\Traits\XmlHandler;
 use App\Traits\RequestSender;
-use App\Interfaces\LinkTownsInterface;
+use App\Services\Towns\Template\TownTemplate;
 
-class Abaco implements LinkTownsInterface
+class Abaco extends TownTemplate
 {
 
     use SignXml;
@@ -64,12 +64,15 @@ class Abaco implements LinkTownsInterface
 
     private static function connection(): string|int|array|null
     {
-        return self::Conection(
+        /*return self::Conection(
             self::$config['url'] . self::$endPoint,
             self::$mountMessage->asXML(),
             self::getHeaders(),
             self::$verb
-        );
+        );*/
+
+        return '';
+
     }
 
     private static function mountMensage(SimpleXMLElement $dataMsg, string $operation, ?string $version): void

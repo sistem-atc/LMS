@@ -5,9 +5,10 @@ namespace App\Services\Towns\Etransparencia;
 use Exception;
 use SimpleXMLElement;
 use App\Enums\HttpMethod;
-use App\Bases\LinkTownBase;
+use Illuminate\Http\Client\PendingRequest;
+use App\Services\Towns\Template\TownTemplate;
 
-class Etransparencia extends LinkTownBase
+class Etransparencia extends TownTemplate
 {
 
     private static $Codigo_Usuario = 'a5a07214-136a-4254-bad1-0272dc48238018ah24ni0119grav000-ed10--5l';
@@ -23,6 +24,7 @@ class Etransparencia extends LinkTownBase
 
     protected static $verb = HttpMethod::POST;
     private static SimpleXMLElement $mountMessage;
+    protected PendingRequest $pendingRequest;
 
     public static function getHeaders(): array
     {
@@ -52,11 +54,27 @@ class Etransparencia extends LinkTownBase
     public function __construct(array $configLoader)
     {
         parent::__construct($configLoader);
+        $this->pendingRequest = $this->configureHttp();
+    }
+
+    protected function configureHttp(): PendingRequest
+    {
+        return $this->makeHttpClient()
+            ->setHeaders($this->getHeaders())
+            ->setBaseUrl(parent::$url)
+            ->setChannel('towns')
+            ->make();
     }
 
     private static function connection(): string|int|array|null
     {
-        return self::Conection(parent::$url, self::$mountMessage->asXML(), self::getHeaders(), self::$verb, false);
+        return self::Conection(
+            null,
+            parent::$url,
+            self::$mountMessage->asXML(),
+            self::getHeaders(),
+            self::$verb
+        );
     }
 
     private static function mountMensage(SimpleXMLElement $dataMsg): void

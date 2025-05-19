@@ -6,6 +6,7 @@ use App\Traits\SignXml;
 use App\Traits\XmlHandler;
 use App\Traits\RequestSender;
 use App\Interfaces\LinkTownsInterface;
+use App\Utils\Services\HttpRequestService;
 
 abstract class TownTemplate implements LinkTownsInterface
 {
@@ -14,6 +15,7 @@ abstract class TownTemplate implements LinkTownsInterface
     use RequestSender;
     use XmlHandler;
 
+    protected HttpRequestService $http;
     protected string $cityName;
     protected ?string $url;
     protected string $codeIbge;
@@ -63,6 +65,11 @@ abstract class TownTemplate implements LinkTownsInterface
     protected static function getHeaderVersion(): ?string
     {
         return self::$headerVersion ?? null;
+    }
+
+    public function makeHttpClient(): HttpRequestService
+    {
+        return new HttpRequestService();
     }
 
 }

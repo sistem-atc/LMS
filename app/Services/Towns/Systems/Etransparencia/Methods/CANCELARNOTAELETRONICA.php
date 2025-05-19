@@ -5,11 +5,11 @@ namespace App\Services\Towns\Etransparencia\Methods;
 trait CANCELARNOTAELETRONICA
 {
 
-    private static string $operation;
+    private string $operation;
 
-    public static function CANCELARNOTAELETRONICA($data): string|int|array
+    public function CANCELARNOTAELETRONICA($data): string|int|array
     {
-        self::$operation = __FUNCTION__;
+        $this->operation = __FUNCTION__;
         $dataMsg = parent::composeMessage(self::$operation);
         $dataMsg->CodigoUsuario = $data['codigoUsuario'];
         $dataMsg->CodigoContribuinte = $data['codigoContribuinte'];
@@ -23,7 +23,11 @@ trait CANCELARNOTAELETRONICA
 
         self::mountMensage($dataMsg);
 
-        return self::connection();
+        return $this->pendingRequest->post(
+            parent::$url,
+            self::$mountMessage->asXML(),
+            self::getHeaders(),
+        )->json();
     }
 
 }

@@ -10,8 +10,8 @@ use RobRichards\XMLSecLibs\XMLSecurityDSig;
 class XmlSigner
 {
 
-    protected static string $pathCerticate;
-    protected static string $passCertificate;
+    protected string $pathCerticate;
+    protected string $passCertificate;
 
     public function __construct(Branch $branch)
     {
@@ -19,7 +19,7 @@ class XmlSigner
         self::$passCertificate = $branch->branch_matriz->password_certificate;
     }
 
-    public static function Sign_XML(string $xmlNoSigned): string
+    public function Sign_XML(string $xmlNoSigned): string
     {
 
         $signedXML = new DOMDocument();
@@ -36,13 +36,13 @@ class XmlSigner
 
         $key = new XMLSecurityKey(XMLSecurityKey::RSA_SHA1 . ['type' => 'private']);
         $key->loadKey(
-            static::$pathCerticate,
+            $this->pathCerticate,
             true,
             false,
         );
 
         $signature->sign($key);
-        $signature->add509Cert(static::$passCertificate);
+        $signature->add509Cert($this->passCertificate);
         $signature->insertSignature($signedXML->documentElement);
 
         return $signedXML->saveXML();

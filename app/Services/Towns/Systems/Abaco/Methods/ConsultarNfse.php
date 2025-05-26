@@ -8,9 +8,10 @@ use Illuminate\Support\Facades\Validator;
 trait ConsultarNfse
 {
 
-    private static string $endPoint;
-    private static string $operation;
-    public static function ConsultarNfse(array $data): string|int|array
+    private string $endPoint;
+    private string $operation;
+
+    public function ConsultarNfse(array $data): string|int|array
     {
 
         $validator = Validator::make($data, [
@@ -25,9 +26,9 @@ trait ConsultarNfse
         }
         ;
 
-        self::$endPoint = 'aconsultarnfse';
-        self::$operation = __FUNCTION__;
-        $dataMsg = self::composeMessage(self::$operation);
+        $this->endPoint = 'aconsultarnfse';
+        $this->operation = __FUNCTION__;
+        $dataMsg = $this->composeMessage($this->operation);
 
         if (!isset($data['tomador'])) {
             unset($dataMsg->Tomador);
@@ -60,9 +61,12 @@ trait ConsultarNfse
         $dataMsg->PeriodoEmissao->DataInicial = Carbon::parse($data['PeriodoEmissao']['dataInicial'])->format('Y-m-d\TH:i:s');
         $dataMsg->PeriodoEmissao->DataFinal = Carbon::parse($data['PeriodoEmissao']['dataFinal'])->format('Y-m-d\TH:i:s');
 
-        self::mountMensage($dataMsg, self::$operation, self::getVersion());
+        $response = $this->http()
+            ->setBaseUrl($this->getUrl())
+            ->setHeaders($this->getHeaders())
+            ->post($this->endPoint, $this->mountMessage->asXML());
 
-        return self::parseXmlToArray(self::connection(), '//ns:Outputxml');
+        return self::parseXmlToArray($response, '//ns:Outputxml');
 
     }
 

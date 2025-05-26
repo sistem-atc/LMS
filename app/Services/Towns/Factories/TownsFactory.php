@@ -34,10 +34,10 @@ class TownsFactory
 
         $config = array_merge($args, [
             'cityName' => $class['city_name'],
-            'codeIbge' => $class['ibge'],
             'url' => $class[$urlAmbient],
-            'headerVersion' => $class['headerversion'] ?? null,
+            'codeIbge' => $class['ibge'],
             'namespace' => $class['namespace'] ?? null,
+            'headerVersion' => $class['headerversion'] ?? null,
             'version' => $class['version'] ?? null,
         ]);
 

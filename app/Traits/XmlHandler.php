@@ -4,19 +4,18 @@ namespace App\Traits;
 
 use SimpleXMLElement;
 use Illuminate\Support\Str;
-use App\Helpers\DirectoryHelper;
 
 trait XmlHandler
 {
 
-    protected static function assembleMessage(string $replaceOperation = '', string $version = ''): SimpleXMLElement
+    protected ?string $baseDir = null;
+
+    protected function assembleMessage(string $replaceOperation = '', string $version = ''): SimpleXMLElement
     {
 
-        $baseDir = DirectoryHelper::getDir();
-
         $content = $version ?
-            file_get_contents($baseDir . '/schemas/AssembleMensage' . $version . '.xml') :
-            file_get_contents($baseDir . '/schemas/AssembleMensage.xml');
+            file_get_contents($this->getBaseDir() . '/schemas/AssembleMensage' . $version . '.xml') :
+            file_get_contents($this->getBaseDir() . '/schemas/AssembleMensage.xml');
 
         if (strpos($content, '[Mount_Mensage]') !== false) {
             $content = Str::replace('[Mount_Mensage]', $replaceOperation, $content);
@@ -25,20 +24,28 @@ trait XmlHandler
         return new SimpleXMLElement($content);
     }
 
-    protected static function composeHeader(string $headerVersion = ''): SimpleXMLElement
+    protected function composeHeader(string $headerVersion = ''): SimpleXMLElement
     {
 
-        $basedir = DirectoryHelper::getDir();
-        $content = new SimpleXMLElement(file_get_contents($basedir . '/schemas/ComposeHeader.xml'));
+        $content = new SimpleXMLElement(file_get_contents($this->getBaseDir() . '/schemas/ComposeHeader.xml'));
         $content->attributes()->versao = $headerVersion;
         $content->versaoDados = $headerVersion;
 
         return $content;
     }
 
-    protected static function composeMessage(string $type): SimpleXMLElement|null
+    protected function composeMessage(string $type): SimpleXMLElement|null
     {
-        $basedir = DirectoryHelper::getDir();
-        return new SimpleXMLElement(file_get_contents($basedir . '/schemas/' . $type . '.xml'));
+        return new SimpleXMLElement(file_get_contents($this->getBaseDir() . '/schemas/' . $type . '.xml'));
+    }
+
+    private function getBaseDir(): string
+    {
+        if ($this->baseDir === null) {
+            $reflect = new \ReflectionClass($this);
+            $this->baseDir = dirname($reflect->getFileName());
+        }
+
+        return $this->baseDir;
     }
 }

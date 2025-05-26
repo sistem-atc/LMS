@@ -4,18 +4,10 @@ namespace App\Services\Towns\Systems\Abaco;
 
 use Exception;
 use SimpleXMLElement;
-use App\Traits\SignXml;
-use App\Enums\HttpMethod;
-use App\Traits\XmlHandler;
-use App\Traits\RequestSender;
 use App\Services\Towns\Template\TownTemplate;
 
 class Abaco extends TownTemplate
 {
-
-    use SignXml;
-    use RequestSender;
-    use XmlHandler;
 
     use Methods\ConsultarLoteRps,
         Methods\ConsultarNfse,
@@ -23,7 +15,6 @@ class Abaco extends TownTemplate
         Methods\ConsultarSituacaoLoteRPS,
         Methods\RecepcionarLoteRPS;
 
-    protected static $verb = HttpMethod::POST;
     private static SimpleXMLElement $headMsg;
     private static array $config;
 
@@ -62,38 +53,25 @@ class Abaco extends TownTemplate
         return throw new Exception('Método não implementado', 501);
     }
 
-    private static function connection(): string|int|array|null
-    {
-        /*return self::Conection(
-            self::$config['url'] . self::$endPoint,
-            self::$mountMessage->asXML(),
-            self::getHeaders(),
-            self::$verb
-        );*/
-
-        return '';
-
-    }
-
-    private static function mountMensage(SimpleXMLElement $dataMsg, string $operation, ?string $version): void
+    public function mountMensage(SimpleXMLElement $dataMsg, string $operation, ?string $version): void
     {
 
-        //self::$mountMessage = parent::assembleMessage(replaceOperation: $operation, version: $version);
+        $this->mountMessage = $this->assembleMessage(replaceOperation: $operation, version: $version);
 
-        $headMsgString = self::removeSpecialChars(htmlspecialchars(self::$headMsg->asXML(), ENT_NOQUOTES, 'UTF-8'));
-        $dataMsgString = self::removeSpecialChars(htmlspecialchars($dataMsg->asXML(), ENT_NOQUOTES, 'UTF-8'));
+        $headMsgString = $this->removeSpecialChars(htmlspecialchars($this->headMsg->asXML(), ENT_NOQUOTES, 'UTF-8'));
+        $dataMsgString = $this->removeSpecialChars(htmlspecialchars($dataMsg->asXML(), ENT_NOQUOTES, 'UTF-8'));
 
-        self::$mountMessage->registerXPathNamespace('e', 'http://www.e-nfs.com.br');
-        self::$mountMessage->registerXPathNamespace('soapenv', 'http://schemas.xmlsoap.org/soap/envelope/');
+        $this->mountMessage->registerXPathNamespace('e', 'http://www.e-nfs.com.br');
+        $this->mountMessage->registerXPathNamespace('soapenv', 'http://schemas.xmlsoap.org/soap/envelope/');
 
-        $cabecMsg = self::$mountMessage->xpath('//e:Nfsecabecmsg')[0];
+        $cabecMsg = $this->mountMessage->xpath('//e:Nfsecabecmsg')[0];
         $dom = dom_import_simplexml($cabecMsg);
         $doc = $dom->ownerDocument;
 
         $textNode = $doc->createTextNode($headMsgString);
         $dom->appendChild($textNode);
 
-        $dadosMsg = self::$mountMessage->xpath('//e:Nfsedadosmsg')[0];
+        $dadosMsg = $this->mountMessage->xpath('//e:Nfsedadosmsg')[0];
         $dom = dom_import_simplexml($dadosMsg);
         $doc = $dom->ownerDocument;
 
@@ -102,7 +80,7 @@ class Abaco extends TownTemplate
 
     }
 
-    private static function removeSpecialChars(string $string): string
+    private function removeSpecialChars(string $string): string
     {
         return
             str_replace(
@@ -120,7 +98,7 @@ class Abaco extends TownTemplate
             );
     }
 
-    public static function parseXmlToArray(string $xmlString, string $xpath, string $namespace = ''): array
+    public function parseXmlToArray(string $xmlString, string $xpath, string $namespace = ''): array
     {
 
         libxml_use_internal_errors(true);

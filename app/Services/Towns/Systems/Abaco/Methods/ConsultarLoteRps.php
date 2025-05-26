@@ -7,10 +7,10 @@ use Illuminate\Support\Facades\Validator;
 trait ConsultarLoteRps
 {
 
-    private static string $endPoint;
-    private static string $operation;
+    private string $endPoint;
+    private string $operation;
 
-    public static function ConsultarLoteRps(array $data): string|int|array
+    public function ConsultarLoteRps(array $data): string|int|array
     {
 
         $validator = Validator::make($data, [
@@ -24,16 +24,21 @@ trait ConsultarLoteRps
         }
         ;
 
-        self::$endPoint = 'aconsultarloterps?wsdl';
-        self::$operation = __FUNCTION__;
-        $dataMsg = self::composeMessage(self::$operation);
+        $this->endPoint = 'aconsultarloterps?wsdl';
+        $this->operation = __FUNCTION__;
+        $dataMsg = $this->composeMessage($this->operation);
 
         $dataMsg->Cnpj = $data['cnpj'];
         $dataMsg->InscricaoMunicipal = $data['inscricaoMunicipal'];
         $dataMsg->Protocolo = $data['protocolo'];
 
-        self::mountMensage($dataMsg, self::$operation, self::getVersion());
+        $this->mountMensage($dataMsg, $this->operation, $this->getVersion());
 
-        return self::parseXmlToArray(self::connection(), '//ns:Outputxml');
+        $response = $this->http()
+            ->setBaseUrl($this->getUrl())
+            ->setHeaders($this->getHeaders())
+            ->post($this->endPoint, $this->mountMessage->asXML());
+
+        return $this->parseXmlToArray($response, '//ns:Outputxml');
     }
 }

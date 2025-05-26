@@ -2,20 +2,20 @@
 
 namespace App\Services\Towns\Template;
 
+use SimpleXMLElement;
 use App\Traits\SignXml;
 use App\Traits\XmlHandler;
-use App\Traits\RequestSender;
 use App\Interfaces\LinkTownsInterface;
 use App\Utils\Services\HttpRequestService;
+use Illuminate\Http\Client\PendingRequest;
 
 abstract class TownTemplate implements LinkTownsInterface
 {
 
     use SignXml;
-    use RequestSender;
     use XmlHandler;
 
-    protected HttpRequestService $http;
+    protected PendingRequest $http;
     protected string $cityName;
     protected ?string $url;
     protected string $codeIbge;
@@ -24,52 +24,63 @@ abstract class TownTemplate implements LinkTownsInterface
     protected ?string $password;
     protected ?string $headerVersion;
     protected ?string $version;
+    protected ?SimpleXMLElement $mountMessage;
 
     public function __construct(array $config)
     {
-        self::$cityName = $config['cityName'];
-        self::$url = $config['url'];
-        self::$codeIbge = $config['codeIbge'];
-        self::$namespace = $config['namespace'];
-        self::$username = $config['username'];
-        self::$password = $config['password'];
-        self::$headerVersion = $config['headerVersion'];
-        self::$version = $config['version'];
+        $this->cityName = $config['cityName'];
+        $this->url = $config['url'];
+        $this->codeIbge = $config['codeIbge'];
+        $this->namespace = $config['namespace'];
+        $this->username = $config['username'];
+        $this->password = $config['password'];
+        $this->headerVersion = $config['headerVersion'];
+        $this->version = $config['version'];
     }
 
-    protected static function getUsername(): ?string
+    protected function getCityName(): string
     {
-        return self::$username ?? null;
+        return $this->cityName;
     }
 
-    protected static function getPassword(): ?string
+    protected function getCodeIbge(): string
     {
-        return self::$password ?? null;
+        return $this->codeIbge;
     }
 
-    protected static function getNamespace(): ?string
+    protected function getUsername(): ?string
     {
-        return self::$namespace ?? null;
+        return $this->username ?? null;
     }
 
-    protected static function getVersion(): ?string
+    protected function getPassword(): ?string
     {
-        return self::$version ?? null;
+        return $this->password ?? null;
     }
 
-    protected static function getUrl(): ?string
+    protected function getNamespace(): ?string
     {
-        return self::$url ?? null;
+        return $this->namespace ?? null;
     }
 
-    protected static function getHeaderVersion(): ?string
+    protected function getVersion(): ?string
     {
-        return self::$headerVersion ?? null;
+        return $this->version ?? null;
     }
 
-    public function makeHttpClient(): HttpRequestService
+    protected function getUrl(): ?string
     {
-        return new HttpRequestService();
+        return $this->url ?? null;
+    }
+
+    protected function getHeaderVersion(): ?string
+    {
+        return $this->headerVersion ?? null;
+    }
+
+    public function makeHttpClient(): PendingRequest
+    {
+        return $this->http = new HttpRequestService()->make();
     }
 
 }

@@ -18,39 +18,42 @@ class TravelResource extends Resource
     protected static ?string $model = Travel::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationGroup = 'Operacional';
+    protected static ?string $navigationLabel = 'Viagem';
+    protected static ?string $modelLabel = 'Viagem';
+    protected static ?string $pluralModelLabel = 'Viagens';
+
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\Select::make('branch_id')
+                    ->label('Filial')
                     ->relationship('branch', 'name')
                     ->required(),
-                Forms\Components\Select::make('user_id')
-                    ->relationship('user', 'name')
-                    ->required(),
                 Forms\Components\Select::make('route_id')
+                    ->label('Rota')
                     ->relationship('route', 'name')
                     ->required(),
                 Forms\Components\Select::make('vehicle_id')
+                    ->label('Veículo')
                     ->relationship('vehicle', 'id')
                     ->required(),
                 Forms\Components\Select::make('driver_id')
+                    ->label('Motorista')
                     ->relationship('driver', 'name')
                     ->required(),
-                Forms\Components\DateTimePicker::make('trip_start_time'),
-                Forms\Components\DateTimePicker::make('trip_end_time'),
+                Forms\Components\DateTimePicker::make('trip_start_time')
+                    ->required()
+                    ->label('Início da Viagem'),
+                Forms\Components\DateTimePicker::make('trip_end_time')
+                    ->required()
+                    ->label('Fim da Viagem'),
                 Forms\Components\TextInput::make('ciot')
+                    ->label('CIOT')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('created_by')
-                    ->numeric(),
-                Forms\Components\TextInput::make('updated_by')
-                    ->numeric(),
-                Forms\Components\TextInput::make('deleted_by')
-                    ->numeric(),
-                Forms\Components\TextInput::make('restored_by')
-                    ->numeric(),
             ]);
     }
 
@@ -81,30 +84,6 @@ class TravelResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('ciot')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('created_by')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('updated_by')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('deleted_by')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('restored_by')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('deleted_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),

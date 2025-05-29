@@ -36,7 +36,11 @@ trait XmlHandler
 
     protected function composeMessage(string $type): SimpleXMLElement|null
     {
-        return new SimpleXMLElement(file_get_contents($this->getBaseDir() . '/schemas/' . $type . '.xml'));
+        return new SimpleXMLElement(
+            data: file_get_contents(
+                filename: $this->getBaseDir() . '/schemas/' . $type . '.xml'
+            )
+        );
     }
 
     private function getBaseDir(): string

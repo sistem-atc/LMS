@@ -2,6 +2,7 @@
 
 namespace App\Services\Towns\Systems\Abaco;
 
+use App\Services\Towns\DTO\TownConfig;
 use Exception;
 use SimpleXMLElement;
 use App\Services\Towns\Template\TownTemplate;
@@ -15,16 +16,15 @@ class Abaco extends TownTemplate
         Methods\ConsultarSituacaoLoteRPS,
         Methods\RecepcionarLoteRPS;
 
-    private static SimpleXMLElement $headMsg;
-    private static array $config;
+    private SimpleXMLElement $headMsg;
 
-    public function __construct(array $config)
+    public function __construct(TownConfig $config)
     {
-        self::$headMsg = self::composeHeader($config['headerVersion']);
-        self::$config = $config;
+        parent::__construct(config: $config);
+        $this->headMsg = $this->composeHeader(headerVersion: $config->headerVersion);
     }
 
-    public static function getHeaders(): array
+    public function getHeaders(): array
     {
         return [
             "Content-Type: text/xml;charset=UTF-8",

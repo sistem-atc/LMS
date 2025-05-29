@@ -11,11 +11,10 @@ use Illuminate\Support\Facades\Validator;
 trait RecepcionarLoteRPS
 {
 
-    private static string $endPoint;
-    private static SimpleXMLElement $mountMessage;
-    private static string $operation;
+    private string $endPoint;
+    private string $operation;
 
-    public static function RecepcionarLoteRPS(array $data): string|int|array
+    public function RecepcionarLoteRPS(array $data): string|int|array
     {
 
         $validator = Validator::make($data, [
@@ -75,10 +74,10 @@ trait RecepcionarLoteRPS
         }
         ;
 
-        self::$endPoint = 'arecepcionarloterps?wsdl';
+        $this->endPoint = 'arecepcionarloterps?wsdl';
 
         $loteRPS = 'LoteRPS';
-        $mountRPS = self::composeMessage($loteRPS, parent::$version);
+        $mountRPS = $this->composeMessage($loteRPS);
         $mountRPS->InfRps->attributes()->id = $data['rps'][0]['infoId'];
         $mountRPS->InfRps->IdentificacaoRps->Numero = $data['rps'][0]['numeroRps'];
         $mountRPS->InfRps->IdentificacaoRps->Serie = $data['rps'][0]['serieRps'];
@@ -125,10 +124,10 @@ trait RecepcionarLoteRPS
         $mountRPS->Tomador->IdentificacaoTomador->Contato->Contato = $data['rps'][0]['tomador']['contato'];
         $mountRPS->Tomador->IdentificacaoTomador->Contato->Email = $data['rps'][0]['tomador']['email'];
 
-        $mountRPS = self::Sign_XML($mountRPS->asXML());
+        $mountRPS = $this->Sign_XML($mountRPS->asXML());
 
-        self::$operation = __FUNCTION__;
-        $dataMsg = self::composeMessage(self::$operation);
+        $this->operation = __FUNCTION__;
+        $dataMsg = $this->composeMessage($this->operation);
         $dataMsg->LoteRps['id'] = $data['idLote'];
         $dataMsg->LoteRps->NumeroLote = $data['numeroLote'];
         $dataMsg->LoteRps->Cnpj = $data['cnpj'];
@@ -140,10 +139,16 @@ trait RecepcionarLoteRPS
         $fragment = dom_import_simplexml($mountRPS);
         $dom->appendChild($dom->ownerDocument->importNode($fragment, true));
 
-        self::mountMensage($dataMsg, self::$operation, self::getVersion());
-        self::$mountMessage = self::Sign_XML(self::$mountMessage);
+        $this->mountMensage($dataMsg, $this->operation, $this->getVersion());
 
-        return self::parseXmlToArray(self::connection(), '//ns:Outputxml');
+        $this->mountMessage = self::Sign_XML($this->mountMessage);
+
+        $response = $this->http()
+            ->setBaseUrl($this->getUrl())
+            ->setHeaders($this->getHeaders())
+            ->post($this->endPoint, $this->mountMessage->asXML());
+
+        return $this->parseXmlToArray($response, '//ns:Outputxml');
     }
 
 }

@@ -6,6 +6,7 @@ use SimpleXMLElement;
 use App\Traits\SignXml;
 use App\Traits\XmlHandler;
 use App\Interfaces\LinkTownsInterface;
+use App\Services\Towns\DTO\TownConfig;
 use App\Utils\Services\HttpRequestService;
 use Illuminate\Http\Client\PendingRequest;
 
@@ -26,16 +27,16 @@ abstract class TownTemplate implements LinkTownsInterface
     protected ?string $version;
     protected ?SimpleXMLElement $mountMessage;
 
-    public function __construct(array $config)
+    public function __construct(TownConfig $config)
     {
-        $this->cityName = $config['cityName'];
-        $this->url = $config['url'];
-        $this->codeIbge = $config['codeIbge'];
-        $this->namespace = $config['namespace'];
-        $this->username = $config['username'];
-        $this->password = $config['password'];
-        $this->headerVersion = $config['headerVersion'];
-        $this->version = $config['version'];
+        $this->cityName = $config->cityName;
+        $this->url = $config->url;
+        $this->codeIbge = $config->codeIbge;
+        $this->namespace = $config->namespace;
+        $this->username = null;
+        $this->password = null;
+        $this->headerVersion = $config->headerVersion;
+        $this->version = $config->version;
     }
 
     protected function getCityName(): string

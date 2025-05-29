@@ -5,6 +5,8 @@ namespace App\Services\Towns\Systems\Abaco\Methods;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
 
+use function PHPSTORM_META\type;
+
 trait ConsultarNfse
 {
 
@@ -14,12 +16,15 @@ trait ConsultarNfse
     public function ConsultarNfse(array $data): string|int|array
     {
 
-        $validator = Validator::make($data, [
-            'Prestador.cnpj' => 'required|max:14',
-            'Prestador.inscricaoMunicipal' => 'required',
-            'PeriodoEmissao.dataInicial' => 'required|date',
-            'PeriodoEmissao.dataFinal' => 'required|date',
-        ]);
+        $validator = Validator::make(
+            data: $data,
+            rules: [
+                'Prestador.cnpj' => 'required|max:14',
+                'Prestador.inscricaoMunicipal' => 'required',
+                'PeriodoEmissao.dataInicial' => 'required|date',
+                'PeriodoEmissao.dataFinal' => 'required|date',
+            ]
+        );
 
         if ($validator->fails()) {
             return ['errors' => $validator->errors(), 'response' => 422];
@@ -28,7 +33,7 @@ trait ConsultarNfse
 
         $this->endPoint = 'aconsultarnfse';
         $this->operation = __FUNCTION__;
-        $dataMsg = $this->composeMessage($this->operation);
+        $dataMsg = $this->composeMessage(type: $this->operation);
 
         if (!isset($data['tomador'])) {
             unset($dataMsg->Tomador);
@@ -48,25 +53,33 @@ trait ConsultarNfse
         } else {
             $dataMsg->InscricaoMunicipal = $data['intermediarioServico.inscricaoMunicipal'];
             if (!isset($data['intermediarioServico.cnpj'])) {
-                unset($dataMsg->xpath('//IntermediarioServico/CpfCnpj/Cpf')[0]);
+                unset($dataMsg->xpath(expression: '//IntermediarioServico/CpfCnpj/Cpf')[0]);
                 $dataMsg->Cnpj = $data['intermediarioServico.cnpj'];
             } else {
-                unset($dataMsg->xpath('//IntermediarioServico/CpfCnpj/Cnpj')[0]);
+                unset($dataMsg->xpath(expression: '//IntermediarioServico/CpfCnpj/Cnpj')[0]);
                 $dataMsg->Cpf = $data['intermediarioServico.Cpf'];
             }
         }
 
         $dataMsg->Prestador->Cnpj = $data['Prestador']['cnpj'];
         $dataMsg->Prestador->InscricaoMunicipal = $data['Prestador']['inscricaoMunicipal'];
-        $dataMsg->PeriodoEmissao->DataInicial = Carbon::parse($data['PeriodoEmissao']['dataInicial'])->format('Y-m-d\TH:i:s');
-        $dataMsg->PeriodoEmissao->DataFinal = Carbon::parse($data['PeriodoEmissao']['dataFinal'])->format('Y-m-d\TH:i:s');
+        $dataMsg->PeriodoEmissao->DataInicial = Carbon::parse(
+            time: $data['PeriodoEmissao']['dataInicial']
+        )->format(
+                format: 'Y-m-d\TH:i:s'
+            );
+        $dataMsg->PeriodoEmissao->DataFinal = Carbon::parse(
+            time: $data['PeriodoEmissao']['dataFinal']
+        )->format(
+                format: 'Y-m-d\TH:i:s'
+            );
 
         $response = $this->http()
             ->setBaseUrl($this->getUrl())
             ->setHeaders($this->getHeaders())
             ->post($this->endPoint, $this->mountMessage->asXML());
 
-        return self::parseXmlToArray($response, '//ns:Outputxml');
+        return $this->parseXmlToArray(xmlString: $response, xpath: '//ns:Outputxml');
 
     }
 

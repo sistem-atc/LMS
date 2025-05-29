@@ -7,9 +7,9 @@ use Illuminate\Support\Facades\Validator;
 trait ConsultarSituacaoLoteRPS
 {
 
-    private static string $endPoint;
-    private static string $operation;
-    public static function ConsultarSituacaoLoteRPS(array $data): string|int|array
+    private string $endPoint;
+    private string $operation;
+    public function ConsultarSituacaoLoteRPS(array $data): string|int|array
     {
 
         $validator = Validator::make($data, [
@@ -23,17 +23,22 @@ trait ConsultarSituacaoLoteRPS
         }
         ;
 
-        self::$endPoint = 'aconsultarsituacaoloterps?wsdl';
-        self::$operation = __FUNCTION__;
-        $dataMsg = self::composeMessage(self::$operation);
+        $this->endPoint = 'aconsultarsituacaoloterps?wsdl';
+        $this->operation = __FUNCTION__;
+        $dataMsg = $this->composeMessage($this->operation);
 
         $dataMsg->Cnpj = $data['cnpj'];
         $dataMsg->InscricaoMunicipal = $data['inscricaoMunicipal'];
         $dataMsg->Protocolo = $data['protocolo'];
 
-        self::mountMensage($dataMsg, self::$operation, self::getVersion());
+        $this->mountMensage($dataMsg, $this->operation, $this->getVersion());
 
-        return self::parseXmlToArray(self::connection(), '//ns:Outputxml');
+        $response = $this->http()
+            ->setBaseUrl($this->getUrl())
+            ->setHeaders($this->getHeaders())
+            ->post($this->endPoint, $this->mountMessage->asXML());
+
+        return $this->parseXmlToArray($response, '//ns:Outputxml');
     }
 
 }

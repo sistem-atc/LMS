@@ -4,49 +4,54 @@ namespace App\Services\Towns\Factories;
 
 use App\Helpers\EnvironmentHelper;
 use App\Interfaces\LinkTownsInterface;
+use App\Services\Towns\DTO\TownConfig;
 use Illuminate\Contracts\Container\BindingResolutionException;
 
 class TownsFactory
 {
-
-    public static $config = [];
-
     public static function make(array $args = []): LinkTownsInterface
     {
 
-        if (!array_key_exists('ibge', $args['ibge'])) {
-            throw new \InvalidArgumentException("Codigo Ibge não informado para definição da prefeitura");
+        if (!isset($args['ibge'])) {
+            throw new \InvalidArgumentException(message: "Codigo Ibge não informado para definição da prefeitura");
         }
 
         $ibge = $args['ibge'];
+        $townsList = config(key: 'towns-list');
 
-        if (!array_key_exists($ibge, config('towns-list'))) {
-            throw new \InvalidArgumentException("Conector não encontrado para a prefeitura {$ibge}");
+        if (!isset($townsList[$ibge])) {
+            throw new \InvalidArgumentException(message: "Conector não encontrado para a prefeitura {$ibge}");
         }
 
-        $class = config('towns-list.' . $ibge);
+        $classInfo = $townsList[$ibge];
+        $classPath = $classInfo['class_path'] ?? null;
 
-        if (!$class || !class_exists($class['class_path'])) {
-            throw new \InvalidArgumentException("Classe não encontrada para a prefeitura {$ibge}");
+        if (!$classPath || !class_exists(class: $classPath)) {
+            throw new \InvalidArgumentException(message: "Classe não encontrada para a prefeitura {$ibge}");
         }
 
         $urlAmbient = 'url_' . EnvironmentHelper::getAmbient();
 
-        $config = array_merge($args, [
-            'cityName' => $class['city_name'],
-            'url' => $class[$urlAmbient],
-            'codeIbge' => $class['ibge'],
-            'namespace' => $class['namespace'] ?? null,
-            'headerVersion' => $class['headerversion'] ?? null,
-            'version' => $class['version'] ?? null,
-        ]);
+        $config = new TownConfig(
+            cityName: $classInfo['city_name'],
+            url: $classInfo[$urlAmbient] ?? '',
+            codeIbge: $classInfo['ibge'],
+            namespace: $classInfo['namespace'] ?? null,
+            headerVersion: $classInfo['headerversion'] ?? null,
+            version: $classInfo['version'] ?? null
+        );
 
         try {
-            return app()->make($class, [
-                'config' => $config,
-            ]);
+            return app()->make(
+                abstract: $classPath,
+                parameters: [
+                    'config' => $config,
+                ]
+            );
         } catch (BindingResolutionException $e) {
-            throw new \InvalidArgumentException("Erro ao resolver dependências para {$class}: " . $e->getMessage());
+            throw new \InvalidArgumentException(
+                message: "Erro ao resolver dependências para {$classPath}: " . $e->getMessage()
+            );
         }
 
     }

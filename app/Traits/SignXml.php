@@ -12,8 +12,20 @@ trait SignXml
 
     protected function Sign_XML(string $xmlNoSigned): SimpleXMLElement
     {
-        $xmlSigner = new XmlSigner(Branch::where('id', '=', Auth::user()->employee->branch['id']));
-        return simplexml_load_string($xmlSigner::Sign_XML($xmlNoSigned));
+
+        $xmlSigner = new XmlSigner(
+            branch: Branch::where(
+                column: 'id',
+                operator: '=',
+                value: Auth::user()->employee->branch['id']
+            )->first()
+        );
+
+        return simplexml_load_string(
+            data: $xmlSigner->Sign_XML(
+                xmlNoSigned: $xmlNoSigned
+            )
+        );
     }
 
 }

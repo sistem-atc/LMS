@@ -13,11 +13,14 @@ trait ConsultarLoteRps
     public function ConsultarLoteRps(array $data): string|int|array
     {
 
-        $validator = Validator::make($data, [
-            'cnpj' => 'required|max:14',
-            'inscricaoMunicipal' => 'required',
-            'protocolo' => 'required',
-        ]);
+        $validator = Validator::make(
+            data: $data,
+            rules: [
+                'cnpj' => 'required|max:14',
+                'inscricaoMunicipal' => 'required',
+                'protocolo' => 'required',
+            ]
+        );
 
         if ($validator->fails()) {
             return ['errors' => $validator->errors(), 'response' => 422];
@@ -26,13 +29,17 @@ trait ConsultarLoteRps
 
         $this->endPoint = 'aconsultarloterps?wsdl';
         $this->operation = __FUNCTION__;
-        $dataMsg = $this->composeMessage($this->operation);
+        $dataMsg = $this->composeMessage(type: $this->operation);
 
         $dataMsg->Cnpj = $data['cnpj'];
         $dataMsg->InscricaoMunicipal = $data['inscricaoMunicipal'];
         $dataMsg->Protocolo = $data['protocolo'];
 
-        $this->mountMensage($dataMsg, $this->operation, $this->getVersion());
+        $this->mountMensage(
+            dataMsg: $dataMsg,
+            operation: $this->operation,
+            version: $this->getVersion()
+        );
 
         $response = $this->http()
             ->setBaseUrl($this->getUrl())

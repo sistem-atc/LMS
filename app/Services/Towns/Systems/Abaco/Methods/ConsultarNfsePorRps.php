@@ -9,9 +9,9 @@ use Illuminate\Support\Facades\Validator;
 trait ConsultarNfsePorRps
 {
 
-    private static string $endPoint;
-    private static string $operation;
-    public static function ConsultarNfsePorRps(array $data): string|int|array
+    private string $endPoint;
+    private string $operation;
+    public function ConsultarNfsePorRps(array $data): string|int|array
     {
 
         $validator = Validator::make($data, [
@@ -30,9 +30,9 @@ trait ConsultarNfsePorRps
         }
         ;
 
-        self::$endPoint = 'aconsultarnfseporrps?wsdl';
-        self::$operation = __FUNCTION__;
-        $dataMsg = self::composeMessage(self::$operation);
+        $this->endPoint = 'aconsultarnfseporrps?wsdl';
+        $this->operation = __FUNCTION__;
+        $dataMsg = $this->composeMessage($this->operation);
 
         $dataMsg->Numero = $data['numero_RPS'];
         $dataMsg->Serie = $data['serie_RPS'];
@@ -40,9 +40,18 @@ trait ConsultarNfsePorRps
         $dataMsg->Cnpj = $data['cnpj'];
         $dataMsg->InscricaoMunicipal = $data['inscricaoMunicipal'];
 
-        self::mountMensage($dataMsg, self::$operation, self::getVersion());
+        $this->mountMensage(
+            dataMsg: $dataMsg,
+            operation: $this->operation,
+            version: $this->getVersion()
+        );
 
-        return self::parseXmlToArray(self::connection(), '//ns:Outputxml');
+        $response = $this->http()
+            ->setBaseUrl($this->getUrl())
+            ->setHeaders($this->getHeaders())
+            ->post($this->endPoint, $this->mountMessage->asXML());
+
+        return $this->parseXmlToArray($response, '//ns:Outputxml');
     }
 
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Towns\Betha;
+namespace App\Services\Towns\Systems\Betha;
 
 use Exception;
 use SimpleXMLElement;

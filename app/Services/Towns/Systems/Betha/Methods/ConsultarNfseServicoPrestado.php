@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Towns\Betha\Methods;
+namespace App\Services\Towns\Systems\Betha\Methods;
 
 use Illuminate\Support\Facades\Validator;
 

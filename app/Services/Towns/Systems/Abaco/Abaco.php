@@ -2,9 +2,9 @@
 
 namespace App\Services\Towns\Systems\Abaco;
 
-use App\Services\Towns\DTO\TownConfig;
 use Exception;
 use SimpleXMLElement;
+use App\Services\Towns\DTO\TownConfig;
 use App\Services\Towns\Template\TownTemplate;
 
 class Abaco extends TownTemplate
@@ -29,18 +29,18 @@ class Abaco extends TownTemplate
         return [
             "Content-Type: text/xml;charset=UTF-8",
             "SOAPAction: http://www.e-nfs.com.braction/ACONSULTARNFSE.Execute",
-            "Content-Length: " . strlen(self::$mountMessage->asXML())
+            "Content-Length: " . strlen($this->mountMessage->asXML())
         ];
     }
 
     public function gerarNota(array $data): string|int|array
     {
-        return self::recepcionarLoteRps($data);
+        return $this->recepcionarLoteRps($data);
     }
 
     public function consultarNota(array $data): string|int|array
     {
-        return self::ConsultarNfsePorRps($data);
+        return $this->ConsultarNfsePorRps($data);
     }
 
     public function cancelarNota(array $data): string|int|array

@@ -2,14 +2,13 @@
 
 namespace App\Services\Towns\Betha\Methods;
 
-use SimpleXMLElement;
 use Illuminate\Support\Facades\Validator;
 
 trait ConsultarLoteRps
 {
-    private static SimpleXMLElement $headMsg;
-    private static string $operation;
-    public static function ConsultarLoteRps($data): string|int|array
+    private string $endPoint;
+    private string $operation;
+    public function ConsultarLoteRps($data): string|int|array
     {
 
         $validator = Validator::make($data, [
@@ -20,17 +19,23 @@ trait ConsultarLoteRps
 
         if ($validator->fails()) {
             return ['errors' => $validator->errors(), 'response' => 422];
-        };
+        }
+        ;
 
-        self::$operation = __FUNCTION__;
-        $dataMsg = self::composeMessage(self::$operation);
+        $this->operation = __FUNCTION__;
+        $dataMsg = $this->composeMessage($this->operation);
         $dataMsg->Cnpj = $data['cnpj'];
         $dataMsg->InscricaoMunicipal = $data['inscricaoMunicipal'];
         $dataMsg->Protocolo = $data['protocolo'];
 
-        self::mountMensage(self::$headMsg, $dataMsg);
+        $this->mountMensage($this->headMsg, $this->operation, $dataMsg);
 
-        return self::connection();
+        $response = $this->http()
+            ->setBaseUrl($this->getUrl())
+            ->setHeaders($this->getHeaders())
+            ->post($this->endPoint, $this->mountMessage->asXML());
+
+        return $this->parseXmlToArray($response, '');
     }
 
 }

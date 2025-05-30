@@ -3,8 +3,8 @@
 namespace App\Services\Towns\Betha;
 
 use Illuminate\Support\Carbon;
-use App\Factories\TownsFactory;
 use App\Interfaces\ExcludeSelectInterface;
+use App\Services\Towns\Factories\TownsFactory;
 
 class Exemple implements ExcludeSelectInterface
 {
@@ -23,9 +23,9 @@ class Exemple implements ExcludeSelectInterface
         ];
 
 
-        $betha = TownsFactory::getInstance(self::CITY_IBGE);
+        $town = TownsFactory::make(self::CITY_IBGE);
 
-        dd($betha->CancelarNfse($arrayData));
+        dd($town->cancelarNota($arrayData));
 
     }
 
@@ -38,9 +38,9 @@ class Exemple implements ExcludeSelectInterface
             'Protocolo' => '123456',
         ];
 
-        $betha = TownsFactory::getInstance(self::CITY_IBGE);
+        $town = TownsFactory::make(self::CITY_IBGE);
 
-        dd($betha->ConsultarLoteRps($arrayData));
+        dd($town->ConsultarLoteRps($arrayData));
 
     }
 
@@ -54,9 +54,9 @@ class Exemple implements ExcludeSelectInterface
             'Pagina' => '1',
         ];
 
-        $betha = TownsFactory::getInstance(self::CITY_IBGE);
+        $town = TownsFactory::make(self::CITY_IBGE);
 
-        dd($betha->ConsultarNfseFaixa($arrayData));
+        dd($town->ConsultarNfseFaixa($arrayData));
 
     }
 
@@ -71,9 +71,9 @@ class Exemple implements ExcludeSelectInterface
             'InscricaoMunicipal' => '1234567890',
         ];
 
-        $betha = TownsFactory::getInstance(self::CITY_IBGE);
+        $town = TownsFactory::make(self::CITY_IBGE);
 
-        dd($betha->ConsultarNfsePorRps($arrayData));
+        dd($town->ConsultarNfsePorRps($arrayData));
 
     }
 
@@ -88,9 +88,9 @@ class Exemple implements ExcludeSelectInterface
             'Pagina' => '1',
         ];
 
-        $betha = TownsFactory::getInstance(self::CITY_IBGE);
+        $town = TownsFactory::make(self::CITY_IBGE);
 
-        dd($betha->ConsultarNfseServicoPrestado($arrayData));
+        dd($town->ConsultarNfseServicoPrestado($arrayData));
 
     }
 
@@ -110,9 +110,9 @@ class Exemple implements ExcludeSelectInterface
             'Pagina' => '1',
         ];
 
-        $betha = TownsFactory::getInstance(self::CITY_IBGE);
+        $town = TownsFactory::make(self::CITY_IBGE);
 
-        dd($betha->ConsultarNfseServicoTomado($arrayData));
+        dd($town->ConsultarNfseServicoTomado($arrayData));
 
     }
 
@@ -181,9 +181,9 @@ class Exemple implements ExcludeSelectInterface
             ],
         ];
 
-        $betha = TownsFactory::getInstance(self::CITY_IBGE);
+        $town = TownsFactory::make(self::CITY_IBGE);
 
-        dd($betha->GerarNfse($arrayData));
+        dd($town->gerarNota($arrayData));
 
     }
 
@@ -259,9 +259,9 @@ class Exemple implements ExcludeSelectInterface
             'InscricaoMunicipal' => '1234567890',
         ];
 
-        $betha = TownsFactory::getInstance(self::CITY_IBGE);
+        $town = TownsFactory::make(self::CITY_IBGE);
 
-        dd($betha->RecepcionarLoteRps($arrayData));
+        dd($town->RecepcionarLoteRps($arrayData));
 
     }
 
@@ -337,9 +337,9 @@ class Exemple implements ExcludeSelectInterface
             'InscricaoMunicipal' => '1234567890',
         ];
 
-        $betha = TownsFactory::getInstance(self::CITY_IBGE);
+        $town = TownsFactory::make(self::CITY_IBGE);
 
-        dd($betha->RecepcionarLoteRpsSincrono($arrayData));
+        dd($town->RecepcionarLoteRpsSincrono($arrayData));
 
     }
 
@@ -418,9 +418,9 @@ class Exemple implements ExcludeSelectInterface
 
         ];
 
-        $betha = TownsFactory::getInstance(self::CITY_IBGE);
+        $town = TownsFactory::make(self::CITY_IBGE);
 
-        dd($betha->SubstituirNfse($arrayData));
+        dd($town->substituirNota($arrayData));
 
     }
 

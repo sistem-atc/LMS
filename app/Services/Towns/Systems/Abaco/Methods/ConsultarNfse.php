@@ -5,8 +5,6 @@ namespace App\Services\Towns\Systems\Abaco\Methods;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
 
-use function PHPSTORM_META\type;
-
 trait ConsultarNfse
 {
 

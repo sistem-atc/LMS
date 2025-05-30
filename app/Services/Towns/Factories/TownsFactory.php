@@ -9,25 +9,20 @@ use Illuminate\Contracts\Container\BindingResolutionException;
 
 class TownsFactory
 {
-    public static function make(array $args = []): LinkTownsInterface
+    public static function make(string $codeIbge): LinkTownsInterface
     {
 
-        if (!isset($args['ibge'])) {
-            throw new \InvalidArgumentException(message: "Codigo Ibge não informado para definição da prefeitura");
+        $townsName = config(key: "towns-list.{$codeIbge}");
+
+        if (!$townsName) {
+            throw new \InvalidArgumentException(message: "Conector não encontrado para o IBGE {$codeIbge}");
         }
 
-        $ibge = $args['ibge'];
-        $townsList = config(key: 'towns-list');
-
-        if (!isset($townsList[$ibge])) {
-            throw new \InvalidArgumentException(message: "Conector não encontrado para a prefeitura {$ibge}");
-        }
-
-        $classInfo = $townsList[$ibge];
+        $classInfo = config(key: "towns.{$townsName}.{$codeIbge}");
         $classPath = $classInfo['class_path'] ?? null;
 
         if (!$classPath || !class_exists(class: $classPath)) {
-            throw new \InvalidArgumentException(message: "Classe não encontrada para a prefeitura {$ibge}");
+            throw new \InvalidArgumentException(message: "Classe não encontrada para a prefeitura {$classInfo['city_name']}");
         }
 
         $urlAmbient = 'url_' . EnvironmentHelper::getAmbient();

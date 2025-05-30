@@ -2,18 +2,17 @@
 
 namespace App\Services\Towns\Betha\Methods;
 
-use SimpleXMLElement;
-use App\Enums\TypeRPS;
 use Illuminate\Validation\Rule;
+use App\Enums\TypeDocumentTransportEnum;
 use Illuminate\Support\Facades\Validator;
 
 trait ConsultarNfsePorRps
 {
 
-    private static SimpleXMLElement $headMsg;
-    private static string $operation;
+    private string $endPoint;
+    private string $operation;
 
-    public static function ConsultarNfsePorRps($data): string|int|array
+    public function ConsultarNfsePorRps($data): string|int|array
     {
 
         $validator = Validator::make($data, [
@@ -23,16 +22,17 @@ trait ConsultarNfsePorRps
             'serie_RPS' => 'required',
             'tipo_RPS' => [
                 'required',
-                Rule::in(TypeRPS::cases())
+                Rule::in(TypeDocumentTransportEnum::cases())
             ],
         ]);
 
         if ($validator->fails()) {
             return ['errors' => $validator->errors(), 'response' => 422];
-        };
+        }
+        ;
 
-        self::$operation = __FUNCTION__;
-        $dataMsg = self::composeMessage(self::$operation);
+        $this->operation = __FUNCTION__;
+        $dataMsg = $this->composeMessage($this->operation);
 
         $dataMsg->Cnpj = $data['cnpj'];
         $dataMsg->InscricaoMunicipal = $data['inscricaoMunicipal'];
@@ -40,9 +40,14 @@ trait ConsultarNfsePorRps
         $dataMsg->Serie = $data['serie_RPS'];
         $dataMsg->Tipo = $data['tipo_RPS'];
 
-        self::mountMensage(self::$headMsg, $dataMsg);
+        $this->mountMensage($this->headMsg, $this->operation, $dataMsg);
 
-        return self::connection();
+        $response = $this->http()
+            ->setBaseUrl($this->getUrl())
+            ->setHeaders($this->getHeaders())
+            ->post($this->endPoint, $this->mountMessage->asXML());
+
+        return $this->parseXmlToArray($response, '');
     }
 
 }

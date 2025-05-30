@@ -2,24 +2,24 @@
 
 namespace App\Services\Towns\Betha\Methods;
 
-use SimpleXMLElement;
-use App\Enums\TypeRPS;
 use Illuminate\Validation\Rule;
+use App\Enums\TypeDocumentTransportEnum;
 use Illuminate\Support\Facades\Validator;
 
 trait GerarNfse
 {
 
-    private static SimpleXMLElement $headMsg;
-    private static string $operation;
-    public static function GerarNfse($data): string|int|array
+    private string $endPoint;
+    private string $operation;
+
+    public function GerarNfse($data): string|int|array
     {
 
         $validator = Validator::make($data, [
             'infoId' => ['required', 'string'],
             'numeroRps' => 'required',
             'serieRps' => 'required',
-            'tipo_RPS' => ['required', Rule::in(TypeRPS::cases())],
+            'tipo_RPS' => ['required', Rule::in(TypeDocumentTransportEnum::cases())],
             'dataEmissao' => ['required', 'date'],
             'status' => ['required', 'integer'],
             'competencia' => ['required', 'date'],
@@ -60,18 +60,24 @@ trait GerarNfse
 
         if ($validator->fails()) {
             return ['errors' => $validator->errors(), 'response' => 422];
-        };
+        }
+        ;
 
-        self::$operation = __FUNCTION__;
-        $dataMsg = self::composeMessage(self::$operation);
+        $this->operation = __FUNCTION__;
+        $dataMsg = $this->composeMessage($this->operation);
 
         $dataMsg->Cnpj = $data['cnpj'];
         $dataMsg->InscricaoMunicipal = $data['inscricaoMunicipal'];
         $dataMsg->Protocolo = $data['protocolo'];
 
-        self::mountMensage(self::$headMsg, $dataMsg);
+        $this->mountMensage($this->headMsg, $this->operation, $dataMsg);
 
-        return self::connection();
+        $response = $this->http()
+            ->setBaseUrl($this->getUrl())
+            ->setHeaders($this->getHeaders())
+            ->post($this->endPoint, $this->mountMessage->asXML());
+
+        return $this->parseXmlToArray($response, '');
     }
 
 }

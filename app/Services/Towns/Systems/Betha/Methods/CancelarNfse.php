@@ -2,7 +2,6 @@
 
 namespace App\Services\Towns\Betha\Methods;
 
-use SimpleXMLElement;
 use Illuminate\Validation\Rule;
 use App\Enums\MotivosCancelamento;
 use Illuminate\Support\Facades\Validator;
@@ -10,9 +9,9 @@ use Illuminate\Support\Facades\Validator;
 trait CancelarNfse
 {
 
-    private static SimpleXMLElement $headMsg;
-    private static string $operation;
-    public static function CancelarNfse($data): string|int|array
+    private string $endPoint;
+    private string $operation;
+    public function CancelarNfse($data): string|int|array
     {
 
         $validator = Validator::make($data, [
@@ -28,10 +27,11 @@ trait CancelarNfse
 
         if ($validator->fails()) {
             return ['errors' => $validator->errors(), 'response' => 422];
-        };
+        }
+        ;
 
-        self::$operation = __FUNCTION__;
-        $dataMsg = self::composeMessage(self::$operation);
+        $this->operation = __FUNCTION__;
+        $dataMsg = $this->composeMessage($this->operation);
         $codigoCancelamento = 'MC0' . MotivosCancelamento::from($data['motivoCancelamento'])->getLabel();
 
         $dataMsg->Numero = $data['numeroNF'];
@@ -40,9 +40,14 @@ trait CancelarNfse
         $dataMsg->CodigoMunicipio = $data['codigoMunicipio'];
         $dataMsg->CodigoCancelamento = $codigoCancelamento;
 
-        self::mountMensage(self::$headMsg, $dataMsg);
+        $this->mountMensage($this->headMsg, $this->operation, $dataMsg);
 
-        return self::connection();
+        $response = $this->http()
+            ->setBaseUrl($this->getUrl())
+            ->setHeaders($this->getHeaders())
+            ->post($this->endPoint, $this->mountMessage->asXML());
+
+        return $this->parseXmlToArray($response, '');
     }
 
 }

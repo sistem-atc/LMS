@@ -3,7 +3,6 @@
 namespace App\Services\Towns\Systems\Abaco\Methods;
 
 use Carbon\Carbon;
-use SimpleXMLElement;
 use Illuminate\Validation\Rule;
 use App\Enums\TypeDocumentTransportEnum;
 use Illuminate\Support\Facades\Validator;

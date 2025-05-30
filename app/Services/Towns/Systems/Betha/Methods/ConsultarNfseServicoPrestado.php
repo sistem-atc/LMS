@@ -2,15 +2,15 @@
 
 namespace App\Services\Towns\Betha\Methods;
 
-use SimpleXMLElement;
 use Illuminate\Support\Facades\Validator;
 
 trait ConsultarNfseServicoPrestado
 {
 
-    private static SimpleXMLElement $headMsg;
-    private static string $operation;
-    public static function ConsultarNfseServicoPrestado($data): string|int|array
+    private string $endPoint;
+    private string $operation;
+
+    public function ConsultarNfseServicoPrestado($data): string|int|array
     {
 
         $validator = Validator::make($data, [
@@ -22,10 +22,11 @@ trait ConsultarNfseServicoPrestado
 
         if ($validator->fails()) {
             return ['errors' => $validator->errors(), 'response' => 422];
-        };
+        }
+        ;
 
-        self::$operation = __FUNCTION__;
-        $dataMsg = self::composeMessage(self::$operation);
+        $this->operation = __FUNCTION__;
+        $dataMsg = $this->composeMessage($this->operation);
 
         $dataMsg->Prestador->Cnpj = $data['Prestador']['cnpj'];
         $dataMsg->Prestador->InscricaoMunicipal = $data['Prestador']['inscricaoMunicipal'];
@@ -33,9 +34,14 @@ trait ConsultarNfseServicoPrestado
         $dataMsg->PeriodoEmissao->DataFinal = $data['PeriodoEmissao']['dataFinal'];
         $dataMsg->Pagina = $data['pagina'] ?? 1;
 
-        self::mountMensage(self::$headMsg, $dataMsg);
+        $this->mountMensage($this->headMsg, $this->operation, $dataMsg);
 
-        return self::connection();
+        $response = $this->http()
+            ->setBaseUrl($this->getUrl())
+            ->setHeaders($this->getHeaders())
+            ->post($this->endPoint, $this->mountMessage->asXML());
+
+        return $this->parseXmlToArray($response, '');
     }
 
 }

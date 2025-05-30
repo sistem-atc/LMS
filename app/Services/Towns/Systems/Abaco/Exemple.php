@@ -75,9 +75,10 @@ class Exemple implements ExcludeSelectInterface
             ],
         ];
 
-        //$town = TownsFactory::make(self::CITY_IBGE);
+        $town = TownsFactory::make(self::CITY_IBGE);
 
-        //dd($town->RecepcionarLoteRPS($arrayData));
+        dd($town->gerarNota($arrayData));
+
     }
 
     protected function ConsultarSituacaoLoteRPS(): void
@@ -88,9 +89,9 @@ class Exemple implements ExcludeSelectInterface
             'protocolo' => 123456,
         ];
 
-        //$abaco = TownsFactory::getInstance(self::CITY_IBGE);
+        $town = TownsFactory::make(self::CITY_IBGE);
 
-        //dd($abaco->ConsultarSituacaoLoteRPS($arrayData));
+        dd($town->ConsultarSituacaoLoteRPS($arrayData));
     }
 
     protected function ConsultarNfsePorRps(): void
@@ -103,9 +104,9 @@ class Exemple implements ExcludeSelectInterface
             'tipo_RPS' => TypeDocumentTransportEnum::RPS_s->getLabel(),
         ];
 
-        //$town = TownsFactory::getInstance(self::CITY_IBGE);
+        $town = TownsFactory::make(self::CITY_IBGE);
 
-        //dd($town->ConsultarNfsePorRps($arrayData));
+        dd($town->ConsultarNfsePorRps($arrayData));
     }
 
     protected function ConsultarLoteRps(): void
@@ -116,9 +117,9 @@ class Exemple implements ExcludeSelectInterface
             'protocolo' => 123456,
         ];
 
-        //$town = LinkTownsInterface::getInstance([self::CITY_IBGE]);
+        $town = TownsFactory::make(self::CITY_IBGE);
 
-        //dd($town->ConsultarLoteRps($arrayData));
+        dd($town->ConsultarLoteRps($arrayData));
     }
 
     protected function ConsultarNfse(): void
@@ -135,8 +136,8 @@ class Exemple implements ExcludeSelectInterface
             ],
         ];
 
-        //$town = TownsFactory::getInstance(self::CITY_IBGE);
+        $town = TownsFactory::make(self::CITY_IBGE);
 
-        //dd($town->ConsultarNfse($arrayData));
+        dd($town->ConsultarNfse($arrayData));
     }
 }

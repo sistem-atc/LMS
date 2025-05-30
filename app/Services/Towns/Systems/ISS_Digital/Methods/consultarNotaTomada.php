@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Towns\ISS_Digital\Methods;
+namespace App\Services\Towns\Systems\ISS_Digital\Methods;
 
 use Illuminate\Support\Facades\Validator;
 

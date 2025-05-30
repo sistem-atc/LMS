@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Towns\Ginfes_2\Methods;
+namespace App\Services\Towns\Systems\Ginfes_2\Methods;
 
 trait ConsultarNfsePorRps
 {

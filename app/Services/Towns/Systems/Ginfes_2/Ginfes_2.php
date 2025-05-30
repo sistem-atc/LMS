@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Towns\Ginfes_2;
+namespace App\Services\Towns\Systems\Ginfes_2;
 
 use Exception;
 use SimpleXMLElement;

@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Services\Towns\DBSeller\Filament;
+namespace App\Services\Towns\Systems\DBSeller\Filament;
 
 use Filament\Forms\Form;
-use App\Services\Utils\Towns\Interfaces\ExcludeSelectInterface;
+use App\Interfaces\ExcludeSelectInterface;
 
 class ComposeForm implements ExcludeSelectInterface
 {

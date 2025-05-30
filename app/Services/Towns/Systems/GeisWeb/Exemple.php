@@ -1,9 +1,11 @@
 <?php
 
-namespace App\Services\Towns\GeisWeb;
+namespace App\Services\Towns\Systems\GeisWeb;
 
 use App\Interfaces\ExcludeSelectInterface;
 
 
-class Exemple implements ExcludeSelectInterface {}
+class Exemple implements ExcludeSelectInterface
+{
+}
 

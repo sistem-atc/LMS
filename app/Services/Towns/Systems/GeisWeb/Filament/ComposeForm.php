@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Towns\GeisWeb\Filament;
+namespace App\Services\Towns\Systems\GeisWeb\Filament;
 
 use Filament\Forms\Form;
 use App\Services\Utils\Towns\Interfaces\ExcludeSelectInterface;

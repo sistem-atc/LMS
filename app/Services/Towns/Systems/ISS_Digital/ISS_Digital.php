@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Towns\ISS_Digital;
+namespace App\Services\Towns\Systems\ISS_Digital;
 
 use Exception;
 use SimpleXMLElement;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Towns\iPM\Methods;
+namespace App\Services\Towns\Systems\iPM\Methods;
 
 use Illuminate\Support\Facades\Validator;
 

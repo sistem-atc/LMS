@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Towns\Goiania;
+namespace App\Services\Towns\Systems\Goiania;
 
 use Exception;
 use SimpleXMLElement;

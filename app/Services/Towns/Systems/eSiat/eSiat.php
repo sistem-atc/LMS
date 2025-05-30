@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Towns\eSiat;
+namespace App\Services\Towns\Systems\eSiat;
 
 use Exception;
 use SimpleXMLElement;

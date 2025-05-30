@@ -1,23 +1,28 @@
 <?php
 
-namespace App\Services\Towns\Dsf\Methods;
+namespace App\Services\Towns\Systems\Dsf\Methods;
 
 trait RecepcionarLoteRps
 {
+    private string $endPoint;
+    private string $operation;
 
-    private static string $operation;
-
-    public static function RecepcionarLoteRps($data): string|int|array
+    public function RecepcionarLoteRps($data): string|int|array
     {
 
-        self::$operation = __FUNCTION__;
-        $dataMsg = self::composeMessage(self::$operation);
+        $this->operation = __FUNCTION__;
+        $dataMsg = $this->composeMessage($this->operation);
         $dataMsg->cnpj = $data['cnpj'];
-        $dataMsg = self::Sign_XML($dataMsg);
+        $dataMsg = $this->Sign_XML($dataMsg);
 
-        self::mountMensage($dataMsg, self::$operation);
+        $this->mountMensage($dataMsg, $this->operation, $this->version ?? null);
 
-        return self::connection();
+        $response = $this->http()
+            ->setBaseUrl($this->getUrl())
+            ->setHeaders($this->getHeaders())
+            ->post($this->endPoint, $this->mountMessage->asXML());
+
+        return $this->parseXmlToArray($response, '');
     }
 
 }

@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Services\Towns\Desenvolve\Methods;
+namespace App\Services\Towns\Systems\Desenvolve\Methods;
 
-use App\Enums\TypeRPS;
 use Illuminate\Validation\Rule;
+use App\Enums\TypeDocumentTransportEnum;
 use Illuminate\Support\Facades\Validator;
 
 trait CancelarNfseEnvio
 {
+    private string $endPoint;
+    private string $operation;
 
-    private static string $operation;
-
-    public static function cancelarNfseEnvio($data): string|int
+    public function cancelarNfseEnvio($data): string|int|array
     {
 
         $validator = Validator::make($data, [
@@ -21,26 +21,32 @@ trait CancelarNfseEnvio
             'serie_RPS' => 'required',
             'tipo_RPS' => [
                 'required',
-                Rule::in(TypeRPS::cases())
+                Rule::in(TypeDocumentTransportEnum::cases())
             ],
         ]);
 
         if ($validator->fails()) {
             return ['errors' => $validator->errors(), 'response' => 422];
-        };
+        }
+        ;
 
-        self::$operation = __FUNCTION__;
-        $dataMsg = self::composeMessage(self::$operation);
+        $this->operation = __FUNCTION__;
+        $dataMsg = $this->composeMessage($this->operation);
 
         $dataMsg->Cnpj = $data['cnpj'];
         $dataMsg->InscricaoMunicipal = $data['inscricaoMunicipal'];
         $dataMsg->Protocolo = $data['protocolo'];
 
-        $dataMsg = self::Sign_XML($dataMsg);
+        $dataMsg = $this->Sign_XML($dataMsg);
 
-        self::mountMensage($dataMsg);
+        $this->mountMensage($dataMsg, $this->operation, $this->version ?? null);
 
-        return self::connection();
+        $response = $this->http()
+            ->setBaseUrl($this->getUrl())
+            ->setHeaders($this->getHeaders())
+            ->post($this->endPoint, $this->mountMessage->asXML());
+
+        return $this->parseXmlToArray($response, '');
     }
 
 }

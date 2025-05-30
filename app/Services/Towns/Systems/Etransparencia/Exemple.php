@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Services\Towns\Etransparencia;
+namespace App\Services\Towns\Systems\Etransparencia;
 
 use App\Interfaces\ExcludeSelectInterface;
 
 
-class Exemple implements ExcludeSelectInterface {}
+class Exemple implements ExcludeSelectInterface
+{
+}

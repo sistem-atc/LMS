@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Towns\GeisWeb\Methods;
+namespace App\Services\Towns\Systems\GeisWeb\Methods;
 
 use Illuminate\Support\Facades\Validator;
 

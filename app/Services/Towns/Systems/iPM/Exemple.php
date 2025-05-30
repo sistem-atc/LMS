@@ -1,9 +1,11 @@
 <?php
 
-namespace App\Services\Towns\iPM;
+namespace App\Services\Towns\Systems\iPM;
 
 use App\Interfaces\ExcludeSelectInterface;
 
 
-class Exemple implements ExcludeSelectInterface {}
+class Exemple implements ExcludeSelectInterface
+{
+}
 

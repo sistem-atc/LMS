@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Towns\Giap;
+namespace App\Services\Towns\Systems\Giap;
 
 use Exception;
 use SimpleXMLElement;

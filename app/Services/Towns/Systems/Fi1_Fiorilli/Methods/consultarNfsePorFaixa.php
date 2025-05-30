@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Towns\Fi1_Fiorilli\Methods;
+namespace App\Services\Towns\Systems\Fi1_Fiorilli\Methods;
 
 use Illuminate\Support\Facades\Validator;
 

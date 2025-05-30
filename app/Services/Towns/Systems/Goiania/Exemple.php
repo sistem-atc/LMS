@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Services\Towns\Goiania;
+namespace App\Services\Towns\Systems\Goiania;
 
 use App\Interfaces\ExcludeSelectInterface;
 
 
-class Exemple implements ExcludeSelectInterface {}
+class Exemple implements ExcludeSelectInterface
+{
+}

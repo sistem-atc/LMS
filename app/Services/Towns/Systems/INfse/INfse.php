@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Towns\INfse;
+namespace App\Services\Towns\Systems\INfse;
 
 use SimpleXMLElement;
 use App\Enums\HttpMethod;

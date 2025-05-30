@@ -1,19 +1,18 @@
 <?php
 
-namespace App\Services\Towns\DBSeller\Methods;
+namespace App\Services\Towns\Systems\DBSeller\Methods;
 
+use App\Enums\TypeDocumentTransportEnum;
 use Carbon\Carbon;
-use SimpleXMLElement;
-use App\Enums\TypeRPS;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Validator;
 
 trait RecepcionarLoteRps
 {
+    private string $endPoint;
+    private string $operation;
 
-    private static SimpleXMLElement $mountMessage;
-    private static string $operation;
-    public static function RecepcionarLoteRps($data): string|int|array
+    public function RecepcionarLoteRps($data): string|int|array
     {
 
         $validator = Validator::make($data, [
@@ -25,7 +24,7 @@ trait RecepcionarLoteRps
             'rps.*.infoId' => ['required', 'string'],
             'rps.*.numeroRps' => ['required', 'integer'],
             'rps.*.serieRps' => ['required', 'string'],
-            'rps.*.tipoRps' => ['required', Rule::in(TypeRPS::cases())],
+            'rps.*.tipoRps' => ['required', Rule::in(TypeDocumentTransportEnum::cases())],
             'rps.*.dataEmissao' => ['required', 'date'],
             'rps.*.naturezaOperacao' => ['required', 'integer'],
             'rps.*.regimeTributacao' => ['required', 'integer'],
@@ -70,10 +69,11 @@ trait RecepcionarLoteRps
 
         if ($validator->fails()) {
             return ['errors' => $validator->errors(), 'response' => 422];
-        };
+        }
+        ;
 
         $loteRPS = 'LoteRPS';
-        $mountRPS = self::composeMessage($loteRPS);
+        $mountRPS = $this->composeMessage($loteRPS);
         $mountRPS->InfRps->attributes()->id = $data['rps'][0]['infoId'];
         $mountRPS->InfRps->IdentificacaoRps->Numero = $data['rps'][0]['numeroRps'];
         $mountRPS->InfRps->IdentificacaoRps->Serie = $data['rps'][0]['serieRps'];
@@ -119,14 +119,19 @@ trait RecepcionarLoteRps
         $mountRPS->Tomador->IdentificacaoTomador->Endereco->Cep = $data['rps'][0]['tomador']['cep'];
         $mountRPS->Tomador->IdentificacaoTomador->Contato->Contato = $data['rps'][0]['tomador']['contato'];
         $mountRPS->Tomador->IdentificacaoTomador->Contato->Email = $data['rps'][0]['tomador']['email'];
-        $mountRPS = self::Sign_XML($mountRPS->asXML());
+        $mountRPS = $this->Sign_XML($mountRPS->asXML());
 
-        self::$operation = __FUNCTION__;
-        $dataMsg = self::composeMessage(self::$operation);
-        self::mountMensage($dataMsg);
-        self::$mountMessage = self::Sign_XML(self::$mountMessage);
+        $this->operation = __FUNCTION__;
+        $dataMsg = $this->composeMessage($this->operation);
+        $this->mountMensage($dataMsg, $this->operation, $this->version ?? null);
+        $this->mountMessage = $this->Sign_XML($this->mountMessage);
 
-        return self::connection();
+        $response = $this->http()
+            ->setBaseUrl($this->getUrl())
+            ->setHeaders($this->getHeaders())
+            ->post($this->endPoint, $this->mountMessage->asXML());
+
+        return $this->parseXmlToArray($response, '');
     }
 
 }

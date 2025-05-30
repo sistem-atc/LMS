@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Towns\Equiplano;
+namespace App\Services\Towns\Systems\Equiplano;
 
 use Exception;
 use SimpleXMLElement;

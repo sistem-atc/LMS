@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Towns\Equiplano\Methods;
+namespace App\Services\Towns\Systems\Equiplano\Methods;
 
 trait esConsultarNfse
 {

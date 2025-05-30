@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Towns\INfse\Methods;
+namespace App\Services\Towns\Systems\INfse\Methods;
 
 use Illuminate\Support\Facades\Validator;
 

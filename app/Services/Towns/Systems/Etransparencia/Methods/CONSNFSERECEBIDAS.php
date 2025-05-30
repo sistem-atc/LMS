@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Towns\Etransparencia\Methods;
+namespace App\Services\Towns\Systems\Etransparencia\Methods;
 
 trait CONSNFSERECEBIDAS
 {

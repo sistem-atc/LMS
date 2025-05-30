@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Towns\Etransparencia;
+namespace App\Services\Towns\Systems\Etransparencia;
 
 use Exception;
 use SimpleXMLElement;

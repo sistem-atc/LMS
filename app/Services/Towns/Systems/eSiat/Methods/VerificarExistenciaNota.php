@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Towns\eSiat\Methods;
+namespace App\Services\Towns\Systems\eSiat\Methods;
 
 trait VerificarExistenciaNota
 {

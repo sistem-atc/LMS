@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Towns\eCity\Methods;
+namespace App\Services\Towns\Systems\eCity\Methods;
 
 trait RecepcionarLoteRpsSincrono
 {

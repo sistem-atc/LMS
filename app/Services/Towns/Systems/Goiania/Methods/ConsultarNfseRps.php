@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Towns\Goiania\Methods;
+namespace App\Services\Towns\Systems\Goiania\Methods;
 
 use Illuminate\Support\Facades\Validator;
 

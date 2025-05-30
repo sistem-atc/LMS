@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Towns\Infisc_Gif;
+namespace App\Services\Towns\Systems\Infisc_Gif;
 
 use Exception;
 use SimpleXMLElement;

@@ -1,17 +1,18 @@
 <?php
 
-namespace App\Services\Towns\Desenvolve\Methods;
+namespace App\Services\Towns\Systems\Desenvolve\Methods;
 
-use App\Enums\TypeRPS;
 use Illuminate\Validation\Rule;
+use App\Enums\TypeDocumentTransportEnum;
 use Illuminate\Support\Facades\Validator;
 
 trait ConsultarLoteRpsEnvio
 {
 
-    private static string $operation;
+    private string $endPoint;
+    private string $operation;
 
-    public static function consultarLoteRpsEnvio($data): string|int
+    public function consultarLoteRpsEnvio($data): string|int|array
     {
 
         $validator = Validator::make($data, [
@@ -21,22 +22,28 @@ trait ConsultarLoteRpsEnvio
             'serie_RPS' => 'required',
             'tipo_RPS' => [
                 'required',
-                Rule::in(TypeRPS::cases())
+                Rule::in(TypeDocumentTransportEnum::cases())
             ],
         ]);
 
         if ($validator->fails()) {
             return ['errors' => $validator->errors(), 'response' => 422];
-        };
+        }
+        ;
 
-        self::$operation = __FUNCTION__;
-        $dataMsg = self::composeMessage(self::$operation);
+        $this->operation = __FUNCTION__;
+        $dataMsg = $this->composeMessage($this->operation);
 
         $dataMsg->Protocolo = $data['protocolo'];
 
-        self::mountMensage($dataMsg);
+        $this->mountMensage($dataMsg, $this->operation, $this->version ?? null);
 
-        return self::connection();
+        $response = $this->http()
+            ->setBaseUrl($this->getUrl())
+            ->setHeaders($this->getHeaders())
+            ->post($this->endPoint, $this->mountMessage->asXML());
+
+        return $this->parseXmlToArray($response, '');
     }
 
 }

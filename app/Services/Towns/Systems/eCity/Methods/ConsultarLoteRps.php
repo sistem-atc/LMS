@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Towns\eCity\Methods;
+namespace App\Services\Towns\Systems\eCity\Methods;
 
 trait ConsultarLoteRps
 {
@@ -12,7 +12,7 @@ trait ConsultarLoteRps
 
         self::$operation = __FUNCTION__;
         $dataMsg = parent::composeMessage(self::$operation);
-        $dataMsg    ->cnpj = $data['cnpj'];
+        $dataMsg->cnpj = $data['cnpj'];
         $dataMsg = self::Sign_XML($dataMsg);
 
         self::mountMensage($dataMsg, self::$operation);

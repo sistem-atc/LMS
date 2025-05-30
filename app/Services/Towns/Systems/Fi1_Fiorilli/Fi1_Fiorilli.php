@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Towns\Fi1_Fiorilli;
+namespace App\Services\Towns\Systems\Fi1_Fiorilli;
 
 use SimpleXMLElement;
 use App\Enums\HttpMethod;

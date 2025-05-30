@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Services\Towns\DBSeller;
+namespace App\Services\Towns\Systems\DBSeller;
 
 use App\Interfaces\ExcludeSelectInterface;
 
 
-class Exemple implements ExcludeSelectInterface {}
+class Exemple implements ExcludeSelectInterface
+{
+}

@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Services\Towns\Desenvolve\Methods;
+namespace App\Services\Towns\Systems\Desenvolve\Methods;
 
 use Illuminate\Support\Facades\Validator;
 
 trait ConsultarNfseRpsEnvio
 {
+    private string $endPoint;
+    private string $operation;
 
-    private static string $operation;
-
-    public static function consultarNfseRpsEnvio($data): string|int
+    public function consultarNfseRpsEnvio($data): string|int|array
     {
 
         $validator = Validator::make($data, [
@@ -18,17 +18,23 @@ trait ConsultarNfseRpsEnvio
 
         if ($validator->fails()) {
             return ['errors' => $validator->errors(), 'response' => 422];
-        };
+        }
+        ;
 
-        self::$operation = __FUNCTION__;
-        $dataMsg = self::composeMessage(self::$operation);
+        $this->operation = __FUNCTION__;
+        $dataMsg = $this->composeMessage($this->operation);
 
         $dataMsg->Protocolo = $data['protocolo'];
-        $dataMsg = self::Sign_XML($dataMsg);
+        $dataMsg = $this->Sign_XML($dataMsg);
 
-        self::mountMensage($dataMsg);
+        $this->mountMensage($dataMsg, $this->operation, $this->version ?? null);
 
-        return self::connection();
+        $response = $this->http()
+            ->setBaseUrl($this->getUrl())
+            ->setHeaders($this->getHeaders())
+            ->post($this->endPoint, $this->mountMessage->asXML());
+
+        return $this->parseXmlToArray($response, '');
     }
 
 }

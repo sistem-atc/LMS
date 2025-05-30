@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Services\Towns\Fi1_Fiorilli;
+namespace App\Services\Towns\Systems\Fi1_Fiorilli;
 
 use App\Interfaces\ExcludeSelectInterface;
 
 
-class Exemple implements ExcludeSelectInterface {}
+class Exemple implements ExcludeSelectInterface
+{
+}

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Towns\GeisWeb;
+namespace App\Services\Towns\Systems\GeisWeb;
 
 use Exception;
 use SimpleXMLElement;

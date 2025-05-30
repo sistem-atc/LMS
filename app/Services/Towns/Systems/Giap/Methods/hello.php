@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Towns\Giap\Methods;
+namespace App\Services\Towns\Systems\Giap\Methods;
 
 trait hello
 {

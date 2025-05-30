@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Towns\Ginfes_2\Filament;
+namespace App\Services\Towns\Systems\Ginfes_2\Filament;
 
 use Filament\Forms\Form;
 use App\Services\Utils\Towns\Interfaces\ExcludeSelectInterface;

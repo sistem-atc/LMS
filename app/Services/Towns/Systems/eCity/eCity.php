@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Towns\eCity;
+namespace App\Services\Towns\Systems\eCity;
 
 use SimpleXMLElement;
 use App\Enums\HttpMethod;

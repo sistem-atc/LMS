@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Towns\Infisc_Gif\Methods;
+namespace App\Services\Towns\Systems\Infisc_Gif\Methods;
 
 use Illuminate\Support\Facades\Validator;
 

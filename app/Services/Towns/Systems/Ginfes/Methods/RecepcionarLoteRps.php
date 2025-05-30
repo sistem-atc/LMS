@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Towns\Ginfes\Methods;
+namespace App\Services\Towns\Systems\Ginfes\Methods;
 
 use Illuminate\Support\Facades\Validator;
 

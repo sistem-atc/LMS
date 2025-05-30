@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Towns\eSiat\Methods;
+namespace App\Services\Towns\Systems\eSiat\Methods;
 
 use Illuminate\Validation\Rule;
 use App\Enums\MotivosCancelamento;
@@ -25,7 +25,8 @@ trait ConsultarTomador
 
         if ($validator->fails()) {
             return ['errors' => $validator->errors(), 'response' => 422];
-        };
+        }
+        ;
 
         self::$operation = __FUNCTION__;
         $dataMsg = parent::composeMessage(self::$operation);

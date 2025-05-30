@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Towns\SemFaz;
+namespace App\Services\Towns\Systems\SemFaz;
 
 
 class SemFaz

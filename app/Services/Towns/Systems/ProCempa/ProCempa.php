@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Towns\ProCempa;
+namespace App\Services\Towns\Systems\ProCempa;
 
 
 class ProCempa

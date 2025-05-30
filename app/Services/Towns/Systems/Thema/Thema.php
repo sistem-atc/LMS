@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Towns\Thema;
+namespace App\Services\Towns\Systems\Thema;
 
 use Exception;
 use SimpleXMLElement;

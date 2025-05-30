@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Towns\Pm_Cloud_EL_2;
+namespace App\Services\Towns\Systems\Pm_Cloud_EL_2;
 
 
 class Pm_Cloud_EL_2

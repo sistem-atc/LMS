@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Towns\SigIss_2;
+namespace App\Services\Towns\Systems\SigIss_2;
 
 use App\Enums\HttpMethod;
 use Carbon\Carbon;
@@ -42,7 +42,8 @@ class SigIss_2 extends LinkTownBase implements LinkTownsInterface
 
         if ($validator->fails()) {
             return ['errors' => $validator->errors(), 'response' => 422];
-        };
+        }
+        ;
 
         self::$operation = 'CancelarNota';
         $dataMsg = parent::composeMessage(self::$operation);
@@ -72,7 +73,8 @@ class SigIss_2 extends LinkTownBase implements LinkTownsInterface
 
         if ($validator->fails()) {
             return ['errors' => $validator->errors(), 'response' => 422];
-        };
+        }
+        ;
 
         self::$operation = 'ConsultarNotaPrestador';
         $dataMsg = parent::composeMessage(self::$operation);
@@ -101,7 +103,8 @@ class SigIss_2 extends LinkTownBase implements LinkTownsInterface
 
         if ($validator->fails()) {
             return ['errors' => $validator->errors(), 'response' => 422];
-        };
+        }
+        ;
 
         self::$operation = 'ConsultarNotaValida';
         $dataMsg = parent::composeMessage(self::$operation);
@@ -128,8 +131,8 @@ class SigIss_2 extends LinkTownBase implements LinkTownsInterface
             'crc' => 'required',
             'crc_estado' => 'required',
             'aliquota_simples' => 'required',
-            'id_sis_legado'  => 'required',
-            'servico'  => 'required',
+            'id_sis_legado' => 'required',
+            'servico' => 'required',
             'situacao' => 'required',
             'valor' => 'required',
             'base' => 'required',
@@ -170,7 +173,8 @@ class SigIss_2 extends LinkTownBase implements LinkTownsInterface
 
         if ($validator->fails()) {
             return ['errors' => $validator->errors(), 'response' => 422];
-        };
+        }
+        ;
 
         self::$operation = 'GerarNota';
         $dataMsg = parent::composeMessage(self::$operation);
@@ -234,7 +238,8 @@ class SigIss_2 extends LinkTownBase implements LinkTownsInterface
 
         if ($validator->fails()) {
             return ['errors' => $validator->errors(), 'response' => 422];
-        };
+        }
+        ;
 
         self::$operation = 'gerateste';
         $dataMsg = parent::composeMessage(self::$operation);

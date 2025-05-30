@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Towns\Tinus;
+namespace App\Services\Towns\Systems\Tinus;
 
 use Exception;
 use SimpleXMLElement;

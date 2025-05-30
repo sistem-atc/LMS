@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Towns\WebIss;
+namespace App\Services\Towns\Systems\WebIss;
 
 use SimpleXMLElement;
 use App\Enums\HttpMethod;

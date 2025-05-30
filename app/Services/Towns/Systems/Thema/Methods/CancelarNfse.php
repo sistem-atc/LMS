@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Towns\Thema\Methods;
+namespace App\Services\Towns\Systems\Thema\Methods;
 
 trait CancelarNfse
 {

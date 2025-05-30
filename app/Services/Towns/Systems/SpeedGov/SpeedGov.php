@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Towns\SpeedGov;
+namespace App\Services\Towns\Systems\SpeedGov;
 
 
 class SpeedGov

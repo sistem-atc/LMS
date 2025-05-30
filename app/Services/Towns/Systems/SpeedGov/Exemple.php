@@ -1,7 +1,9 @@
 <?php
 
-namespace App\Services\Towns\SpeedGov;
+namespace App\Services\Towns\Systems\SpeedGov;
 
 use App\Services\Utils\Towns\Interfaces\ExcludeSelectInterface;
 
-class Exemple implements ExcludeSelectInterface {}
+class Exemple implements ExcludeSelectInterface
+{
+}

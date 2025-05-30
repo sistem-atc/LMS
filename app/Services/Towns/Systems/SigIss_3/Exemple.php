@@ -1,7 +1,9 @@
 <?php
 
-namespace App\Services\Towns\SigIss_3;
+namespace App\Services\Towns\Systems\SigIss_3;
 
 use App\Services\Utils\Towns\Interfaces\ExcludeSelectInterface;
 
-class Exemple implements ExcludeSelectInterface {}
+class Exemple implements ExcludeSelectInterface
+{
+}

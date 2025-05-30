@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Towns\SpeedGov\Filament;
+namespace App\Services\Towns\Systems\SpeedGov\Filament;
 
 use Filament\Forms\Form;
 use App\Services\Utils\Towns\Interfaces\ExcludeSelectInterface;

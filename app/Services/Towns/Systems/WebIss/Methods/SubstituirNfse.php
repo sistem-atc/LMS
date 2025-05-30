@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Towns\WebIss\Methods;
+namespace App\Services\Towns\Systems\WebIss\Methods;
 
 use SimpleXMLElement;
 use Illuminate\Support\Facades\Validator;

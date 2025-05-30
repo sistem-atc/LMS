@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Towns\SystemPro\Methods;
+namespace App\Services\Towns\Systems\SystemPro\Methods;
 
 class ConsultarNfseFaixa
 {

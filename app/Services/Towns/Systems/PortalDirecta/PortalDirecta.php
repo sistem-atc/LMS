@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Towns\PortalDirecta;
+namespace App\Services\Towns\Systems\PortalDirecta;
 
 
 class PortalDirecta

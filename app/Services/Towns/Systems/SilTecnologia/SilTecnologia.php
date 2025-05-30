@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Towns\SilTecnologia;
+namespace App\Services\Towns\Systems\SilTecnologia;
 
 
 class SilTecnologia

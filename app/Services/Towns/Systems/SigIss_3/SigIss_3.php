@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Towns\SigIss_3;
+namespace App\Services\Towns\Systems\SigIss_3;
 
 
 class SigIss_3

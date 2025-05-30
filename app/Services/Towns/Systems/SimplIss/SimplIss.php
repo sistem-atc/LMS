@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Towns\SimplIss;
+namespace App\Services\Towns\Systems\SimplIss;
 
 
 class SimplIss

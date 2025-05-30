@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Services\Towns\PortalDirecta;
+namespace App\Services\Towns\Systems\PortalDirecta;
 
 use App\Services\Utils\Towns\Interfaces\ExcludeSelectInterface;
 
-class Exemple implements ExcludeSelectInterface {}
+class Exemple implements ExcludeSelectInterface
+{
+}
 

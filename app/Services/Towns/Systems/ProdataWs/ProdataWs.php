@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Towns\ProdataWs;
+namespace App\Services\Towns\Systems\ProdataWs;
 
 
 class ProdataWs

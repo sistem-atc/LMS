@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Towns\SystemPro\Methods;
+namespace App\Services\Towns\Systems\SystemPro\Methods;
 
 use SimpleXMLElement;
 use Illuminate\Validation\Rule;
@@ -29,7 +29,8 @@ trait CancelarNfse
 
         if ($validator->fails()) {
             return ['errors' => $validator->errors(), 'response' => 422];
-        };
+        }
+        ;
 
         self::$operation = __FUNCTION__;
         $dataMsg = self::composeMessage(self::$operation);

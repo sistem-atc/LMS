@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Towns\Tinus\Methods;
+namespace App\Services\Towns\Systems\Tinus\Methods;
 
 use SimpleXMLElement;
 

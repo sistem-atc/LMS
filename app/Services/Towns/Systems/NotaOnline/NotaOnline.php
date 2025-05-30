@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Towns\NotaOnline;
+namespace App\Services\Towns\Systems\NotaOnline;
 
 
 class NotaOnline

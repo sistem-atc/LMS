@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Towns\Iss_Londrina;
+namespace App\Services\Towns\Systems\Iss_Londrina;
 
 use Exception;
 use SimpleXMLElement;

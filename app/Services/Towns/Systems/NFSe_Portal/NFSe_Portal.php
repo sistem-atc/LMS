@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Towns\NFSe_Portal;
+namespace App\Services\Towns\Systems\NFSe_Portal;
 
 
 class NFSe_Portal

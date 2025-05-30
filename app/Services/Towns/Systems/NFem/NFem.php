@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Towns\NFem;
+namespace App\Services\Towns\Systems\NFem;
 
 
 class NFem

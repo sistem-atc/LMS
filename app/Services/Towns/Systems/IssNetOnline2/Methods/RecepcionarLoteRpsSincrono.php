@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Towns\IssNetOnline2\Methods;
+namespace App\Services\Towns\Systems\IssNetOnline2\Methods;
 
 trait RecepcionarLoteRpsSincrono
 {

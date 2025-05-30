@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Towns\IssOnlineSJP;
+namespace App\Services\Towns\Systems\IssOnlineSJP;
 
 
 class IssOnlineSJP

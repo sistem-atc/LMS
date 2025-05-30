@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Towns\NotaOnline\Filament;
+namespace App\Services\Towns\Systems\NotaOnline\Filament;
 
 use Filament\Forms\Form;
 use App\Services\Utils\Towns\Interfaces\ExcludeSelectInterface;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Towns\Nfse_Publica\Filament;
+namespace App\Services\Towns\Systems\Nfse_Publica\Filament;
 
 use Filament\Forms\Form;
 use App\Services\Utils\Towns\Interfaces\ExcludeSelectInterface;

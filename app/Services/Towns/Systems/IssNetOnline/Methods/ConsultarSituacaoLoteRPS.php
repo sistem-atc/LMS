@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Towns\IssNetOnline\Methods;
+namespace App\Services\Towns\Systems\IssNetOnline\Methods;
 
 use Illuminate\Support\Facades\Validator;
 

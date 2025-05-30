@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Towns\KfbSistema;
+namespace App\Services\Towns\Systems\KfbSistema;
 
 
 class KfbSistema

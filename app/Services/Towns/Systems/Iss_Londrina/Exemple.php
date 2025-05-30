@@ -1,9 +1,11 @@
 <?php
 
-namespace App\Services\Towns\Iss_Londrina;
+namespace App\Services\Towns\Systems\Iss_Londrina;
 
 use App\Interfaces\ExcludeSelectInterface;
 
 
-class Exemple implements ExcludeSelectInterface {}
+class Exemple implements ExcludeSelectInterface
+{
+}
 

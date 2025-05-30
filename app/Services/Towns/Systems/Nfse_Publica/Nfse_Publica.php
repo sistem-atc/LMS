@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Towns\Nfse_Publica;
+namespace App\Services\Towns\Systems\Nfse_Publica;
 
 
 class Nfse_Publica

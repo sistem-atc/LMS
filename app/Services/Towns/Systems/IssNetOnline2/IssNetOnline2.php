@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Towns\IssNetOnline2;
+namespace App\Services\Towns\Systems\IssNetOnline2;
 
 use Exception;
 use SimpleXMLElement;

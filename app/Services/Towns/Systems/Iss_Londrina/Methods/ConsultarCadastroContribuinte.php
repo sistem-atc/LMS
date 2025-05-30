@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Towns\Iss_Londrina\Methods;
+namespace App\Services\Towns\Systems\Iss_Londrina\Methods;
 
 use Illuminate\Support\Facades\Validator;
 

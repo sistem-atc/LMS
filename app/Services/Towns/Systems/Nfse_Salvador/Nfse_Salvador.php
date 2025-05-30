@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Towns\Nfse_Salvador;
+namespace App\Services\Towns\Systems\Nfse_Salvador;
 
 
 class Nfse_Salvador

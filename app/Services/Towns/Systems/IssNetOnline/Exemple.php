@@ -1,9 +1,11 @@
 <?php
 
-namespace App\Services\Towns\IssNetOnline;
+namespace App\Services\Towns\Systems\IssNetOnline;
 
 use App\Interfaces\ExcludeSelectInterface;
 
 
-class Exemple implements ExcludeSelectInterface {}
+class Exemple implements ExcludeSelectInterface
+{
+}
 

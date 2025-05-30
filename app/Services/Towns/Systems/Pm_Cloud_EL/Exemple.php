@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Services\Towns\Pm_Cloud_EL;
+namespace App\Services\Towns\Systems\Pm_Cloud_EL;
 
 use App\Services\Utils\Towns\Interfaces\ExcludeSelectInterface;
 
-class Exemple implements ExcludeSelectInterface {}
+class Exemple implements ExcludeSelectInterface
+{
+}
 

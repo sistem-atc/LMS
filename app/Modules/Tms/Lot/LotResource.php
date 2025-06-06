@@ -145,7 +145,7 @@ class LotResource extends Resource
                         ->content(fn(Get $get) => number_format(SuportFunctions::weightTotal($get), 3, ',', '.')),
                     Placeholder::make('Quantidade de Notas')
                         ->content(fn(Get $get) => SuportFunctions::qtdNF($get)),
-                    Placeholder::make('Valor do Frete')
+                    /*Placeholder::make('Valor do Frete')
                         ->content(
                             fn(Get $get) =>
                             'R$ ' .
@@ -157,7 +157,7 @@ class LotResource extends Resource
                                 ',',
                                 '.'
                             )
-                        ),
+                        ),*/
                 ])
         ];
 

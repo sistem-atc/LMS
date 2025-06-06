@@ -2,15 +2,16 @@
 
 namespace App\Utils\Tms;
 
+use App\Models\Customer;
 use Illuminate\Support\Collection;
 
 class CalculateTransportDocument
 {
 
-    public static function calculate(Collection $customerNotes): float
-    {
+    private Collection $tableCustomer;
 
-        dd($customerNotes);
+    public function calculate(Collection $customerNotes): float
+    {
 
         /*
             $weightTotal = 0;
@@ -32,12 +33,9 @@ class CalculateTransportDocument
             $debitCustomer = $customerNotes->first()['sender_recipient_customer_idcustomer_id'];
         }
 
-        $tableCustomer = $debitCustomer->freight_table_id;
-        //Recuperar tabela de frete do cliente pagador
+        $this->tableCustomer = Customer::find($debitCustomer->freight_table_id);
         $sumWeightB = $customerNotes->sum('pesoB');
-        //Calcular peso total do lote
-        $totalValue = $tableCustomer->routes() * $sumWeightB;
-        //aplicar valor do peso sobre taxa frete peso X peso real
+        $totalValue = $this->tableCustomer->routes() * $sumWeightB;
 
         return $totalValue;
     }

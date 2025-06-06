@@ -25,10 +25,10 @@ class SuportFunctions
         if ($record->status == LotEnum::DIGITAÇÃO->getLabel()) {
 
             $typeDoc = SelectDocumentType::getType($record['branche_id'], $record['branche_id']);
-            $series = Branch::where('id', '=', $record['branche_id'])->fisrt();
-            $serie = $series('serie' . $typeDoc); //Filtrar no $serie a serie de acordo com o $typeDoc
+            $serie = 'A'; //Filtrar no $serie a serie de acordo com o $typeDoc
             $nextNumber = NextDocumentNumber::getNextNumber($typeDoc);
-            $totalValue = CalculateTransportDocument::calculate($allDocuments);
+            $calculation = new CalculateTransportDocument;
+            $totalValue = $calculation->calculate($allDocuments);
 
             $cteNumber = TransportDocument::create([
                 'branch_id' => $record['branche_id'],
@@ -59,7 +59,10 @@ class SuportFunctions
                 'sender_customer_id' => $allDocuments->first()['sender_customer_id'],
                 'recipient_customer_id' => $allDocuments->first()['recipient_customer_id'],
                 'consignee_customer_id',
-                'debtor_customer_id' => $allDocuments->first()['sender_customer_id'], //Se modFrete = 0 então sender, contratio recipient
+                'debtor_customer_id' =>
+                    $allDocuments->first()['modFrete'] = 0
+                    ? $allDocuments->first()['sender_customer_id']
+                    : $allDocuments->first()['recipient_customer_id'],
                 'customer_calculation_id' => $allDocuments->first()['sender_customer_id'],
                 'delivery_route_id',
                 'delivery_time_real',

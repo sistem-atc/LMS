@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Helpers;
+namespace App\Utils\Services;
 
 use DOMDocument;
-use App\Models\Branch;
+use Filament\Facades\Filament;
 use RobRichards\XMLSecLibs\XMLSecurityKey;
 use RobRichards\XMLSecLibs\XMLSecurityDSig;
 
@@ -13,10 +13,14 @@ class XmlSigner
     protected string $pathCerticate;
     protected string $passCertificate;
 
-    public function __construct(Branch $branch)
+    public function __construct()
     {
-        self::$pathCerticate = file_get_contents(storage_path($branch->branch_matriz->certificatePFX));
-        self::$passCertificate = $branch->branch_matriz->password_certificate;
+
+        $branch_logged = Filament::auth()->user()->branch_logged;
+        $branch = $branch_logged ? $branch_logged->id : null;
+
+        $this->pathCerticate = file_get_contents(storage_path($branch->branch_matriz->certificatePFX));
+        $this->passCertificate = $branch->branch_matriz->password_certificate;
     }
 
     public function Sign_XML(string $xmlNoSigned): string

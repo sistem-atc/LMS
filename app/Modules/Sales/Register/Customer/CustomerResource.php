@@ -26,6 +26,8 @@ use App\Modules\Sales\Register\Customer\CustomerResource\Pages;
 use App\Modules\Finance\Register\PaymentTerm\PaymentTermResource;
 use App\Modules\Finance\Register\GroupCustomer\GroupCustomerResource;
 
+use function PHPUnit\Framework\isNull;
+
 class CustomerResource extends Resource
 {
     protected static ?string $model = Customer::class;
@@ -85,7 +87,15 @@ class CustomerResource extends Resource
                     TextInput::make('cpf_or_cnpj')
                         ->live()
                         //->rules([fn (Get $get) => SuportFunctions::validar_cnpj($get('cpf_or_cnpj'))])
-                        ->mask(fn(Get $get): string => ($get('type_person') === 'J') ? '99.999.999/9999-99' : '999.999.999-99')
+                        ->mask(
+                            fn(Get $get): string => match ($get('type_person')) {
+                                'J' => '99.999.999/9999-99',
+                                'F' => '999.999.999-99',
+                                default => strlen(preg_replace('/\D/', '', $get('cpf_or_cnpj') ?? '')) > 11
+                                ? '99.999.999/9999-99'
+                                : '999.999.999-99',
+                            }
+                        )
                         ->label('CPF ou CNPJ'),
                 ])->columns(2),
             Section::make('')

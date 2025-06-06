@@ -140,7 +140,7 @@ trait RecepcionarLoteRPS
 
         $this->mountMensage($dataMsg, $this->operation, $this->getVersion());
 
-        $this->mountMessage = self::Sign_XML($this->mountMessage);
+        $this->mountMessage = $this->Sign_XML($this->mountMessage);
 
         $response = $this->http()
             ->setBaseUrl($this->getUrl())

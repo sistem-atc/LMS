@@ -15,7 +15,7 @@ class SpedCteConfig
         public string $siglaUF,
         public string $schemes,
         public string $versao,
-        public ProxyConf $proxyConf,
+        public ?ProxyConf $proxyConf = null,
     ) {
     }
 

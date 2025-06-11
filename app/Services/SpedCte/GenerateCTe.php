@@ -3,6 +3,7 @@
 namespace App\Services\SpedCte;
 
 use App\Services\SpedCte\DTO\SpedCteConfig;
+use App\Services\SpedCte\Suport\MontaChave;
 use stdClass;
 use NFePHP\CTe\Tools;
 use NFePHP\CTe\MakeCTe;
@@ -12,40 +13,92 @@ use NFePHP\CTe\Common\Standardize;
 class GenerateCTe
 {
 
+    use MontaChave;
     private $config;
+    private $tools;
+    private $chave;
 
-    public function __construct(SpedCteConfig $config)
+    public function __construct(SpedCteConfig $config, string $pathPFX = '')
     {
-        $this->config = $config;
+        $this->config = json_encode($config);
+        $this->tools = new Tools(
+            $this->config,
+            Certificate::readPfx(
+                file_get_contents($pathPFX),
+                '123456'
+            )
+        );
+        $this->tools->model('57');
+
     }
-    public function generate(array $data)
+    public function authorize(array $data)
     {
 
-        $configJson = json_encode($this->config);
-        $content = file_get_contents('fixtures/certificado.pfx');
-        $tools = new Tools($configJson, Certificate::readPfx($content, '123456'));
-        $tools->model('57');
         $cte = new MakeCTe();
         $dhEmi = date("Y-m-d\TH:i:sP");
         $numeroCTE = '127';
-        $chave = $this->montaChave(
-            cUF: '43',
-            ano: date('y', strtotime($dhEmi)),
-            mes: date('m', strtotime($dhEmi)),
-            cnpj: $this->config->cnpj,
-            mod: $tools->model(),
-            serie: '1',
-            numero: $numeroCTE,
-            tpEmis: '1',
-            codigo: '10'
+
+        static::$chave = static::montaChave(
+            '43',
+            date('y', strtotime($dhEmi)),
+            date('m', strtotime($dhEmi)),
+            $this->config['cnpj'],
+            $this->tools->model(),
+            '1',
+            $numeroCTE,
+            '1',
+            '10'
         );
 
         $infCte = new stdClass();
         $infCte->Id = "";
         $infCte->versao = "3.00";
         $cte->taginfCTe($infCte);
-        $cDV = substr($chave, -1);
+        $cte->tagide($this->ide($data));
+        $cte->tagtoma3($this->toma3($data));
+        $cte->tagenderToma($this->enderToma($data));
+        $cte->tagemit($this->emit($data));
+        $cte->tagenderEmit($this->enderEmit($data));
+        $cte->tagrem($this->rem($data));
+        $cte->tagenderReme($this->enderReme($data));
+        $cte->tagdest($this->dest($data));
+        $cte->tagenderDest($this->enderDest($data));
+        $cte->tagvPrest($this->vPrest($data));
+        $cte->tagComp($this->comp($data));
+        $cte->tagicms($this->icms($data));
+        $cte->taginfCTeNorm();              // Grupo de informações do CT-e Normal e Substituto
+        $cte->taginfCarga($this->infCarga($data));
+        $cte->taginfQ($this->infQ($data));
+        $cte->taginfNFe($this->infNFe($data));
+        $cte->taginfModal($this->infModal($data));
+        $cte->tagrodo($this->rodo($data));
+        $cte->tagaereo($this->aereo($data));
+        $cte->tagautXML($this->autXML($data));
+        $cte->montaCTe();
 
+        $filename = "xml/{$this->chave}-cte.xml";
+        $xml = $cte->getXML();
+        $xml = $this->tools->signCTe($xml);
+
+        file_put_contents($filename, $xml);
+
+        $this->sendCTe($xml);
+
+    }
+
+    private function sendCTe(string $xml)
+    {
+        $res = $this->tools->sefazEnviaCTe($xml);
+        $stdCl = new Standardize($res);
+        $std = $stdCl->toStd();
+
+        if ($std->cStat != 100) {//103 - Lote recebido com Sucesso
+            //processa erros
+        }
+    }
+
+    private function ide(array $data): stdClass
+    {
         $ide = new stdClass();
         $ide->cUF = $data['cUF'];
         $ide->cCT = $data['cCT'];
@@ -58,7 +111,8 @@ class GenerateCTe
         $ide->dhEmi = $data['dhEmi'];
         $ide->tpImp = $data['tpImp'];
         $ide->tpEmis = $data['tpEmis'];
-        $ide->cDV = $cDV;
+        $ide->cDV = substr($this->chave, -1);
+        ;
         $ide->tpAmb = $data['tpAmb'];
         $ide->tpCTe = $data['tpCTe'];
         $ide->procEmi = $data['procEmi'];
@@ -82,12 +136,18 @@ class GenerateCTe
         $ide->dhCont = $data['dhCont'];
         $ide->xJust = $data['xJust'];
 
-        $cte->tagide($ide);
+        return $ide;
+    }
 
+    private function toma3(array $data): stdClass
+    {
         $toma3 = new stdClass();
         $toma3->toma = $data['toma'];
-        $cte->tagtoma3($toma3);
+        return $toma3;
+    }
 
+    private function enderToma(array $data): stdClass
+    {
         $enderToma = new stdClass();
         $enderToma->xLgr = $data['xLgr'];
         $enderToma->nro = $data['nro'];
@@ -99,7 +159,12 @@ class GenerateCTe
         $enderToma->UF = $data['UF'];
         $enderToma->cPais = $data['cPais'];
         $enderToma->xPais = $data['xPais'];
-        $cte->tagenderToma($enderToma);
+
+        return $enderToma;
+    }
+
+    private function emit(array $data): stdClass
+    {
 
         $emit = new stdClass();
         $emit->CNPJ = $data['CNPJ'];
@@ -107,9 +172,12 @@ class GenerateCTe
         $emit->IEST = $data['IEST'];
         $emit->xNome = $data['xNome'];
         $emit->xFant = $data['xFant'];
-        $cte->tagemit($emit);
 
+        return $emit;
+    }
 
+    private function enderEmit(array $data): stdClass
+    {
         $enderEmit = new stdClass();
         $enderEmit->xLgr = $data['xLgr'];
         $enderEmit->nro = $data['nro'];
@@ -120,9 +188,11 @@ class GenerateCTe
         $enderEmit->CEP = $data['CEP'];
         $enderEmit->UF = $data['UF'];
         $enderEmit->fone = $data['fone'];
-        $cte->tagenderEmit($enderEmit);
+        return $enderEmit;
+    }
 
-
+    private function rem(array $data): stdClass
+    {
         $rem = new stdClass();
         $rem->CNPJ = $data['CNPJ'];
         $rem->CPF = $data['CPF'];
@@ -131,9 +201,11 @@ class GenerateCTe
         $rem->xFant = $data['xFant'];
         $rem->fone = $data['fone'];
         $rem->email = $data['email'];
-        $cte->tagrem($rem);
+        return $rem;
+    }
 
-
+    private function enderReme(array $data): stdClass
+    {
         $enderReme = new stdClass();
         $enderReme->xLgr = $data['xLgr'];
         $enderReme->nro = $data['nro'];
@@ -145,9 +217,11 @@ class GenerateCTe
         $enderReme->UF = $data['UF'];
         $enderReme->cPais = $data['cPais'];
         $enderReme->xPais = $data['xPais'];
-        $cte->tagenderReme($enderReme);
+        return $enderReme;
+    }
 
-
+    private function dest(array $data): stdClass
+    {
         $dest = new stdClass();
         $dest->CNPJ = $data['CNPJ'];
         $dest->CPF = $data['CPF'];
@@ -156,9 +230,11 @@ class GenerateCTe
         $dest->fone = $data['fone'];
         $dest->ISUF = $data['ISUF'];
         $dest->email = $data['email'];
-        $cte->tagdest($dest);
+        return $dest;
+    }
 
-
+    private function enderDest(array $data): stdClass
+    {
         $enderDest = new stdClass();
         $enderDest->xLgr = $data['xLgr'];
         $enderDest->nro = $data['nro'];
@@ -170,20 +246,27 @@ class GenerateCTe
         $enderDest->UF = $data['UF'];
         $enderDest->cPais = $data['cPais'];
         $enderDest->xPais = $data['xPais'];
-        $cte->tagenderDest($enderDest);
+        return $enderDest;
+    }
 
-
+    private function vPrest(array $data): stdClass
+    {
         $vPrest = new stdClass();
         $vPrest->vTPrest = 3334.32; // Valor total da prestacao do servico
         $vPrest->vRec = 3334.32;      // Valor a receber
-        $cte->tagvPrest($vPrest);
+        return $vPrest;
+    }
 
-
+    private function comp(array $data): stdClass
+    {
         $comp = new stdClass();
         $comp->xNome = 'FRETE VALOR'; // Nome do componente
         $comp->vComp = '3334.32';  // Valor do componente
-        $cte->tagComp($comp);
+        return $comp;
+    }
 
+    private function icms(array $data): stdClass
+    {
         $icms = new stdClass();
         $icms->cst = '00'; // 00 - Tributacao normal ICMS
         $icms->pRedBC = ''; // Percentual de redução da BC (3 inteiros e 2 decimais)
@@ -199,45 +282,54 @@ class GenerateCTe
         $icms->vICMSUFIni = 0;
         $icms->vICMSUFFim = 0;
         $icms->infAdFisco = 'Informações ao fisco';
-        $cte->tagicms($icms);
+        return $icms;
+    }
 
-
-        $cte->taginfCTeNorm();              // Grupo de informações do CT-e Normal e Substituto
-
-
+    private function infCarga(array $data): stdClass
+    {
         $infCarga = new stdClass();
         $infCarga->vCarga = 130333.31; // Valor total da carga
         $infCarga->proPred = 'TUBOS PLASTICOS'; // Produto predominante
         $infCarga->xOutCat = 6.00; // Outras caracteristicas da carga
         $infCarga->vCargaAverb = 1.99;
-        $cte->taginfCarga($infCarga);
+        return $infCarga;
+    }
 
+    private function infQ(array $data): stdClass
+    {
         $infQ = new stdClass();
         $infQ->cUnid = '01'; // Código da Unidade de Medida: ( 00-M3; 01-KG; 02-TON; 03-UNIDADE; 04-LITROS; 05-MMBTU
         $infQ->tpMed = 'ESTRADO'; // Tipo de Medida
         // ( PESO BRUTO; PESO DECLARADO; PESO CUBADO; PESO AFORADO; PESO AFERIDO; LITRAGEM; CAIXAS e etc)
         $infQ->qCarga = 18145.0000;  // Quantidade (15 posições; sendo 11 inteiras e 4 decimais.)
-        $cte->taginfQ($infQ);
-        $infQ->cUnid = '02'; // Código da Unidade de Medida: ( 00-M3; 01-KG; 02-TON; 03-UNIDADE; 04-LITROS; 05-MMBTU
-        $infQ->tpMed = 'OUTROS'; // Tipo de Medida
-        // ( PESO BRUTO; PESO DECLARADO; PESO CUBADO; PESO AFORADO; PESO AFERIDO; LITRAGEM; CAIXAS e etc)
-        $infQ->qCarga = 31145.0000;  // Quantidade (15 posições; sendo 11 inteiras e 4 decimais.)
-        $cte->taginfQ($infQ);
+        return $infQ;
+    }
 
+    private function infNFe(array $data): stdClass
+    {
         $infNFe = new stdClass();
         $infNFe->chave = '43160472202112000136550000000010571048440722'; // Chave de acesso da NF-e
         $infNFe->PIN = ''; // PIN SUFRAMA
         $infNFe->dPrev = '2016-10-30';                                       // Data prevista de entrega
-        $cte->taginfNFe($infNFe);
+        return $infNFe;
+    }
 
+    private function infModal(array $data): stdClass
+    {
         $infModal = new stdClass();
         $infModal->versaoModal = '3.00';
-        $cte->taginfModal($infModal);
+        return $infModal;
+    }
 
+    private function rodo(array $data): stdClass
+    {
         $rodo = new stdClass();
         $rodo->RNTRC = '00739357';
-        $cte->tagrodo($rodo);
+        return $rodo;
+    }
 
+    private function aereo(array $data): stdClass
+    {
         $aereo = new stdClass();
         $aereo->nMinu = '123'; // Número Minuta
         $aereo->nOCA = ''; // Número Operacional do Conhecimento Aéreo
@@ -247,87 +339,13 @@ class GenerateCTe
         $aereo->tarifa_CL = 'G'; // M - Tarifa Mínima / G - Tarifa Geral / E - Tarifa Específica
         $aereo->tarifa_cTar = ''; // código da tarifa, deverão ser incluídos os códigos de três digítos correspondentes à tarifa
         $aereo->tarifa_vTar = 100.00; // valor da tarifa. 15 posições, sendo 13 inteiras e 2 decimais. Valor da tarifa por kg quando for o caso
-        $cte->tagaereo($aereo);
+        return $aereo;
+    }
 
+    private function autXML(array $data): stdClass
+    {
         $autXML = new stdClass();
         $autXML->CPF = '59195248471'; // CPF ou CNPJ dos autorizados para download do XML
-        $cte->tagautXML($autXML);
-
-        //Monta CT-e
-        $cte->montaCTe();
-        $chave = $cte->chCTe;
-        $filename = "xml/{$chave}-cte.xml";
-        $xml = $cte->getXML();
-        file_put_contents($filename, $xml);
-
-        //Assina
-        $xml = $tools->signCTe($xml);
-
-        //Imprime XML na tela
-        header('Content-type: text/xml; charset=UTF-8');
-        print_r($xml);
-
-        //Envia lote e autoriza
-        $res = $tools->sefazEnviaCTe($xml);
-
-        //Converte resposta
-        $stdCl = new Standardize($res);
-        //Output array
-        $arr = $stdCl->toArray();
-        //print_r($arr);
-        //Output object
-        $std = $stdCl->toStd();
-
-        if ($std->cStat != 100) {//103 - Lote recebido com Sucesso
-            //processa erros
-            print_r($arr);
-        }
-        echo '<pre>';
-        print_r($arr);
-
+        return $autXML;
     }
-
-    private function montaChave($cUF, $ano, $mes, $cnpj, $mod, $serie, $numero, $tpEmis, $codigo = '')
-    {
-        if ($codigo == '') {
-            $codigo = $numero;
-        }
-        $forma = "%02d%02d%02d%s%02d%03d%09d%01d%08d";
-        $chave = sprintf(
-            $forma,
-            $cUF,
-            $ano,
-            $mes,
-            $cnpj,
-            $mod,
-            $serie,
-            $numero,
-            $tpEmis,
-            $codigo
-        );
-        return $chave . $this->calculaDV($chave);
-    }
-
-    private function calculaDV($chave43)
-    {
-        $multiplicadores = array(2, 3, 4, 5, 6, 7, 8, 9);
-        $iCount = 42;
-        $somaPonderada = 0;
-        while ($iCount >= 0) {
-            for ($mCount = 0; $mCount < count($multiplicadores) && $iCount >= 0; $mCount++) {
-                $num = (int) substr($chave43, $iCount, 1);
-                $peso = (int) $multiplicadores[$mCount];
-                $somaPonderada += $num * $peso;
-                $iCount--;
-            }
-        }
-        $resto = $somaPonderada % 11;
-        if ($resto == '0' || $resto == '1') {
-            $cDV = 0;
-        } else {
-            $cDV = 11 - $resto;
-        }
-        return (string) $cDV;
-    }
-
 }

@@ -11,8 +11,10 @@ use App\Models\TransportDocument;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Tabs;
 use App\Enums\TypeTransportationEnum;
+use App\Services\SpedCte\GenerateCTe;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Toggle;
+use Filament\Forms\Components\Actions;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use App\Enums\TypeDocumentTransportEnum;
@@ -20,7 +22,9 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\DatePicker;
 use Illuminate\Database\Eloquent\Builder;
 use Leandrocfe\FilamentPtbrFormFields\Money;
+use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\DateTimePicker;
+use App\Services\Factories\SpedCte\SpedCTeFactory;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Modules\Tms\TransportDocument\TransportDocumentResource\Pages;
 
@@ -92,6 +96,15 @@ class TransportDocumentResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Action::make('Authorize')
+                    ->action(
+                        fn(array $record) =>
+                        SpedCTeFactory::make()->authorize($record)
+                    )
+                    ->icon('heroicon-o-check')
+                    ->requiresConfirmation()
+                    ->color('success')
+                    ->visible(fn(array $record) => $record['can_authorize']),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

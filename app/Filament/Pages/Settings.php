@@ -133,6 +133,7 @@ class Settings extends Page implements HasForms
                 ]);
 
             session()->put('dateBase', $data['dateBase']);
+            session()->put('branch', $data['branch_logged_id']);
 
             Notification::make()
                 ->success()

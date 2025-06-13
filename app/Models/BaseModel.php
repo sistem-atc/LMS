@@ -3,8 +3,6 @@
 namespace App\Models;
 
 use App\Traits\Blameable;
-use Illuminate\Support\Arr;
-use App\Attributes\EntryPoint;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Database\Eloquent\Model;
 use OwenIt\Auditing\Contracts\Auditable;

@@ -179,6 +179,7 @@ return [
         App\Providers\Filament\SalesPanelProvider::class,
         App\Providers\Filament\LegalPanelProvider::class,
         App\Providers\Filament\SupplyPanelProvider::class,
+        App\Providers\Filament\OrderManagerPanelProvider::class,
         App\Providers\RouteServiceProvider::class,
         Spatie\Permission\PermissionServiceProvider::class,
         App\Providers\TenancyServiceProvider::class,

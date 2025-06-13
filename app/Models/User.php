@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Filament\Panel;
 use App\Traits\Blameable;
-use App\Attributes\EntryPoint;
 use Laravel\Sanctum\HasApiTokens;
 use Filament\Models\Contracts\HasName;
 use Spatie\Permission\Traits\HasRoles;
@@ -18,7 +17,6 @@ use BezhanSalleh\FilamentShield\Traits\HasPanelShield;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-#[EntryPoint()]
 class User extends Authenticatable implements FilamentUser, HasName
 {
     use HasApiTokens;
@@ -28,6 +26,7 @@ class User extends Authenticatable implements FilamentUser, HasName
     use SoftDeletes;
     use HasRoles;
     use Blameable;
+    use \App\Traits\EntryPoint;
 
     public function getFilamentName(): string
     {
@@ -67,6 +66,13 @@ class User extends Authenticatable implements FilamentUser, HasName
         'password' => 'hashed',
         'is_active' => 'boolean',
     ];
+
+    protected static function booted(): void
+    {
+        static::saving(function ($model) {
+            self::triggerEntryPoint($model);
+        });
+    }
 
     public function canAccessPanel(Panel $panel): bool
     {

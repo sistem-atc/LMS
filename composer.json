@@ -37,7 +37,6 @@
         "tightenco/ziggy": "^2.5"
     },
     "require-dev": {
-        "laradumps/laradumps": "^4.0",
         "laravel/pint": "^1.0",
         "laravel/sail": "^1.18",
         "mockery/mockery": "^1.4.4",

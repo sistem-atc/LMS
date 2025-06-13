@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Modules\Tms\TravelResource\Pages;
+namespace App\Modules\Tms\Travel\TravelResource\Pages;
 
-use App\Modules\Tms\TravelResource;
+use App\Modules\Tms\Travel\TravelResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 

@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Modules\Tms;
+namespace App\Modules\Tms\Travel;
 
-use App\Modules\Tms\TravelResource\Pages;
-use App\Modules\Tms\TravelResource\RelationManagers;
+use App\Modules\Tms\Travel\TravelResource\Pages;
+use App\Modules\Tms\Travel\TravelResource\RelationManagers;
 use App\Models\Travel;
 use Filament\Forms;
 use Filament\Forms\Form;

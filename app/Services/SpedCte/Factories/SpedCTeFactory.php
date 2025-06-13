@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Factories\SpedCte;
+namespace App\Services\SpedCte\Factories;
 
 use App\Helpers\EnvironmentHelper;
 use App\Services\SpedCte\GenerateCTe;

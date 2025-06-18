@@ -2,28 +2,35 @@
 
 namespace App\Services\Banks\Banks\Itau;
 
-use App\Models\Bank;
 use App\Models\Bill;
-use App\Models\Customer;
 use App\Services\Banks\Factories\BankFactory;
 
 class Exemple
 {
 
-    private function example(): void
+    public function example(): void
     {
+
         $data = [
-            'model' => Bank::find(1)->first(),
-            'customer' => Customer::find(1)->first(),
-            'billing' => Bill::find(1)->first(),
+            'bankCode' => '341',
+            'path_crt' => 'path/to/certificate.crt',
+            'path_key' => 'path/to/private.key',
+            'agencia' => '3841',
+            'conta' => '123456',
+            'conta_dv' => '7',
+            'wallet' => '109',
         ];
+
         $bank = BankFactory::make(args: $data);
-        $response = $bank->consultarBoleto(
-            [
-                'boleto_number' => '12345678901234567890123456789012345678901234',
-            ]
+        $bank->makeOurNumber(
+            data: Bill::find(id: 1)->toArray()
         );
-        dd($response);
+
+        $bank->gerarBoleto(
+            data: Bill::find(id: 1)->toArray()
+        );
+
+        dd($bank);
     }
 
 }

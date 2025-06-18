@@ -13,21 +13,21 @@ class BankFactory
     {
         $bankCode = $args['bankCode'] ?? null;
 
-        $class = config("bank.{$bankCode}");
+        $class = config(key: "bank.{$bankCode}");
 
-        if (!$class || !class_exists($class)) {
-            throw new InvalidArgumentException("Conector não encontrado para o banco {$bankCode}");
+        if (!$class || !class_exists(class: $class)) {
+            throw new InvalidArgumentException(message: "Conector não encontrado para o banco {$bankCode}");
         }
 
-        if (!is_subclass_of($class, BankInterface::class)) {
-            throw new InvalidArgumentException("A classe {$class} não é um conector válido");
+        if (!is_subclass_of(object_or_class: $class, class: BankInterface::class)) {
+            throw new InvalidArgumentException(message: "A classe {$class} não é um conector válido");
         }
 
         $env = EnvironmentHelper::getAmbient();
-        $bankConfig = config("banks.{$bankCode}.{$env}");
+        $bankConfig = config(key: "banks.{$bankCode}.{$env}");
 
-        if (!$bankConfig || !is_array($bankConfig)) {
-            throw new InvalidArgumentException("Configurações não encontradas para o banco {$bankCode} no ambiente {$env}");
+        if (!$bankConfig || !is_array(value: $bankConfig)) {
+            throw new InvalidArgumentException(message: "Configurações não encontradas para o banco {$bankCode} no ambiente {$env}");
         }
 
         $config = array_merge($bankConfig, [
@@ -40,12 +40,21 @@ class BankFactory
         ]);
 
         try {
-            return app()->make($class, [
-                'resolver' => null,
-                'config' => $config,
-            ]);
+
+            return app()->make(
+                abstract: $class,
+                parameters: [
+                    'resolver' => null,
+                    'config' => $config,
+                ]
+            );
+
         } catch (BindingResolutionException $e) {
-            throw new InvalidArgumentException("Erro ao resolver dependências para {$class}: " . $e->getMessage());
+
+            throw new InvalidArgumentException(
+                message: "Erro ao resolver dependências para {$class}: " . $e->getMessage()
+            );
+
         }
     }
 }

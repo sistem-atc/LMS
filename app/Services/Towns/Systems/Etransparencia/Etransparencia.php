@@ -5,6 +5,7 @@ namespace App\Services\Towns\Systems\Etransparencia;
 use Exception;
 use SimpleXMLElement;
 use App\Enums\HttpMethod;
+use App\Services\Towns\DTO\TownConfig;
 use Illuminate\Http\Client\PendingRequest;
 use App\Services\Towns\Template\TownTemplate;
 
@@ -22,6 +23,10 @@ class Etransparencia extends TownTemplate
         Methods\PROCESSARPS,
         Methods\VERFICARPS;
 
+    public function __construct(TownConfig $config)
+    {
+        parent::__construct(config: $config);
+    }
 
     public static function getHeaders(): array
     {

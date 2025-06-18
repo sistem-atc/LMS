@@ -7,30 +7,43 @@ use Illuminate\Support\Facades\Validator;
 trait ConsultaSituacaoLoteAsync
 {
 
-    private static string $operation;
+    private string $operation;
 
-    public static function ConsultaSituacaoLoteAsync($data): string|int|array
+    public function ConsultaSituacaoLoteAsync($data): string|int|array
     {
 
-        $validator = Validator::make($data, [
-            'cnpj' => 'required',
-            'numeroLote' => 'required',
-            'numeroProtocolo' => 'required',
-        ]);
+        $validator = Validator::make(
+            data: $data,
+            rules: [
+                'cnpj' => 'required',
+                'numeroLote' => 'required',
+                'numeroProtocolo' => 'required',
+            ]
+        );
 
         if ($validator->fails()) {
             return ['errors' => $validator->errors(), 'response' => 422];
         }
 
-        self::$operation = __FUNCTION__;
-        $dataMsg = parent::composeMessage(self::$operation);
+        $this->operation = __FUNCTION__;
+        $dataMsg = $this->composeMessage(type: $this->operation);
         $dataMsg->cnpj = $data['cnpj'];
         $dataMsg->NumeroLote = $data['numeroLote'];
         $dataMsg->NumeroProtocolo = $data['numeroProtocolo'];
 
-        self::mountMensage($dataMsg);
+        $this->mountMensage(
+            dataMsg: $dataMsg,
+            operation: $this->operation,
+            version: null
+        );
 
-        return self::connection();
+        $response = $this->http()
+            ->setBaseUrl($this->getUrl())
+            ->setHeaders($this->getHeaders())
+            ->post($this->endPoint, $this->mountMessage->asXML());
+
+        return $this->parseXmlToArray($response, '');
+
     }
 
 }

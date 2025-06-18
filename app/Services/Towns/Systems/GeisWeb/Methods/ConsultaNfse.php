@@ -7,31 +7,44 @@ use Illuminate\Support\Facades\Validator;
 trait ConsultaNfse
 {
 
-    private static string $operation;
+    private string $operation;
 
-    public static function ConsultaNfse($data): string|int|array
+    public function ConsultaNfse($data): string|int|array
     {
 
-        $validator = Validator::make($data, [
-            'cnpj' => 'required',
-            'dataInicial' => 'required',
-            'dataFinal' => 'required',
-        ]);
+        $validator = Validator::make(
+            data: $data,
+            rules: [
+                'cnpj' => 'required',
+                'dataInicial' => 'required',
+                'dataFinal' => 'required',
+            ]
+        );
 
         if ($validator->fails()) {
             return ['errors' => $validator->errors(), 'response' => 422];
         }
 
-        self::$operation = __FUNCTION__;
-        $dataMsg = parent::composeMessage(self::$operation);
+        $this->operation = __FUNCTION__;
+        $dataMsg = $this->composeMessage(type: $this->operation);
         $dataMsg->CnpjCpf = $data['cnpj'];
         $dataMsg->DtInicial = $data['dataInicial'];
         $dataMsg->DtFinal = $data['dataFinal'];
         $dataMsg->Pagina = $data['page'] ?? 1;
 
-        self::mountMensage($dataMsg);
+        $this->mountMensage(
+            dataMsg: $dataMsg,
+            operation: $this->operation,
+            version: null
+        );
 
-        return self::connection();
+        $response = $this->http()
+            ->setBaseUrl($this->getUrl())
+            ->setHeaders($this->getHeaders())
+            ->post($this->endPoint, $this->mountMessage->asXML());
+
+        return $this->parseXmlToArray($response, '');
+
     }
 
 }

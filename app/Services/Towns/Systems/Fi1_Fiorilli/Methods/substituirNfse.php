@@ -7,26 +7,39 @@ use Illuminate\Support\Facades\Validator;
 trait substituirNfse
 {
 
-    private static string $operation;
+    private string $operation;
 
-    public static function substituirNfse($data): string|int|array
+    public function substituirNfse($data): string|int|array
     {
 
-        $validator = Validator::make($data, [
-            'username' => 'required',
-            'password' => 'required',
-            'numeroNF' => 'required',
-        ]);
+        $validator = Validator::make(
+            data: $data,
+            rules: [
+                'username' => 'required',
+                'password' => 'required',
+                'numeroNF' => 'required',
+            ]
+        );
 
         if ($validator->fails()) {
             return ['errors' => $validator->errors(), 'response' => 422];
         }
 
-        self::$operation = __FUNCTION__;
-        $dataMsg = parent::composeMessage(self::$operation);
-        self::mountMensage($dataMsg);
+        $this->operation = __FUNCTION__;
+        $dataMsg = $this->composeMessage(type: $this->operation);
 
-        return self::connection();
+        $this->mountMensage(
+            dataMsg: $dataMsg,
+            operation: $this->operation,
+            version: null
+        );
+
+        $response = $this->http()
+            ->setBaseUrl($this->getUrl())
+            ->setHeaders($this->getHeaders())
+            ->post($this->endPoint, $this->mountMessage->asXML());
+
+        return $this->parseXmlToArray($response, '');
     }
 
 }

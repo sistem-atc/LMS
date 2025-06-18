@@ -2,12 +2,12 @@
 
 namespace App\Services\Towns\Systems\Fi1_Fiorilli;
 
+use Exception;
 use SimpleXMLElement;
-use App\Enums\HttpMethod;
-use App\Bases\LinkTownBase;
-use Illuminate\Support\Str;
+use App\Services\Towns\DTO\TownConfig;
+use App\Services\Towns\Template\TownTemplate;
 
-class Fi1_Fiorilli extends LinkTownBase
+class Fi1_Fiorilli extends TownTemplate
 {
 
     use Methods\cancelarNfse,
@@ -20,8 +20,10 @@ class Fi1_Fiorilli extends LinkTownBase
         Methods\recepcionarLoteRpsSincrono,
         Methods\substituirNfse;
 
-    protected static $verb = HttpMethod::POST;
-    private static SimpleXMLElement $mountMessage;
+    public function __construct(TownConfig $config)
+    {
+        parent::__construct(config: $config);
+    }
 
     public static function getHeaders(): array
     {
@@ -30,35 +32,25 @@ class Fi1_Fiorilli extends LinkTownBase
 
     public function consultarNota(array $data): string|int|array
     {
-        return self::consultarNfsePorFaixa($data);
+        return $this->consultarNfsePorFaixa(data: $data);
     }
 
     public function gerarNota(array $data): string|int|array
     {
-        return self::RecepcionarLoteRps($data);
+        return $this->RecepcionarLoteRps(data: $data);
     }
 
     public function cancelarNota(array $data): string|int|array
     {
-        return self::CancelarNfse($data);
+        return $this->CancelarNfse(data: $data);
     }
 
     public function substituirNota(array $data): string|int|array
     {
-        return self::substituirNfse($data);
+        return $this->substituirNfse(data: $data);
     }
 
-    public function __construct(array $configLoader)
-    {
-        parent::__construct($configLoader);
-    }
-
-    private static function connection(): string|int|array|null
-    {
-        return self::Conection(parent::$url, self::$mountMessage->asXML(), self::getHeaders(), self::$verb, false);
-    }
-
-    private static function mountMensage(SimpleXMLElement $dataMsg): void
+    public function mountMensage(SimpleXMLElement $dataMsg, string $operation, ?string $version = null): void
     {
 
         self::$mountMessage = parent::assembleMessage();

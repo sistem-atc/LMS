@@ -4,6 +4,7 @@ namespace App\Services\Towns\Systems\eSiat;
 
 use Exception;
 use SimpleXMLElement;
+use App\Services\Towns\DTO\TownConfig;
 use App\Services\Towns\Template\TownTemplate;
 
 class eSiat extends TownTemplate
@@ -19,6 +20,11 @@ class eSiat extends TownTemplate
         Methods\RecepcionarNFSe,
         Methods\VerificarExistenciaNota,
         Methods\VersaoInstalada;
+
+    public function __construct(TownConfig $config)
+    {
+        parent::__construct(config: $config);
+    }
 
     public static function getHeaders(): array
     {

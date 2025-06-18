@@ -9,8 +9,10 @@ trait CANCELARNOTAELETRONICA
 
     public function CANCELARNOTAELETRONICA($data): string|int|array
     {
+
         $this->operation = __FUNCTION__;
-        $dataMsg = parent::composeMessage(self::$operation);
+
+        $dataMsg = $this->composeMessage(type: $this->operation);
         $dataMsg->CodigoUsuario = $data['codigoUsuario'];
         $dataMsg->CodigoContribuinte = $data['codigoContribuinte'];
         $dataMsg->SerieNota = $data['serieNota'];
@@ -21,13 +23,18 @@ trait CANCELARNOTAELETRONICA
         $dataMsg->MotivoCancelamento = $data['motivoCancelamento'];
         $dataMsg->PodeCancelarGuia = $data['podeCancelarGuia'];
 
-        self::mountMensage($dataMsg);
+        $this->mountMensage(
+            dataMsg: $dataMsg,
+            operation: $this->operation,
+            version: null
+        );
 
-        return $this->pendingRequest->post(
-            parent::$url,
-            self::$mountMessage->asXML(),
-            self::getHeaders(),
-        )->json();
+        $response = $this->http()
+            ->setBaseUrl($this->getUrl())
+            ->setHeaders($this->getHeaders())
+            ->post($this->endPoint, $this->mountMessage->asXML());
+
+        return $this->parseXmlToArray($response, '');
     }
 
 }

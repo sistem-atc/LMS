@@ -9,8 +9,8 @@ use Illuminate\Support\Facades\Validator;
 trait ConsultarTomador
 {
 
-    private static string $operation;
-    public static function ConsultarTomador($data): string|int|array
+    private string $operation;
+    public function ConsultarTomador($data): string|int|array
     {
         $validator = Validator::make($data, [
             'Numero' => 'required',
@@ -28,8 +28,8 @@ trait ConsultarTomador
         }
         ;
 
-        self::$operation = __FUNCTION__;
-        $dataMsg = parent::composeMessage(self::$operation);
+        $this->operation = __FUNCTION__;
+        $dataMsg = $this->composeMessage(type: $this->operation);
         $codigoCancelamento = 'MC0' . MotivosCancelamento::from($data['motivoCancelamento'])->getLabel();
 
         $dataMsg->Numero = $data['numeroNF'];
@@ -38,9 +38,18 @@ trait ConsultarTomador
         $dataMsg->CodigoMunicipio = $data['codigoMunicipio'];
         $dataMsg->CodigoCancelamento = $codigoCancelamento;
 
-        self::mountMensage($dataMsg);
+        $this->mountMensage(
+            dataMsg: $dataMsg,
+            operation: $this->operation,
+            version: null
+        );
 
-        return self::connection();
+        $response = $this->http()
+            ->setBaseUrl($this->getUrl())
+            ->setHeaders($this->getHeaders())
+            ->post($this->endPoint, $this->mountMessage->asXML());
+
+        return $this->parseXmlToArray($response, '');
     }
 
 }

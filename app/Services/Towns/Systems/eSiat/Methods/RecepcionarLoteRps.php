@@ -5,18 +5,27 @@ namespace App\Services\Towns\Systems\eSiat\Methods;
 trait RecepcionarLoteRps
 {
 
-    private static string $operation;
+    private string $operation;
 
-    public static function RecepcionarLoteRps($data): string|int|array
+    public function RecepcionarLoteRps($data): string|int|array
     {
-        self::$operation = __FUNCTION__;
-        $dataMsg = parent::composeMessage(self::$operation);
+        $this->operation = __FUNCTION__;
+        $dataMsg = $this->composeMessage(type: $this->operation);
 
         $dataMsg->Numero = $data['numeroNF'];
 
-        self::mountMensage($dataMsg);
+        $this->mountMensage(
+            dataMsg: $dataMsg,
+            operation: $this->operation,
+            version: null
+        );
 
-        return self::connection();
+        $response = $this->http()
+            ->setBaseUrl($this->getUrl())
+            ->setHeaders($this->getHeaders())
+            ->post($this->endPoint, $this->mountMessage->asXML());
+
+        return $this->parseXmlToArray($response, '');
     }
 
 }

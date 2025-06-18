@@ -2,8 +2,9 @@
 
 namespace App\Services\Towns\Systems\eCity;
 
+use Exception;
 use SimpleXMLElement;
-use App\Enums\HttpMethod;
+use App\Services\Towns\DTO\TownConfig;
 use App\Services\Towns\Template\TownTemplate;
 
 class eCity extends TownTemplate
@@ -19,8 +20,10 @@ class eCity extends TownTemplate
         Methods\RecepcionarLoteRpsSincrono,
         Methods\SubstituirNfse;
 
-    protected static $verb = HttpMethod::POST;
-    private static SimpleXMLElement $mountMessage;
+    public function __construct(TownConfig $config)
+    {
+        parent::__construct(config: $config);
+    }
 
     public static function getHeaders(): array
     {
@@ -31,41 +34,25 @@ class eCity extends TownTemplate
 
     public function gerarNota(array $data): string|int|array
     {
-        return self::GerarNfse($data);
+        return $this->GerarNfse($data);
     }
 
     public function consultarNota(array $data): string|int|array
     {
-        return self::ConsultarNfseRps($data);
+        return $this->ConsultarNfseRps($data);
     }
 
     public function cancelarNota(array $data): string|int|array
     {
-        return self::CancelarNfse($data);
+        return $this->CancelarNfse($data);
     }
 
     public function substituirNota(array $data): string|int|array
     {
-        return self::SubstituirNfse($data);
+        return $this->SubstituirNfse($data);
     }
 
-    public function __construct(array $configLoader)
-    {
-        parent::__construct($configLoader);
-    }
-
-    private static function connection(): string|int|array|null
-    {
-        return self::Conection(
-            null,
-            parent::$url,
-            self::$mountMessage->asXML(),
-            self::getHeaders(),
-            self::$verb
-        );
-    }
-
-    private static function mountMensage(SimpleXMLElement $dataMsg, string $operation): void
+    public function mountMensage(SimpleXMLElement $dataMsg, string $operation, ?string $version = null): void
     {
         //<![CDATA[[DadosMsg]]]>
         self::$mountMessage = parent::assembleMessage($operation);
@@ -89,6 +76,37 @@ class eCity extends TownTemplate
         $fragment = dom_import_simplexml($dataMsg);
         $dom->appendChild($dom->ownerDocument->importNode($fragment, true));
 
+    }
+
+    public function parseXmlToArray(string $xmlString, string $xpath, string $namespace = ''): array
+    {
+
+        libxml_use_internal_errors(true);
+        $xml = simplexml_load_string($xmlString);
+
+        if ($xml === false) {
+            $errors = libxml_get_errors();
+            $errorMessages = [];
+            foreach ($errors as $error) {
+                $errorMessages[] = $error->message;
+            }
+            libxml_clear_errors();
+            throw new Exception("Erro ao carregar o XML: " . implode(", ", $errorMessages));
+        }
+
+        $namespaces = $xml->getNamespaces(true);
+        if (isset($namespaces[$namespace])) {
+            $xml->registerXPathNamespace('ns', $namespaces[$namespace]);
+        }
+
+        $outputXml = $xml->xpath($xpath);
+
+        if (isset($outputXml[0])) {
+            $nestedXml = simplexml_load_string($outputXml[0]);
+            return json_decode(json_encode($nestedXml), true);
+        }
+
+        return [];
     }
 
 }

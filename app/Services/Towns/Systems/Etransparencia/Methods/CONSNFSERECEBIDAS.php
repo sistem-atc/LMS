@@ -5,18 +5,27 @@ namespace App\Services\Towns\Systems\Etransparencia\Methods;
 trait CONSNFSERECEBIDAS
 {
 
-    private static string $operation;
+    private string $operation;
 
-    public static function CONSNFSERECEBIDAS($data): string|int|array
+    public function CONSNFSERECEBIDAS($data): string|int|array
     {
-        self::$operation = __FUNCTION__;
-        $dataMsg = parent::composeMessage(self::$operation);
+        $this->operation = __FUNCTION__;
+        $dataMsg = $this->composeMessage(type: $this->operation);
         $dataMsg->CodigoUsuario = $data['codigoUsuario'];
         $dataMsg->CodigoContribuinte = $data['codigoContribuinte'];
 
-        self::mountMensage($dataMsg);
+        $this->mountMensage(
+            dataMsg: $dataMsg,
+            operation: self::$operation,
+            version: null
+        );
 
-        return self::connection();
+        $response = $this->http()
+            ->setBaseUrl($this->getUrl())
+            ->setHeaders($this->getHeaders())
+            ->post($this->endPoint, $this->mountMessage->asXML());
+
+        return $this->parseXmlToArray($response, '');
     }
 
 }

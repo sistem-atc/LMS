@@ -5,19 +5,28 @@ namespace App\Services\Towns\Systems\eCity\Methods;
 trait ConsultarNfseServicoPrestado
 {
 
-    private static string $operation;
+    private string $operation;
 
-    public static function ConsultarNfseServicoPrestado(array $data): string|int|array
+    public function ConsultarNfseServicoPrestado(array $data): string|int|array
     {
 
-        self::$operation = __FUNCTION__;
-        $dataMsg = parent::composeMessage(self::$operation);
+        $this->operation = __FUNCTION__;
+        $dataMsg = $this->composeMessage(type: $this->operation);
         $dataMsg->cnpj = $data['cnpj'];
-        $dataMsg = self::Sign_XML($dataMsg);
+        $dataMsg = $this->Sign_XML(xmlNoSigned: $dataMsg);
 
-        self::mountMensage($dataMsg, self::$operation);
+        $this->mountMensage(
+            dataMsg: $dataMsg,
+            operation: $this->operation,
+            version: null
+        );
 
-        return self::connection();
+        $response = $this->http()
+            ->setBaseUrl($this->getUrl())
+            ->setHeaders($this->getHeaders())
+            ->post($this->endPoint, $this->mountMessage->asXML());
+
+        return $this->parseXmlToArray($response, '');
     }
 
 }

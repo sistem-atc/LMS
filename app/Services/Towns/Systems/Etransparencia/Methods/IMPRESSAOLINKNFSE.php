@@ -5,20 +5,29 @@ namespace App\Services\Towns\Systems\Etransparencia\Methods;
 trait IMPRESSAOLINKNFSE
 {
 
-    private static string $operation;
+    private string $operation;
 
-    public static function IMPRESSAOLINKNFSE($data): string|int|array
+    public function IMPRESSAOLINKNFSE($data): string|int|array
     {
-        self::$operation = __FUNCTION__;
-        $dataMsg = parent::composeMessage(self::$operation);
+        $this->operation = __FUNCTION__;
+        $dataMsg = $this->composeMessage(type: $this->operation);
         $dataMsg->CodigoUsuario = $data['codigoUsuario'];
         $dataMsg->CodigoContribuinte = $data['codigoContribuinte'];
         $dataMsg->NumeroNota = $data['numeroNota'];
         $dataMsg->DataInicio = $data['dataInicio'];
 
-        self::mountMensage($dataMsg);
+        $this->mountMensage(
+            dataMsg: $dataMsg,
+            operation: $this->operation,
+            version: null
+        );
 
-        return self::connection();
+        $response = $this->http()
+            ->setBaseUrl($this->getUrl())
+            ->setHeaders($this->getHeaders())
+            ->post($this->endPoint, $this->mountMessage->asXML());
+
+        return $this->parseXmlToArray($response, '');
     }
 
 }

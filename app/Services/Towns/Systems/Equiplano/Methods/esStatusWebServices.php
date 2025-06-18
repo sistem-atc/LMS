@@ -5,15 +5,24 @@ namespace App\Services\Towns\Systems\Equiplano\Methods;
 trait esStatusWebServices
 {
 
-    private static string $operation;
+    private string $operation;
 
-    public static function esStatusWebServices(): string|int|array
+    public function esStatusWebServices(): string|int|array
     {
 
-        self::$operation = __FUNCTION__;
-        self::mountMensage(null, self::$operation);
+        $this->operation = __FUNCTION__;
+        $this->mountMensage(
+            dataMsg: null,
+            operation: $this->operation,
+            version: null
+        );
 
-        return self::connection();
+        $response = $this->http()
+            ->setBaseUrl($this->getUrl())
+            ->setHeaders($this->getHeaders())
+            ->post($this->endPoint, $this->mountMessage->asXML());
+
+        return $this->parseXmlToArray($response, '');
     }
 
 }

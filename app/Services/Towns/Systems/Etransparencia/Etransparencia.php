@@ -22,9 +22,6 @@ class Etransparencia extends TownTemplate
         Methods\PROCESSARPS,
         Methods\VERFICARPS;
 
-    protected static $verb = HttpMethod::POST;
-    private static SimpleXMLElement $mountMessage;
-    protected PendingRequest $pendingRequest;
 
     public static function getHeaders(): array
     {
@@ -33,53 +30,58 @@ class Etransparencia extends TownTemplate
 
     public function gerarNota($data): string|int|array
     {
-        return self::PROCESSARPS($data);
+        return $this->PROCESSARPS(data: $data);
     }
 
     public function consultarNota($data): string|int|array
     {
-        return self::CONSULTANOTASPROTOCOLO($data);
+        return $this->CONSULTANOTASPROTOCOLO(data: $data);
     }
 
     public function cancelarNota($data): string|int|array
     {
-        return self::CANCELARNOTAELETRONICA($data);
+        return $this->CANCELARNOTAELETRONICA(data: $data);
     }
 
     public function substituirNota(array $data): string|int|array
     {
-        return throw new Exception('Método não implementado', 501);
+        return throw new Exception(message: 'Método não implementado', code: 501);
     }
 
-    public function __construct(array $configLoader)
+    public function mountMensage(SimpleXMLElement $dataMsg, string $operation, ?string $version = null): void
     {
-        parent::__construct($configLoader);
-        $this->pendingRequest = $this->configureHttp();
+        //Implements the method to mount the message
     }
 
-    protected function configureHttp(): PendingRequest
-    {
-        return $this->makeHttpClient()
-            ->setHeaders($this->getHeaders())
-            ->setBaseUrl(parent::$url)
-            ->setChannel('towns')
-            ->make();
-    }
-
-    private static function connection(): string|int|array|null
-    {
-        return self::Conection(
-            null,
-            parent::$url,
-            self::$mountMessage->asXML(),
-            self::getHeaders(),
-            self::$verb
-        );
-    }
-
-    private static function mountMensage(SimpleXMLElement $dataMsg): void
+    public function parseXmlToArray(string $xmlString, string $xpath, string $namespace = ''): array
     {
 
+        libxml_use_internal_errors(true);
+        $xml = simplexml_load_string($xmlString);
+
+        if ($xml === false) {
+            $errors = libxml_get_errors();
+            $errorMessages = [];
+            foreach ($errors as $error) {
+                $errorMessages[] = $error->message;
+            }
+            libxml_clear_errors();
+            throw new Exception("Erro ao carregar o XML: " . implode(", ", $errorMessages));
+        }
+
+        $namespaces = $xml->getNamespaces(true);
+        if (isset($namespaces[$namespace])) {
+            $xml->registerXPathNamespace('ns', $namespaces[$namespace]);
+        }
+
+        $outputXml = $xml->xpath($xpath);
+
+        if (isset($outputXml[0])) {
+            $nestedXml = simplexml_load_string($outputXml[0]);
+            return json_decode(json_encode($nestedXml), true);
+        }
+
+        return [];
     }
 
 }

@@ -4,7 +4,6 @@ namespace App\Services\Towns\Systems\eSiat;
 
 use Exception;
 use SimpleXMLElement;
-use App\Enums\HttpMethod;
 use App\Services\Towns\Template\TownTemplate;
 
 class eSiat extends TownTemplate
@@ -21,9 +20,6 @@ class eSiat extends TownTemplate
         Methods\VerificarExistenciaNota,
         Methods\VersaoInstalada;
 
-    protected static $verb = HttpMethod::POST;
-    private static SimpleXMLElement $mountMessage;
-
     public static function getHeaders(): array
     {
         return [
@@ -33,41 +29,25 @@ class eSiat extends TownTemplate
 
     public function gerarNota(array $data): string|int|array
     {
-        return self::RecepcionarNFSe($data);
+        return $this->RecepcionarNFSe(data: $data);
     }
 
     public function consultarNota(array $data): string|int|array
     {
-        return self::RecepcionarConsultaRPS($data);
+        return $this->RecepcionarConsultaRPS(data: $data);
     }
 
     public function cancelarNota(array $data): string|int|array
     {
-        return self::RecepcionarLoteNotasCanceladas($data);
+        return $this->RecepcionarLoteNotasCanceladas(data: $data);
     }
 
     public function substituirNota(array $data): string|int|array
     {
-        return throw new Exception('Método não implementado', 501);
+        return throw new Exception(message: 'Método não implementado', code: 501);
     }
 
-    public function __construct(array $configLoader)
-    {
-        parent::__construct($configLoader);
-    }
-
-    private static function connection(): string|int|array|null
-    {
-        return self::Conection(
-            null,
-            parent::$url,
-            self::$mountMessage->asXML(),
-            self::getHeaders(),
-            self::$verb
-        );
-    }
-
-    private static function mountMensage(SimpleXMLElement $dataMsg): void
+    public function mountMensage(SimpleXMLElement $dataMsg, string $operation, ?string $version = null): void
     {
 
         //<![CDATA[[DadosMsg]]]>
@@ -80,6 +60,37 @@ class eSiat extends TownTemplate
         $fragment = dom_import_simplexml($dataMsg);
         $dom->appendChild($dom->ownerDocument->createCDATASection($dom->ownerDocument->saveXML($fragment)));
 
+    }
+
+    public function parseXmlToArray(string $xmlString, string $xpath, string $namespace = ''): array
+    {
+
+        libxml_use_internal_errors(true);
+        $xml = simplexml_load_string($xmlString);
+
+        if ($xml === false) {
+            $errors = libxml_get_errors();
+            $errorMessages = [];
+            foreach ($errors as $error) {
+                $errorMessages[] = $error->message;
+            }
+            libxml_clear_errors();
+            throw new Exception("Erro ao carregar o XML: " . implode(", ", $errorMessages));
+        }
+
+        $namespaces = $xml->getNamespaces(true);
+        if (isset($namespaces[$namespace])) {
+            $xml->registerXPathNamespace('ns', $namespaces[$namespace]);
+        }
+
+        $outputXml = $xml->xpath($xpath);
+
+        if (isset($outputXml[0])) {
+            $nestedXml = simplexml_load_string($outputXml[0]);
+            return json_decode(json_encode($nestedXml), true);
+        }
+
+        return [];
     }
 
 }

@@ -11,6 +11,6 @@ interface LinkTownsInterface
     public function consultarNota(array $data): string|int|array;
     public function cancelarNota(array $data): string|int|array;
     public function substituirNota(array $data): string|int|array;
-    public function mountMensage(\SimpleXMLElement $dataMsg, string $operation, ?string $version): void;
+    public function mountMensage(\SimpleXMLElement $dataMsg, string $operation, ?string $version = null): void;
     public function parseXmlToArray(string $xmlString, string $xpath, string $namespace = ''): array;
 }

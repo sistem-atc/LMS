@@ -5,7 +5,7 @@ namespace App\EntryPoints;
 use App\Interfaces\EntryPointInterface;
 use Illuminate\Database\Eloquent\Model;
 
-class NameModel implements EntryPointInterface
+class Bank implements EntryPointInterface
 {
     public function entryPoint(Model $model): void
     {

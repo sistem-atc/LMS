@@ -3,6 +3,7 @@
 namespace App\Services\Banks\Banks\Itau;
 
 use App\Models\Bill;
+use App\Services\Banks\DTO\BankConfig;
 use App\Services\Banks\Factories\BankFactory;
 
 class Exemple
@@ -21,7 +22,8 @@ class Exemple
             'wallet' => '109',
         ];
 
-        $bank = BankFactory::make(args: $data);
+        $config = new BankConfig($data);
+        $bank = BankFactory::make(config: $config);
         $bank->makeOurNumber(
             data: Bill::find(id: 1)->toArray()
         );

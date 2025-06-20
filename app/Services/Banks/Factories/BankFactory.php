@@ -5,18 +5,18 @@ namespace App\Services\Banks\Factories;
 use InvalidArgumentException;
 use App\Interfaces\BankInterface;
 use App\Helpers\EnvironmentHelper;
+use App\Services\Banks\DTO\BankConfig;
 use Illuminate\Contracts\Container\BindingResolutionException;
 
 class BankFactory
 {
-    public static function make(array $args = []): BankInterface
+    public static function make(BankConfig $config): BankInterface
     {
-        $bankCode = $args['bankCode'] ?? null;
 
-        $class = config(key: "bank.{$bankCode}");
+        $class = config(key: "bank.{$config->bankCode}");
 
         if (!$class || !class_exists(class: $class)) {
-            throw new InvalidArgumentException(message: "Conector não encontrado para o banco {$bankCode}");
+            throw new InvalidArgumentException(message: "Conector não encontrado para o banco {$config->bankCode}");
         }
 
         if (!is_subclass_of(object_or_class: $class, class: BankInterface::class)) {
@@ -24,19 +24,19 @@ class BankFactory
         }
 
         $env = EnvironmentHelper::getAmbient();
-        $bankConfig = config(key: "banks.{$bankCode}.{$env}");
+        $bankConfig = config(key: "banks.{$config->bankCode}.{$env}-billings");
 
         if (!$bankConfig || !is_array(value: $bankConfig)) {
-            throw new InvalidArgumentException(message: "Configurações não encontradas para o banco {$bankCode} no ambiente {$env}");
+            throw new InvalidArgumentException(message: "Configurações não encontradas para o banco {$config->bankCode} no ambiente {$env}");
         }
 
         $config = array_merge($bankConfig, [
-            'path_crt' => $args['path_crt'] ?? null,
-            'path_key' => $args['path_key'] ?? null,
-            'agencia' => $args['agencia'] ?? '',
-            'conta' => $args['conta'] ?? '',
-            'conta_dv' => $args['conta_dv'] ?? '',
-            'wallet' => $args['wallet'] ?? '',
+            'path_crt' => $config->path_crt,
+            'path_key' => $config->path_key,
+            'agencia' => $config->agencia,
+            'conta' => $config->conta,
+            'conta_dv' => $config->conta_dv,
+            'wallet' => $config->wallet,
         ]);
 
         try {

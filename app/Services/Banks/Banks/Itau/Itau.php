@@ -4,16 +4,11 @@ namespace App\Services\Banks\Banks\Itau;
 
 use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
-use App\Services\Banks\DTO\BankDTO;
 use Illuminate\Support\Facades\Storage;
+use App\Services\Banks\DTO\BankResponse;
 use App\Interfaces\TokenResolverInterface;
 use Illuminate\Http\Client\PendingRequest;
 use App\Services\Banks\Template\BankTemplate;
-use App\Services\Banks\Banks\Itau\Methods\Baixa;
-use App\Services\Banks\Banks\Itau\Methods\Desconto;
-use App\Services\Banks\Banks\Itau\Methods\GeraBoleto;
-use App\Services\Banks\Banks\Itau\Methods\DataVencimento;
-use App\Services\Banks\Banks\Itau\Methods\ConsultarBoleto;
 
 class Itau extends BankTemplate
 {
@@ -24,11 +19,13 @@ class Itau extends BankTemplate
     protected TokenResolverInterface $resolver;
     protected PendingRequest $pendingRequest;
 
-    use ConsultarBoleto;
-    use GeraBoleto;
-    use Baixa;
-    use Desconto;
-    use DataVencimento;
+    use Methods\ConsultarBoleto;
+    use Methods\GeraBoleto;
+    use Methods\Baixa;
+    use Methods\Desconto;
+    use Methods\DataVencimento;
+    use Methods\NossoNumero;
+    use Methods\CodigoBarras;
 
     public function __construct(TokenResolverInterface $resolver, protected array $config)
     {
@@ -49,11 +46,11 @@ class Itau extends BankTemplate
     protected function configureHttp(): PendingRequest
     {
         return $this->makeHttpClient()
-            ->setHeaders($this->getHeaders())
-            ->setBaseUrl($this->config['base_url'])
-            ->setToken($this->token)
-            ->setCerts($this->config['path_crt'], $this->config['path_key'])
-            ->setChannel('itau')
+            ->setHeaders(headers: $this->getHeaders())
+            ->setBaseUrl(url: $this->config['base_url'])
+            ->setToken(token: $this->token)
+            ->setCerts(certPath: $this->config['path_crt'], keyPath: $this->config['path_key'])
+            ->setChannel(channel: 'itau')
             ->make();
     }
 
@@ -71,12 +68,12 @@ class Itau extends BankTemplate
 
     public function makeOurNumber(array $data): string
     {
-        return rand(1000000000, 9999999999);
+        return $this->makeOwnNumber(data: $data);
     }
 
     public function makeBarCode(array $data): string
     {
-        return '1234567890123456789012345678901234567890';
+        return $this->makeCodeBar(data: $data);
     }
 
     public function gerarBoleto(array $data): object
@@ -106,8 +103,8 @@ class Itau extends BankTemplate
 
     private static function transform(mixed $json): Collection
     {
-        return collect($json)
-            ->map(fn($items) => new BankDTO($items));
+        return collect(value: $json)
+            ->map(callback: fn($items): BankResponse => new BankResponse(data: $items));
     }
 
 }

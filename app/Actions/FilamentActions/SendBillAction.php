@@ -5,6 +5,7 @@ namespace App\Actions\FilamentActions;
 use App\Models\Bank;
 use App\Models\Bill;
 use App\Models\Customer;
+use App\Services\Banks\DTO\BankConfig;
 use Filament\Actions\Action;
 use Illuminate\Database\Eloquent\Model;
 use App\Services\Banks\Factories\BankFactory;
@@ -18,21 +19,26 @@ class SendBillAction extends Action
 
         $bank = data_get($data, 'bank_id');
         $customer = data_get($data, 'customer_id');
+        $dataBank = Bank::find($bank)->first();
 
-        $data = [
-            'model' => Bank::find($bank)->first(),
-            'customer' => Customer::find($customer)->first(),
-            'billing' => $data,
-        ];
-
-        $bank = BankFactory::make($data);
-
-        Bill::update([
-            'boleto_number' => $bank->makeOurNumber($data),
-            'barcode' => $bank->makeBarCode($data),
+        $config = new BankConfig([
+            'bankCode' => $dataBank->bank_code,
+            'path_crt' => $dataBank->path_crt,
+            'path_key' => $dataBank->path_key,
+            'agencia' => $dataBank->agencia,
+            'conta' => $dataBank->conta,
+            'conta_dv' => $dataBank->conta_dv,
+            'wallet' => $dataBank->wallet,
         ]);
 
-        $response = $bank->gerarBoleto($data);
+        $bank = BankFactory::make(config: $config);
+
+        Bill::update(attributes: [
+            'boleto_number' => $bank->makeOurNumber(data: $data->toArray()),
+            'barcode' => $bank->makeBarCode(data: $data->toArray()),
+        ]);
+
+        $response = $bank->gerarBoleto(data: $data->toArray());
 
         dd($response);
 

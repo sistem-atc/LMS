@@ -5,13 +5,12 @@ namespace App\EntryPoints;
 use App\Interfaces\EntryPointInterface;
 use Illuminate\Database\Eloquent\Model;
 
-class ExempleEntryPoint implements EntryPointInterface
+class NameModel implements EntryPointInterface
 {
     public function entryPoint(Model $model): void
     {
         // Intercept model for apply business logic
         // Example: $model->status = 'pending';
-        dd($model->toArray());
     }
 
 }

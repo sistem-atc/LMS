@@ -3,7 +3,7 @@
 namespace App\Services\Towns\Systems\Nfe_Paulista\Filament;
 
 use Filament\Forms\Form;
-use App\Services\Utils\Towns\Interfaces\ExcludeSelectInterface;
+use App\Interfaces\ExcludeSelectInterface;
 
 class ComposeForm implements ExcludeSelectInterface
 {

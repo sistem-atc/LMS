@@ -15,6 +15,8 @@ class DatabaseSeeder extends Seeder
         $this->call(FreightTableSeeder::class);
         $this->call(GroupCustomerSeeder::class);
         $this->call(BankSeeder::class);
+        $this->call(AccountSeeder::class);
+        $this->call(RulesAccountSeeder::class);
         $this->call(NatureSeeder::class);
         $this->call(VendorSeeder::class);
         $this->call(CostCenterSeeder::class);

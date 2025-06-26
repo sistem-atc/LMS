@@ -14,4 +14,10 @@ class Nature extends BaseModel
     {
         return $this->hasOne(Bill::class);
     }
+
+    public function rules_account(): HasOne
+    {
+        return $this->hasOne(RulesAccount::class);
+    }
+
 }

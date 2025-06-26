@@ -1,10 +1,9 @@
 <?php
 
-use App\Models\RulesAccount;
-use Illuminate\Contracts\Validation\Rule;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
+use App\Enums\AccountType;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration {
     /**
@@ -12,10 +11,11 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('natures', function (Blueprint $table) {
+        Schema::create('accounts', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->foreignIdFor(RulesAccount::class, 'rules_account_id')->constrained()->cascadeOnDelete();
+            $table->string('number')->unique();
+            $table->string('description');
+            $table->enum('type', array_column(AccountType::cases(), 'value'));
             $table->blameable();
             $table->timestamps();
             $table->softDeletes();
@@ -27,6 +27,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('natures');
+        Schema::dropIfExists('accounts');
     }
 };

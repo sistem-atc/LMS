@@ -5,6 +5,7 @@ namespace App\Modules\Accounting\Register\Nature;
 use App\Modules\Accounting\Register\Nature\NatureResource\Pages;
 use App\Models\Nature;
 use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -30,6 +31,12 @@ class NatureResource extends Resource
                 Section::make('')
                     ->schema([
                         TextInput::make('name')->label('Nome'),
+                        Select::make('rules_account')
+                            ->label('Contas')
+                            ->relationship('rulesAccount', 'name')
+                            ->required()
+                            ->searchable()
+                            ->preload(),
                     ])->columns(2),
             ]);
     }

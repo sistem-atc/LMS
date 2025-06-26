@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\RulesAccount;
+use Illuminate\Contracts\Validation\Rule;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -19,6 +21,7 @@ class NatureFactory extends Factory
     {
         return [
             'name' => Str::upper(fake()->name()),
+            'rules_account_id' => RulesAccount::factory(),
         ];
     }
 }

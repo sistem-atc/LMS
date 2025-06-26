@@ -26,7 +26,7 @@ class ConfigRenderHook
             $branchelooged = 'NULL';
         } else {
             !is_null(Auth::user()->branch_logged) ?
-                $branchelooged = Auth::user()->branch_logged['abbreviation'] :
+                $branchelooged = Auth::user()->branch_logged->abbreviation :
                 $branchelooged = Auth::user()->employee->branch['abbreviation'];
         }
 

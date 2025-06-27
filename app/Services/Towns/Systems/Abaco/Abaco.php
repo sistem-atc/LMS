@@ -53,7 +53,7 @@ class Abaco extends TownTemplate
         return throw new Exception('Método não implementado', 501);
     }
 
-    public function mountMensage(SimpleXMLElement $dataMsg, string $operation, ?string $version): void
+    public function mountMensage(SimpleXMLElement $dataMsg, string $operation, ?string $version = null): void
     {
 
         $this->mountMessage = $this->assembleMessage(replaceOperation: $operation, version: $version);

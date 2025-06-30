@@ -7,10 +7,10 @@
     },
     "devDependencies": {
         "@tailwindcss/forms": "^0.5.10",
-        "@tailwindcss/postcss": "^4.1.10",
+        "@tailwindcss/postcss": "^4.1.11",
         "@tailwindcss/typography": "^0.5.16",
         "@types/react-dom": "^19.1.6",
-        "@vitejs/plugin-react": "^4.5.2",
+        "@vitejs/plugin-react": "^4.6.0",
         "@vitejs/plugin-vue": "^5.2.4",
         "autoprefixer": "^10.4.21",
         "axios": "^1.10.0",
@@ -18,7 +18,7 @@
         "laravel-vite-plugin": "^1.3.0",
         "postcss": "^8.5.6",
         "postcss-nesting": "^13.0.2",
-        "tailwindcss": "^4.1.10",
+        "tailwindcss": "^4.1.11",
         "vite": "^6.3.5"
     },
     "dependencies": {
@@ -33,7 +33,7 @@
         "@radix-ui/react-separator": "^1.1.7",
         "@radix-ui/react-tooltip": "^1.2.7",
         "class-variance-authority": "^0.7.1",
-        "lucide-react": "^0.522.0",
+        "lucide-react": "^0.525.0",
         "react": "^18.3.1",
         "react-dom": "^19.1.0",
         "tailwind-merge": "^3.3.1",

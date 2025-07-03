@@ -6,10 +6,10 @@ use ReflectionClass;
 use Illuminate\Support\Facades\File;
 use App\Interfaces\ExcludeSelectInterface;
 
-class GetClassTowns
+class GetClasses
 {
 
-    public static function getClassesTowns($folderPath): array
+    public static function getClassesfromPath($folderPath): array
     {
 
         $classes = [];

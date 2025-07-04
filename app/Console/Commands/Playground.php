@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use Symfony\Component\Console\Command\Command as SymfonyCommand;
 
 class Playground extends Command
 {
@@ -11,6 +12,7 @@ class Playground extends Command
 
     public function handle(): int
     {
-        return Command::SUCCESS;
+
+        return SymfonyCommand::SUCCESS;
     }
 }

@@ -13,7 +13,8 @@ class BankFactory
     public static function make(BankConfig $config): BankInterface
     {
 
-        $class = config(key: "bank.{$config->bankCode}");
+        $configs = config(key: "bank.{$config->bankCode}");
+        $class = $configs['class'] ?? null;
 
         if (!$class || !class_exists(class: $class)) {
             throw new InvalidArgumentException(message: "Conector não encontrado para o banco {$config->bankCode}");
@@ -24,13 +25,13 @@ class BankFactory
         }
 
         $env = EnvironmentHelper::getAmbient();
-        $bankConfig = config(key: "banks.{$config->bankCode}.{$env}-billings");
+        $bankConfig = $configs[$env . '-billings'];
 
         if (!$bankConfig || !is_array(value: $bankConfig)) {
             throw new InvalidArgumentException(message: "Configurações não encontradas para o banco {$config->bankCode} no ambiente {$env}");
         }
 
-        $config = array_merge($bankConfig, [
+        $bankconfig = array_merge($bankConfig, [
             'path_crt' => $config->path_crt,
             'path_key' => $config->path_key,
             'agencia' => $config->agencia,
@@ -44,8 +45,8 @@ class BankFactory
             return app()->make(
                 abstract: $class,
                 parameters: [
-                    'resolver' => null,
-                    'config' => $config,
+                    'resolver' => $config->tokenResolver,
+                    'config' => $bankconfig,
                 ]
             );
 

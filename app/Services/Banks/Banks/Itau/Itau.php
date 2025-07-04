@@ -9,6 +9,7 @@ use App\Services\Banks\DTO\BankResponse;
 use App\Interfaces\TokenResolverInterface;
 use Illuminate\Http\Client\PendingRequest;
 use App\Services\Banks\Template\BankTemplate;
+use App\Services\Banks\Banks\Itau\TokenResolver\ItauTokenResolver;
 
 class Itau extends BankTemplate
 {
@@ -16,7 +17,7 @@ class Itau extends BankTemplate
     protected string $carteira;
     protected array $data;
     protected string $token;
-    protected TokenResolverInterface $resolver;
+    protected ?TokenResolverInterface $resolver;
     protected PendingRequest $pendingRequest;
 
     use Methods\ConsultarBoleto;
@@ -27,10 +28,15 @@ class Itau extends BankTemplate
     use Methods\NossoNumero;
     use Methods\CodigoBarras;
 
-    public function __construct(TokenResolverInterface $resolver, protected array $config)
+    public function __construct(protected array $config)
     {
-        $this->resolver = $resolver;
         parent::__construct(config: $config);
+
+        $this->resolver = new ItauTokenResolver(
+            config: $this->config,
+            http: $this->makeHttpClient()
+        );
+
         $this->initialize();
     }
 
@@ -45,9 +51,10 @@ class Itau extends BankTemplate
 
     protected function configureHttp(): PendingRequest
     {
+
         return $this->makeHttpClient()
             ->setHeaders(headers: $this->getHeaders())
-            ->setBaseUrl(url: $this->config['base_url'])
+            ->setBaseUrl(url: $this->config['url'])
             ->setToken(token: $this->token)
             ->setCerts(certPath: $this->config['path_crt'], keyPath: $this->config['path_key'])
             ->setChannel(channel: 'itau')

@@ -2,6 +2,8 @@
 
 namespace App\Services\Banks\DTO;
 
+use App\Interfaces\TokenResolverInterface;
+
 final readonly class BankConfig
 {
 
@@ -12,6 +14,8 @@ final readonly class BankConfig
     public string $conta;
     public string $conta_dv;
     public string $wallet;
+    public ?string $tokenResolver;
+
     public function __construct(array $config)
     {
         $this->bankCode = $config['bankCode'] ?? null;
@@ -21,5 +25,6 @@ final readonly class BankConfig
         $this->conta = $config['conta'] ?? null;
         $this->conta_dv = $config['conta_dv'] ?? null;
         $this->wallet = $config['wallet'] ?? null;
+        $this->tokenResolver = $config['tokenResolver'] ?? null;
     }
 }

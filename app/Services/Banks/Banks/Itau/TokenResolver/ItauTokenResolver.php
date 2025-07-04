@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Cache;
 use App\Interfaces\TokenResolverInterface;
 use App\Utils\Services\HttpRequestService;
 
-class TokenResolver implements TokenResolverInterface
+class ItauTokenResolver implements TokenResolverInterface
 {
     protected array $config;
     protected HttpRequestService $http;
@@ -38,6 +38,7 @@ class TokenResolver implements TokenResolverInterface
                     ];
 
                     $http = $this->http
+                        ->setModule(self::class)
                         ->setBaseUrl($this->config['urlToken'])
                         ->setHeaders($headers)
                         ->setCerts($this->config['path_crt'], $this->config['path_key'])

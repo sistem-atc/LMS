@@ -2,23 +2,24 @@
 
 namespace App\Logs;
 
+use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\Log;
 
 class Logging
 {
 
-    public static function logRequest($request, string $module, string $channel)
+    public static function logRequest(Request $request, string $module, string $channel)
     {
 
-        $headers = self::sanitizeHeaders($request->getHeaders());
+        $headers = self::sanitizeHeaders($request->headers());
 
         Log::channel($channel)->info(
             '>>Envio de dados ' . $module,
             [
-                'url' => $request->getUri(),
-                'method' => $request->getMethod(),
+                'url' => $request->url(),
+                'method' => $request->method(),
                 'headers' => $headers,
-                'body' => $request->getBody()?->getContents(),
+                'body' => $request->body(),
             ]
         );
     }
@@ -40,8 +41,9 @@ class Logging
 
     private static function sanitizeHeaders(array $headers): array
     {
+
         return collect($headers)
-            ->maWithKeys(fn ($value, $key) => is_array($value) ? implode(', ', $value) : $value)
+            ->mapWithKeys(fn($value, $key) => [$key => is_array($value) ? implode(', ', $value) : $value])
             ->except(['Authorization', 'x-itau-apikey'])
             ->toArray();
     }

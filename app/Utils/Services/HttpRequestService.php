@@ -15,6 +15,7 @@ class HttpRequestService
     protected ?string $channel = 'default';
     protected ?string $certPath = null;
     protected ?string $keyPath = null;
+    protected ?string $module = null;
     protected bool $shouldThrow = true;
 
     public function setHeaders(array $headers): self
@@ -54,6 +55,12 @@ class HttpRequestService
         return $this;
     }
 
+    public function setModule(string $module): self
+    {
+        $this->module = $module;
+        return $this;
+    }
+
     public function make(): PendingRequest
     {
         $request = Http::withOptions([
@@ -73,9 +80,14 @@ class HttpRequestService
             $request = $request->throw();
         }
 
-        $request = $request->tap(function (PendingRequest $req) {
+        $request = tap($request, function (PendingRequest $req) {
             $req->beforeSending(
-                fn($request, $options) => Logging::logRequest($request, $options, $this->channel)
+                fn($request) =>
+                Logging::logRequest(
+                    $request,
+                    $this->module,
+                    $this->channel
+                )
             );
         });
 

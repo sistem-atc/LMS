@@ -12,6 +12,7 @@ return new class extends Migration {
     {
         Schema::create('banks', function (Blueprint $table) {
             $table->id();
+
             $table->string('cnpj');
             $table->integer('codigo');
             $table->integer('agencia');
@@ -19,6 +20,7 @@ return new class extends Migration {
             $table->integer('conta');
             $table->integer('dv_conta');
             $table->string('nome_banco');
+
             $table->string('postal_code');
             $table->string('street');
             $table->string('complement')->nullable();
@@ -30,14 +32,20 @@ return new class extends Migration {
             $table->string('gia')->nullable();
             $table->string('ddd')->nullable();
             $table->string('siafi')->nullable();
+
             $table->string('contato')->nullable();
             $table->boolean('use_api')->nullable();
-            $table->string('client_id')->nullable();
-            $table->string('client_secret')->nullable();
-            $table->string('path_crt')->nullable();
-            $table->string('path_key')->nullable();
+            $table->string('client_id_billing')->nullable();
+            $table->string('client_id_extract')->nullable();
+            $table->string('client_secret_extract')->nullable();
+            $table->string('file_crt_billing')->nullable();
+            $table->string('file_key_biling')->nullable();
+            $table->string('file_crt_extract')->nullable();
+            $table->string('file_key_extract')->nullable();
+
             $table->boolean('use_cnab')->nullable();
             $table->string('model_cnab')->nullable();
+
             $table->integer('fine')->default(0);
             $table->integer('interests')->default(0);
             $table->boolean('protest')->default(false);

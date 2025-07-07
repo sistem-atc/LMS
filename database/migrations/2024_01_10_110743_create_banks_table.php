@@ -36,6 +36,7 @@ return new class extends Migration {
             $table->string('contato')->nullable();
             $table->boolean('use_api')->nullable();
             $table->string('client_id_billing')->nullable();
+            $table->string('client_secret_billing')->nullable();
             $table->string('client_id_extract')->nullable();
             $table->string('client_secret_extract')->nullable();
             $table->string('file_crt_billing')->nullable();

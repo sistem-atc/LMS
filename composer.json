@@ -10,7 +10,6 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
-        "bezhansalleh/filament-shield": "^3.2",
         "blade-ui-kit/blade-icons": "^1.6",
         "codeat3/blade-carbon-icons": "^2.22",
         "codeat3/blade-fluentui-system-icons": "^1.33",
@@ -24,8 +23,6 @@
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
         "league/flysystem-aws-s3-v3": "^3.26",
-        "leandrocfe/filament-ptbr-form-fields": "^3.0",
-        "mokhosh/filament-kanban": "*",
         "nfephp-org/sped-cte": "^5.0",
         "nfephp-org/sped-da": "^1.1",
         "nfephp-org/sped-esocial": "^1.0",
@@ -34,9 +31,13 @@
         "robrichards/xmlseclibs": "^3.1",
         "spatie/laravel-permission": "^6.4",
         "stancl/tenancy": "^3.8",
-        "tightenco/ziggy": "^2.5"
+        "tightenco/ziggy": "^2.5",
+        "bezhansalleh/filament-shield": "^3.2",
+        "leandrocfe/filament-ptbr-form-fields": "^3.0",
+        "mokhosh/filament-kanban": "*"
     },
     "require-dev": {
+        "filament/upgrade": "^4.0",
         "laravel/pint": "^1.0",
         "laravel/sail": "^1.18",
         "mockery/mockery": "^1.4.4",
@@ -86,6 +87,6 @@
             "php-http/discovery": true
         }
     },
-    "minimum-stability": "stable",
+    "minimum-stability": "beta",
     "prefer-stable": true
 }

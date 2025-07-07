@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\GroupProduct;
+use Faker\Factory as Faker;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,9 +18,10 @@ class ProductFactory extends Factory
      */
     public function definition(): array
     {
+
         return [
-            'name' => $this->faker->unique()->word(),
-            'description' => $this->faker->sentence(),
+            'name' => Faker::create()->unique()->word(),
+            'description' => fake()->sentence(),
             'group_product_id' => GroupProduct::factory(),
         ];
     }

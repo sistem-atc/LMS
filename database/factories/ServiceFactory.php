@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\GroupService;
+use Faker\Factory as Faker;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -18,7 +19,7 @@ class ServiceFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->unique()->word(),
+            'name' => Faker::create()->unique()->word(),
             'description' => $this->faker->sentence(),
             'group_service_id' => GroupService::factory(),
         ];

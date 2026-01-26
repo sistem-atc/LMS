@@ -15,7 +15,7 @@
         "autoprefixer": "^10.4.23",
         "axios": "^1.13.2",
         "esbuild": "^0.27.2",
-        "laravel-vite-plugin": "^2.0.1",
+        "laravel-vite-plugin": "^2.1.0",
         "postcss": "^8.5.6",
         "postcss-nesting": "^13.0.2",
         "tailwindcss": "^4.1.16",
